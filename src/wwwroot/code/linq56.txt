@@ -1,4 +1,4 @@
-{{ [{name:'Alice', score:50}, {name: 'Bob', score:40}, {name:'Cathy', score:45}] | assignTo: scoreRecords }}
+{{ [{name:'Alice',score:50},{name:'Bob',score:40},{name:'Cathy',score:45}] | assignTo:scoreRecords }}
 Bob's score: 
 {{ scoreRecords 
    | toDictionary: it.name

@@ -104,8 +104,11 @@ pre {
     display: inline-block;
     width: 49%;
 }
-.live-pages .files textarea, .linq-preview .files textarea, .live-template textarea {
+.live-pages textarea, .linq-preview textarea, .live-template textarea {
     width: 100%;
+    font-family: Monaco, Consolas;
+    font-size: .98rem;
+    line-height: 1.25rem;
 }
 .live-pages .files h5, .linq-preview .files h5 {
     color: #4283b9;
@@ -132,4 +135,12 @@ pre {
 }
 .linq-preview .files section {
     margin: 0 0 10px 0;
+}
+
+blockquote {
+    padding: 0.5rem 1rem;
+    margin-bottom: 1rem;
+    font-size: 1rem;
+    border-left: 0.25rem solid #eceeef;
+    background: #f8f8f8;
 }
