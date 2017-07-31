@@ -1,0 +1,134 @@
+<!--
+title: Syntax
+order: 3
+-->
+
+<p>
+    The syntax is inspired by and it most cases compatible with <a href="https://vuejs.org/v2/guide/syntax.html#Filters">Vue.js filters</a>,
+    with the goal being you can use the same common language to implement server rendering with ServiceStack Templates as you would do 
+    in client-side rendering of Single Page Apps using Vue filters. With this in mind, the syntax within mustaches is compatible with JavaScript 
+    where you can use native JS data structures despite it creating C# objects and calling C# methods behind-the-scenes.
+</p>
+
+<h4>Mustache expressions</h4>
+
+<p>
+    Just like Vue filters, only expressions inside mustaches are evaluated, everything outside mustaches are emitted as-is:
+</p>
+
+{{ 'live-template' | partial({ template: "outside <i>{{ 'shout' | upper }}</i> text" }) }}
+
+<p>
+    Which calls the <em>upper</em> default filter function where the argument on the left-side of the "pipe" symbol is 
+    passed as the first argument to the filter which is implemented as:
+</p>
+
+<pre class="cs"><code>public string upper(string text) => text?.ToUpper();</code></pre>
+
+<p>
+    This can also be rewritten without the "pipe" symbol by calling the filter with an argument instead:
+</p>
+
+{{ 'live-template' | partial({ template: "outside <i>{{ upper('shout') }}</i> text" }) }}
+
+<h4>Filters can be chained</h4>
+
+<p>
+    Filters are chained from left-to-right where the value on the left side of the "pipe" symbol is passed as the first 
+    argument in the filter on the right and the output of that is passed as the input of the next filter in the chain and so on:
+</p>
+
+{{ 'live-template' | partial({ template: "{{ 'shout' | upper | substring(2) | padRight(6, '_') | repeat(3) }}" }) }}
+
+<p>
+    Filters can also accept additional arguments which are passed starting from the 2nd argument since the first 
+    argument is the value the filter is called with. E.g. here are the implementations for the <em>substring</em> and 
+    <em>padRight</em> default filters:
+</p>
+
+<pre class="cs"><code>public string substring(string text, int startIndex) => text.SafeSubstring(startIndex);
+public string padRight(string text, int totalWidth, char padChar) => text?.PadRight(totalWidth, padChar);</code></pre>
+
+<h4>JavaScript literal notation</h4>
+
+<p>
+    You can use the same literal syntax used to define numbers, strings, booleans, null, Objects and Arrays in JavaScript
+    within templates and it will get converted into the most appropriate .NET Type, e.g:
+</p>
+
+{{ 'live-template' | partial({ rows: 8, template: "{{  null | typeName }}
+{{  true | typeName  }}
+{{  1 | typeName  }}
+{{  1.1 | typeName  }}
+{{  'string' | typeName  }}
+{{  ['array', 'items'] | typeName  }}
+{{  { key: 'value' } | typeName  }}
+" }) }}
+
+<p>
+    ES6 Shorthand notation is also supported where you can the argument name as its property name in a Dictionary:
+</p>
+
+{{ 'live-template' | partial({ template: "{{ 'foo' | assignTo: bar }}
+{{ { bar } | assignTo: obj }}
+{{ obj['bar'] }}" }) }}
+
+<h4>Quotes</h4>
+
+<p>
+    Like JS you can define strings using single quotes, double quotes or back-ticks, e.g:
+</p>
+
+{{ 'live-template' | partial({ template: "{{ 'single quotes' }}<br/>{{ \"double quotes\" }}<br/>{{ `back ticks` }}" }) }}
+
+<p>
+    Strings can also span multiple lines.
+</p>
+
+<h4>Special string argument syntax</h4>
+
+<p>
+    As string expressions are a prevalent in Templates, we've given them special wrist-friently syntax where you
+    can add a colon at the end of the filter name which says to treat the following characters up until the end of the
+    line or the end of the mustache as a string, trim it and convert '{' and '}' chars into mustaches which will
+    let you write:
+</p>
+
+{{ 'live-template' | partial({ template: "{{ [0,1,2,3,4,5]
+   | where: it >= 3
+   | select: { it | incrBy(10) }\n }}" }) }}
+
+<p>
+    Which will be rewritten into its equivalent and more verbose form of:
+</p>
+
+{{ 'live-template' | partial({ template: '{{ [0,1,2,3,4,5]
+   | where("it >= 3")
+   | select("{{ it | incrBy(10) }}\n") }}' 
+}) }}
+
+<h4>String Expressions</h4>
+
+<p>
+    There's no lambda's in Templates, instead to achieve the same effect a string expression is evaluated with the target
+    item added to the expression scope under the <em>it</em> binding 
+    (<a href="https://kotlinlang.org/docs/reference/lambdas.html#it-implicit-name-of-a-single-parameter">same as Kotlin</a>)
+    as seen above. 
+    Default filters that accept string expressions usually allow the <em>it</em> binding to be overridden with an additional option:
+</p>
+
+{{ 'live-template' | partial({ template: "{{ [0,1,2,3,4,5] | where('num >= 3', { it: 'num' }) | join }}" }) }}
+
+<h4>SQL-like syntax</h4>
+
+<p>
+    To maximize readability and intuitiveness for non-programmers, string expressions adopt an SQL-like syntax where
+    instead of using <em>&amp;&amp;</em>, <em>||</em> or <em>==</em> operator syntax to define boolean expressions you'd instead
+    use the more user-friendly <em>and</em>, <em>or</em> and <em>=</em> alternatives, e.g:
+</p>
+
+{{ 'live-template' | partial({ template: "{{ [0,1,2,3,4,5] 
+    | where: it = 3 and isOdd(it)
+    | join }}" }) }}
+
+{{ "doc-links" | partial({ order }) }}

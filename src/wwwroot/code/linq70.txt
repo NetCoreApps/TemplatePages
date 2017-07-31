@@ -1,0 +1,4 @@
+{{ [1, 11, 3, 19, 41, 65, 19] | assignTo: numbers }}
+{{ numbers 
+   | all: isOdd(it)
+   | select: The list contains only odd numbers: { it | lower } }}

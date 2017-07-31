@@ -1,0 +1,7 @@
+{{ '1997-01-01' | assignTo: cutoffDate }}
+{{ customers 
+   | where: it.Region = 'WA'
+   | zip: it.Orders
+   | let({ c: 'it[0]', o: 'it[1]' })
+   | where: o.OrderDate  >= cutoffDate 
+   | select: ({ c.CustomerId }, { o.OrderId })\n }}

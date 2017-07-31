@@ -1,0 +1,37 @@
+<!--
+title: Overview
+order: 0
+-->
+
+<p>
+    All LINQ Examples are executed using the same TemplateContext instance below:
+</p>
+
+<pre><code>
+    LinqContext = new TemplateContext {
+        Args = {
+            [TemplateConstants.DefaultDateFormat] = "yyyy/MM/dd",
+            ["products"] = TemplateQueryData.Products,
+            ["customers"] = TemplateQueryData.Customers,
+            ["comparer"] = new CaseInsensitiveComparer(),
+            ["anagramComparer"] = new AnagramEqualityComparer(),
+        }
+    }.Init();
+</code></pre>
+
+<p>
+    Which makes available the <b>products</b> and <b>customer</b> data sources to each template, all other data 
+    sources are created within the template that uses them. 
+</p>
+
+<p>
+    The <b>comparer</b> and <b>anagramComparer</b> are examples of custom .NET objects the templates can't create themselves 
+    so they need to defined externally so they're available to templates that need them.
+</p>
+
+<p>
+    The <em>TemplateConstants.DefaultDateFormat</em> changes the default format that <em>dateFormat</em> filter uses if none is provided.
+</p>
+
+{{ "linq-links" | partial({ order }) }}
+

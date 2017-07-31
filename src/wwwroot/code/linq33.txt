@@ -1,0 +1,3 @@
+{{ products 
+   | orderByDescending: it.UnitsInStock
+   | select: { it | jsv }\n }}

@@ -1,0 +1,42 @@
+<!--
+title: Generation Operators
+order: 9
+-->
+
+<h3>linq65: Range</h3>
+
+<pre><code>//c#
+public void Linq65() 
+{ 
+    var numbers = 
+        from n in Enumerable.Range(100, 50) 
+  
+        select new { Number = n, OddEven = n % 2 == 1 ? "odd" : "even" }; 
+  
+    foreach (var n in numbers) 
+    { 
+        Console.WriteLine("The number {0} is {1}.", n.Number, n.OddEven); 
+    } 
+}
+</code></pre>
+
+{{ "linq-preview" | partial({ example: "linq65" }) }}
+
+<h3>linq66: Repeat</h3>
+
+<pre><code>//c#
+public void Linq66() 
+{ 
+    var numbers = Enumerable.Repeat(7, 10); 
+  
+    foreach (var n in numbers) 
+    {  
+        Console.WriteLine(n); 
+    } 
+}
+</code></pre>
+
+{{ "linq-preview" | partial({ example: "linq66" }) }}
+
+
+{{ "linq-links" | partial({ order }) }}

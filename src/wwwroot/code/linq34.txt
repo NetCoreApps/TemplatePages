@@ -1,0 +1,4 @@
+{{ ['aPPLE', 'AbAcUs', 'bRaNcH', 'BlUeBeRrY', 'ClOvEr', 'cHeRry'] | assignTo: words }}
+{{ words 
+   | orderByDescending('it', { comparer }) 
+   | select: { it }\n }}

@@ -1,0 +1,338 @@
+<!--
+title: Aggregate Operators
+order: 11
+-->
+
+<h3>linq73: Count - Simple</h3>
+
+<pre><code>//c#
+public void Linq73() 
+{ 
+    int[] factorsOf300 = { 2, 2, 3, 5, 5 }; 
+  
+    int uniqueFactors = factorsOf300.Distinct().Count(); 
+  
+    Console.WriteLine("There are {0} unique factors of 300.", uniqueFactors); 
+}
+</code></pre>
+
+{{ "linq-preview" | partial({ example: "linq73" }) }}
+
+<h3>linq74: Count - Conditional</h3>
+
+<pre><code>//c#
+public void Linq74() 
+{ 
+    int[] numbers = { 5, 4, 1, 3, 9, 8, 6, 7, 2, 0 }; 
+  
+    int oddNumbers = numbers.Count(n => n % 2 == 1); 
+  
+    Console.WriteLine("There are {0} odd numbers in the list.", oddNumbers); 
+}
+</code></pre>
+
+{{ "linq-preview" | partial({ example: "linq74" }) }}
+
+<h3>linq76: Count - Nested</h3>
+
+<pre><code>//c#
+public void Linq76() 
+{ 
+    List<Customer> customers = GetCustomerList(); 
+  
+    var orderCounts = 
+        from c in customers 
+        select new { c.CustomerID, OrderCount = c.Orders.Count() }; 
+  
+    ObjectDumper.Write(orderCounts); 
+}
+</code></pre>
+
+{{ "linq-preview" | partial({ example: "linq76" }) }}
+
+<h3>linq77: Count - Grouped</h3>
+
+<pre><code>//c#
+public void Linq77() 
+{ 
+    List<Product> products = GetProductList(); 
+  
+    var categoryCounts = 
+        from p in products 
+        group p by p.Category into g 
+        select new { Category = g.Key, ProductCount = g.Count() }; 
+  
+    ObjectDumper.Write(categoryCounts 
+}
+</code></pre>
+
+{{ "linq-preview" | partial({ example: "linq77" }) }}
+
+<h3>linq78: Sum - Simple</h3>
+
+<pre><code>//c#
+public void Linq78() 
+{ 
+    int[] numbers = { 5, 4, 1, 3, 9, 8, 6, 7, 2, 0 }; 
+  
+    double numSum = numbers.Sum(); 
+  
+    Console.WriteLine("The sum of the numbers is {0}.", numSum); 
+}
+</code></pre>
+
+{{ "linq-preview" | partial({ example: "linq78" }) }}
+
+<h3>linq79: Sum - Projection</h3>
+
+<pre><code>//c#
+public void Linq79() 
+{ 
+    string[] words = { "cherry", "apple", "blueberry" }; 
+  
+    double totalChars = words.Sum(w => w.Length); 
+  
+    Console.WriteLine("There are a total of {0} characters in these words.", totalChars); 
+}
+</code></pre>
+
+{{ "linq-preview" | partial({ example: "linq79" }) }}
+
+<h3>linq80: Sum - Grouped</h3>
+
+<pre><code>//c#
+public void Linq80() 
+{ 
+    List<Product> products = GetProductList(); 
+  
+    var categories = 
+        from p in products 
+        group p by p.Category into g 
+        select new { Category = g.Key, TotalUnitsInStock = g.Sum(p => p.UnitsInStock) }; 
+  
+    ObjectDumper.Write(categories); 
+}
+</code></pre>
+
+{{ "linq-preview" | partial({ example: "linq80" }) }}
+
+<h3>linq81: Min - Simple</h3>
+
+<pre><code>//c#
+public void Linq81() 
+{ 
+    int[] numbers = { 5, 4, 1, 3, 9, 8, 6, 7, 2, 0 }; 
+  
+    int minNum = numbers.Min(); 
+  
+    Console.WriteLine("The minimum number is {0}.", minNum); 
+}
+</code></pre>
+
+{{ "linq-preview" | partial({ example: "linq81" }) }}
+
+<h3>linq82: Min - Projection</h3>
+
+<pre><code>//c#
+public void Linq82() 
+{ 
+    string[] words = { "cherry", "apple", "blueberry" }; 
+  
+    int shortestWord = words.Min(w => w.Length); 
+  
+    Console.WriteLine("The shortest word is {0} characters long.", shortestWord); 
+}
+</code></pre>
+
+{{ "linq-preview" | partial({ example: "linq82" }) }}
+
+<h3>linq83: Min - Grouped</h3>
+
+<pre><code>//c#
+public void Linq83() 
+{ 
+    List<Product> products = GetProductList(); 
+  
+    var categories = 
+        from p in products 
+        group p by p.Category into g 
+        select new { Category = g.Key, CheapestPrice = g.Min(p => p.UnitPrice) }; 
+  
+    ObjectDumper.Write(categories); 
+}
+</code></pre>
+
+{{ "linq-preview" | partial({ example: "linq83" }) }}
+
+<h3>linq84: Min - Elements</h3>
+
+<pre><code>//c#
+public void Linq84() 
+{ 
+    List<Product> products = GetProductList(); 
+  
+    var categories = 
+        from p in products 
+        group p by p.Category into g 
+        let minPrice = g.Min(p => p.UnitPrice) 
+        select new { Category = g.Key, CheapestProducts = g.Where(p => p.UnitPrice == minPrice) }; 
+  
+    ObjectDumper.Write(categories, 1); 
+}
+</code></pre>
+
+{{ "linq-preview" | partial({ example: "linq84", rows: 10 }) }}
+
+<h3>linq85: Max - Simple</h3>
+
+<pre><code>//c#
+public void Linq85() 
+{ 
+    int[] numbers = { 5, 4, 1, 3, 9, 8, 6, 7, 2, 0 }; 
+  
+    int maxNum = numbers.Max(); 
+  
+    Console.WriteLine("The maximum number is {0}.", maxNum); 
+}
+</code></pre>
+
+{{ "linq-preview" | partial({ example: "linq85" }) }}
+
+<h3>linq86: Max - Projection</h3>
+
+<pre><code>//c#
+public void Linq86() 
+{ 
+    string[] words = { "cherry", "apple", "blueberry" }; 
+  
+    int longestLength = words.Max(w => w.Length); 
+  
+    Console.WriteLine("The longest word is {0} characters long.", longestLength); 
+}
+</code></pre>
+
+{{ "linq-preview" | partial({ example: "linq86" }) }}
+
+<h3>linq87: Max - Grouped</h3>
+
+<pre><code>//c#
+public void Linq87() 
+{ 
+    List<Product> products = GetProductList(); 
+  
+    var categories = 
+        from p in products 
+        group p by p.Category into g 
+        select new { Category = g.Key, MostExpensivePrice = g.Max(p => p.UnitPrice) }; 
+  
+    ObjectDumper.Write(categories); 
+}
+</code></pre>
+
+{{ "linq-preview" | partial({ example: "linq87" }) }}
+
+<h3>linq88: Max - Elements</h3>
+
+<pre><code>//c#
+public void Linq88() 
+{ 
+    List<Product> products = GetProductList(); 
+  
+    var categories = 
+        from p in products 
+        group p by p.Category into g 
+        let maxPrice = g.Max(p => p.UnitPrice) 
+        select new { Category = g.Key, MostExpensiveProducts = g.Where(p => p.UnitPrice == maxPrice) }; 
+  
+    ObjectDumper.Write(categories, 1); 
+}
+</code></pre>
+
+{{ "linq-preview" | partial({ example: "linq88", rows: 10 }) }}
+
+<h3>linq89: Average - Simple</h3>
+
+<pre><code>//c#
+public void Linq89() 
+{ 
+    int[] numbers = { 5, 4, 1, 3, 9, 8, 6, 7, 2, 0 }; 
+  
+    double averageNum = numbers.Average(); 
+  
+    Console.WriteLine("The average number is {0}.", averageNum); 
+}
+</code></pre>
+
+{{ "linq-preview" | partial({ example: "linq89" }) }}
+
+<h3>linq90: Average - Projection</h3>
+
+<pre><code>//c#
+public void Linq90() 
+{ 
+    string[] words = { "cherry", "apple", "blueberry" }; 
+  
+    double averageLength = words.Average(w => w.Length); 
+  
+    Console.WriteLine("The average word length is {0} characters.", averageLength); 
+}
+</code></pre>
+
+{{ "linq-preview" | partial({ example: "linq90" }) }}
+
+<h3>linq91: Average - Grouped</h3>
+
+<pre><code>//c#
+public void Linq91() 
+{ 
+    List<Product> products = GetProductList(); 
+  
+    var categories = 
+        from p in products 
+        group p by p.Category into g 
+        select new { Category = g.Key, AveragePrice = g.Average(p => p.UnitPrice) }; 
+  
+    ObjectDumper.Write(categories); 
+}
+</code></pre>
+
+{{ "linq-preview" | partial({ example: "linq91" }) }}
+
+<h3>linq92: Aggregate - Simple</h3>
+
+<pre><code>//c#
+public void Linq92() 
+{ 
+    double[] doubles = { 1.7, 2.3, 1.9, 4.1, 2.9 }; 
+  
+    double product = doubles.Aggregate((runningProduct, nextFactor) => runningProduct * nextFactor); 
+  
+    Console.WriteLine("Total product of all numbers: {0}", product); 
+}
+</code></pre>
+
+{{ "linq-preview" | partial({ example: "linq92" }) }}
+
+<h3>linq93: Aggregate - Seed</h3>
+
+<pre><code>//c#
+public void Linq93() 
+{ 
+    double startBalance = 100.0; 
+  
+    int[] attemptedWithdrawals = { 20, 10, 40, 50, 10, 70, 30 }; 
+  
+    double endBalance = 
+        attemptedWithdrawals.Aggregate(startBalance, 
+            (balance, nextWithdrawal) => 
+                ((nextWithdrawal <= balance) ? (balance - nextWithdrawal) : balance)); 
+  
+    Console.WriteLine("Ending balance: {0}", endBalance); 
+}
+</code></pre>
+
+{{ "linq-preview" | partial({ example: "linq93" }) }}
+
+
+{{ "linq-links" | partial({ order }) }}
+

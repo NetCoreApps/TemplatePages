@@ -1,0 +1,4 @@
+{{ products 
+   | groupBy: it.Category
+   | let({ category: 'it.Key', totalUnitsInStock: 'sum(it, `it.UnitsInStock`)' }) 
+   | select: {category}, {totalUnitsInStock}\n }}

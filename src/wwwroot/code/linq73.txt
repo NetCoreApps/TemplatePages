@@ -1,0 +1,2 @@
+{{ [2, 2, 3, 5, 5] | assignTo: factorsOf300 }}
+{{ factorsOf300 | distinct | count | select: There are {it} unique factors of 300. }}

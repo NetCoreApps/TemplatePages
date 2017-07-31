@@ -1,0 +1,3 @@
+{{ customers 
+   | let({ customerId: 'it.CustomerId', ordersCount: 'count(it.Orders)' }) 
+   | select: {customerId}, {ordersCount}\n }}

@@ -1,0 +1,7 @@
+<div class="linq-links">
+
+{{ order | prevLinqLink | select: <span>&#8592; <a href="{ it.Key }">{ it.Value }</a></span> }}
+
+{{ order | nextLinqLink | select: <span style="float:right"><a href="{ it.Key }">{ it.Value }</a> &#8594;</span> }}
+
+</div>

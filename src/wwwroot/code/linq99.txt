@@ -1,0 +1,3 @@
+{{ [5, 4, 1, 3, 9, 8, 6, 7, 2, 0] | assignTo: numbers }}
+{{ 0 | assignTo: i }}
+{{ numbers | let({ i: 'incr(i)' }) | select: v = {index | incr}, i = {i}\n }}

@@ -1,0 +1,88 @@
+<!--
+title: Miscellaneous Operators
+order: 12
+-->
+
+<h3>linq94: Concat - 1</h3>
+
+<pre><code>//c#
+public void Linq94() 
+{ 
+    int[] numbersA = { 0, 2, 4, 5, 6, 8, 9 }; 
+    int[] numbersB = { 1, 3, 5, 7, 8 }; 
+  
+    var allNumbers = numbersA.Concat(numbersB); 
+  
+    Console.WriteLine("All numbers from both arrays:"); 
+    foreach (var n in allNumbers) 
+    { 
+        Console.WriteLine(n); 
+    } 
+}
+</code></pre>
+
+{{ "linq-preview" | partial({ example: "linq94" }) }}
+
+<h3>linq95: Concat - 2</h3>
+
+<pre><code>//c#
+public void Linq95() 
+{ 
+    List<Customer> customers = GetCustomerList(); 
+    List<Product> products = GetProductList(); 
+  
+    var customerNames = 
+        from c in customers 
+        select c.CompanyName; 
+    var productNames = 
+        from p in products 
+        select p.ProductName; 
+  
+    var allNames = customerNames.Concat(productNames); 
+  
+    Console.WriteLine("Customer and product names:"); 
+    foreach (var n in allNames) 
+    { 
+        Console.WriteLine(n); 
+    } 
+}
+</code></pre>
+
+{{ "linq-preview" | partial({ example: "linq95" }) }}
+
+<h3>linq96: EqualAll - 1</h3>
+
+<pre><code>//c#
+public void Linq96() 
+{ 
+    var wordsA = new string[] { "cherry", "apple", "blueberry" }; 
+    var wordsB = new string[] { "cherry", "apple", "blueberry" }; 
+  
+    bool match = wordsA.SequenceEqual(wordsB); 
+  
+    Console.WriteLine("The sequences match: {0}", match); 
+}
+</code></pre>
+
+{{ "linq-preview" | partial({ example: "linq96" }) }}
+
+<h3>linq97: EqualAll - 2</h3>
+
+<pre><code>//c#
+public void Linq97() 
+{ 
+    var wordsA = new string[] { "cherry", "apple", "blueberry" }; 
+    var wordsB = new string[] { "apple", "blueberry", "cherry" }; 
+  
+    bool match = wordsA.SequenceEqual(wordsB); 
+  
+    Console.WriteLine("The sequences match: {0}", match); 
+}
+</code></pre>
+
+{{ "linq-preview" | partial({ example: "linq97" }) }}
+
+{{ "linq-links" | partial({ order }) }}
+
+
+

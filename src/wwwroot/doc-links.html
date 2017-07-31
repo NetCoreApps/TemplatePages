@@ -1,0 +1,7 @@
+<div class="doc-links">
+
+{{ order | prevDocLink | select: <span>&#8592; <a href="{ it.Key }">{ it.Value }</a></span> }}
+
+{{ order | nextDocLink | select: <span style="float:right"><a href="{ it.Key }">{ it.Value }</a> &#8594;</span> }}
+
+</div>

@@ -1,0 +1,5 @@
+Short digits:
+{{ ['zero', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine'] | assignTo: digits }}
+{{ digits 
+   | where: it.Length < index
+   | select: The word {it} is shorter than its value.\n }}

@@ -1,0 +1,9 @@
+{{ products 
+   | groupBy: it.Category
+   | let({ 
+        g: 'it',
+        minPrice: 'min(g, `it.UnitPrice`)', 
+        category: 'g.Key', 
+        cheapestProducts: 'where(g, `it.UnitPrice = minPrice`)' 
+     })
+   | select: { category }\n{ cheapestProducts | jsv }\n }}

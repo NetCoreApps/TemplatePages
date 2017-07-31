@@ -1,0 +1,6 @@
+A backwards list of the digits with a second character of 'i':
+{{ ['zero', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine'] | assignTo: digits }}
+{{ digits 
+   | where: it[1] = 'i'
+   | reverse
+   | select: { it }\n }}

@@ -1,0 +1,16 @@
+{{ customers 
+   | let({ 
+        companyName: 'it.CompanyName', 
+        yearGroups: "map (
+                        groupBy(it.Orders, 'it.OrderDate.Year'),
+                        '{ 
+                            year: it.Key, 
+                            monthGroups: map (
+                                groupBy(it, `it.OrderDate.Month`),
+                                `{ month: it.Key, orders: it }`
+                            ) 
+                        }'
+                    )" 
+     })
+   | select: { companyName | raw }\n{ yearGroups | scopeVars | selectPartial('month-orders') }\n 
+}}

@@ -1,0 +1,75 @@
+<!--
+title: Quantifiers
+order: 10
+-->
+
+<h3>linq67: Any - Simple</h3>
+
+<pre><code>//c#
+public void Linq67() 
+{ 
+    string[] words = { "believe", "relief", "receipt", "field" }; 
+  
+    bool iAfterE = words.Any(w => w.Contains("ei")); 
+ 
+    Console.WriteLine("There is a word that contains in the list that contains 'ei': {0}", iAfterE); 
+}
+</code></pre>
+
+{{ "linq-preview" | partial({ example: "linq67" }) }}
+
+<h3>linq69: Any - Grouped</h3>
+
+<pre><code>//c#
+public void Linq69() 
+{ 
+    List<Product> products = GetProductList(); 
+    var productGroups = 
+        from p in products 
+        group p by p.Category into g 
+        where g.Any(p => p.UnitsInStock == 0) 
+        select new { Category = g.Key, Products = g }; 
+ 
+    ObjectDumper.Write(productGroups, 1);  
+}
+</code></pre>
+
+{{ "linq-preview" | partial({ example: "linq69" }) }}
+
+<h3>linq70: All - Simple</h3>
+
+<pre><code>//c#
+public void Linq70() 
+{  
+    int[] numbers = { 1, 11, 3, 19, 41, 65, 19 }; 
+  
+    bool onlyOdd = numbers.All(n => n % 2 == 1); 
+  
+    Console.WriteLine("The list contains only odd numbers: {0}", onlyOdd); 
+}
+</code></pre>
+
+{{ "linq-preview" | partial({ example: "linq70" }) }}
+
+<h3>linq72: All - Grouped</h3>
+
+<pre><code>//c#
+public void Linq72() 
+{ 
+    List<Product> products = GetProductList(); 
+  
+    var productGroups = 
+        from p in products 
+        group p by p.Category into g 
+        where g.All(p => p.UnitsInStock > 0) 
+        select new { Category = g.Key, Products = g }; 
+     
+    ObjectDumper.Write(productGroups, 1); 
+}
+</code></pre>
+
+{{ "linq-preview" | partial({ example: "linq72" }) }}
+
+
+{{ "linq-links" | partial({ order }) }}
+

@@ -1,0 +1,2 @@
+{{ ['aPPLE', 'BlUeBeRrY', 'cHeRry'] | assignTo: words }}
+{{ words | select: Uppercase: { it | upper }, Lowercase: { it | lower }\n }}

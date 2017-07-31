@@ -1,0 +1,102 @@
+<!--
+title: Arguments
+order: 5
+-->
+
+<p>
+    All data and objects made available to templates are done so using arguments. There are a number of different layers in 
+    which arguments can be defined, each shadowing the outer scope as it gets closer to the call-site where the argument is accessed,
+    behaving similarly to properties defined in a JavaScript prototype chain.
+</p>
+
+<h4>TemplateContext Arguments</h4>
+
+<p>
+    Essentially this can be thought of as where global variables are maintained, anything defined here is available to every template, partial, filter, etc:
+</p>
+
+<pre><code>var context = new TemplateContext { 
+    Args = {
+        ["arg"] = 1
+    }
+}.Init();</code></pre>
+
+<h4>Page Arguments</h4>
+
+<p>
+    All pages can define their own arguments within the header of each page, for <b>.html</b> files they are defined within HTML Comments
+    <em>&lt;!-- --&gt;</em> with each argument on a new line delimited by a colon, e.g:
+</p>
+
+{{ "live-pages" | partial(
+    {
+        rows: 7,
+        page: 'page', 
+        files: 
+        { 
+            '_layout.html': '<!--
+arg: 2
+arg2: 2
+-->
+
+layout args: <b>{{ arg }}</b>, <b>{{ arg2 }}</b> 
+<p>{{ page }}</p>',
+            'page.html' : '<!--
+arg: 3
+-->
+
+page arg: <b>{{ arg }}</b>' 
+        } 
+    }) 
+}}
+
+<p>
+    As we can see above, arguments defined in the page take precedence over arguments defined in the layout or context.
+</p>
+
+<h4>PageResult Arguments</h4>
+
+<p>
+    Arguments can also be defined in the <em>PageResult</em> context that renders the page, this takes precedence over the above:
+</p>
+
+<pre><code>var context = new PageResult(context.GetPage("page")) { 
+    Args = {
+        ["arg"] = 4
+    }
+};</code></pre>
+
+<h4>Scoped Arguments</h4>
+
+<p>
+    Each template can also create their own arguments using the <em>assignTo</em> or <em>assign</em> filters, e.g:
+</p>
+
+{{ "live-pages" | partial(
+    {
+        rows: 7,
+        page: 'page', 
+        files: 
+        { 
+            '_layout.html': '<!--
+arg: 2
+arg2: 2
+-->
+
+layout args: <b>{{ arg }}</b>, <b>{{ arg2 }}</b> 
+<p>{{ page }}</p>',
+            'page.html' : '<!--
+arg: 3
+-->
+
+{{ 6 | assignTo: arg }}
+page arg: <b>{{ arg }}</b>' 
+        } 
+    }) 
+}}
+
+<p>
+    These take precedence over all other arguments, but are only available within the scope that defines them.
+</p>
+
+{{ "doc-links" | partial({ order }) }}

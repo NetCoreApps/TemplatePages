@@ -1,0 +1,5 @@
+{{ [5, 4, 1, 3, 9, 8, 6, 7, 2, 0] | assignTo: numbers }}
+{{ numbers 
+   | groupBy: mod(it,5)
+   | let({ remainder: 'it.Key', numbers: 'it' })
+   | select: Numbers with a remainder of { remainder } when divided by 5:\n{ numbers | select('{it}\n') } }}

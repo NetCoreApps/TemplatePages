@@ -1,0 +1,4 @@
+{{ [ 'cherry', 'apple', 'blueberry' ] | assignTo: words }}
+{{ words
+   | average: it.Length 
+   | select: The average word length is {it} characters. }}

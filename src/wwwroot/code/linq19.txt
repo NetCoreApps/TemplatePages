@@ -1,0 +1,5 @@
+{{ customers 
+   | let({ cust: 'it', custIndex: 'index' })
+   | zip: cust.Orders
+   | let({ o: 'it[1]' })
+   | select: Customer #{ custIndex | incr } has an order with OrderID { o.OrderId }\n }}

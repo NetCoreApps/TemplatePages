@@ -1,0 +1,132 @@
+<!--
+title: Filters
+order: 6
+-->
+
+<p>
+    Templates are sandboxed, they can't call methods on objects nor do they have any access to any static functions built into the .NET Framework,
+    so just as Arguments define all data and objects available to templates, filters define all functionality available to templates.     
+</p>
+
+<p>
+    The only filters registered by default is the 
+    <a href="https://github.com/ServiceStack/ServiceStack/blob/master/src/ServiceStack.Common/Templates/TemplateDefaultFilters.cs">TemplateDefaultFilters.cs</a>
+    which contains a comprehensive suite of filters useful within View Engine or Template environment. There's nothing special about the default filters
+    other than they're pre-registered by default, your filters have access to the same functionality that built-in filters do. They can also 
+    be easily removed by clearing the TemplateFilters collection:
+</p>
+
+<pre><code>context.TemplateFilters.Clear();</code></pre>
+
+<h4>What are Filters?</h4>
+
+<p>
+    Filters are just C# methods from a class that inherits from <em>TemplateFilter</em>, e.g:
+</p>
+
+<pre class="cs"><code>class MyFilter : TemplateFilter
+{
+    public string echo(string text) => $"{text} {text}";
+    public double squared(double value) => value * value;
+    public string greetArg(string key) => $"Hello {Context.Args[key]}";
+            
+    public ICacheClient Cache { get; set; }
+    public string fromCache(string key) => Cache.Get<string>(key);
+}
+</code></pre>
+
+<h4>Registering Filters</h4>
+
+<p>
+    The examples below show the number of different ways filters can be registered:
+</p>
+
+<h5>Add them to the TemplateContext.TemplateFilters</h5>
+
+<p>
+    Filters can be registered by adding them to the <em>context.TemplateFilters</em> collection directly:
+</p>
+
+<pre class="cs"><code>var context = new TemplateContext
+{
+    Args =
+    {
+        ["contextArg"] = "foo"
+    },
+    TemplateFilters = { new MyFilter() }
+}.Init();
+</code></pre>
+
+<p>That can now be called with:</p>
+
+<pre class="cs"><code>var output = context.EvaluateTemplate("&lt;p&gt;{{ pass: 'contextArg' | greetArg }}&lt;/p&gt;");</code></pre>
+
+<p>
+    This is also shows that Filters are initialized and have access to the <em>TemplateContext</em> through the <em>Context</em> property.
+</p>
+
+<h5>Add them to PageResult.TemplateFilters</h5>
+
+<p>
+    If you only want to use a custom filter in a single Template, it can be registered on the <em>PageResult</em> that renders it instead:
+</p>
+
+<pre class="cs"><code>var output = new PageResult(context.OneTimePage("&lt;p&gt;{{ pass: 'hello' | echo }}&lt;/p&gt;"))
+{
+    TemplateFilters = { new MyFilter() }
+}.Result;
+</code></pre>
+
+<h5>Autowired using TemplateContext IOC</h5>
+
+<p>
+    Autowired instances of filters can also be created using the TemplateContext's registered IOC where they're 
+    also injected with any registered IOC dependencies. To utilize this you need to specify the Type of the filter that 
+    should be Autowired by adding it to the <em>ScanTypes</em> collection:
+</p>
+
+<pre class="cs"><code>var context = new TemplateContext
+{
+    ScanTypes = { typeof(MyFilter) }
+};
+context.Container.AddSingleton<ICacheClient>(() => new MemoryCacheClient());
+context.Container.Resolve<ICacheClient>().Set("key", "foo");
+context.Init();
+
+var output = context.EvaluateTemplate("&lt;p&gt;{{ pass: 'key' | fromCache }}&lt;/p&gt;");
+</code></pre>
+
+<p>
+    When the <em>TemplateContext</em> is initialized it will go through each Type and create an autowired instance of each Type
+    and register them in the <em>TemplateFilters</em> collection. An alternative to registering a single Type is to register 
+    an entire Assembly, e.g:
+</p>
+
+<pre class="cs"><code>var context = new TemplateContext
+{
+    ScanAssemblies = { typeof(MyFilter).GetAssembly() }
+};
+</code></pre>
+
+<p>
+    Where it will search each Type in the Assembly for Template Filters and automatically register them.
+</p>
+
+<h4>Auto coercion into Filter argument Types</h4>
+
+<p>
+    A unique feature of Filters is that each of their arguments are automatically co-erced into the filter argument Type using the 
+    comprehensive conversion facilities built into ServiceStack's 
+    <a href="http://docs.servicestack.net/auto-mapping">Auto Mapping Utils</a> and 
+    <a href="https://github.com/ServiceStack/ServiceStack.Text">Text Serializers</a> which can deserialize most Types like 
+    <em>DateTime</em>, <em>TimeSpan</em>, <em>Enums</em>, etc in/out of strings as well being able to convert any Numeric Type 
+    into any other Numeric Type. Which is how <em>double squared(double value)</em> despite only accepting doubles can also be used
+    with any other .NET Numeric Type, e.g. <em>byte</em>, <em>int</em>, <em>long</em>, <em>decimal</em>, etc.
+</p>
+
+<p>
+    The consequence to this is that there's no method overloading in filters, filters are matched based on their name and their number of arguments
+    where each argument is converted into the filter method Param Types before it's called.
+</p>
+
+{{ "doc-links" | partial({ order }) }}

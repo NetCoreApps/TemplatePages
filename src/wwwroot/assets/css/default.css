@@ -1,0 +1,135 @@
+h1, h2, h3, h4, strong {
+    font-weight: 600;
+    color: #2c3e50;
+}
+h1 {
+    margin: 0 0 20px 0;
+}
+#content em {
+    font-style: normal;
+    line-height: 1.5em;
+    padding: 2px 5px;
+    margin: 0;
+    background-color: rgba(0,0,0,0.04);
+    color: #c7254e;
+    border-radius: 3px;
+}
+
+#content h2, #content h3, #content h4 {
+    padding: 15px 0;
+}
+a:hover {
+    text-decoration: none;
+}
+#content a {
+    color: #4283b9;
+    font-weight: 600;
+}
+li.active a {
+    font-weight: bold;
+}
+#content .doc-links, #content .linq-links {
+    margin-top: 2em;
+    height: 1em;
+}
+#topnav {
+    z-index: 2;
+    position: fixed;
+    width: 100%;
+    background-color: #fff;
+    box-shadow: 0 0 1px rgba(0,0,0,0.25);
+}
+#body #sidebar {
+    position: fixed;
+}
+#body {
+    position: relative;
+    z-index: 1;
+    padding: 0 60px 30px;
+    padding-top: 60px;
+    overflow-x: hidden;
+}
+#sidebar {
+    position: absolute;
+    z-index: 10;
+    top: 61px;
+    left: 0;
+    bottom: 0;
+    overflow-x: hidden;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    -ms-overflow-style: none;
+}
+#sidebar .inner {
+    width: 270px;
+    padding: 40px 20px 60px 40px;    
+}
+#sidebar ul {
+    list-style-type: none;
+    margin: 0;
+    line-height: 1.5em;
+    padding-left: 1em;
+}
+#sidebar li {
+    margin-top: 0.5em;
+}
+#sidebar li h5 {
+    margin: 0.8em 0;
+    font-size: 18px;
+}
+
+#content {
+    position: relative;
+    padding: 2.2em 0;
+    max-width: 890px;
+    margin: 0 auto;
+    padding-left: 30px;
+}
+@media screen and (max-width: 1300px)
+{
+    #content {
+        margin-left: 290px;
+    }
+}
+pre {
+    background: #f8f8f8;
+    padding: 10px;
+    color: #2c3e50;
+}
+
+.live-pages, .live-template {
+    padding: 20px 0 0 0;
+}
+.live-pages .files.count-2 section, .linq-preview .files.count-2 section {
+    display: inline-block;
+    width: 49%;
+}
+.live-pages .files textarea, .linq-preview .files textarea, .live-template textarea {
+    width: 100%;
+}
+.live-pages .files h5, .linq-preview .files h5 {
+    color: #4283b9;
+}
+.live-pages .output, .linq-preview .output, .live-template .output {
+    border: 1px solid #eee;
+    border-radius: 2px;
+    padding: 25px 35px;
+    margin-top: .5em;
+    margin-bottom: 30px;
+    font-size: 1.2em;
+    line-height: 1.5em;
+    user-select: none;
+    overflow-x: auto;
+    max-height: 750px;
+    width: 98.5%;
+}
+.linq-preview .output, .live-template .output {
+    width: 100%;
+    white-space: pre;
+}
+.linq-preview.error, .live-template.error {
+    border-color: #a94442;
+}
+.linq-preview .files section {
+    margin: 0 0 10px 0;
+}

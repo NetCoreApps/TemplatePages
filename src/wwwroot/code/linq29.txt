@@ -1,0 +1,5 @@
+The sorted list of words (by length):
+{{ ['cherry', 'apple', 'blueberry'] | assignTo: words }}
+{{ words 
+   | orderBy: it.Length 
+   | select: { it }\n }}

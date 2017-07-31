@@ -1,0 +1,3 @@
+Product 789 exists: {{ products 
+   | first: it.ProductId = 789 
+   | isNotNull }}

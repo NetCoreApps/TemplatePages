@@ -1,0 +1,4 @@
+{{ [ 'cherry', 'apple', 'blueberry' ] | assignTo: words }}
+{{ words
+   | min: it.Length 
+   | select: The shortest word is {it} characters long. }}

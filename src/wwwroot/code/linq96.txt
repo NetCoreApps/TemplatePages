@@ -1,0 +1,3 @@
+{{ [ 'cherry', 'apple', 'blueberry' ] | assignTo: wordsA }}
+{{ [ 'cherry', 'apple', 'blueberry' ] | assignTo: wordsB }}
+{{ wordsA | equivalentTo(wordsB) | select: The sequences match: { it | lower } }}

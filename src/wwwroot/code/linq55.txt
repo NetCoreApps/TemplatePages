@@ -1,0 +1,6 @@
+{{ [ 'cherry', 'apple', 'blueberry' ] | assignTo: words }}
+The sorted word list:
+{{ words
+   | orderBy: it 
+   | toList 
+   | select: { it }\n }}

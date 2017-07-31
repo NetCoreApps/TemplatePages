@@ -1,0 +1,112 @@
+<!--
+title: Introduction
+order: 2
+-->
+
+<p>
+    ServiceStack Templates is a simple, highly-extensible, portable, sandboxed, high-performance general-purpose templating engine 
+    for .NET and .NET Core. It's designed from the ground-up to incrementally adoptable where its basic usage is simple enough for
+    non-technical users to use whilst it progressively enables access to more power and functionality allowing it to scale up to 
+    support full server-rendering Web Server workloads and beyond, where its high-fidelity with JavaScript syntax allows it to 
+    seamlessly integrate with client-side JavaScript Single Page App frameworks where its syntax is compatible with 
+    <a href="https://vuejs.org/v2/guide/syntax.html#Filters">Vue filters</a>.
+</p>
+
+<h3>Instant Startup</h3>
+
+<p>
+    There's no pre-compilation, pre-loading or Startup penalty in Template Pages, all Pages are lazily loaded on first use and cached for 
+    fast subsequent access. Its instant Startup, fast runtime performance and sandboxed isolation opens it up to a myraid of use-cases which 
+    can provide a Live programming experience to running .NET Apps.
+</p>
+
+<h3>Fast Runtime Performance</h3>
+
+<p>
+    Template Pages is fast, parsing is done using StringSegment for minimal GC pressure, all I/O is non-blocking including async
+    writes to OutputStreams. There's no buffering: Layouts, Pages and Partials are asynchronously written to a forward only stream.
+    There's also no runtime reflection, each binding within templates executes a compiled C# Expression.
+</p>
+
+<h3>Simple</h3>
+
+<p>
+    There's no language constructs embedded in Template Pages itself, all functionality is enabled by filters, where even the 
+    default filters can be removed, stripping ServiceStack Templates back to its core functionality where the only functionality
+    available within Templates is the concept of Layouts and where to insert the Page using simple "mustache" syntax:
+</p>
+
+{{ "live-pages" | partial(
+    {
+        page: 'page', 
+        files: 
+        { 
+            '_layout.html': 'I am the Layout: <b>{{ page }}</b>',
+            'page.html' : 'I am the Page' 
+        } 
+    }) 
+}}
+
+<h3>Simple Example Walkthrough</h3>
+
+<p>
+    To render the pages we first create and initialize a <em>TemplateContext</em>
+</p>
+
+<pre><code>var context = new TemplateContext().Init();</code></pre>
+
+<p>
+    The TemplateContext is the sandbox where all templates are executed within, everything your templates have access to and generates 
+    is maintained within the TemplateContext. Pages are sourced from its configured
+    <a href="http://docs.servicestack.net/virtual-file-system">Virtual File System</a> which by default uses an In Memory Virtual 
+    File System which we can programatically populate:
+</p>
+
+<pre><code>context.VirtualFiles.Write("_layout.html", "I am the Layout: &lt;b&gt;{{ page }}&lt;/b&gt;");
+context.VirtualFiles.Write("page.html", "I am the Page");
+</code></pre>
+
+<p>
+    Templates are rendered using a <em>PageResult</em> essentially a rendering context that a minimum needs to be provided the Page to render:
+</p>
+
+<pre><code>var pageResult = new PageResult(context.GetPage("page"));</code></pre>
+
+<p>
+    The template output can then be asynchronously rendered to any Stream:
+</p>
+
+<pre><code>await pageResult.WriteToAsync(responseStream);</code></pre>
+
+<p>
+    Or if you just want to access the output as a string you can use the convenience extension method:
+</p>
+
+<pre><code>string output = await pageResult.RenderToStringAsync();</code></pre>
+
+<p>
+    All I/O within Templates are non-blocking, but if you're using the default In Memory Virtual FileSystem there is no I/O
+    so you can safely block to get the generated output with:
+</p>
+
+<pre><code>string output = pageResult.Result;</code></pre>
+
+<p>
+    Both APIs returns the result you see in the Live Example above.
+</p>
+
+<h4>Cascading Layout Selection</h4>
+
+<p>
+    One key aspect missing above is how the layout the page was rendered in, was chosen? It simply chooses the <i>closest</i> 
+    <em>_layout.html</em> it can find starting from the directory where the page is located, traversing all the way up until it 
+    reaches the root directory. If no layout page was found, the page is rendered without one.
+</p>
+
+<p>
+    If preferred, you can choose a different name for the default Layout page with:
+</p>
+
+<pre><code>context.DefaultLayoutPage = "_template";</code></pre>
+
+{{ "doc-links" | partial({ order }) }}

@@ -1,0 +1,5 @@
+{{ ['aPPLE', 'AbAcUs', 'bRaNcH', 'BlUeBeRrY', 'ClOvEr', 'cHeRry'] | assignTo: words }}
+{{ words 
+   | orderBy: it.length
+   | thenBy('it', { comparer }) 
+   | select: { it }\n }}

@@ -1,0 +1,4 @@
+{{ ['zero', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine'] | assignTo: strings }}
+{{ strings
+   | first: it[0] = 'o'
+   | select: A string starting with 'o': { it } }}

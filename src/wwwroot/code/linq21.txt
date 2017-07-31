@@ -1,0 +1,6 @@
+First 3 orders in WA:
+{{ customers | zip: it.Orders 
+   | let({ c: 'it[0]', o: 'it[1]' })
+   | where: c.Region = 'WA'
+   | select: { [c.CustomerId, o.OrderId, o.OrderDate] | jsv }\n 
+}}

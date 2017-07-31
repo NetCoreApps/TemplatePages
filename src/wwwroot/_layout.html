@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>{{ title }}</title>
+    <link rel="stylesheet" href="/assets/css/bootstrap.css">
+    <link rel="stylesheet" href="/assets/css/default.css">
+</head>
+
+<body>
+
+    <nav id="topnav" class="navbar navbar-toggleable-md navbar-light bg-faded">
+        <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <a class="navbar-brand" href="/" style="width:220px;">
+            <img src="/assets/img/logo-32.png" width="42" height="32" class="d-inline-block align-top" alt="" style="float:left;margin:0 10px 0 0">
+            <h3>Templates</h3>
+        </a>
+
+        <div class="collapse navbar-collapse">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item active">
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <div id="body">
+
+        {{ "sidebar" | partial }}
+
+        <div id="content">
+            <h1>{{ title }}</h1>
+            {{ page }}
+        </div>
+
+    </div>
+
+    <script src="/assets/js/jquery-3.2.1.min.js"></script>
+    <script src="/assets/js/default.js"></script>
+
+</body>
+</html>

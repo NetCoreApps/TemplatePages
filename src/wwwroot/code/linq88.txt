@@ -1,0 +1,9 @@
+{{ products 
+   | groupBy: it.Category
+   | let({ 
+        g: 'it',
+        maxPrice: 'max(g, `it.UnitPrice`)', 
+        category: 'g.Key', 
+        mostExpensiveProducts: 'where(g, `it.UnitPrice = maxPrice`)' 
+     })
+   | select: { category }\n{ mostExpensiveProducts | jsv }\n }}

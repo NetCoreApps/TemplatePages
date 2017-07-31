@@ -1,0 +1,4 @@
+{{ products 
+   | groupBy: it.Category
+   | let({ category: 'it.Key', productCount: 'count(it)' }) 
+   | select: {category}, {productCount}\n }}

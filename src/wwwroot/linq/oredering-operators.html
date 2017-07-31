@@ -1,0 +1,235 @@
+<!--
+title: Ordering Operators
+order: 4
+-->
+
+<h3>linq28: OrderBy - Simple 1</h3>
+
+<pre><code>//c#
+public void Linq28() 
+{ 
+    string[] words = { "cherry", "apple", "blueberry" }; 
+  
+    var sortedWords = 
+        from w in words 
+        orderby w 
+        select w; 
+  
+    Console.WriteLine("The sorted list of words:"); 
+    foreach (var w in sortedWords) 
+    { 
+        Console.WriteLine(w); 
+    } 
+}
+</code></pre>
+
+{{ "linq-preview" | partial({ example: "linq28" }) }}
+
+<h3>linq29: OrderBy - Simple 2</h3>
+
+<pre><code>//c#
+public void Linq29() 
+{ 
+    string[] words = { "cherry", "apple", "blueberry" }; 
+  
+    var sortedWords = 
+        from w in words 
+        orderby w.Length 
+        select w; 
+  
+    Console.WriteLine("The sorted list of words (by length):"); 
+    foreach (var w in sortedWords) 
+    { 
+        Console.WriteLine(w); 
+    } 
+}
+</code></pre>
+
+{{ "linq-preview" | partial({ example: "linq29" }) }}
+
+<h3>linq30: OrderBy - Simple 3</h3>
+
+<pre><code>//c#
+public void Linq30() 
+{ 
+    List<Product> products = GetProductList(); 
+  
+    var sortedProducts = 
+        from p in products 
+        orderby p.ProductName 
+        select p; 
+  
+    ObjectDumper.Write(sortedProducts); 
+}
+</code></pre>
+
+{{ "linq-preview" | partial({ example: "linq30" }) }}
+
+<h3>linq31: OrderBy - Comparer</h3>
+
+<pre><code>//c#
+public void Linq31() 
+{ 
+    string[] words = { "aPPLE", "AbAcUs", "bRaNcH", "BlUeBeRrY", "ClOvEr", "cHeRry" }; 
+  
+    var sortedWords = words.OrderBy(a => a, new CaseInsensitiveComparer()); 
+  
+    ObjectDumper.Write(sortedWords); 
+} 
+</code></pre>
+
+{{ "linq-preview" | partial({ example: "linq31" }) }}
+
+<h3>linq32: OrderByDescending - Simple 1</h3>
+
+<pre><code>//c#
+public void Linq32() 
+{ 
+    double[] doubles = { 1.7, 2.3, 1.9, 4.1, 2.9 }; 
+  
+    var sortedDoubles = 
+        from d in doubles 
+        orderby d descending 
+        select d; 
+  
+    Console.WriteLine("The doubles from highest to lowest:"); 
+    foreach (var d in sortedDoubles) 
+    { 
+        Console.WriteLine(d); 
+    } 
+}
+</code></pre>
+
+{{ "linq-preview" | partial({ example: "linq32" }) }}
+
+<h3>linq33: OrderByDescending - Simple 2</h3>
+
+<pre><code>//c#
+public void Linq33() 
+{ 
+    List<Product> products = GetProductList(); 
+  
+    var sortedProducts = 
+        from p in products 
+        orderby p.UnitsInStock descending 
+        select p; 
+  
+    ObjectDumper.Write(sortedProducts); 
+}
+</code></pre>
+
+{{ "linq-preview" | partial({ example: "linq33" }) }}
+
+<h3>linq34: OrderByDescending - Comparer</h3>
+
+<pre><code>//c#
+public void Linq34() 
+{ 
+    string[] words = { "aPPLE", "AbAcUs", "bRaNcH", "BlUeBeRrY", "ClOvEr", "cHeRry" }; 
+  
+    var sortedWords = words.OrderByDescending(a => a, new CaseInsensitiveComparer()); 
+  
+    ObjectDumper.Write(sortedWords); 
+} 
+</code></pre>
+
+{{ "linq-preview" | partial({ example: "linq34" }) }}
+
+<h3>linq35: ThenBy - Simple</h3>
+
+<pre><code>//c#
+public void Linq35() 
+{ 
+    string[] digits = { "zero", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine" };
+  
+    var sortedDigits = 
+        from d in digits 
+        orderby d.Length, d 
+        select d; 
+  
+    Console.WriteLine("Sorted digits:"); 
+    foreach (var d in sortedDigits) 
+    { 
+        Console.WriteLine(d); 
+    } 
+}
+</code></pre>
+
+{{ "linq-preview" | partial({ example: "linq35" }) }}
+
+<h3>linq36: ThenBy - Comparer</h3>
+
+<pre><code>//c#
+public void Linq36() 
+{ 
+    string[] words = { "aPPLE", "AbAcUs", "bRaNcH", "BlUeBeRrY", "ClOvEr", "cHeRry" }; 
+  
+    var sortedWords = 
+        words.OrderBy(a => a.Length) 
+             .ThenBy(a => a, new CaseInsensitiveComparer()); 
+  
+    ObjectDumper.Write(sortedWords); 
+} 
+</code></pre>
+
+{{ "linq-preview" | partial({ example: "linq36" }) }}
+
+<h3>linq37: ThenByDescending - Simple</h3>
+
+<pre><code>//c#
+public void Linq37() 
+{ 
+    List<Product> products = GetProductList(); 
+  
+    var sortedProducts = 
+        from p in products 
+        orderby p.Category, p.UnitPrice descending 
+        select p; 
+  
+    ObjectDumper.Write(sortedProducts); 
+}
+</code></pre>
+
+{{ "linq-preview" | partial({ example: "linq37" }) }}
+
+<h3>linq38: ThenByDescending - Comparer</h3>
+
+<pre><code>//c#
+public void Linq38() 
+{ 
+    string[] words = { "aPPLE", "AbAcUs", "bRaNcH", "BlUeBeRrY", "ClOvEr", "cHeRry" }; 
+  
+    var sortedWords = 
+        words.OrderBy(a => a.Length) 
+             .ThenByDescending(a => a, new CaseInsensitiveComparer()); 
+  
+    ObjectDumper.Write(sortedWords); 
+} 
+</code></pre>
+
+{{ "linq-preview" | partial({ example: "linq38" }) }}
+
+<h3>linq39: Reverse</h3>
+
+<pre><code>//c#
+public void Linq39() 
+{ 
+    string[] digits = { "zero", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine" };
+  
+    var reversedIDigits = ( 
+        from d in digits 
+        where d[1] == 'i' 
+        select d) 
+        .Reverse(); 
+  
+    Console.WriteLine("A backwards list of the digits with a second character of 'i':"); 
+    foreach (var d in reversedIDigits) 
+    { 
+        Console.WriteLine(d); 
+    } 
+}
+</code></pre>
+
+{{ "linq-preview" | partial({ example: "linq39" }) }}
+
+{{ "linq-links" | partial({ order }) }}
