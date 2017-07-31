@@ -3,6 +3,73 @@ title: Default Filters
 order: 7
 -->
 
-<h3>TODO</h3>
+<p>
+    The default filters are a comprehensive suite of safe filters useful within a View Engine or Text Template Generation environment.
+    The source code for all default filters are defined in 
+    <a href="https://github.com/ServiceStack/ServiceStack/blob/master/src/ServiceStack.Common/Templates/TemplateDefaultFilters.cs">TemplateDefaultFilters.cs</a>.
+</p>
+
+<p>
+    For examples of querying with filters checkout the <a href="/linq/">Live LINQ Examples</a>, we'll show examples for other useful filters below:
+</p>
+
+<h4>Filters as bindings</h4>
+
+<p>
+    Filters with no arguments can be used in-place of an argument binding, <em>now</em> and <em>utcNow</em> are examples of this:
+</p>
+
+{{ 'live-template' | partial({ template: "now: <b>{{ now | dateFormat }}</b>
+UTC now: <b>{{ utcNow | dateFormat('o') }}</b>" }) }}
+
+<p>
+    Many filters have an implicit default format which can be overridden in the TemplateContext's <em>Args</em>, e.g
+    if no Date Format is provided it uses the default format <em>yyyy-MM-dd</em> which can be overridden with:
+</p>
+
+<pre class="cs"><code>var context = new TemplateContext {
+    Args {
+        [TemplateConstants.DefaultDateFormat] = "yyyy-MM-dd HH:mm:ss"
+    }
+}.Init();</code></pre>
+
+<h4>Spacing</h4>
+
+<p>
+    The following filters can be used to easily control the precise spacing in templates:
+</p>
+
+{{ 'live-template' | partial({ rows: 7, template: "{{ space }}1 space
+{{ 3 | spaces }}3 spaces
+{{ indent }}1 indent
+{{ 3 | indents }}3 indents
+{{ newLine }}1 new line above
+{{ 3 | newLines }}3 new lines above
+" }) }}
+
+<blockquote>
+    The default spacing used for indents <em>\t</em> can be overridden with the <em>TemplateConstants.DefaultIndent</em> Argument.
+</blockquote>
+
+<h4>HTML Encoding</h4>
+
+<p>
+    All values of Template Expressions in <b>.html</b> pages are HTML-encoded by default, you can by pass the HTML encoding 
+    to emit raw HTML by adding the <em>raw</em> filter as the last filter in an expression:
+</p>
+
+{{ 'live-template' | partial({ template: "With encoding: {{ '<b>hi</b>' }}
+Without: {{ '<b>hi</b>' | raw }}" }) }}
+
+<h4>Arithmetic</h4>
+
+<p>
+    There are no operators in Templates, for any arithmetic calculations you can use the built-in filters:
+</p>
+
+{{ 'live-template' | partial({ rows: 8, template: "1 + 1 = {{ 1 | add(1) }}
+2 x 2 = {{ 2 | mul(2) }} or {{ 2 | multiply(2) }}
+3 - 3 = {{ 3 | sub(3) }} or {{ 3 | subtract(3) }}
+4 / 4 = {{ 4 | div(4) }} or {{ 4 | divide(4) }}" }) }}
 
 {{ "doc-links" | partial({ order }) }}
