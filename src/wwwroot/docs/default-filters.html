@@ -67,9 +67,27 @@ Without: {{ '<b>hi</b>' | raw }}" }) }}
     There are no operators in Templates, for any arithmetic calculations you can use the built-in filters:
 </p>
 
-{{ 'live-template' | partial({ rows: 8, template: "1 + 1 = {{ 1 | add(1) }}
-2 x 2 = {{ 2 | mul(2) }} or {{ 2 | multiply(2) }}
-3 - 3 = {{ 3 | sub(3) }} or {{ 3 | subtract(3) }}
-4 / 4 = {{ 4 | div(4) }} or {{ 4 | divide(4) }}" }) }}
+{{ 'live-template' | partial({ rows: 5, template: "1 + 1 = {{ 1 | add(1) }} or {{ add(1,1) }} or {{ 1 | incr }} or {{ 1 | incrBy(1) }}
+2 x 2 = {{ 2 | mul(2) }} or {{ multiply(2,2) }}
+3 - 3 = {{ 3 | sub(3) }} or {{ subtract(3,3) }} or {{ 3 | decrBy(3) }} 
+4 / 4 = {{ 4 | div(4) }} or {{ divide(4,4) }}
+3 % 2 = {{ 3 | mod(2) }} or {{ mod(3,2) }}" }) }}
+
+<p>
+    It should be noted when porting C# code that as filters are normal methods they don't follow the implied 
+    <a href="https://www.mathsisfun.com/operation-order-bodmas.html">Order of Operations</a> used in math calculations
+    where an expression like <em>1 - 2 + 3 * 4 / 5</em> is executed in the implied order of <em>(1 - 2) + ((3 * 4) / 5)</em>.
+    To achieve the same result you'd need to execute them in their implied grouping explicitly:
+</p>
+
+{{ 'live-template' | partial({ template: "1 - 2 + 3 * 4 / 5 = {{ add(sub(1,2), div(mul(3,4), 5)) }}" }) }}
+
+<h4>Formatting</h4>
+
+<h4>String functions</h4>
+
+<h4>Testing Equality</h4>
+
+<h4>Conditional Expressions</h4>
 
 {{ "doc-links" | partial({ order }) }}
