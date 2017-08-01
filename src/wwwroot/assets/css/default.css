@@ -126,14 +126,14 @@ pre {
     max-height: 750px;
     width: 98.5%;
 }
-.linq-preview .output, .live-template .output {
+.linq-preview .output, .live-pages .output, .live-template .output {
     width: 100%;
     white-space: pre;
 }
 .linq-preview.error, .live-template.error {
     border-color: #a94442;
 }
-.linq-preview .files section {
+.linq-preview .files section, .live-pages .files section {
     margin: 0 0 10px 0;
 }
 

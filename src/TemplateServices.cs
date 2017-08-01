@@ -24,7 +24,11 @@ namespace TemplatePages
     {
         public object Any(EvaluateTemplates request)
         {
-            var context = new TemplateContext().Init();
+            var context = new TemplateContext {
+                TemplateFilters = {
+                    new TemplateProtectedFilters()
+                }
+            }.Init();
 
             foreach (var entry in request.Files.Safe())
             {

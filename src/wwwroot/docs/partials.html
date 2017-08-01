@@ -32,7 +32,7 @@ Who can also access other arguments in scope <b>{{ layoutArg }}</b>`
     the same partial for each item in the collection which is made available in the <em>it</em> binding, e.g:
 </p>
 
-<div class="linq-preview">1
+<div class="linq-preview">
     <div class="files">
         <section>
             <h5>customer.html</h5>
@@ -50,5 +50,20 @@ Who can also access other arguments in scope <b>{{ layoutArg }}</b>`
         <div class="output"></div>
     </div>
 </div> 
+
+<h4>Resolving Partials and Pages</h4>
+
+<p>
+    Just like pages, partials are resolved from the TemplateContext's configured <em>VirtualFiles</em> sources 
+    where partials in the root directory can be resolved without any specifying any folders:
+</p>
+
+<pre class="cs"><code>{{ pass: 'my-partial' | partial }}</code></pre>
+
+<p>
+    Otherwise the directory structure needs to be provided if they're localted in a sub directory, e.g:
+</p>
+
+<pre class="cs"><code>{{ pass: 'dir/subdir/my-partial' | partial }}</code></pre>
 
 {{ "doc-links" | partial({ order }) }}

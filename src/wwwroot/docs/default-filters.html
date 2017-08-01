@@ -122,7 +122,7 @@ Time: {{ now.TimeOfDay | timeFormat('h\:mm') }} default: {{ now.TimeOfDay | time
 {{ 5 | times | select: {it}, }}
 {{ range(5) | select: {it}, }} {{ range(5,5) | select: {it}, }}" }) }}
 
-<h4>URL handling</h4>
+<h4 id="url-handling">URL handling</h4>
 
 {{ 'live-template' | partial({ rows: 6, template: "{{ 'http://example.org' | assignTo: baseUrl }}
 {{ baseUrl | addPath('path') }}
