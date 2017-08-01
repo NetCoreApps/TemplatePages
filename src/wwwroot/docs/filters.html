@@ -12,8 +12,11 @@ order: 6
     The only filters registered by default is the 
     <a href="https://github.com/ServiceStack/ServiceStack/blob/master/src/ServiceStack.Common/Templates/TemplateDefaultFilters.cs">TemplateDefaultFilters.cs</a>
     which contains a comprehensive suite of filters useful within View Engine or Template environment. There's nothing special about the default filters
-    other than they're pre-registered by default, your filters have access to the same functionality that built-in filters do. They can also 
-    be easily removed by clearing the TemplateFilters collection:
+    other than they're pre-registered by default, your filters have access to the same APIs and functionality that built-in filters do. 
+</p>
+
+<p>
+    If you want to start from a clean slate, the default filters can be removed by clearing the <em>TemplateFilters</em> collection:
 </p>
 
 <pre><code>context.TemplateFilters.Clear();</code></pre>
@@ -21,7 +24,7 @@ order: 6
 <h4>What are Filters?</h4>
 
 <p>
-    Filters are just C# methods from a class that inherits from <em>TemplateFilter</em>, e.g:
+    Filters are just C# public instance methods from a class that inherits from <em>TemplateFilter</em>, e.g:
 </p>
 
 <pre class="cs"><code>class MyFilter : TemplateFilter
@@ -80,9 +83,9 @@ order: 6
 <h5>Autowired using TemplateContext IOC</h5>
 
 <p>
-    Autowired instances of filters can also be created using the TemplateContext's registered IOC where they're 
+    Autowired instances of filters can also be created using TemplateContext's configured IOC where they're 
     also injected with any registered IOC dependencies. To utilize this you need to specify the Type of the filter that 
-    should be Autowired by adding it to the <em>ScanTypes</em> collection:
+    should be Autowired by either adding it to the <em>ScanTypes</em> collection:
 </p>
 
 <pre class="cs"><code>var context = new TemplateContext
@@ -116,11 +119,11 @@ var output = context.EvaluateTemplate("&lt;p&gt;{{ pass: 'key' | fromCache }}&lt
 
 <p>
     A unique feature of Filters is that each of their arguments are automatically co-erced into the filter argument Type using the 
-    comprehensive conversion facilities built into ServiceStack's 
+    powerful conversion facilities built into ServiceStack's 
     <a href="http://docs.servicestack.net/auto-mapping">Auto Mapping Utils</a> and 
-    <a href="https://github.com/ServiceStack/ServiceStack.Text">Text Serializers</a> which can deserialize most Types like 
+    <a href="https://github.com/ServiceStack/ServiceStack.Text">Text Serializers</a> which can deserialize most of .NET's primitive Types like 
     <em>DateTime</em>, <em>TimeSpan</em>, <em>Enums</em>, etc in/out of strings as well being able to convert any Numeric Type 
-    into any other Numeric Type. Which is how <em>double squared(double value)</em> despite only accepting doubles can also be used
+    into any other Numeric Type which is how <em>double squared(double value)</em> despite only accepting doubles can also be used
     with any other .NET Numeric Type, e.g. <em>byte</em>, <em>int</em>, <em>long</em>, <em>decimal</em>, etc.
 </p>
 

@@ -6,7 +6,7 @@ order: 4
 <p>
     Templates is a general purpose text templating language which doesn't have any notion of HTML or any other format embedded in the language itself.
     It simply emits text outside of mustaches verbatim and inside mustaches evaluates the expression and emits the result.
-    All custom behavior pertinent to specific formats are instead extrapulated in its Page Format. 
+    All custom behavior pertinent to specific text formats are instead extrapulated in its Page Format. 
 </p>
 
 <p>
@@ -35,16 +35,16 @@ order: 4
 }</code></pre>
 
 <p>
-    The page format is used to specify: 
+    The <em>HtmlPageFormat</em> is used to specify: 
 </p>
 
 <ul>
-    <li>That the <a href="/docs/arguments">Page Arguments</a> should be defined within HTML comments</li>
+    <li>That the <a href="/docs/arguments">Page Arguments</a> should be defined within HTML comments at the top of the page</li>
     <li>That files with the <b>.html</b> extension should use this format</li>
-    <li>That it returns the <em>text/html</em> Content-Type in HTTP Responses</li>
+    <li>That it should return the <em>text/html</em> Content-Type in HTTP Responses</li>
     <li>That the result of all Template Expressions should be HTML-encoded by default</li>
     <li>That it should not use a default layout for complete HTML files that start with a HTML or HTML5 tag</li>
-    <li>How Expression Exceptions should be rendered in HTML</li>
+    <li>How Expression Exceptions should be rendered in HTML if <em>RenderExpressionExceptions</em> is enabled</li>
 </ul>
 
 <h4>Results of all Template Expressions are HTML-encoded by default</h4>
@@ -62,10 +62,10 @@ order: 4
 
 {{ 'live-template' | partial({ rows: 1, template: "{{ '<b>hi</b>' | raw }}" }) }}
 
-<p>
+<blockquote>
     Inside filters you can return strings wrapped in a <em>new RawString(string)</em> or use the <em>ToRawString()</em> extension
-    method to skip HTML-encoding.
-</p>
+    method to skip HTML-encoding.    
+</blockquote>
 
 <h3>Markdown Page Format</h3>
 
@@ -94,7 +94,7 @@ order: 4
 }.Init();</code></pre>
 
 <p>
-    Which now lets you resolve pages with a <b>.md</b> file extension which will use the behavior in the <em>MarkdownPageFormat</em>.
+    Which now lets you resolve pages with a <b>.md</b> file extension who will use the behavior defined in <em>MarkdownPageFormat</em>.
 </p>
 
 {{ "doc-links" | partial({ order }) }}

@@ -19,8 +19,8 @@ order: 7
     Filters with no arguments can be used in-place of an argument binding, <em>now</em> and <em>utcNow</em> are examples of this:
 </p>
 
-{{ 'live-template' | partial({ template: "now: <b>{{ now | dateFormat }}</b>
-UTC now: <b>{{ utcNow | dateFormat('o') }}</b>" }) }}
+{{ 'live-template' | partial({ template: "now: {{ now | dateFormat }}
+UTC now: {{ utcNow | dateFormat('o') }}" }) }}
 
 <p>
     Many filters have an implicit default format which can be overridden in the TemplateContext's <em>Args</em>, e.g
@@ -32,24 +32,6 @@ UTC now: <b>{{ utcNow | dateFormat('o') }}</b>" }) }}
         [TemplateConstants.DefaultDateFormat] = "yyyy-MM-dd HH:mm:ss"
     }
 }.Init();</code></pre>
-
-<h4>Spacing</h4>
-
-<p>
-    The following filters can be used to easily control the precise spacing in templates:
-</p>
-
-{{ 'live-template' | partial({ rows: 7, template: "{{ space }}1 space
-{{ 3 | spaces }}3 spaces
-{{ indent }}1 indent
-{{ 3 | indents }}3 indents
-{{ newLine }}1 new line above
-{{ 3 | newLines }}3 new lines above
-" }) }}
-
-<blockquote>
-    The default spacing used for indents <em>\t</em> can be overridden with the <em>TemplateConstants.DefaultIndent</em> Argument.
-</blockquote>
 
 <h4>HTML Encoding</h4>
 
@@ -80,14 +62,260 @@ Without: {{ '<b>hi</b>' | raw }}" }) }}
     To achieve the same result you'd need to execute them in their implied grouping explicitly:
 </p>
 
-{{ 'live-template' | partial({ template: "1 - 2 + 3 * 4 / 5 = {{ add(sub(1,2), div(mul(3,4), 5)) }}" }) }}
+{{ 'live-template' | partial({ template: "1 - 2 + 3 * 4 / 5 = {{ add(sub(1,2), div(mul(3,4), 5)) }}
+((1 - 2 + 3) * 4) / 5 = {{ 1 | subtract(2) | add(3) | multiply(4) | divide(5) }}" }) }}
 
 <h4>Formatting</h4>
 
+<p>
+    Use format filters to customize how values are formatted:
+</p>
+
+{{ 'live-template' | partial({ rows: 4, template: "USD {{ 12.34 | currency }} GBP {{ 12.34 | currency('en-GB') }} EUR {{ 12.34 | currency('FR') }}
+Number: {{ 123.456 | format('0.##') }} Currency: {{ 123.456 | format('C') }}
+Date: {{ now | dateFormat('dddd, MMMM d, yyyy') }} default: {{ now | dateFormat }}
+Time: {{ now.TimeOfDay | timeFormat('h\:mm') }} default: {{ now.TimeOfDay | timeFormat }}" }) }}
+
+<p>
+    When no format provided, the default TemplateConstant's formats are used:
+</p>
+
+<ul>
+    <li><em>DefaultDateFormat</em> used by: <em>dateFormat</em></li>
+    <li><em>DefaultDateTimeFormat</em> used by: <em>dateTimeFormat</em></li>
+    <li><em>DefaultTimeFormat</em> used by: <em>timeFormat</em></li>
+    <li><em>DefaultCulture</em> used by: <em>currency</em></li>
+</ul>
+
 <h4>String functions</h4>
 
-<h4>Testing Equality</h4>
+<p>
+    As can be expected from a templating library there's a comprehensive set of string filters available:
+</p>
 
-<h4>Conditional Expressions</h4>
+{{ 'live-template' | partial({ rows: 9, template: "{{ 'upper' | upper }} and {{ 'LOWER' | lower }}
+{{ 'SubString'|substring(0,3) }} {{ 'SubString'|substring(3) }} {{ 'IsSafe'|substring(2,100) }}
+{{ 'SubStrElipsis' | substringWithElipsis(9) }} {{ 'SubStr' | substringWithElipsis(3,3) }}
+{{ 'left:part' | leftPart(':') }} + {{ 'part:right' | rightPart(':') }}
+{{ 'last:left:part' | lastLeftPart(':') }} + {{ 'last:right:part' | lastRightPart(':') }}
+{{ 'split.on.first' | splitOnFirst('.') |join}} + {{ 'split.on.last' | splitOnLast('.') |join}}
+{{ 'split.these.words' | split('.') | get(1) }}, {{ 'replace this' | replace('this', 'that') }}
+{{ 'index.of' | indexOf('.') }} + {{ 'last.index.of' | lastIndexOf('.') }}
+{{ 'start' | appendLine | append('end') }}" }) }}
+
+<h4>String Formatting</h4>
+
+{{ 'live-template' | partial({ template: "{{ 'aVarName' | humanize }}
+{{ 'wAr aNd pEaCe' | titleCase }}
+{{ 'pascalCase' | pascalCase }} and {{ 'CamelCase' | camelCase }}" }) }}
+
+<h4>Trimming and Padding</h4>
+
+{{ 'live-template' | partial({ template: "'{{ '  start  ' | trimStart }}', '{{ '  end  ' | trimEnd }}', '{{ '  both  ' | trim }}'
+'{{ 'left' | padLeft(10) }}', '{{ 'right' | padRight(10) }}'
+'{{ 'left' | padLeft(10,'_') }}', '{{ 'right' | padRight(10,'_') }}'" }) }}
+
+<h4>Repeating and Ranges</h4>
+
+{{ 'live-template' | partial({ rows: 4, template: "{{ 3 | repeating('ABC ')  }} or {{ 'ABC ' | repeat(3) }}
+{{ 3 | itemsOf(2) | join }} or {{ 3 | itemsOf(2) | sum }}
+{{ 5 | times | select: {it}, }}
+{{ range(5) | select: {it}, }} {{ range(5,5) | select: {it}, }}" }) }}
+
+<h4>URL handling</h4>
+
+{{ 'live-template' | partial({ rows: 6, template: "{{ 'http://example.org' | assignTo: baseUrl }}
+{{ baseUrl | addPath('path') }}
+{{ baseUrl | addPaths(['path1', 'path2', 'path3']) }}
+{{ baseUrl | addQueryString({ a: 1, b: 2 }) }}
+{{ baseUrl | addHashParams({ c: 3, d: 4 }) }}
+{{ baseUrl | addPath('path') | addQueryString({ a: 1 }) | addHashParams({ b: 2 }) }}" }) }}
+
+<h4>Spacing</h4>
+
+<p>
+    The following filters can be used to easily control the precise spacing in templates:
+</p>
+
+{{ 'live-template' | partial({ rows: 6, template: "{{ space }}1 space
+{{ 3 | spaces }}3 spaces
+{{ indent }}1 indent
+{{ 3 | indents }}3 indents
+{{ newLine }}1 new line above
+{{ 3 | newLines }}3 new lines above" }) }}
+
+<blockquote>
+    The default spacing used for indents <em>\t</em> can be overridden with the <em>TemplateConstants.DefaultIndent</em> Argument.
+</blockquote>
+
+<h4>Conditional Tests</h4>
+
+<p>
+    These filters allow you to test for different conditions:
+</p>
+
+{{ 'live-template' | partial({ rows: 14, template: "starts/ends: {{ 'startsWith' | startsWith('start') }}, {{ 'endsWith' | endsWith('end') }}
+contains: {{ [1,2] | contains(1) }}, {{ [1,2] | contains(3) }}, {{ 'ABC' | contains('A') }}
+Even/Odd: {{ 1 | isEven }}, {{ 1 | isOdd }}
+isNull: {{ null | isNull }}, {{ 1 | isNull }}
+isNotNull: {{ null | isNotNull }}, {{ 1 | isNotNull }}
+equals: {{ 1 | equals(1) }}, {{ 2 | equals(1) }}, {{ 'A' | equals('A') }} or {{ 1 | eq(1) }}
+notEquals: {{ 2 | notEquals(1) }}, {{ 'A' | notEquals('A') }} or {{ 1 | not(1) }}
+greaterThan: {{ 1 | greaterThan(1) }}, {{ 2 | greaterThan(1) }} or {{ 2 | gt(1) }}, 
+greaterEqual: {{ 1 | greaterThanEqual(1) }}, {{ 2 | greaterThanEqual(1) }} or {{ 2 | gte(1) }}
+lessThan: {{ 1 | lessThan(1) }}, {{ 1 | lessThan(2) }} or {{ 1 | lt(2) }}, 
+lessEqual: {{ 1 | lessThanEqual(1) }}, {{ 2 | lessThanEqual(1) }} or {{ 2 | lte(1) }}
+equivalentTo: {{ [1,2] | equivalentTo([1,2]) }}, {{ {a:1, b:2} | equivalentTo({a:1, b:2}) }}
+or: {{ true | or(true) }}, {{ or(true, false) }}, {{ or(false, false) }}
+and: {{ true | and(true) }}, {{ and(true, false) }}, {{ and(false, false) }}" }) }}
+
+<h4>Conditional Display</h4>
+
+<p>
+    These filters can be used in combination with Conditional Test filters above to control what text is displayed:
+</p>
+
+{{ 'live-template' | partial({ rows: 10, template: "if: {{ 'Y' | if(true) }}, {{ 'Y' | if(false) }}, {{ 'Y' | if(1) }}
+when: {{ 'Y' | when(true) }}, {{ 'Y' | when(false) }}, {{ 'Y' | when(1) }}
+ifNot: {{ 'Y' | ifNot(true) }}, {{ 'Y' | ifNot(false) }}, {{ 'Y' | ifNot(1) }}
+unless: {{ 'Y' | unless(true) }}, {{ 'Y' | unless(false) }}, {{ 'Y' | unless(1) }}
+otherwise: {{ null | otherwise('Y') }} or {{ 'even' | if(isEven(1)) | otherwise('odd') }}
+iif: {{ isEven(1) | iif('even', 'odd') }} or {{ iif(isEven(1), 'even', 'odd') }}
+ifFalsy: {{ 'F' | ifFalsy(false) }}, {{ 'F' | ifFalsy(0) }}, {{ 'F' | ifFalsy(null) }}
+falsy: {{ false | falsy('F') }}, {{ 0 | falsy('F') }}, {{ null | falsy(F) }}
+ifTruthy: {{ 'T' | ifTruthy(true) }}, {{ 'T' | ifTruthy(1) }}, {{ 'T' | ifTruthy(null) }}
+truthy: {{ true | truthy('T') }}, {{ 1 | truthy('T') }}, {{ null | truthy('T') }}" }) }}
+
+<h4>Assignment</h4>
+
+<p>
+    You can create temporary arguments within a templates scope or modify existing arguments with:
+</p>
+
+{{ 'live-template' | partial({ rows: 6, template: "{{ [1,2,3,4,5] | assignTo: numbers }}
+{{ numbers | join }}
+{{ numbers | do: assign('numbers[index]', multiply(numbers[index], numbers[index])) }}
+{{ numbers | join }}
+{{ 5 | times | do: assign(append('num', index), it) }}
+{{ num4 }}" }) }}
+
+<h4>Let Bindings and Scope Vars</h4>
+
+<p>
+    Let bindings allow you to create scoped argument bindings from individual string expressions:
+</p>
+
+{{ 'live-template' | partial({ rows: 4, template: `{{ [{name:'Alice',score:50},{name:'Bob',score:40}] | assignTo:scoreRecords }}
+{{ scoreRecords 
+   | let({ name:"it['name']", score:"it['score']", personNum:"incr(index)" })
+   | select: {personNum}. {name} = {score}\n }}` }) }}
+
+<p>
+    <em>scopeVars</em> lets you create bindings from a Dictionary, List of KeyValuePair's or List of Dictionaries using the key 
+    as the name of the argument binding and the value as its value:
+</p>
+
+{{ 'live-template' | partial({ template: `{{ [{name:'Alice',score:50},{name:'Bob',score:40}] | assignTo:scoreRecords }}
+{{ scoreRecords | scopeVars | select: {index | incr}. {name} = {score}\n }}` }) }}
+
+<h4>Mapping and Conversions</h4>
+
+<p>
+    Use <em>map</em> when you want to transform each item into a different value:
+</p>
+
+{{ 'live-template' | partial({ rows: 5, template: `{{ ['zero','one','two','three','four','five','six','seven','eight','nine'] | assignTo:digits }}
+{{ range(3) 
+   | map: incrBy(it, 5)
+   | map: digits[it]
+   | select: {it}\n }}` }) }}
+
+<p>
+    It's also useful for transforming raw data sources into more manageable ones:
+</p>
+
+{{ 'live-template' | partial({ rows: 5, template: `{{ [[1,-2],[3,-4],[5,-6]] | assignTo:coords }}
+{{ coords 
+   | map('{ x: it[0], y: it[1] }')
+   | scopeVars
+   | select: {index | incr}. ({x}, {y})\n }}` }) }}
+
+<p>
+    Whilst these filters let you perform some other popular conversions:
+</p>
+
+{{ 'live-template' | partial({ rows: 8, template: `{{ 100 | toString | select: {it.Length} }}
+{{ { x:1, y:2 } | toList | select: { ', ' | if(gt(index,0)) }{it.Key} = {it.Value} }}
+{{ range(5) | toArray | assignTo: numbers }}
+{{ numbers.Length | times | do: assign('numbers[index]', multiply(numbers[index], -1)) }}
+{{ numbers | join }}
+Bob's score: {{ [{name:'Alice',score:50},{name:'Bob',score:40}] | toDictionary: it.name 
+  | map: it.Bob
+  | select: {it.score} }}` }) }}
+
+<h4>Serialization</h4>
+
+<p>
+    Use the <em>json</em> filter when you want to make your C# objects available to the client JavaScript page:
+</p>
+
+{{ 'live-template' | partial({ template: `{{ [{x:1,y:2},{x:3,y:4}] | assignTo:model }}
+var coords = {{ model | json }};` }) }}
+
+<p>
+    The <a href="http://docs.servicestack.net/jsv-format">JSV Format</a> is great when you want a human-friendly output 
+    of an object graph, you can also use <em>dump</em> if you want the JSV output indented:
+</p>
+
+{{ 'live-template' | partial({ template: `{{ [{x:1,y:2},{x:3,y:4}] | assignTo: model }}
+{{ model | jsv }}
+{{ model | dump }}` }) }}
+
+<p>
+    If needed, the <em>csv</em> and <em>xml</em> serialization formats are also available:
+</p>
+
+{{ 'live-template' | partial({ template: `{{ [{Name:'Alice',Score:50},{Name:'Bob',Score:40}] | assignTo:scoreRecords }}
+{{ scoreRecords | csv }}` }) }}
+
+<h4>Iterating</h4>
+
+<p>
+    The <em>select</em> filter and its inverse <em>forEach</em> are the primary way to generate custom output 
+    for each item in a collection:
+</p>
+
+{{ 'live-template' | partial({ rows: 5, template: `{{ [{name:'Alice',score:50},{name:'Bob',score:40}] | assignTo:scoreRecords }}
+<b>select</b>
+<ol>{{ scoreRecords | select: <li>{it.name} = {it.score}</li> }}</ol>
+<b>forEach</b>
+<ol>{{ '<li> {{ it.name }} = {{ it.score }} </li>' | forEach(scoreRecords) }}</ol>` }) }}
+
+<p>
+    Use <em>step</em> if you want to iterate using a custom step function:
+</p>
+
+{{ 'live-template' | partial({ rows: 1, template: `{{ range(20) | step({ from: 10, by: 3 }) | join }}` }) }}
+
+<h4>Miscellaneous</h4>
+
+<p>
+    Use <em>pass</em> to emit a Template Expression without evaluating it:
+</p>
+
+{{ 'live-template' | partial({ rows: 1, template: `{{ pass: 'shout' | upper }}` }) }}
+
+<p>
+    <em>of</em> will let you find values of a specified type:
+</p>
+
+{{ 'live-template' | partial({ rows: 1, template: `{{ ['A',1.1,2,3.3,true,null] | of({ type: 'Double' }) | join }}` }) }}
+
+<h4>Collections and Querying</h4>
+
+<p>
+    Checkout the <a href="/linq/">Live LINQ examples</a> to explore the various collection and querying features.
+</p>
+
 
 {{ "doc-links" | partial({ order }) }}
