@@ -3,6 +3,52 @@ title: Partials
 order: 8
 -->
 
-<h3>TODO</h3>
+<p>
+    Partials are just normal pages which contain reusable templates you'd like to embed in different pages.
+    There is no difference between pages and partials other than how they're embedded where pages are embedded 
+    in a <b>_layout</b> using the <em>{{ pass: page }}</em> expression and partials are embedded using the
+    <em>partial</em> block filter which can also define scoped arguments on the call-site using an Object
+    literal:
+</p>
+
+{{ "live-pages" | partial(
+    {
+        page: 'page', 
+        files: 
+        { 
+            '_layout.html': `{{ 'from layout' | assignTo: layoutArg }}
+I am a Layout with page <br/> {{ page }}`,
+            'page.html' : `I am a Page with a partial <br/> {{ 'my-partial' | partial({ arg: "from page" }) }}`,
+            'my-partial.html' : `I am a partial called with the scoped argument <b>{{ arg }}</b> <br/>
+Who can also access other arguments in scope <b>{{ layoutArg }}</b>`
+        } 
+    }) 
+}}
+
+<h4>Select Partial</h4>
+
+<p>
+    Another way that partials can be embeded is using the <em>selectPartial</em> block filter which will re-evaluate
+    the same partial for each item in the collection which is made available in the <em>it</em> binding, e.g:
+</p>
+
+<div class="linq-preview">1
+    <div class="files">
+        <section>
+            <h5>customer.html</h5>
+            <textarea class="form-control" rows="3">{{ "code/linq04-customer.txt" | includeFile }}</textarea>
+        </section>
+        <section>
+            <h5>order.html</h5>
+            <textarea class="form-control" rows="3">{{ "code/linq04-order.txt" | includeFile }}</textarea>
+        </section>
+    </div>
+    <div class="template">
+        <textarea class="form-control" rows="7">{{ "code/linq04.txt" | includeFile }}</textarea>
+    </div>
+    <div class="result">
+        <div class="output"></div>
+    </div>
+</div> 
 
 {{ "doc-links" | partial({ order }) }}
