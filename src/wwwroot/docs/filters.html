@@ -132,4 +132,69 @@ var output = context.EvaluateTemplate("&lt;p&gt;{{ pass: 'key' | fromCache }}&lt
     where each argument is converted into the filter method Param Types before it's called.
 </p>
 
+<h4>Context Filters</h4>
+
+<p>
+    Filters can also get access to the current scope by defining a <em>TemplateScopeContext</em> as it's first parameter which 
+    can be used to access arguments in the current scope or add new ones as done by the <em>assignTo</em> filter:
+</p>
+
+<pre class="cs"><code>public object assignTo(TemplateScopeContext scope, object value, string argName) //from filter
+{
+    scope.ScopedParams[argName] = value;
+    return IgnoreResult.Value;
+}
+</code></pre>
+
+<h4>Block Filters</h4>
+
+<p>
+    Filters can also write directly into the OutputStream instead of being forced to return buffered output. A Block Filter
+    is declared by its <em>Task</em> return Type where instead of returning a value it instead writes directly to the 
+    <em>TemplateScopeContext</em> OutputStream as seem with the implementation of the <em>includeFile</em> protected filter:
+</p>
+
+<pre class="cs"><code>public async Task includeFile(TemplateScopeContext scope, string virtualPath)
+{
+    var file = scope.Context.VirtualFiles.GetFile(virtualPath);
+    if (file == null)
+        throw new FileNotFoundException($"includeFile '{virtualPath}' was not found");
+
+    using (var reader = file.OpenRead())
+    {
+        await reader.CopyToAsync(scope.OutputStream);
+    }
+}
+</code></pre>
+
+<blockquote>
+    For maximum performance all default filters which perform any I/O use Block filters to write directly to the OutputStream 
+    and avoid any blocking I/O or buffering. 
+</blockquote>
+
+<h4>Block Filters end the filter chain expression</h4>
+
+<p>
+    Block filters effectively end the Filter chain expression since they don't return any value that can be injected into 
+    a normal filter. The only thing that can come after a Block Filter are other Block Filters or Filter Transformers. 
+    If any are defined, the output of the Block Filter is buffered into a <em>MemoryStream</em> and passed into
+    the next Block Filter or Filter Transformer in the chain, its output is then passed into the next one in the chain if any, 
+    otherwise the last output is written to the OutputStream.
+</p>
+
+<p>
+    An example of using a Block filter with a Filter Transformer is when you want include a markdown document and then 
+    convert it to HTML using the <b>markdown</b> Filter Transformer before writing its HTML output to the OutputStream:
+</p>
+
+<pre class="cs"><code>{{ pass: 'doc.md' | includeFile | markdown }}</code></pre>
+
+<h4>Buffer Block Filter Output</h4>
+
+<p>
+    You can also capture the output of a Block Filter and assign it to a normal argument by using the <em>assignTo</em> Block Filter:
+</p>
+
+<pre class="cs"><code>{{ pass: 'doc.md' | includeFile | assignTo: contents }}</code></pre>
+
 {{ "doc-links" | partial({ order }) }}
