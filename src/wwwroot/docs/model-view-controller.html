@@ -22,6 +22,8 @@ order: 12
     render as well as any additional arguments you want available in the page:    
 </p>
 
+<h4><a href="https://github.com/NetCoreApps/TemplatePages/blob/master/src/CustomerServices.cs">CustomerServices.cs</a></h4>
+
 <pre class="cs"><code>{{ "CustomerServices.cs" | includeContentFile }}</code></pre>
 
 <h5>Model PageResult Property</h5>
@@ -32,12 +34,12 @@ order: 12
     <em>{{ pass: CustomerId }}</em> instead of the more verbose <em>{{ pass: model.CustomerId }}</em> as used in:
 </p>
 
-<h4><a href="">example/customer.html</a></h4>
+<h4><a href="https://github.com/NetCoreApps/TemplatePages/blob/master/src/wwwroot/examples/customer.html">examples/customer.html</a></h4>
 
 <pre class="tpl"><code>{{ "examples/customer.html" | includeFile | htmlencode }}</code></pre>
 
 <p>
-    Now that we have the Service handling the Request and populating the Model for our page we can now view each Customer
+    Now that we have the Service handling the Request and populating the Model for our page we can use it to view each Customer
     in a nice detail page:
 </p>
 
