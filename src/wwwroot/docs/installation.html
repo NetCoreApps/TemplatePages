@@ -40,7 +40,8 @@ var output = new PageResult(dynamicPage).Result;
 <h4>Configure with ServiceStack</h4>
 
 <p>
-    If you want to use Template Pages as a View Engine in ServiceStack, register the <em>TemplatePagesFeature</em> plugin:
+    To use Template Pages as a <a href="/docs/view-engine">HTML View Engine in ServiceStack</a>, 
+    register the <em>TemplatePagesFeature</em> plugin:
 </p>
 
 <pre>
@@ -51,26 +52,5 @@ var output = new PageResult(dynamicPage).Result;
     }
 </code>
 </pre>
-
-<p>
-    TemplatePagesFeature is a subclass of <em>TemplateContext</em> which defines the context on which all ServiceStack Template Pages are executed
-    within. It provides the integration within ServiceStack by replacing the TemplateContext's stand-alone dependencies with ServiceStack AppHost
-    providers where it: 
-</p>
-
-<ul>
-    <li>Configures it to use ServiceStack's Virtual File Sources allowing Pages to be loaded from any configured VFS Source</li>
-    <li>Configures it to use ServiceStack's Funq IOC Container so all ServiceStack dependencies are available to Code Pages</li>
-    <li>Configures it to use ServiceStack's AppSettings so all AppHost AppSettings are available to Template Pages as well</li>
-    <li>Configures <b>ScanAssemblies</b> to use AppHost Service Assemblies so it auto-registers all Filters in Service .dlls</li>
-    <li>Registers the <em>TemplateProtectedFilters</em> allowing Templates to access richer server-side functionality</li>
-    <li>Registers the <b>markdown</b> Filter Transformer using ServiceStack's built-in MarkdownDeep implementation</li>
-    <li>Makes the <em>ServiceStackCodePage</em> subclass available so Code Pages has access to same functionality as Services</li>
-    <li>Registers a Request Handler which enables all requests <b>.html</b> pages to be handled by Template Pages</li>
-</ul>
-
-<p>If preferred, you can change which <b>.html</b> extension gets handled by Template Pages with:</p>
-
-<pre><code>Plugins.Add(new TemplatePagesFeature { HtmlExtension = ".htm" });</code></pre>
 
 {{ "doc-links" | partial({ order }) }}

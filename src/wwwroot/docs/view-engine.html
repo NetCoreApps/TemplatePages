@@ -3,6 +3,144 @@ title: View Engine
 order: 11
 -->
 
-<h3>TODO</h3>
+<p>
+    One of the most popular use-cases for a high-performance Templating engine like ServiceStack Templates is as a server-side
+    HTML View Engine for .NET Web Applications where it can provide a simpler, cleaner and portable alternative than Razor and 
+    Razor Pages in ASP.NET and ASP.NET Core Web Apps. 
+</p>
+
+<h3>View Engine in ServiceStack</h3>
+
+<p>
+    The <em>TemplatePagesFeature</em> plugin provides a first-class experience for generating dynamic websites where it's able to 
+    generate complete server-generated websites (like this one) without requiring any additional Controllers or Services.
+</p>
+
+<p>
+    To enable Template Pages as a View Engine in ServiceStack you just need to register the <em>TemplatePagesFeature</em> plugin:
+</p>
+
+<pre>
+<code>
+    public void Configure(Container container)
+    {
+        Plugins.Add(new TemplatePagesFeature());
+    }
+</code>
+</pre>
+
+<p>
+    <em>TemplatePagesFeature</em> is a subclass of <em>TemplateContext</em> which defines the context on which all ServiceStack 
+    Template Pages are executed within. It provides deep integration within ServiceStack by replacing the TemplateContext's stand-alone 
+    dependencies with ServiceStack AppHost providers, where it: 
+</p>
+
+<ul>
+    <li>Configures it to use ServiceStack's <a href="http://docs.servicestack.net/virtual-file-system">Virtual File Sources</a>
+        allowing Pages to be loaded from any configured VFS Source</li>
+    <li>Configures it to use ServiceStack's <a href="http://docs.servicestack.net/ioc">Funq IOC Container</a>         
+        so all ServiceStack dependencies are available to Code Pages</li>
+    <li>Configures it to use ServiceStack's <a href="http://docs.servicestack.net/appsettings">AppSettings</a>         
+        so all AppHost AppSettings are available to Template Pages as well</li>
+    <li>Configures <b>ScanAssemblies</b> to use AppHost Service Assemblies so it auto-registers all Filters in Service .dlls</li>
+    <li>Registers the <em>TemplateProtectedFilters</em> allowing Templates to access richer server-side functionality</li>
+    <li>Registers the <b>markdown</b> Filter Transformer using ServiceStack's built-in MarkdownDeep implementation</li>
+    <li>Makes the <em>ServiceStackCodePage</em> subclass available so Code Pages has access to same functionality as Services</li>
+    <li>Registers a Request Handler which enables all requests <b>.html</b> pages to be handled by Template Pages</li>
+</ul>
+
+<p>If preferred, you can change which <b>.html</b> extension gets handled by Template Pages with:</p>
+
+<pre><code>Plugins.Add(new TemplatePagesFeature { HtmlExtension = ".htm" });</code></pre>
+
+<h4>Calling Pages Directly</h4>
+
+<p>
+    Once registered, <em>TemplatePagesFeature</em> gives all your <b>.html</b> pages Template super powers where sections can be 
+    compartmentalized and any duplicated content can now be extracted into reusable partials, metadata can be added to the top of 
+    each page and its page navigation dynamically generated, contents of files and urls can be embedded directly and otherwise 
+    static pages can come alive with access to <a href="/docs/default-filters">Default Filters</a>.
+</p>
+
+<p>
+    Any <em>.html</em> page available from your AppHost's configured <a href="http://docs.servicestack.net/virtual-file-system">Virtual File Sources</a>
+    can be called directly, typically this would mean the File System which in a .NET Core Web App starts from the <em>WebRootPath</em> 
+    (usually /wwwroot) so a request to <em>/docs/view-engine</em> goes through all configured VirtualFileSources to find the first 
+    match, which for this website is the file
+    <a href="https://github.com/NetCoreApps/TemplatePages/blob/master/src/wwwroot/docs/view-engine.html">/src/wwwroot/docs/view-engine.html</a>.
+</p>
+
+<h4>Layout Selection</h4>
+
+<p>
+    Unless it's a complete HTML Page (e.g. starts with html or HTML5 tag) the page gets rendered using the closest <em>_layout.html</em> 
+    page it can find starting from the directory where the page is located, traversing all the way up until it reaches the root directory. 
+    Which for this page uses the 
+    <a href="https://github.com/NetCoreApps/TemplatePages/blob/master/src/wwwroot/_layout.html">/src/wwwroot/_layout.html</a> template
+    in the WebRoot directory, which as it's in the root directory, is the fallback Layout for all .html pages.
+</p>
+
+<p>
+    Pages can change the layout they use by either adding their own <em>_layout.html</em> page in their sub directory or specifying
+    a different layout in their pages metadata header, e.g:
+</p>
+
+<pre class="html"><code>&lt;!--
+layout: mobile-layout
+--&gt;</code></pre>
+
+<p>
+    Where it instead embed the page using the closest <b>mobile-layout.html</b> it can find, starting from the Page's directory.
+    If your templates are instead embedded in the different folder you can request it directly from the root dir:
+</p>
+
+<pre class="html"><code>&lt;!--
+layout: templates/mobile-layout
+--&gt;</code></pre>
+
+
+<h4>Pretty URLs by default</h4>
+
+<p>
+    HTML pages can also take advantage of <b>Pretty URLs</b> by default which no longer need file extensions, so you can request
+    this page using either:
+</p>
+
+<ul>
+    <li><a href="/docs/view-engine">/docs/view-engine</a></li>
+    <li><a href="/docs/view-engine.html">/docs/view-engine.html</a></li>
+</ul>
+
+<p>
+    In addition an <em>index.html</em> page can be called with or without its name, e.g:
+</p>
+
+<ul>
+    <li><a href="/linq/">/linq/</a></li>
+    <li><a href="/linq/index">/linq/index</a></li>
+    <li><a href="/linq/index.html">/linq/index.html</a></li>
+</ul>
+
+<h4>Request Variables</h4>
+
+<p>
+    The QueryString and FORM variables sent to the page are availalbe as arguments within the page, so a 
+    request like <a href="/docs/view-engine?id=1">/docs/view-engine?id=1</a> can access the <b>id</b> param with <em>{{ pass: id }}</em>.
+    To help with generating navigation, the following Request Variables are also available:
+</p>
+
+<ul>
+    <li><em>{{ pass: Verb }}</em> evaluates to <b>{{ Verb }}</b></li>
+    <li><em>{{ pass: AbsoluteUri }}</em> evaluates to <b>{{ AbsoluteUri }}</b></li>
+    <li><em>{{ pass: RawUrl }}</em> evaluates to <b>{{ RawUrl }}</b></li>
+    <li><em>{{ pass: PathInfo }}</em> evaluates to <b>{{ PathInfo }}</b></li>
+</ul>
+
+<p>
+    You can use <em>{{ pass: PathInfo }}</em> to easily highlight the active link in a links menu as done in 
+    <a href="https://github.com/NetCoreApps/TemplatePages/blob/master/src/wwwroot/sidebar.html">sidebar.html</a>:
+</p>
+
+<pre class="tpl" style="overflow:hidden"><code>{{ "sidebar.html" | includeFile | htmlencode }}</code></pre>
 
 {{ "doc-links" | partial({ order }) }}

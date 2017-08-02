@@ -305,7 +305,6 @@ var coords = {{ model | json }};` }) }}
 
 {{ 'live-template' | partial({ rows: 1, template: `{{ pass: 'shout' | upper }}` }) }}
 
-
 <blockquote>
     Useful when you want to emit a client-side Vue filter or show examples of Template Expressions.
 </blockquote>
@@ -315,6 +314,12 @@ var coords = {{ model | json }};` }) }}
 </p>
 
 {{ 'live-template' | partial({ rows: 1, template: `{{ ['A',1.1,2,3.3,true,null] | of({ type: 'Double' }) | join }}` }) }}
+
+<p>
+    You can use <em>appSetting</em> filter to access the value of the TemplateContext's configured <a href="http://docs.servicestack.net/appsettings">AppSettings Provider</a>:
+</p>
+
+<pre class="cs"><code>{{ pass: 'websitePublicUrl' | appSetting }} </code></pre>
 
 <h4>Collections and Querying</h4>
 

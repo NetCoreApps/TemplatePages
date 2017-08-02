@@ -85,6 +85,18 @@ li.active a {
     margin: 0 auto;
     padding-left: 30px;
 }
+#sig {
+    position: fixed;
+    bottom: 0;
+    background: #fff;
+    width: 100%;
+    text-align: center;
+    color: #7f8c8d;
+    font-size: .85rem;
+    line-height: 2rem;
+    z-index: 1;
+}
+
 @media screen and (max-width: 1300px)
 {
     #content {

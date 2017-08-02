@@ -3,21 +3,26 @@ title: ServiceStack Templates
 -->
 
 <p>
-    ServiceStack Templates is an exciting new templating language that can be used as a fast, clean, portable alternative to 
-    Razor and Razor Pages that's better suited for maintaining content-heavy sever-generated websites, 
+    ServiceStack Templates is an exciting new templating language that can be used as a simple, fast, clean, portable alternative 
+    to Razor and Razor Pages that's better suited for maintaining content-heavy websites, 
     easily facilitates a live programming environment for .NET Apps, makes it easy to introspect the state of running .NET Apps,
-    provides non-technical users a fun and intuitive way to generate text documents like email templates, and more!
+    provides non-technical users a fun and intuitive way to generate text documents like email templates, and lots more!
 </p>
 
 <p>
-    Get started learning ServiceStack Templates by reading the <a href="/docs/installation">Comprehensive Guide</a>.
-</p>
-
-<p>
-    Checkout the <a href="/linq/">Live LINQ examples</a> for a fun Live programming experience to explore its querying features.
+    Get started learning ServiceStack Templates by going through the <a href="/docs/installation">Interactive Guide</a>.
 </p>
 
 <p>
     View the source code of this 
     <a href="https://github.com/NetCoreApps/TemplatePages">Template Pages generated website</a> to see how clean a website built with it is.
 </p>
+
+<p>
+    Checkout the <a href="/linq/">Live LINQ examples</a> for a fun Live programming experience to explore its querying features, as a quick
+    preview here's a copy of the <a href="/linq/restriction-operators">first LINQ example</a> you can play with below:
+</p>
+
+{{ "linq-preview" | partial({ rows: 10, example: "linq01" }) }}
+
+{{ "doc-links" | partial({ order: 0 }) }}
