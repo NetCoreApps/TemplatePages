@@ -14,6 +14,7 @@ using ServiceStack.Templates;
 using System.Collections.Generic;
 using System.Linq;
 using System.Collections;
+using System.IO;
 
 namespace TemplatePages
 {
@@ -151,5 +152,19 @@ namespace TemplatePages
 
             return to;
         }
+
+        public async Task includeContentFile(TemplateScopeContext scope, string virtualPath)
+        {
+            var file = HostContext.VirtualFiles.GetFile(virtualPath);
+            if (file == null)
+                throw new FileNotFoundException($"includeContentFile '{virtualPath}' was not found");
+
+            using (var reader = file.OpenRead())
+            {
+                await reader.CopyToAsync(scope.OutputStream);
+            }
+        }
+
+        public List<Customer> customers() => TemplateQueryData.Customers;
     }
 }

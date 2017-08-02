@@ -172,7 +172,7 @@ var output = context.EvaluateTemplate("&lt;p&gt;{{ pass: 'key' | fromCache }}&lt
     and avoid any blocking I/O or buffering. 
 </blockquote>
 
-<h4>Block Filters end the filter chain expression</h4>
+<h4>Block Filters ends the filter chain</h4>
 
 <p>
     Block filters effectively end the Filter chain expression since they don't return any value that can be injected into 
@@ -189,7 +189,7 @@ var output = context.EvaluateTemplate("&lt;p&gt;{{ pass: 'key' | fromCache }}&lt
 
 <pre class="cs"><code>{{ pass: 'doc.md' | includeFile | markdown }}</code></pre>
 
-<h4>Buffer Block Filter Output</h4>
+<h4>Capture Block Filter Output</h4>
 
 <p>
     You can also capture the output of a Block Filter and assign it to a normal argument by using the <em>assignTo</em> Block Filter:

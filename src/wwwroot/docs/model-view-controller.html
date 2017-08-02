@@ -1,0 +1,54 @@
+<!--
+title: Model View Controller
+order: 12
+-->
+
+<p>
+    Simplicity is a driving goal behind the design of Templates where in its simplest form it's usable by non-programmers who just
+    know HTML as they're able to embed dynamic content in their HTML pages using intuitive Mustache syntax and with the 
+    intuitive way in how <a href="/docs/view-engine">View Engine works</a> they're able to develop entire content-heavy websites 
+    without needing to write any code.
+</p>
+
+<p>
+    As requirements become more demanding you can use progressively advanced features to enable greater flexibility and 
+    functionality whilst still retaining using Templates to generate the HTML view with access to existing layouts and partials.
+</p>
+
+<p>
+    The first option to enable functionality is to reuse the rich functionality available in Services to populate the data
+    required by your view. To do this in ServiceStack add a reference to the <em>ITemplatePages</em> dependency which was registered 
+    by <em>TemplateContext</em>, then return a <em>PageResult</em> containing the <em>.html</em> page you want to 
+    render as well as any additional arguments you want available in the page:    
+</p>
+
+<pre class="cs"><code>{{ "CustomerServices.cs" | includeContentFile }}</code></pre>
+
+<h5>Model PageResult Property</h5>
+
+<p>
+    The <em>Model</em> property is a special argument that automatically registers all its <b>public properties</b> as arguments 
+    as well as registering itself in the <b>model</b> argument, this lets views reference model properties directly like
+    <em>{{ pass: CustomerId }}</em> instead of the more verbose <em>{{ pass: model.CustomerId }}</em> as used in:
+</p>
+
+<h4><a href="">example/customer.html</a></h4>
+
+<pre class="tpl"><code>{{ "examples/customer.html" | includeFile | htmlencode }}</code></pre>
+
+<p>
+    Now that we have the Service handling the Request and populating the Model for our page we can now view each Customer
+    in a nice detail page:
+</p>
+
+<div class="linq-preview">
+    <div class="template">
+        <textarea autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" class="form-control" 
+            rows="4">{{ "examples/select-customers.txt" | includeFile }}</textarea>
+    </div>
+    <div class="result">
+        <div class="output"></div>
+    </div>
+</div> 
+
+{{ "doc-links" | partial({ order }) }}

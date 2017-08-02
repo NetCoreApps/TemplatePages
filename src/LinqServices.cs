@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
@@ -186,6 +187,8 @@ namespace TemplatePages
                 return customers;
             }
         }
+
+        public static Customer GetCustomer(string customerId) => Customers.FirstOrDefault(x => x.CustomerId == customerId);
     }
 
 }
