@@ -3,6 +3,139 @@ title: Transformers
 order: 10
 -->
 
-<h3>TODO</h3>
+<p>
+    You can apply a chain of multiple Stream transformations to Template output using Transformers which are just functions that
+    accept an Input Stream and return a modified Output Stream. The MarkdownPageFormat's <em>TransformToHtml</em> shows an example
+    of a Transformer which converts Markdown Input and returns a Stream of HTML output:
+</p>
+
+
+<pre class="cs"><code>public class MarkdownPageFormat : PageFormat
+{
+    private static readonly MarkdownSharp.Markdown markdown = new MarkdownSharp.Markdown();
+
+    public static async Task<Stream> TransformToHtml(Stream markdownStream)
+    {
+        using (var reader = new StreamReader(markdownStream))
+        {
+            var md = await reader.ReadToEndAsync();
+            var html = markdown.Transform(md);
+            return MemoryStreamFactory.GetStream(html.ToUtf8Bytes());
+        }
+    }
+}
+</code></pre>
+
+
+<h4>Output Transformers</h4>
+
+<p>
+    You can transform the entire output of a Template with Output Transformers which you would do if both your <b>_layout</b>
+    and <b>page</b> both contain markdown, e.g:
+</p>
+
+<pre class="cs"><code>var context = new TemplateContext {
+    PageFormats = { new MarkdownPageFormat() }
+}.Init();
+
+context.VirtualFiles.WriteFile("_layout.md", @"
+The Header
+
+{{ pass: page }}");
+
+context.VirtualFiles.WriteFile("page.md",  @"
+## {{ pass: title }}
+
+The Content");
+</code></pre>
+
+<h5>PageResult with Output Transformer</h5>
+
+<pre class="cs"><code>var result = new PageResult(context.GetPage("page")) 
+{
+    Args = { {"title", "The Title"} },
+    ContentType = MimeTypes.Html,
+    OutputTransformers = { MarkdownPageFormat.TransformToHtml },
+};
+
+var html = await result.RenderToStringAsync();
+</code></pre>
+
+<p>
+    After the Template is evaluated it's entire output gets passed into the chain of OutputTransformers defined, which in this case will
+    send a MemoryStream of the generated Markdown Output into the <em>MarkdownPageFormat.TransformToHtml</em> transformer which returns
+    a Stream of converted HTML which is what's written to the OutputStream.
+</p>
+
+<h4>Page Transformers</h4>
+
+<p>
+    You can also apply Transformations to only the Page's output using Page Transformers which you would do if only the <b>page</b> was in 
+    Markdown and the <b>_layout</b> was already in HTML, e.g:
+</p>
+
+<pre class="cs"><code>var context = new TemplateContext {
+    PageFormats = { new MarkdownPageFormat() }
+}.Init();
+
+context.VirtualFiles.WriteFile("_layout.html", @"
+&lt;html&gt;
+  &lt;title&gt;{{ pass: title }}&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+  {{ pass: page }}
+&lt;/body&gt;");
+
+context.VirtualFiles.WriteFile("page.md",  @"
+## {{ title }}
+
+The Content");
+</code></pre>
+
+<h5>PageResult with Page Transformer</h5>
+
+<pre class="cs"><code>var result = new PageResult(context.GetPage("page")) 
+{
+    Args = { {"title", "The Title"} },
+    ContentType = MimeTypes.Html,
+    PageTransformers = { MarkdownPageFormat.TransformToHtml },
+};
+
+var html = await result.RenderToStringAsync();
+</code></pre>
+
+<h4>Filter Transformers</h4>
+
+<p>
+    Filter Transformers are used to apply Stream Transformations to <a href="/docs/filters#block-filters">Block Filters</a> which you 
+    could use if you only wanted to convert an embedded Markdown file inside a Page to HTML. You can register Filter Transformers 
+    in either the TemplateContext's or PageResult's <em>FilterTransformers</em> Dictionary by assigning it the name you want it available in
+    your Templates under, e.g:
+</p>
+
+<pre class="cs"><code>var context = new TemplateContext
+{
+    TemplateFilters = { new TemplateProtectedFilters() },
+    FilterTransformers =
+    {
+        ["markdown"] = MarkdownPageFormat.TransformToHtml
+    }
+}.Init();
+
+context.VirtualFiles.WriteFile("doc.md", "## The Heading
+
+The Content");
+
+context.VirtualFiles.WriteFile("page.html", "
+&lt;div id="content"&gt;
+    {{ pass: 'doc.md' | includeFile | markdown }}
+&lt;/div&gt;");
+</code></pre>
+
+<h5>PageResult with Filter Transformer</h5>
+
+<pre class="cs"><code>
+var html = new PageResult(context.GetPage("page")).Result;
+</code></pre>
 
 {{ "doc-links" | partial({ order }) }}
