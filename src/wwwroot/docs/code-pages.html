@@ -118,7 +118,7 @@ order: 13
     the <em>links</em> argument created when the partial was called:
 </p>
 
-<h4><a href="https://github.com/NetCoreApps/TemplatePages/blob/master/src/CodePagePartials.cs">CodePagePartials.cs</a></h4>
+<h4 id="code-page-partials"><a href="https://github.com/NetCoreApps/TemplatePages/blob/master/src/CodePagePartials.cs">CodePagePartials.cs</a></h4>
 
 <pre class="cs"><code>{{ "CodePagePartials.cs" | includeContentFile | htmlencode }}</code></pre>
 
@@ -134,6 +134,27 @@ order: 13
 </p>
 
 {{ 'customerCard' | partial({ customerId: "ALFKI" }) }}
+
+<h4>ServiceStack Code Pages</h4>
+
+<p>
+    <em>ServiceStackCodePage</em> is a convenience base class that inherits <em>TemplateCodePage</em> and enhances it with
+    the same functionality that's available in ServiceStack's <em>Service</em> base class, e.g: access to the current
+    <em>Request</em> context, Gateway, Database, Redis, CacheClient, Users Session, AuthRepository, etc.
+</p>
+
+<p>
+    So you could rewrite the previous <a href="/docs/code-pages#code-page-partials">Code Page Partials</a> to inherit 
+    ServiceStackCodePage instead where <em>NavLinksPartial</em> can access the <em>IRequest</em> directly without having to request
+    the <em>PathInfo</em> argument and <em>CustomerCardPartial</em> has direct access to the configured database:
+</p>
+
+<pre class="cs"><code>{{ "examples/servicestack-code-page.txt" | includeFile | htmlencode }}</code></pre>
+
+<p>
+    Since they have access to the same functionality ServiceStack Services do, ServiceStackCodePage's can in many cases provide 
+    an alternative to needing to use Services in <a href="/docs/model-view-controller">Model View Controller</a>.
+</p>
 
 
 {{ "doc-links" | partial({ order }) }}
