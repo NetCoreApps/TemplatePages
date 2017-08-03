@@ -143,4 +143,11 @@ layout: templates/mobile-layout
 
 <pre class="tpl" style="overflow:hidden"><code>{{ "sidebar.html" | includeFile | htmlencode }}</code></pre>
 
+<h4>Forbidden Pages</h4>
+
+<p>
+    Pages that are prefixed with an underscore, e.g. <em>_layout.html</em> cannot be called directly. As you'd normally 
+    never want layouts and partials to accessed directly it's a good idea to name them with an <b>_</b> prefix.
+</p>
+
 {{ "doc-links" | partial({ order }) }}
