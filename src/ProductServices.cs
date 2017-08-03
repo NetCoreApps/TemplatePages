@@ -11,10 +11,8 @@ namespace TemplatePages
 
     public class ProductsServices : Service
     {
-        public ITemplatePages Pages { get; set; }
-
         public object Any(ViewProducts request) =>
-            new PageResult(Pages.GetCodePage("products")) {
+            new PageResult(Request.GetCodePage("products")) {
                 Args = {
                     ["products"] = TemplateQueryData.Products
                 }

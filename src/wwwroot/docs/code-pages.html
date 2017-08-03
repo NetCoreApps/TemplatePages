@@ -76,6 +76,21 @@ order: 13
     by the ServiceStack Service, instead of the argument populated in the <em>TemplatePagesFeature</em> Arguments.
 </p>
 
+<p>
+    Using the <em>Request.GetCodePage()</em> extension method is the recommended way to resolve Code Pages as it will 
+    automatically inject the current <em>IRequest</em> on Code Pages that implement <em>IRequiresRequest</em> like
+    ServiceStackCodePage's. It's the same as resolving the Code Page from the <em>ITemplatePages</em> dependency 
+    and injecting the <em>IRequest</em> manually:
+</p>
+
+<pre class="cs"><code>public ITemplatePages Pages { get; set; }
+
+public object Any(ViewProducts request) 
+{
+    var codePage = Pages.GetCodePage("products");
+    (codePage as IRequiresRequest)?.Request = Request;
+    return new PageResult(codePage) { ... };
+}</code></pre>
 
 <h4>Code Pages as Partials</h4>
 
