@@ -99,7 +99,7 @@ order: 13
 <pre class="cs"><code>{{ "examples/nav-links.txt" | includeFile }}</code></pre>
 
 <p>
-    Which will generate the following links of progressive functionality features, with the link of the current page highlighted:
+    Which will generate the following links of progressive advanced features, with the link of the current page highlighted:
 </p>
 
 {{ 'navLinks' | partial(
@@ -107,8 +107,7 @@ order: 13
         links: { 
             '/docs/model-view-controller': 'MVC', 
             '/docs/view-engine': 'View Engine', 
-            '/docs/code-pages': 'Code Pages',
-            '/docs/servicestack-code-pages': 'ServiceStack Code Pages'
+            '/docs/code-pages': 'Code Pages'
         } 
     }) 
 }}
@@ -152,8 +151,8 @@ order: 13
 <pre class="cs"><code>{{ "examples/servicestack-code-page.txt" | includeFile | htmlencode }}</code></pre>
 
 <p>
-    Since they have access to the same functionality ServiceStack Services do, ServiceStackCodePage's can in many cases provide 
-    an alternative to needing to use Services in <a href="/docs/model-view-controller">Model View Controller</a>.
+    Since they have access to the same functionality ServiceStack Services do, ServiceStackCodePage's can provide
+    an alternative to using Services in <a href="/docs/model-view-controller">Model View Controller</a>.
 </p>
 
 

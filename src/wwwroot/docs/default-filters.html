@@ -115,13 +115,6 @@ Time: {{ now.TimeOfDay | timeFormat('h\:mm') }} default: {{ now.TimeOfDay | time
 '{{ 'left' | padLeft(10) }}', '{{ 'right' | padRight(10) }}'
 '{{ 'left' | padLeft(10,'_') }}', '{{ 'right' | padRight(10,'_') }}'" }) }}
 
-<h4>Repeating and Ranges</h4>
-
-{{ 'live-template' | partial({ rows: 4, template: "{{ 3 | repeating('ABC ')  }} or {{ 'ABC ' | repeat(3) }}
-{{ 3 | itemsOf(2) | join }} or {{ 3 | itemsOf(2) | sum }}
-{{ 5 | times | select: {it}, }}
-{{ range(5) | select: {it}, }} {{ range(5,5) | select: {it}, }}" }) }}
-
 <h4 id="url-handling">URL handling</h4>
 
 {{ 'live-template' | partial({ rows: 6, template: "{{ 'http://example.org' | assignTo: baseUrl }}
@@ -130,6 +123,13 @@ Time: {{ now.TimeOfDay | timeFormat('h\:mm') }} default: {{ now.TimeOfDay | time
 {{ baseUrl | addQueryString({ a: 1, b: 2 }) }}
 {{ baseUrl | addHashParams({ c: 3, d: 4 }) }}
 {{ baseUrl | addPath('path') | addQueryString({ a: 1 }) | addHashParams({ b: 2 }) }}" }) }}
+
+<h4 id="generation">Repeating, Ranges and Generation</h4>
+
+{{ 'live-template' | partial({ rows: 4, template: "{{ 3 | repeating('ABC ')  }} or {{ 'ABC ' | repeat(3) }}
+{{ 3 | itemsOf(2) | join }} or {{ 3 | itemsOf(2) | sum }}
+{{ 5 | times | select: {it}, }}
+{{ range(5) | select: {it}, }} {{ range(5,5) | select: {it}, }}" }) }}
 
 <h4>Spacing</h4>
 

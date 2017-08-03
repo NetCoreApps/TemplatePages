@@ -49,7 +49,7 @@ order: 3
 <pre class="cs"><code>public string substring(string text, int startIndex) => text.SafeSubstring(startIndex);
 public string padRight(string text, int totalWidth, char padChar) => text?.PadRight(totalWidth, padChar);</code></pre>
 
-<h4>JavaScript literal notation</h4>
+<h4 id="javascript-literals">JavaScript literal notation</h4>
 
 <p>
     You can use the same literal syntax used to define numbers, strings, booleans, null, Objects and Arrays in JavaScript
@@ -66,7 +66,7 @@ public string padRight(string text, int totalWidth, char padChar) => text?.PadRi
 " }) }}
 
 <p>
-    ES6 Shorthand notation is also supported where you can the argument name as its property name in a Dictionary:
+    ES6 Shorthand notation is also supported where you can use the argument name as its property name in a Dictionary:
 </p>
 
 {{ 'live-template' | partial({ template: "{{ 'foo' | assignTo: bar }}
@@ -79,19 +79,21 @@ public string padRight(string text, int totalWidth, char padChar) => text?.PadRi
     Like JS you can define strings using single quotes, double quotes or back-ticks, e.g:
 </p>
 
-{{ 'live-template' | partial({ template: "{{ 'single quotes' }}<br/>{{ \"double quotes\" }}<br/>{{ `back ticks` }}" }) }}
+{{ 'live-template' | partial({ template: "{{ 'single quotes' }}
+{{ \"double quotes\" }}
+{{ `back ticks` }}" }) }}
 
-<p>
+<blockquote>
     Strings can also span multiple lines.
-</p>
+</blockquote>
 
 <h4>Special string argument syntax</h4>
 
 <p>
     As string expressions are a prevalent in Templates, we've given them special wrist-friently syntax where you
     can add a colon at the end of the filter name which says to treat the following characters up until the end of the
-    line or the end of the mustache as a string, trim it and convert '{' and '}' chars into mustaches which will
-    let you write:
+    line or mustache expressiom as a string, trim it and convert '{' and '}' chars into mustaches. With this syntax
+    you can write:
 </p>
 
 {{ 'live-template' | partial({ template: "{{ [0,1,2,3,4,5]
@@ -99,7 +101,7 @@ public string padRight(string text, int totalWidth, char padChar) => text?.PadRi
    | select: { it | incrBy(10) }\n }}" }) }}
 
 <p>
-    Which will be rewritten into its equivalent and more verbose form of:
+    and it will be rewritten into its equivalent and more verbose form of:
 </p>
 
 {{ 'live-template' | partial({ template: '{{ [0,1,2,3,4,5]

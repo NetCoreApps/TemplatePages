@@ -3,8 +3,56 @@ title: Sandbox
 order: 14
 -->
 
-<h3>TODO</h3>
+<p>
+    Another useful feature of Templates is that it operates within a controlled sandbox where each <em>TemplateContext</em> instance is 
+    isolated and defines the entire execution environment on which Templates are executed within as such it should be safe to run
+    Templates from untrusted 3rd Party sources as they're confined to what's available within their allowed <em>TemplateContext</em> instance. 
+</p>
 
-MaxQuota, ExcludeFiltersNamed, etc
+<p>
+    The only functionality a new <em>TemplateContext</em> instance has access to are the 
+    <a href="/docs/default-filters">safe set of default filters</a> and the <a href="/docs/transformers#htmlencode">htmlencode Filter Transformer</a>.
+    Templates can't call methods on instances or have any other way to invoke a method unless it's explicitly registered. 
+</p>
+
+<h4>Remove default filters</h4>
+
+<p>
+    If you want to start from a clean slate, the default filters can be removed by clearing the <em>TemplateFilters</em> collection:
+</p>
+
+<pre><code>context.TemplateFilters.Clear();</code></pre>
+
+<h4>Disabling adhoc Filters</h4>
+
+<p>
+    Or if you only want to disable access to some filters without removing them all, you can disable access to adhoc filters
+    by adding to the <em>ExcludeFiltersNamed</em> collection:
+</p>
+
+<pre class="cs">var context = new TemplateContext {
+    ExcludeFiltersNamed = { "partial", "selectPartial" }
+}.Init();</pre>
+
+<blockquote>
+    Filters can also be disabled on an individual <em>PageResult</em> ExcludeFiltersNamed.
+</blockquote>
+
+<h4>Instance creation and MaxQuota</h4>
+
+<p>
+    The only instances that can be created within templates are what's allowed in 
+    <a href="/docs/syntax#javascript-literals">JavaScript Literals</a> and the
+    <a href="/docs/default-filters#generation">Generation and Repeating Filters</a>. To limit any potential CPU and GC abuse any default filters
+    that can generate instances are limited to a <em>MaxQuota</em> of <b>10000</b> iterations. This quota can be modified with:    
+</p>
+
+<pre class="cs">var context = new TemplateContext {
+    Args = {
+        [TemplateConstants.MaxQuota] = 1000
+    }
+}.Init();</pre>
+
+
 
 {{ "doc-links" | partial({ order }) }}
