@@ -9,10 +9,20 @@ order: 14
     Templates from untrusted 3rd Party sources as they're confined to what's available within their allowed <em>TemplateContext</em> instance. 
 </p>
 
+<h4>TemplateContext</h4>
+
 <p>
     The only functionality a new <em>TemplateContext</em> instance has access to are the 
     <a href="/docs/default-filters">safe set of default filters</a> and the <a href="/docs/transformers#htmlencode">htmlencode Filter Transformer</a>.
     Templates can't call methods on instances or have any other way to invoke a method unless it's explicitly registered. 
+</p>
+
+<p>
+    If running a template from an untrusted source we recommend running them within a new <em>TemplateContext</em> instance so they're 
+    kept isolated from any other <em>TemplateContext</em> instance. Context's are cheap to create, so there wont be a noticable delay when 
+    executing in a new instance but they're used to cache compiled lambda expressions which will need to be recreated if executing Templates
+    in new TemplateContext instances. For improved performance you can instead have all untrusted templates use the same
+    TemplateContext instance that way they're able to reuse compiled expressions.
 </p>
 
 <h4>Remove default filters</h4>
@@ -52,7 +62,5 @@ order: 14
         [TemplateConstants.MaxQuota] = 1000
     }
 }.Init();</pre>
-
-
 
 {{ "doc-links" | partial({ order }) }}

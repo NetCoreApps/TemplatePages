@@ -1,0 +1,120 @@
+<!--
+title: Configuration
+order: 15
+-->
+
+The following configuration is available when initializing a new <em>TemplateContext</em> instance:
+
+<h4>Default Configuration</h4>
+
+<p>
+    Some <a href="/docs/configuration">default filters</a> when called without arguments will use the default configuration 
+    shown below that can be overridden by replacing their default value in the <em>Args</em> collection:
+</p>
+
+<pre class="cs"><code>var context = new TemplateContext { 
+    Args = {
+        [TemplateConstants.MaxQuota] = 10000,
+        [TemplateConstants.DefaultCulture] = CultureInfo.CurrentCulture,
+        [TemplateConstants.DefaultDateFormat] = "yyyy-MM-dd",
+        [TemplateConstants.DefaultDateTimeFormat] = "u",
+        [TemplateConstants.DefaultTimeFormat] = "h\\:mm\\:ss",
+        [TemplateConstants.DefaultCacheExpiry] = TimeSpan.FromHours(1),
+        [TemplateConstants.DefaultIndent] = "\t",
+        [TemplateConstants.DefaultNewLine] = Environment.NewLine,
+        [TemplateConstants.DefaultJsConfig] = "excludetypeinfo",
+        [TemplateConstants.DefaultStringComparison] = StringComparison.Ordinal,
+    }
+}.Init();</code></pre>
+
+<h4>Args</h4>
+
+<p>
+    <a href="/docs/arguments">TemplateContext Arguments</a> can be used to define global variables available to every template, partial, filter, etc:
+</p>
+
+<h4>Virtual Files</h4>
+
+<p>
+    Templates only have access to Pages available from its configured VirtualFiles which uses an empty <em>MemoryVirtualFiles</em>.
+    To make pages available to your <em>TemplateContext</em> instance you can choose to either programatically populate the 
+    <em>VirtualFiles</em> collection from an external source, e.g:
+</p>
+
+<pre class="cs"><code>var fs = new FileSystemVirtualFiles("~/template-files".MapProjectPath());
+foreach (var file in fs.GetAllMatchingFiles("*.html"))
+{
+    if (!MyAllowFile(file)) continue;
+    using (var stream = file.OpenRead())
+    {
+        context.VirtualFiles.WriteFile(file.VirtualPath, stream);
+    }
+}</code></pre>
+
+<p>
+    Alternatively if you want to enable access to an entire sub directory you can replace the Virtual Files with a 
+    FileSystem VFS at the directory you want to make the root directory:
+</p>
+
+<pre class="cs"><code>context.VirtualFiles = new FileSystemVirtualFiles("~/template-files".MapProjectPath());</code></pre>
+
+<h4>DebugMode</h4>
+
+<p>
+    <em>DebugMode</em> is used to control whether full Exception details like <em>StackTrace</em> is displayed. In 
+    <em>TemplatePageFeature</em> it defaults to the AppHost DebugMode, otherwise it's <b>true</b> by default.
+</p>
+
+<h4>ScanTypes</h4>
+
+<p>
+    Specify a <em>TemplateFilter</em> or <em>TemplateCodePage</em> to auto register.
+</p>
+
+<h4>ScanAssemblies</h4>
+
+<p>
+    Specify assemblies that should be scanned to find TemplateFilter's and TemplateCodePage's to auto register. 
+    In <em>TemplatePageFeature</em> the AppHost's Service Assemblies are included by default.
+</p>
+
+<h4>TemplateFilters</h4>
+
+<p>
+    Register additional instances of filters you want templates to have access to.
+</p>
+
+<h4>CodePages</h4>
+
+<p>
+    Register instances of code pages you want templates to have access to.
+</p>
+
+<h4>Container</h4>
+
+<p>
+    The IOC Container used by the <em>TemplateContext</em> to register and resolve dependencies, filters and Code Pages.
+    Uses <em>SimpleContainer</em> by default.
+</p>
+
+<h4>AppSettings</h4>
+
+<p>
+    Specify an optional 
+    <a href="http://docs.servicestack.net/appsettings">App Settings provider</a> that you want templates to have access to.
+</p>
+
+<h4>CheckForModifiedPages</h4>
+
+<p>
+    Whether to check whether Pages have been modified before rendering the page. Defaults to <b>false</b>. Note: <b>DebugMode</b>
+    also needs to be <b>false</b> for check to be disabled.
+</p>
+
+<h4>RenderExpressionExceptions</h4>
+
+<p>
+    Whether to Render Expression Exceptions in-line (default = false).
+</p>
+
+{{ "doc-links" | partial({ order }) }}
