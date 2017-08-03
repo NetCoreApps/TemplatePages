@@ -25,7 +25,7 @@ a:hover {
     color: #4283b9;
     font-weight: 600;
 }
-li.active a {
+li.active a, #content li.active a {
     font-weight: bold;
 }
 #content .doc-links, #content .linq-links {

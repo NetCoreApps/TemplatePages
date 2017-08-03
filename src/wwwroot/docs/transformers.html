@@ -138,4 +138,13 @@ context.VirtualFiles.WriteFile("page.html", "
 var html = new PageResult(context.GetPage("page")).Result;
 </code></pre>
 
+<h5>htmlencode</h5>
+
+<p>
+    The <em>htmlencode</em> Filter Transformer is pre-registered in TemplateContext which lets you encode Block Filter outputs
+    which is useful when you want to HTML Encode a text file before embedding it in the page, e.g:
+</p>
+
+<pre class="cs"><code>{{ pass: "page.txt" | includeFile | htmlencode }}</code></pre>
+
 {{ "doc-links" | partial({ order }) }}

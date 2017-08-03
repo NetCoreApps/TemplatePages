@@ -1,0 +1,10 @@
+{{ 'navLinks' | partial(
+    { 
+        links: { 
+            '/docs/model-view-controller': 'MVC', 
+            '/docs/view-engine': 'View Engine', 
+            '/docs/code-pages': 'Code Pages',
+            '/docs/servicestack-code-pages': 'ServiceStack Code Pages'
+        } 
+    }) 
+}}

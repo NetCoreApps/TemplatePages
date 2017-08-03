@@ -122,14 +122,16 @@ var output = context.EvaluateTemplate("&lt;p&gt;{{ pass: 'key' | fromCache }}&lt
     powerful conversion facilities built into ServiceStack's 
     <a href="http://docs.servicestack.net/auto-mapping">Auto Mapping Utils</a> and 
     <a href="https://github.com/ServiceStack/ServiceStack.Text">Text Serializers</a> which can deserialize most of .NET's primitive Types like 
-    <em>DateTime</em>, <em>TimeSpan</em>, <em>Enums</em>, etc in/out of strings as well being able to convert any Numeric Type 
-    into any other Numeric Type which is how <em>double squared(double value)</em> despite only accepting doubles can also be used
-    with any other .NET Numeric Type, e.g. <em>byte</em>, <em>int</em>, <em>long</em>, <em>decimal</em>, etc.
+    <em>DateTime</em>, <em>TimeSpan</em>, <em>Enums</em>, etc in/out of strings as well being able to convert a Collection into other Collection 
+    Types and any Numeric Type into any other Numeric Type which is how, despite only accepting doubles: 
 </p>
 
+<pre class="cs"><code>double squared(double value) => value * value;</code></pre>
+
 <p>
+    Can also be used with any other .NET Numeric Type, e.g: <em>byte</em>, <em>int</em>, <em>long</em>, <em>decimal</em>, etc.
     The consequence to this is that there's no method overloading in filters, filters are matched based on their name and their number of arguments
-    where each argument is converted into the filter method Param Types before it's called.
+    and each argument is converted into its filter method Param Type before it's called.
 </p>
 
 <h4>Context Filters</h4>

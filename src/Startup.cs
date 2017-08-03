@@ -15,6 +15,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Collections;
 using System.IO;
+using ServiceStack.Web;
+using ServiceStack.Text;
 
 namespace TemplatePages
 {
@@ -49,9 +51,15 @@ namespace TemplatePages
 
         public override void Configure(Container container)
         {
+            container.Register<ICustomers>(c => new Customers(TemplateQueryData.Customers));
+
             var customFilters = new CustomTemplateFilters();
             Plugins.Add(new TemplatePagesFeature {
-                TemplateFilters = { customFilters }
+                TemplateFilters = { customFilters },
+                Args = {
+                    ["products"] = TemplateQueryData.Products
+                },
+                RenderExpressionExceptions = true
             });
 
             AfterInitCallbacks.Add(host => {

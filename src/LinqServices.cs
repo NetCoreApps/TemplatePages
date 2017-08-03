@@ -191,4 +191,21 @@ namespace TemplatePages
         public static Customer GetCustomer(string customerId) => Customers.FirstOrDefault(x => x.CustomerId == customerId);
     }
 
+    public interface ICustomers
+    {
+        List<Customer> GetAllCustomers();
+        Customer GetCustomer(string customerId);
+    }
+
+    public class Customers : ICustomers
+    {
+        List<Customer> customers;
+        public Customers(List<Customer> customers) => this.customers = customers;
+
+        public List<Customer> GetAllCustomers() => customers;
+
+        public Customer GetCustomer(string customerId) => customers.FirstOrDefault(x => x.CustomerId == customerId);
+    }
+
+
 }

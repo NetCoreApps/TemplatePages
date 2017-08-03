@@ -3,6 +3,137 @@ title: Code Pages
 order: 13
 -->
 
-<h3>TODO</h3>
+<p>
+    Another solution that enables greater control and functionality are <b>Code Pages</b> which utilize the 
+    full unlimited power of the C# programming language to enable precise control over the rendering of pages and partials. 
+    As Code Pages are normal C# classes they also benefit from the rich editing and debugging experience in C# IDEs 
+    and don't require any special design-time editors, build tools or pre-compilation like Razor, they're just another class 
+    in your Solution.
+</p>
+
+<h4>Creating Code Pages</h4>
+
+<p>
+    A Code Page is a class that inherits <em>TemplateCodePage</em> and is annotated with a <em>[Page(virtualPath)]</em> 
+    attribute which is used to resolve the page in the same way <b>.html</b> pages are resolved by their virtualPath. 
+    Code Pages take precedence over .html pages so you can start with an .html page and when you need more power and
+    expressiveness, create a Code Page at the same virtualPath as the page you want to replace and it will get used instead.
+    They also follow the same layout resolution rules as normal pages so they can be easily substituted when needed.
+</p>
+
+<p>
+    Code Pages can also have metadata using the <em>[PageArg]</em> attribute which have the same behavior as 
+    args in .html pages. 
+</p>
+
+<h5>render Method</h5>
+
+<p>
+    The last thing a Code Page needs is a <em>render</em> method which is what gets called to execute the page.
+    The render method can have any number of parameters which will be populated with arguments of the same name
+    that's in scope at the time when the Code Page is called. This enables the nice UX where the arguments can 
+    be utilized in a C# interpolated string.
+</p>
+
+<p>
+    A complete CodePage implementation using all these features is below:
+</p>
+
+<h4><a href="https://github.com/NetCoreApps/TemplatePages/blob/master/src/ProductsPage.cs">ProductsPage.cs</a></h4>
+
+<pre class="cs"><code>{{ "ProductsPage.cs" | includeContentFile | htmlencode }}</code></pre>
+
+<p>
+    Where with just this implementation, it can now be called by navigating to its virtualPath: <a href="/products">/products</a>.
+</p>
+
+<p>
+    You typically wont need to explicitly register Code Pages since the <em>TemplatePagesFeature</em> populates its
+    <em>ScanAssemblies</em> with the AppHost's Service assemblies which will automatically find and register any 
+    TemplateCodePage's that are in the same Assembly as ServiceStack Services and just like Services, Code Pages 
+    are autowired and resolved from the IOC transiently, so they can also be injected with any IOC registered dependencies
+    by having them as public properties.
+</p>
+
+<h4>MVC Code Pages</h4>
+
+<p>
+    You can also combine the functionality enabled by levaraging ServiceStack Services in <a href="/model-view-controller">MVC Pages</a> 
+    with the precise layout and expressiveness of Code Pages, where just like you can render a Page in a PageResult, you can render a 
+    CodePage by resolving it with its virtualPath:
+</p>
+
+<h4><a href="https://github.com/NetCoreApps/TemplatePages/blob/master/src/ProductServices.cs">ProductServices.cs</a></h4>
+
+<pre class="cs"><code>{{ "ProductServices.cs" | includeContentFile | htmlencode }}</code></pre>
+
+<p>
+    Which is viewable at the Services Route: <a href="/products/view">/products/view</a>.
+</p>
+
+<p>
+    Which displays exactly the same content as calling ProductsPage directly, but instead uses the Routing and the argument populated 
+    by the ServiceStack Service, instead of the argument populated in the <em>TemplatePagesFeature</em> Arguments.
+</p>
+
+
+<h4>Code Pages as Partials</h4>
+
+<p>
+    Another area Code Pages are useful are as partials where they're able to escape the normal sandbox of Template Pages and
+    and use C# to access the existing functionality available within your Web App. 
+</p>
+
+<h5>Partial Arguments</h5>
+
+<p>
+    You can an Object literal to pass arguments to Code Page partials (the same as page partials), where each property creates a 
+    scoped argument that the Code Page has access to. 
+</p>
+
+<p>
+    We'll show an example of this by building a simple <em>navLinks</em> Code Page partial where we pass in the links we want 
+    generated when embed the partial:
+</p>
+
+<pre class="cs"><code>{{ "examples/nav-links.txt" | includeFile }}</code></pre>
+
+<p>
+    Which will generate the following links of progressive functionality features, with the link of the current page highlighted:
+</p>
+
+{{ 'navLinks' | partial(
+    { 
+        links: { 
+            '/docs/model-view-controller': 'MVC', 
+            '/docs/view-engine': 'View Engine', 
+            '/docs/code-pages': 'Code Pages',
+            '/docs/servicestack-code-pages': 'ServiceStack Code Pages'
+        } 
+    }) 
+}}
+
+<p>
+    Using the <em>navLinks</em> implementation below where it can access both the <em>PathInfo</em> PageResult argument and 
+    the <em>links</em> argument created when the partial was called:
+</p>
+
+<h4><a href="https://github.com/NetCoreApps/TemplatePages/blob/master/src/CodePagePartials.cs">CodePagePartials.cs</a></h4>
+
+<pre class="cs"><code>{{ "CodePagePartials.cs" | includeContentFile | htmlencode }}</code></pre>
+
+<p>
+    The <em>customerCard</em> partial shows another example where Code Pages are useful where they're able to access any IOC 
+    dependency and existing Web App functionality, which can be called with:
+</p>
+
+<pre class="cs"><code>{{ "examples/customer-card.txt" | includeFile }}</code></pre>
+
+<p>
+    To render a nice Customer Card snapshot:
+</p>
+
+{{ 'customerCard' | partial({ customerId: "ALFKI" }) }}
+
 
 {{ "doc-links" | partial({ order }) }}
