@@ -53,6 +53,45 @@ order: 11
 
 <pre><code>Plugins.Add(new TemplatePagesFeature { HtmlExtension = ".htm" });</code></pre>
 
+<h4 id="runs-everywhere">Runs Everywhere</h4>
+
+<p>
+    The beauty of ServiceStack Templates working natively with ServiceStack is that it runs everywhere ServiceStack does
+    which is in all major .NET Server Platforms. That is, your same Templates-based Web Application is able to use
+    the same Templates implementation, "flavour" and feature-set and is portable across whichever platform you choose to host it on:
+</p>
+
+<ul>
+  <li><b>Windows, OSX or Linux</b>
+    <ul>
+      <li><b>.NET Framework or Mono</b>
+        <ul>
+          <li><a href="https://github.com/ServiceStackApps/LiveDemos#live-servicestack-demos">Any ASP.NET host</a></li>
+          <li><a href="http://docs.servicestack.net/self-hosting">Stand-alone, Self-Hosted HttpListener</a></li>
+          <li><a href="https://github.com/ServiceStack/ServiceStack.Gap#self-hosting-console-app">Entire App ILMerged into a single cross-platform App.exe</a></li>
+        </ul>
+      </li>
+      <li><b>.NET Core</b>
+        <ul>
+          <li><a href="https://github.com/NetCoreApps/LiveDemos#servicestack-net-core-live-demos">Web App or SelfHost</a></li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li><b>Windows</b>
+    <ul>
+      <li><a href="http://docs.servicestack.net/templates-windows-service">Stand-alone Windows Service</a></li>
+      <li><a href="https://github.com/ServiceStack/ServiceStack.Gap#winforms-with-chromium-embedded-framework">Hosted inside WinForms with Chromium Embedded Framework</a></li>
+      <li><a href="https://github.com/ServiceStackApps/HelloServiceFabric">Windows and Azure Service Fabric</a></li>
+    </ul>
+  </li>
+  <li><b>OSX</b>
+    <ul>
+      <li><a href="https://github.com/ServiceStack/ServiceStack.Gap#mac-osx-cocoa-app-with-xmarainmac">Hosted inside Mac OSX Cocoa App with Xmarain.Mac</a></li>
+    </ul>
+  </li>
+</ul>
+
 <h4>Calling Pages Directly</h4>
 
 <p>

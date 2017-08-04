@@ -1,0 +1,148 @@
+<!--
+title: ASP.NET Core MVC
+order: 14
+-->
+
+<p>
+    The easiest way to enable Templates support in a .NET Core App is to register an empty ServiceStack AppHost
+    with the <em>TemplatePagesFeature</em> plugin enabled:
+</p>
+
+<pre class="cs"><code>public class Startup
+{
+    public void Configure(IApplicationBuilder app)
+    {
+        app.UseServiceStack(new AppHost());
+    }
+}
+
+public class MyServices : Service {}
+
+public class AppHost : AppHostBase
+{
+    public AppHost() : base("ServiceStack Template Pages", typeof(MyServices).GetAssembly()) { }
+
+    public override void Configure(Container container)
+    {
+        Plugins.Add(new TemplatePagesFeature());
+    }
+}</code></pre>
+
+<p>
+    This let you use the <a href="/docs/view-engine">View Engine</a> and <a href="/docs/code-pages">Code Pages</a> features
+    to build your entire .NET Core Web App with Templates without needing to use anything else in ServiceStack.
+</p>
+
+<h4>MVC PageResult</h4>
+
+<p>
+    Just as you can use a ServiceStack Service as the Controller for a Template Page View, you can also use an MVC Controller
+    which works the same way as a Service, but instead of returning the <em>PageResult</em> directly, you need to call 
+    <em>ToMvcResult()</em> extension method to wrap it in an MVC ActionResult, e.g:
+</p>
+
+<pre class="cs"><code>public class HomeController : Controller
+{
+    public ActionResult Index() =>
+        new PageResult(HostContext.TryResolve&lt;ITemplatePages&gt;().GetPage("index")).ToMvcResult();
+}</code></pre>
+
+<p>
+    This has the same effect as it has in a ServiceStack Service where the <em>PageResult</em> sets the Content-Type 
+    HTTP Response Header and asynchronously writes the template to the Response OutputStream for maximum performance.
+</p>
+
+<h4>Sharing Dependencies</h4>
+
+<p>
+    Unfortunately you'd need to resolve <em>ITemplatePages</em> directly from ServiceStack's IOC as dependencies registered in 
+    ServiceStack's IOC aren't visible in .NET Core MVC but dependencies registered in .NET Core MVC are visible in ServiceStack
+    so to have the same dependencies available to both .NET Core MVC and ServiceStack you would instead register it in .NET Core's 
+    IOC then resolve the same instance in your ServiceStack AppHost, e.g:
+</p>
+
+<pre class="cs"><code>public class Startup
+{
+    public void ConfigureServices(IServiceCollection services)
+    {
+        var context = new TemplatePagesFeature();
+        services.AddSingleton(context);
+        services.AddSingleton(context.Pages);
+    }
+
+    public void Configure(IApplicationBuilder app)
+    {
+        app.UseServiceStack(new AppHost());
+    }
+}
+
+public class MyServices : Service {}
+
+public class AppHost : AppHostBase
+{
+    public AppHost() : base("ServiceStack Template Pages", typeof(MyServices).GetAssembly()) {}
+
+    public override void Configure(Container container)
+    {
+        Plugins.Add(container.Resolve&lt;TemplatePagesFeature&gt;());
+    }
+}</code></pre>
+
+<p>
+    This will then let you access <em>ITemplatePages</em> as a normal dependency in your MVC Controller:
+</p>
+
+<pre class="cs"><code>public class HomeController : Controller
+{
+    ITemplatePages pages;
+    public HomeController(ITemplatePages pages) => this.pages = pages;
+
+    public ActionResult Index() => new PageResult(pages.GetPage("index")).ToMvcResult();
+}</code></pre>
+
+<h4>Using Templates without a ServiceStack AppHost</h4>
+
+<p>
+    If you don't need the <a href="/docs/view-engine">View Engine</a> support and would like to use Templates without a 
+    ServiceStack AppHost you can, just register a <em>TemplateContext</em> instance in .NET Core's IOC, replace
+    its Virtual File System to point to the <em>WebRootPath</em> and you can start returning PageResult's as above:
+</p>
+
+<pre class="cs"><code>public class Startup
+{
+    public void ConfigureServices(IServiceCollection services)
+    {
+        var context = new TemplateContext();
+        services.AddSingleton(context);
+        services.AddSingleton(context.Pages);
+    }
+
+    public void Configure(IApplicationBuilder app)
+    {
+        var context = app.ApplicationServices.GetService&lt;TemplateContext&gt;();
+        context.VirtualFiles = new FileSystemVirtualFiles(env.WebRootPath);
+        context.Init();
+    }
+}
+
+public class HomeController : Controller
+{
+    ITemplatePages pages;
+    public HomeController(ITemplatePages pages) => this.pages = pages;
+
+    public ActionResult Index() => new PageResult(pages.GetPage("index")).ToMvcResult();
+}</code></pre>
+
+<p>
+    Checkout the <a href="https://github.com/NetCoreApps/MvcTemplates">NetCoreApps/MvcTemplates</a> repository for a 
+    stand-alone example, complete with a 
+    <a href="https://github.com/NetCoreApps/MvcTemplates/blob/master/src/wwwroot/sidebar.html">sidebar.html partial</a> 
+    and a <a href="https://github.com/NetCoreApps/MvcTemplates/blob/master/src/CustomTemplateFilters.cs">CustomTemplateFilters.cs</a>.
+</p>
+
+<a href="https://github.com/NetCoreApps/MvcTemplates">
+    <img src="https://raw.githubusercontent.com/NetCoreApps/MvcTemplates/master/src/wwwroot/assets/img/screenshot.png" alt=""
+         style="max-width:850px; padding:20px 0 0 0">
+</a>
+
+{{ "doc-links" | partial({ order }) }}

@@ -1,0 +1,41 @@
+<!--
+title: ASP.NET v4.5 MVC 
+order: 15
+-->
+
+<p>
+    You can return a Template Page in a classic ASP.NET MVC similar to ASP.NET Core MVC Controller except that in order to 
+    work around the lack of being able to async in classic ASP.NET MVC Action Results you need to return a task, but because we can
+    <a href="https://github.com/ServiceStackApps/MvcTemplates/blob/fc2bc4e7e46a4a186a6627844b5cee77c19f1b8b/src/MvcTemplates/MvcTemplates/AppHost.cs#L61">replace the IOC Controller Factory in ASP.NET MVC</a>
+    you can use Constructor Injection to access the <em>ITemplatePages</em> dependency:
+</p>
+
+<pre class="cs"><code>public class HomeController : Controller
+{
+    ITemplatePages pages;
+    public HomeController(ITemplatePages pages) => this.pages = pages;
+
+    public Task&lt;MvcPageResult&gt; Index() =>
+        new PageResult(pages.GetPage("index")).ToMvcResultAsync();
+}</code></pre>
+
+<h4>ASP.NET MVC + Templates Demo</h4>
+
+<p>
+    Checkout the <a href="https://github.com/ServiceStackApps/MvcTemplates">ServiceStackApps/MvcTemplates</a> repository for a 
+    stand-alone example, complete with a 
+    <a href="https://github.com/ServiceStackApps/MvcTemplates/blob/master/src/MvcTemplates/MvcTemplates/sidebar.html">sidebar.html partial</a> 
+    and a <a href="https://github.com/ServiceStackApps/MvcTemplates/blob/master/src/MvcTemplates/MvcTemplates/CustomTemplateFilters.cs">CustomTemplateFilters.cs</a>.
+</p>
+
+<a href="https://github.com/NetCoreApps/MvcTemplates">
+    <img src="https://raw.githubusercontent.com/NetCoreApps/MvcTemplates/master/src/wwwroot/assets/img/screenshot.png" alt=""
+         style="max-width:850px; padding:20px 0">
+</a>
+
+<blockquote>
+    This demo was created from the 
+    <a href="http://docs.servicestack.net/create-your-first-webservice#step-2-selecting-a-template">ServiceStack ASP.NET MVC5 Empty</a> VS.NET Template.
+</blockquote>
+
+{{ "doc-links" | partial({ order }) }}
