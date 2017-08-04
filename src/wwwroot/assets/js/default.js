@@ -82,3 +82,20 @@ $(".linq-preview").each(function(){
     .trigger("input")
 
 })
+
+$("h2,h3,h4,h5").each(function(){
+    var el = $(this);
+
+    var text = el.html();
+    if (text.indexOf("<") >= 0) return;
+
+    if (!el.attr('id')) {
+        var safeName = text.toLowerCase().replace(/\s+/g, "-").replace(/[^a-zA-Z0-9_-]+/g,"");
+        el.attr('id', safeName);
+    }
+
+    el.on('click', function(){
+        var id = el.attr('id');
+        location.href = "#" + id;
+    });
+})

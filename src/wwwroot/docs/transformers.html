@@ -27,7 +27,7 @@ order: 10
 </code></pre>
 
 
-<h4>Output Transformers</h4>
+<h4 id="output-transformers">Output Transformers</h4>
 
 <p>
     You can transform the entire output of a Template with Output Transformers which you would do if both your <b>_layout</b>
@@ -67,7 +67,7 @@ var html = await result.RenderToStringAsync();
     a Stream of converted HTML which is what's written to the OutputStream.
 </p>
 
-<h4>Page Transformers</h4>
+<h4 id="page-transformers">Page Transformers</h4>
 
 <p>
     You can also apply Transformations to only the Page's output using Page Transformers which you would do if only the <b>page</b> was in 
@@ -104,7 +104,7 @@ The Content");
 var html = await result.RenderToStringAsync();
 </code></pre>
 
-<h4>Filter Transformers</h4>
+<h4 id="filter-transformers">Filter Transformers</h4>
 
 <p>
     Filter Transformers are used to apply Stream Transformations to <a href="/docs/filters#block-filters">Block Filters</a> which you 

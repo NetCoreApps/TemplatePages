@@ -1,15 +1,20 @@
 <!--
-title: Configuration
+title: API Reference
 order: 15
 -->
 
-The following configuration is available when initializing a new <em>TemplateContext</em> instance:
+<h3 class="ref">TemplateContext</h3>
 
-<h4>Default Configuration</h4>
+<p>
+    The <em>TemplateContext</em> is the sandbox where all templates are executed within that can be customized with the 
+    available APIs below:
+</p>
+
+<h4>Pre-configured defaults</h4>
 
 <p>
     Some <a href="/docs/configuration">default filters</a> when called without arguments will use the default configuration 
-    shown below that can be overridden by replacing their default value in the <em>Args</em> collection:
+    shown below that can be overridden by replacing their default value in the TemplateContext's <em>Args</em> collection:
 </p>
 
 <pre class="cs"><code>var context = new TemplateContext { 
@@ -101,7 +106,8 @@ foreach (var file in fs.GetAllMatchingFiles("*.html"))
 
 <p>
     Specify an optional 
-    <a href="http://docs.servicestack.net/appsettings">App Settings provider</a> that you want templates to have access to.
+    <a href="http://docs.servicestack.net/appsettings">App Settings provider</a> that templates can access with the <em>{{ pass: key | appSetting }}</em>
+    default filter.
 </p>
 
 <h4>CheckForModifiedPages</h4>
@@ -116,5 +122,115 @@ foreach (var file in fs.GetAllMatchingFiles("*.html"))
 <p>
     Whether to Render Expression Exceptions in-line (default = false).
 </p>
+
+<h3 class="ref">PageResult</h3>
+
+<p>
+    The <em>PageResult</em> is the rendering context used to render templates whose output can be customized with the APIs below:
+</p>
+
+<h4>Layout</h4>
+
+<p>
+    Override the layout used for the page by specifying a layout name:
+</p>
+
+<pre class="cs"><code>new PageResult(page) { Layout = "custom-layout" }</code></pre>
+
+<h4>LayoutPage</h4>
+
+<p>
+    Override the layout used for the page by specifying a Layout page:
+</p>
+
+<pre class="cs"><code>new PageResult(page) { LayoutPage = Request.GetPage("custom-layout") }</code></pre>
+
+<h4>Args</h4>
+
+<p>
+    Override existing or specify additional arguments in the Template's scope:
+</p>
+
+<pre class="cs"><code>new PageResult(page) { 
+    Args { 
+        ["myArg"] = "argValue",
+    }
+}</code></pre>
+
+<h4>TemplateFilters</h4>
+
+<p>
+    Make additional filters available to the Template:
+</p>
+
+<pre class="cs"><code>new PageResult(page) { 
+    TemplateFilters { new MyFilters() }
+}</code></pre>
+
+<h4>OutputTransformers</h4>
+
+<p>
+    <a href="/transformers#output-transformers">Transform the entire Template's Output</a> before rendering to the OutputStream:
+</p>
+
+<pre class="cs"><code>new PageResult(page) {
+    ContentType = MimeTypes.Html,
+    OutputTransformers = { MarkdownPageFormat.TransformToHtml },
+}</code></pre>
+
+<h4>PageTransformers</h4>
+
+<p>
+    <a href="/docs/transformers#page-transformers">Transform just the Page's Output</a> before rendering to the OutputStream:
+</p>
+
+<pre class="cs"><code>new PageResult(page) {
+    ContentType = MimeTypes.Html,
+    PageTransformers = { MarkdownPageFormat.TransformToHtml },
+}</code></pre>
+
+<h4>FilterTransformers</h4>
+
+<p>
+    Specify additional <a href="/docs/transformers#filter-transformers">Filter Transformers</a> available to the Template:
+</p>
+
+<pre class="cs"><code>new PageResult(page) {
+    FilterTransformers = {
+        ["markdown"] = MarkdownPageFormat.TransformToHtml
+    }
+}</code></pre>
+
+<h4>ExcludeFiltersNamed</h4>
+
+<p>
+   <a href="/docs/sandbox#disable-filters">Disable access</a> to the specified registered filters:
+</p>
+
+<pre class="cs"><code>new PageResult(page) {
+    ExcludeFiltersNamed = { "partial", "selectPartial" }
+}</code></pre>
+
+<h4>Options</h4>
+
+<p>
+    Return additional HTTP Response Headers when rendering to a HTTP Response:
+</p>
+
+<pre class="cs"><code>new PageResult(page) {
+    Options = { 
+        "X-Powered-By" = "ServiceStack Templates" 
+    }
+}</code></pre>
+
+<h4>ContentType</h4>
+
+<p>
+    Specify the HTTP Content-Type when rendering to a HTTP Response:
+</p>
+
+<pre class="cs"><code>new PageResult(page) {
+    ContentType = "text/plain"
+}</code></pre>
 
 {{ "doc-links" | partial({ order }) }}

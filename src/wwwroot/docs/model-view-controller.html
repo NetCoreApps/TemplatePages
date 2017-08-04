@@ -26,6 +26,18 @@ order: 12
 
 <pre class="cs"><code>{{ "CustomerServices.cs" | includeContentFile }}</code></pre>
 
+<p>
+    The above can Service can also be made slightly shorter by using the <em>Request.GetPage()</em> extension method, e.g:
+</p>
+
+<pre class="cs"><code>public class CustomerServices : Service
+{
+    public object Any(ViewCustomer request) =>
+        new PageResult(Request.GetPage("examples/customer")) {
+            Model = TemplateQueryData.GetCustomer(request.Id)
+        };
+}</code></pre>
+
 <h5>Model PageResult Property</h5>
 
 <p>
