@@ -110,11 +110,11 @@ foreach (var file in fs.GetAllMatchingFiles("*.html"))
     default filter.
 </p>
 
-<h4>CheckForModifiedPages</h4>
+<h4>CheckForModifiedPagesAfter</h4>
 
 <p>
-    Whether to check whether Pages have been modified before rendering the page. Defaults to <b>false</b>. Note: <b>DebugMode</b>
-    also needs to be <b>false</b> for check to be disabled.
+    How long to wait before checking if the backing files of pages have changed and to reload them. 
+    Defaults to <em>null</em> which is to never check. Note: if <b>DebugMode</b> is <em>true</em> it will always check for changes.
 </p>
 
 <h4>RenderExpressionExceptions</h4>

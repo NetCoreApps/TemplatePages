@@ -65,6 +65,17 @@ Without: {{ '<b>hi</b>' | raw }}" }) }}
 {{ 'live-template' | partial({ template: "1 - 2 + 3 * 4 / 5 = {{ add(sub(1,2), div(mul(3,4), 5)) }}
 ((1 - 2 + 3) * 4) / 5 = {{ 1 | subtract(2) | add(3) | multiply(4) | divide(5) }}" }) }}
 
+<h4>Date Functions</h4>
+
+{{ 'live-template' | partial({ rows: 8, template: "{{ now | addTicks(1) }}
+{{ now | addMilliseconds(1) }}
+{{ now | addSeconds(1) }}
+{{ now | addMinutes(1) }}
+{{ now | addHours(1) }}
+{{ now | addDays(1) }}
+{{ now | addMonths(1) }}
+{{ now | addYears(1) }}" }) }}
+
 <h4>Formatting</h4>
 
 <p>
@@ -252,6 +263,20 @@ truthy: {{ true | truthy('T') }}, {{ 1 | truthy('T') }}, {{ null | truthy('T') }
 Bob's score: {{ [{name:'Alice',score:50},{name:'Bob',score:40}] | toDictionary: it.name 
   | map: it.Bob
   | select: {it.score} }}` }) }}
+
+<p>
+    Use <em>parseKeyValueText</em> to convert a key/value string into a dictionary, you can then use 
+    <em>values</em> and <em>keys</em> to extract the Dictionaries keys or values collection:
+</p>
+
+{{ 'live-template' | partial({ rows: 8, template: `{{ '
+Rent:      1000
+Internet:  50
+Mobile:    50
+Food:      400
+Misc:      200
+' | trim | parseKeyValueText(':') | assignTo: expenses }}
+Expenses: {{ expenses | values | sum }}` }) }}
 
 <h4>Serialization</h4>
 
