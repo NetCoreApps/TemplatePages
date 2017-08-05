@@ -1,0 +1,32 @@
+{{ '
+Salary:        4000
+App Royalties: 200
+' | trim | parseKeyValueText(':') | assignTo: monthlyRevenues }}
+{{ '
+Rent      1000
+Internet  50
+Mobile    50
+Food      400
+Misc      200
+' | trim | parseKeyValueText | assignTo: monthlyExpenses }}
+{{ 11200 | assignTo: balance }}
+{{ monthlyRevenues | values | sum | assignTo: totalRevenues }}
+{{ monthlyExpenses | values | sum | assignTo: totalExpenses }}
+{{ subtract(totalRevenues, totalExpenses) | assignTo: totalSavings }}
+
+Current Balance:  {{ balance | currency }}
+
+Revenues:
+{{ monthlyRevenues | toList | select: { it.Key | padRight(17) }{ it.Value }\n }}
+Total            <b>{{ totalRevenues | currency }}</b>
+
+Expenses:
+{{ monthlyExpenses | toList | select: { it.Key | padRight(17) }{ it.Value }\n }}
+Total            <b>{{ totalExpenses | currency }}</b>
+
+Monthly Savings: <b>{{ totalSavings | currency }}</b>
+
+Projected Cash Position:
+{{ now | dateFormat }}       <b>{{ totalSavings | multiply(1) | add(balance) | currency }}</b>
+{{ now | dateFormat }}       <b>{{ totalSavings | multiply(2) | add(balance) | currency }}</b>
+{{ now | dateFormat }}       <b>{{ totalSavings | multiply(3) | add(balance) | currency }}</b>
