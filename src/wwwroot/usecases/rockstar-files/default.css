@@ -123,3 +123,11 @@ a:hover {
     color: #000;
     text-decoration: none;
 }
+#back {
+    position:absolute;
+    top:8px;
+    left:8px;
+}
+#back:hover {
+    text-decoration: none;
+}

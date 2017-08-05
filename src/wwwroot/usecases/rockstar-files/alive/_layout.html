@@ -14,7 +14,8 @@ a {
 </style>
 </head>
     <body>
-        
+        <a id="back" href="../../../content-websites">&#8592; Content Websites</a>
+
         <div id="page">
             <div id="info">
                 <h6>Rockstars still rocking it...</h6>
@@ -25,14 +26,14 @@ a {
 
             <h1>{{ title }}</h1>
             
-            {{ "usecases/rockstar-files/menu-alive" | partial }}
+            {{ "menu-alive" | partial }}
         
             <div id="content">
                 {{ page }}
                 <b class="clear"></b>
             </div>
             
-            {{ "usecases/rockstar-files/menu-dead" | partial }}
+            {{ "menu-dead" | partial }}
         </div>
 
     </body>
