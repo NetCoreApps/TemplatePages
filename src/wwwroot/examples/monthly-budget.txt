@@ -1,3 +1,4 @@
+{{ 11200 | assignTo: balance }}
 {{ '
 Salary:        4000
 App Royalties: 200
@@ -9,24 +10,22 @@ Mobile    50
 Food      400
 Misc      200
 ' | trim | parseKeyValueText | assignTo: monthlyExpenses }}
-{{ 11200 | assignTo: balance }}
 {{ monthlyRevenues | values | sum | assignTo: totalRevenues }}
 {{ monthlyExpenses | values | sum | assignTo: totalExpenses }}
 {{ subtract(totalRevenues, totalExpenses) | assignTo: totalSavings }}
 
-Current Balance:  {{ balance | currency }}
+Current Balance: <b>{{ balance | currency }}</b>
 
-Revenues:
-{{ monthlyRevenues | toList | select: { it.Key | padRight(17) }{ it.Value }\n }}
+Monthly Revenues:
+{{ monthlyRevenues | toList | select: { it.Key | padRight(17) }{ it.Value | currency }\n }}
 Total            <b>{{ totalRevenues | currency }}</b>
 
-Expenses:
-{{ monthlyExpenses | toList | select: { it.Key | padRight(17) }{ it.Value }\n }}
+Monthly Expenses:
+{{ monthlyExpenses | toList | select: { it.Key | padRight(17) }{ it.Value | currency }\n }}
 Total            <b>{{ totalExpenses | currency }}</b>
 
 Monthly Savings: <b>{{ totalSavings | currency }}</b>
 
 Projected Cash Position:
-{{ now | dateFormat }}       <b>{{ totalSavings | multiply(1) | add(balance) | currency }}</b>
-{{ now | dateFormat }}       <b>{{ totalSavings | multiply(2) | add(balance) | currency }}</b>
-{{ now | dateFormat }}       <b>{{ totalSavings | multiply(3) | add(balance) | currency }}</b>
+{{ 3 | times | map: incr(index)
+ | select: { now | addMonths(it) | dateFormat }       <b>{ totalSavings | multiply(it) | add(balance) | currency }</b>\n }}
