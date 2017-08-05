@@ -39,7 +39,7 @@ a:hover {
 li.active a, #content li.active a {
     font-weight: bold;
 }
-#content .doc-links, #content .linq-links {
+#content .doc-links, #content .linq-links, #content .usecase-links {
     margin-top: 2em;
     height: 1em;
 }

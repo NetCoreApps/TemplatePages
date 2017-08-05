@@ -83,7 +83,7 @@ $(".linq-preview").each(function(){
 
 })
 
-$("h2,h3,h4,h5").each(function(){
+$("h2,h3,h4").each(function(){
     var el = $(this);
 
     var text = el.html();

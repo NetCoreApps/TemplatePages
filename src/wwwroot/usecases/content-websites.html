@@ -3,4 +3,121 @@ title: Content Websites
 order: 2
 -->
 
+<p>
+    In its most basic form Templates is just plain HTML marked up with variable place holders, coupled with the 
+    partials just being HTML pages themselves and with its intuitive 
+    <a href="/docs/view-engine#layout-selection">Cascading Layout Selection</a> and you get a very natural
+    solution to build complete websites without any code.
+</p>
+
+<p>
+    The flexibility of Templates allows for several different solutions for generating websites:
+</p>
+
+<h3>Website Sub Directory</h3>
+
+<p>
+    A lightweight solution that can be embedded in any existing ASP.NET or ASP.NET Core Web Application is to embed
+    an maintain an entire Website in a stand-alone sub directory. To showcase an example we've ported the content in 
+    the original <a href="https://github.com/NetCoreApps/RazorRockstars/tree/master/src/RazorRockstars.WebHost">Razor Rockstars</a> into the 
+    <a href="https://github.com/NetCoreApps/TemplatePages/tree/master/src/wwwroot/usecases/rockstar-files">/usecases/rockstar-files</a>
+    sub directory where the entire website becomes viewable from:     
+</p>
+
+<h4><a href="/usecases/rockstar-files/">/rockstar-files</a></h4>
+
+<h4>Porting an existing Razor Website</h4>
+
+<p>
+    Porting an existing Razor Website is fairly straight-forward, to port Razor Rockstars we needed to rename all
+    <em>.cshtml</em> files back to <em>.html</em>. Remove all C# code from the code pages, e.g. for 
+    <a href="/usecases/rockstar-files/dead/cobain">/cobain</a> replace:
+</p>
+
+<pre class="cs"><code>@{
+    Layout = "DeadLayout";
+    ViewBag.Title = "Kurt Cobain";
+}</code></pre>
+
+<p>
+    With equivalent page metadata:
+</p>
+
+<pre class="cs"><code>&lt;!--
+title: Kurt Cobain
+--&gt;</code></pre>
+
+<p>
+    You don't need to specify a custom layout as Templates will automatically select the closest layout from the 
+    page at:
+    <a href="https://github.com/NetCoreApps/TemplatePages/blob/master/src/wwwroot/usecases/rockstar-files/dead/_layout.html">/rockstar-files/dead/_layout.html</a>.
+    You'll also no longer need to maintain your Layout pages and partials in <em>/Views/Shared</em> separate from your views as they 
+    all get to all live cohesively in the same logical directory. 
+</p>
+
+
+<p>
+    To embed a page in a layout use the declarative <em>{{ pass: page }}</em> instead of the imperative <em>@RenderBody()</em>.
+    Likewise the syntax for partials changes to <em>{{ pass: "menu-alive" | partial }}</em> from <em>@Html.Partial("MenuAlive")</em>.
+    Templates also alleviates the need for bespoke partials like <em>@Html.PartialMarkdown("Content")</em> and can instead leverage the 
+    flexibility of chaining existing filters to achieve the same result like
+    <em>{{ pass: "content.md" | includeFile | markdown }}</em>.
+</p>
+
+<p>
+    To get a feel for what an equivalent Razor Website looks like compared to Templates checkout:
+</p>
+
+<table class="table">
+    <tr>
+        <td>type</td>
+        <td>before</td>
+        <td>after</td>
+    </tr>
+    <tr>
+        <td>Layout</td>
+        <td>
+            <a href="https://github.com/NetCoreApps/RazorRockstars/blob/master/src/RazorRockstars.WebHost/Views/Shared/DeadLayout.cshtml">/Views/Shared/DeadLayout.cshtml</a>
+        </td>
+        <td>
+            <a href="https://github.com/NetCoreApps/TemplatePages/blob/master/src/wwwroot/usecases/rockstar-files/dead/_layout.html">/dead/_layout.html</a>
+        </td>
+    </tr>
+    <tr>
+        <td>Partial</td>
+        <td>
+            <a href="https://github.com/NetCoreApps/RazorRockstars/blob/master/src/RazorRockstars.WebHost/Views/Shared/MenuAlive.cshtml">/Views/Shared/MenuAlive.cshtml</a>
+        </td>
+        <td>
+            <a href="https://github.com/NetCoreApps/TemplatePages/blob/master/src/wwwroot/usecases/rockstar-files/menu-alive.html">/menu-alive.html</a>
+        </td>
+    </tr>
+    <tr>
+        <td>Page</td>
+        <td>
+            <a href="https://github.com/NetCoreApps/RazorRockstars/blob/master/src/RazorRockstars.WebHost/wwwroot/stars/alive/vedder/default.cshtml">/alive/vedder/default.cshtml</a>
+        </td>
+        <td>
+            <a href="https://github.com/NetCoreApps/TemplatePages/blob/master/src/wwwroot/usecases/rockstar-files/alive/vedder/index.html">/alive/vedder/index.html</a>
+        </td>
+    </tr>
+</table>
+
+<h4>Embedding Remote Content</h4>
+
+<p>
+    A useful alternative to embedding static file content in pages is to source the content from a remote site. With the 
+    <a href="/docs/protected-filters#includeurlwithcache">includeUrlWithCache</a> filter this is easy to do with great
+    performance where you can embed remote url content, cached for 10 minutes and convert from markdown with:
+</p>
+
+<pre class="tpl"><code>{{ pass: url | includeUrlWithCache({ expiresInSecs: 600 }) | markdown }}</code></pre>
+
+<p>
+    As seen in <a href="https://github.com/NetCoreApps/TemplatePages/blob/master/src/wwwroot/usecases/rockstar-files/alive/grohl-url/index.html">/grohl-url/index.html</a>, 
+    viewable at:
+</p>
+
+<h4><a href="/usecases/rockstar-files/alive/grohl-url/">/rockstar-files/alive/grohl-url/</a></h4>
+
 {{ "usecase-links" | partial({ order }) }}
