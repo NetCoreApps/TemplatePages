@@ -37,10 +37,12 @@ order: 1
 
     <div class="tab-content">
         <div class="tab-pane active" id="email-template" role="tabpanel">
-            <textarea name="EmailTemplate">{{ 'examples/email-template.txt' | includeFile }}</textarea>
+            <textarea name="EmailTemplate"
+             autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">{{ 'examples/email-template.txt' | includeFile }}</textarea>
         </div>
         <div class="tab-pane" id="html-template" role="tabpanel">
-            <textarea name="HtmlTemplate">{{ 'examples/email-html-template.html' | includeFile }}</textarea>
+            <textarea name="HtmlTemplate"
+             autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">{{ 'examples/email-html-template.html' | includeFile }}</textarea>
         </div>
     </div>
     <p>
