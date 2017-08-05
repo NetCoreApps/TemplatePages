@@ -99,3 +99,26 @@ $("h2,h3,h4,h5").each(function(){
         location.href = "#" + id;
     });
 })
+
+$.fn.ajaxPreview = function(opt) {
+    var inputs = this.find("input,textarea");
+    inputs.on("input", function(){
+        var f = $(this).closest("form");
+        var data = {};
+        inputs.each(function(){ data[this.name] = this.value })
+        $.ajax({ 
+            url: f.attr('action'),
+            method: "POST",
+            data: JSON.stringify(data),
+            contentType: 'application/json',
+            dataType: 'json',
+            success: opt.success,
+            error: opt.error
+        })
+    })
+    .first().trigger("input")
+
+    return this.each(function(){ 
+        $(this).submit(function(e){ e.preventDefault() }) 
+    });
+}

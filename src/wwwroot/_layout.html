@@ -42,7 +42,10 @@
     <div id="sig">made with <span>&#10084;</span> by <a target="_blank" href="https://servicestack.net" title="ServiceStack">ServiceStack</a></div>
 
     <script src="/assets/js/jquery-3.2.1.min.js"></script>
+    <script src="/assets/js/bootstrap.min.js"></script>
     <script src="/assets/js/default.js"></script>
+
+    {{ scripts | otherwise("") }}
 
 </body>
 </html>

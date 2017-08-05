@@ -1,0 +1,112 @@
+<!--
+title: Email Templates
+order: 1
+-->
+
+<p>
+    Since Templates are intuitive and approachable to non-programmers it's useful in several Business Activities that are better
+    served by non-technical Business employees like Marketers, Designers, Copyrighters, etc. Generating and Previewing email
+    templates are one example of this:
+</p>
+
+<h4>Order Confirmation Email Example</h4>
+
+<style>
+    form textarea {
+        padding: 10px;
+        width: 100%;
+        height: 460px;
+    }
+
+    form input {
+        margin: 10px 0 0 10px;
+        width: 80px;
+        padding: 2px 5px;
+    }
+</style>
+
+<form action="/emails/order-confirmation/preview">
+    <ul class="nav nav-tabs" role="tablist">
+        <li class="nav-item">
+            <a class="nav-link active" data-toggle="tab" href="#email-template" role="tab">Email Template</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" data-toggle="tab" href="#html-template" role="tab">HTML Email Template</a>
+        </li>
+    </ul>
+
+    <div class="tab-content">
+        <div class="tab-pane active" id="email-template" role="tabpanel">
+            <textarea name="EmailTemplate">{{ 'examples/email-template.txt' | includeFile }}</textarea>
+        </div>
+        <div class="tab-pane" id="html-template" role="tabpanel">
+            <textarea name="HtmlTemplate">{{ 'examples/email-html-template.html' | includeFile }}</textarea>
+        </div>
+    </div>
+    <p>
+        Preview Customer: <input type="text" name="PreviewCustomerId" value="ALFKI" />
+    </p>
+</form>
+
+<hr style="margin:40px 0">
+
+<ul class="nav nav-tabs" role="tablist">
+    <li class="nav-item">
+        <a class="nav-link active" data-toggle="tab" href="#html-preview" role="tab">HTML Email</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" data-toggle="tab" href="#text-preview" role="tab">Plain Text Email</a>
+    </li>
+</ul>
+
+<div class="tab-content">
+    <div class="tab-pane active" id="html-preview" role="tabpanel">
+    </div>
+    <div class="tab-pane" id="text-preview" role="tabpanel" style="white-space: pre-wrap;padding:20px;"></div>
+</div>
+
+{{ '<script>
+$("FORM").ajaxPreview({ 
+    success: function(r) {
+        $("#html-preview").html(r.htmlEmail);
+        $("#text-preview").html(r.textEmail);
+    } 
+})
+</script>' | raw | assignTo: scripts }}
+
+<hr style="margin:20px 0">
+
+<h3>Implementation</h3>
+
+<p>
+    This example uses this simple Service below to generate the HTML and plain-text email previews of this email template:
+</p>
+
+<h4><a href="https://github.com/NetCoreApps/TemplatePages/blob/master/src/EmailTemplatesService.cs">EmailTemplatesService.cs</a></h4>
+
+<pre class="cs"><code>{{ "EmailTemplatesService.cs" | includeContentFile | htmlencode }}</code></pre>
+
+<p>
+    The source code for this 
+    <a href="https://github.com/NetCoreApps/TemplatePages/blob/master/src/wwwroot/usecases/email-templates.html">email-templates.html</a>
+    page shows the client preview itself is just using
+    <a href="https://v4-alpha.getbootstrap.com/components/navs/#tabs">Bootstrap Tabs</a> that only uses this custom javascript:
+</p>
+
+<pre class="js"><code>&lt;script&gt;
+$("FORM").ajaxPreview({ 
+    success: function(r) {
+        $("#html-preview").html(r.htmlEmail);
+        $("#text-preview").html(r.textEmail);
+    } 
+})
+&lt;/script&gt;
+</code></pre>
+
+<p>
+    Which calls the generic <em>ajaxPreview</em> jQuery plugin in 
+    <a href="https://github.com/NetCoreApps/TemplatePages/blob/master/src/wwwroot/assets/js/default.js">default.js</a>
+    to make an ajax request on every text box change.
+</p>
+
+{{ "usecase-links" | partial({ order }) }}

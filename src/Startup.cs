@@ -84,6 +84,15 @@ namespace TemplatePages
                     }
                 }
 
+                foreach (var file in files.GetDirectory("usecases").GetAllMatchingFiles("*.html"))
+                {
+                    var page = feature.GetPage(file.VirtualPath).Init().Result;
+                    if (page.Args.TryGetValue("order", out object order) && page.Args.TryGetValue("title", out object title))
+                    {
+                        customFilters.UseCasesIndex[int.Parse((string)order)] = new KeyValuePair<string,string>(GetPath(file.VirtualPath), (string)title);
+                    }
+                }
+
                 LinqContext = new TemplateContext {
                     Args = {
                         [TemplateConstants.DefaultDateFormat] = "yyyy/MM/dd",
@@ -110,6 +119,7 @@ namespace TemplatePages
     {
         public Dictionary<int, KeyValuePair<string, string>> DocsIndex { get; } = new Dictionary<int, KeyValuePair<string, string>>();
         public Dictionary<int, KeyValuePair<string, string>> LinqIndex { get; } = new Dictionary<int, KeyValuePair<string, string>>();
+        public Dictionary<int, KeyValuePair<string, string>> UseCasesIndex { get; } = new Dictionary<int, KeyValuePair<string, string>>();
 
         public object prevDocLink(int order)
         {
@@ -139,11 +149,28 @@ namespace TemplatePages
             return null;
         }
 
+        public object prevUseCaseLink(int order)
+        {
+            if (UseCasesIndex.TryGetValue(order - 1, out KeyValuePair<string,string> entry))
+                return entry;
+            return null;
+        }
+
+        public object nextUseCaseLink(int order)
+        {
+            if (UseCasesIndex.TryGetValue(order + 1, out KeyValuePair<string,string> entry))
+                return entry;
+            return null;
+        }
+
         List<KeyValuePair<string,string>> sortedDocLinks;
         public object docLinks() => sortedDocLinks ?? (sortedDocLinks = sortLinks(DocsIndex));
 
         List<KeyValuePair<string,string>> sortedLinqLinks;
         public object linqLinks() => sortedLinqLinks ?? (sortedLinqLinks = sortLinks(LinqIndex));
+
+        List<KeyValuePair<string,string>> sorteUseCaseLinks;
+        public object useCaseLinks() => sorteUseCaseLinks ?? (sorteUseCaseLinks = sortLinks(UseCasesIndex));
 
         public List<KeyValuePair<string,string>> sortLinks(Dictionary<int, KeyValuePair<string,string>> links)
         {

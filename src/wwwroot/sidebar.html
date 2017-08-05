@@ -11,6 +11,11 @@
         <h5>linq examples</h5>
     </li>
     {{ linqLinks | select: <li class="{ 'active' | if(equals(it.Key, PathInfo)) }"><a href="{ it.Key }">{ it.Value }</a></li> }}
+
+    <li>
+        <h5>use cases</h5>
+    </li>
+    {{ useCaseLinks | select: <li class="{ 'active' | if(equals(it.Key, PathInfo)) }"><a href="{ it.Key }">{ it.Value }</a></li> }}
 </ul>
 
 </div>
