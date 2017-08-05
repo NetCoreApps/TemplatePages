@@ -1,0 +1,39 @@
+﻿<!DOCTYPE HTML>
+<html>
+<head>
+<title>Alive Rockstars - {{ title }}</title>
+<link href="../../default.css" rel="stylesheet" />
+<style type="text/css">
+body {
+    background: #ACDBCE url(../../img/green_dust_scratch.png);
+    background-attachment: fixed;
+}
+a {
+    color: #060;    
+}
+</style>
+</head>
+    <body>
+        
+        <div id="page">
+            <div id="info">
+                <h6>Rockstars still rocking it...</h6>
+                <p>
+                    <a id="home" href="../../"></a>
+                </p>
+            </div>
+
+            <h1>{{ title }}</h1>
+            
+            {{ "usecases/rockstar-files/menu-alive" | partial }}
+        
+            <div id="content">
+                {{ page }}
+                <b class="clear"></b>
+            </div>
+            
+            {{ "usecases/rockstar-files/menu-dead" | partial }}
+        </div>
+
+    </body>
+</html>

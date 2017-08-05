@@ -1,0 +1,14 @@
+{{ {
+    "/usecases/rockstar-files/alive/grohl/": "Dave Grohl",
+    "/usecases/rockstar-files/alive/vedder/": "Eddie Vedder",
+    "/usecases/rockstar-files/alive/springsteen/": "Bruce Springsteen",
+    "/usecases/rockstar-files/alive/love/": "Courtney Love"
+} | assignTo: links }}
+
+<div class="menu">
+    <ul>
+        <li class="label"><b>Living Rockstars:</b></li>
+        {{ links | toList 
+           | select: <li class="{ 'active' | if(eq(it.Key,PathInfo)) }"><a href="{ it.Key }">{ it.Value }</a></li> }}
+    </ul>                
+</div>
