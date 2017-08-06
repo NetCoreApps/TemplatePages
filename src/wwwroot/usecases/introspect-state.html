@@ -1,0 +1,107 @@
+<!--
+title: Introspect State
+order: 4
+-->
+
+<p>
+    Since templates are executable at runtime without precompilation it's a great tool for running 
+    live queries to inspect the state of a running .NET App within a controlled window sandbox. 
+    Here's an example of querying a Server's state:
+</p>
+
+<style>
+    form textarea {
+        padding: 10px;
+        width: 100%;
+        height: 600px;
+    }
+
+    form input {
+        margin: 10px 0 0 10px;
+        width: 80px;
+        padding: 2px 5px;
+    }
+</style>
+
+<form action="/introspect/state">
+    <ul class="nav nav-tabs" role="tablist">
+        <li class="nav-item">
+            <a class="nav-link active" data-toggle="tab" href="#process-template" role="tab">process</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" data-toggle="tab" href="#process-info-template" role="tab">process-info</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" data-toggle="tab" href="#drive-info-template" role="tab">drive-info</a>
+        </li>
+    </ul>
+
+    <div class="tab-content">
+        <div class="tab-pane active" id="process-template" role="tabpanel">
+            <textarea name="Page"
+             autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">{{ 'examples/introspect.html' | includeFile }}</textarea>
+        </div>
+        <div class="tab-pane" id="process-info-template" role="tabpanel">
+            <textarea name="ProcessInfo"
+             autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">{{ 'examples/introspect-process.html' | includeFile }}</textarea>
+        </div>
+        <div class="tab-pane" id="drive-info-template" role="tabpanel">
+            <textarea name="DriveInfo"
+             autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">{{ 'examples/introspect-drive.html' | includeFile }}</textarea>
+        </div>
+    </div>
+</form>
+
+<hr style="margin:20px 0">
+
+<div id="state-output"></div>
+
+{{ `<script>
+$("FORM").ajaxPreview({ 
+    dataType: 'html',
+    success: function(r) {
+        $("#state-output").html(r);
+    } 
+})
+</script>` | raw | assignTo: scripts }}
+
+<hr style="margin:20px 0">
+
+<h4>Implementation</h4>
+
+<p>
+    To implement <a href="https://github.com/NetCoreApps/TemplatePages/blob/master/src/IntrospectStateServices.cs">IntrospectStateServices.cs</a>
+    we created a separate Service using a new <em>TemplateContext</em> instance with a custom set of filters which just exposes the APIs 
+    we want to be able to query:
+</p>
+
+<h4><a href="https://github.com/NetCoreApps/TemplatePages/blob/master/src/IntrospectStateServices.cs">IntrospectStateServices.cs</a></h4>
+
+<pre class="cs"><code>{{ "IntrospectStateServices.cs" | includeContentFile }}</code></pre>
+
+<h4><a href="https://github.com/NetCoreApps/TemplatePages/blob/master/src/wwwroot/usecases/introspect-state.html">Client UI</a></h4>
+
+<p>
+    Then to implement the 
+    <a href="https://github.com/NetCoreApps/TemplatePages/blob/master/src/wwwroot/usecases/introspect-state.html">Client UI</a>
+    we just used a FORM containing Bootstrap Tabs that only uses this custom javascript:
+</p>
+
+<pre class="js"><code>&lt;script&gt;
+$("FORM").ajaxPreview({ 
+    dataType: 'html',
+    success: function(r) {
+        $("#state-output").html(r);
+    } 
+})
+&lt;/script&gt;
+</code></pre>
+
+<p>
+    Which calls the generic <em>ajaxPreview</em> jQuery plugin in 
+    <a href="https://github.com/NetCoreApps/TemplatePages/blob/master/src/wwwroot/assets/js/default.js">default.js</a>
+    to make an ajax request on every text box change.
+</p>
+
+
+{{ "usecase-links" | partial({ order }) }}

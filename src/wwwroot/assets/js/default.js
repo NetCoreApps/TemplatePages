@@ -111,9 +111,11 @@ $.fn.ajaxPreview = function(opt) {
             method: "POST",
             data: JSON.stringify(data),
             contentType: 'application/json',
-            dataType: 'json',
+            dataType: opt.dataType || 'json',
             success: opt.success,
-            error: opt.error
+            error: opt.error || function(jq,status,errMsg) { 
+                console.log('ERROR ajaxPreview', errMsg);
+            }
         })
     })
     .first().trigger("input")
