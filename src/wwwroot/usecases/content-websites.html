@@ -4,10 +4,9 @@ order: 2
 -->
 
 <p>
-    In its most basic form Templates is just plain HTML marked up with variable place holders, coupled with the 
-    partials just being HTML pages themselves and with its intuitive 
-    <a href="/docs/view-engine#layout-selection">Cascading Layout Selection</a> and you get a very natural
-    solution to build complete websites without any code.
+    In its simplest form Templates is just plain HTML marked up with variable place holders, coupled with 
+    partials just being HTML pages themselves and the intuitive <a href="/docs/view-engine#layout-selection">Cascading Layout Selection</a> 
+    and using Templates becomes a natural solution for building complete websites without any code.
 </p>
 
 <p>
@@ -19,9 +18,9 @@ order: 2
 <p>
     A lightweight solution that can be embedded in any existing ASP.NET or ASP.NET Core Web Application is to embed
     an maintain an entire Website in a stand-alone sub directory. To showcase an example we've ported the content in 
-    the original <a href="https://github.com/NetCoreApps/RazorRockstars/tree/master/src/RazorRockstars.WebHost">Razor Rockstars</a> into the 
+    the .NET Core <a href="https://github.com/NetCoreApps/RazorRockstars/tree/master/src/RazorRockstars.WebHost">Razor Rockstars</a> into the 
     <a href="https://github.com/NetCoreApps/TemplatePages/tree/master/src/wwwroot/usecases/rockstar-files">/usecases/rockstar-files</a>
-    sub directory where the entire website becomes viewable from:     
+    sub directory with the entire website viewable from:     
 </p>
 
 <h4><a href="/usecases/rockstar-files/">/rockstar-files</a></h4>
@@ -30,8 +29,8 @@ order: 2
 
 <p>
     Porting an existing Razor Website is fairly straight-forward, to port Razor Rockstars we needed to rename all
-    <em>.cshtml</em> files back to <em>.html</em>. Remove all C# code from the code pages, e.g. for 
-    <a href="/usecases/rockstar-files/dead/cobain">/cobain</a> replace:
+    <em>.cshtml</em> files back to <em>.html</em> and replace all their C# code. Using 
+    <a href="/usecases/rockstar-files/dead/cobain">/cobain</a> page as an example we needed to replace:
 </p>
 
 <pre class="cs"><code>@{
@@ -40,7 +39,7 @@ order: 2
 }</code></pre>
 
 <p>
-    With equivalent page metadata:
+    To use the equivalent page metadata:
 </p>
 
 <pre class="cs"><code>&lt;!--
@@ -48,18 +47,18 @@ title: Kurt Cobain
 --&gt;</code></pre>
 
 <p>
-    You don't need to specify a custom layout as Templates will automatically select the closest layout from the 
+    You won't need to specify a custom layout as Templates will automatically select the closest layout from the 
     page at:
     <a href="https://github.com/NetCoreApps/TemplatePages/blob/master/src/wwwroot/usecases/rockstar-files/dead/_layout.html">/rockstar-files/dead/_layout.html</a>.
     You'll also no longer need to maintain your Layout pages and partials in <em>/Views/Shared</em> separate from your views as they 
-    all get to all live cohesively in the same logical directory. 
+    all get to all live cohesively in the same logical folder structure. 
 </p>
 
 
 <p>
-    To embed a page in a layout use the declarative <em>{{ pass: page }}</em> instead of the imperative <em>@RenderBody()</em>.
+    The declarative <em>{{ pass: page }}</em> is used to embed a page in a layout instead of the imperative <em>@RenderBody()</em>.
     Likewise the syntax for partials changes to <em>{{ pass: "menu-alive" | partial }}</em> from <em>@Html.Partial("MenuAlive")</em>.
-    Templates also alleviates the need for bespoke partials like <em>@Html.PartialMarkdown("Content")</em> and can instead leverage the 
+    Templates also alleviates the need for bespoke partials like <em>@Html.PartialMarkdown("Content")</em> as it can instead leverage the 
     flexibility of chaining existing filters to achieve the same result like
     <em>{{ pass: "content.md" | includeFile | markdown }}</em>.
 </p>
@@ -106,16 +105,16 @@ title: Kurt Cobain
 <h4>Embedding Remote Content</h4>
 
 <p>
-    A useful alternative to embedding static file content in pages is to source the content from a remote site. With the 
+    A useful alternative to embedding static file content in pages is to source the content from a external url. Using the 
     <a href="/docs/protected-filters#includeurlwithcache">includeUrlWithCache</a> filter this is easy to do with great
-    performance where you can embed remote url content, cached for 10 minutes and convert from markdown with:
+    performance where you can embed remote url content, cache it for 10 minutes and convert from markdown with:
 </p>
 
-<pre class="tpl"><code>{{ pass: url | includeUrlWithCache({ expiresInSecs: 600 }) | markdown }}</code></pre>
+<pre class="tpl"><code>{{ pass: url | includeUrlWithCache | markdown }}</code></pre>
 
 <p>
-    As seen in <a href="https://github.com/NetCoreApps/TemplatePages/blob/master/src/wwwroot/usecases/rockstar-files/alive/grohl-url/index.html">/grohl-url/index.html</a>, 
-    viewable at:
+    As seen in <a href="https://github.com/NetCoreApps/TemplatePages/blob/master/src/wwwroot/usecases/rockstar-files/alive/grohl-url/index.html">/grohl-url/index.html</a>
+    which is viewable at:
 </p>
 
 <h4><a href="/usecases/rockstar-files/alive/grohl-url/">/rockstar-files/alive/grohl-url/</a></h4>

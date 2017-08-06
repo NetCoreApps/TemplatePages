@@ -167,3 +167,7 @@ blockquote {
     border-left: 0.25rem solid #eceeef;
     background: #f8f8f8;
 }
+caption {
+    caption-side: top; 
+    text-align: center;
+}
