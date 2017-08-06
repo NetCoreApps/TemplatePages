@@ -65,6 +65,16 @@ Without: {{ '<b>hi</b>' | raw }}" }) }}
 {{ 'live-template' | partial({ template: "1 - 2 + 3 * 4 / 5 = {{ add(sub(1,2), div(mul(3,4), 5)) }}
 ((1 - 2 + 3) * 4) / 5 = {{ 1 | subtract(2) | add(3) | multiply(4) | divide(5) }}" }) }}
 
+<h4>Math</h4>
+
+<p>
+    Most <em>Math</em> APIs are available including <em>pi</em> and <em>e</em> constants:
+</p>
+
+{{ 'live-template' | partial({ template: `Circumference = {{ 2 | multiply(pi) | multiply(10) | round(5) }}
+&Sqrt; log<sub>10</sub> 10000  = {{ 10000 | log10 | sqrt }}
+Powers of 2      = {{ 10 | times | select: { it | incr | pow(2) }, }}` }) }}
+
 <h4>Date Functions</h4>
 
 {{ 'live-template' | partial({ rows: 8, template: "{{ now | addTicks(1) }}
@@ -229,6 +239,32 @@ truthy: {{ true | truthy('T') }}, {{ 1 | truthy('T') }}, {{ null | truthy('T') }
 {{ 'live-template' | partial({ template: `{{ [{name:'Alice',score:50},{name:'Bob',score:40}] | assignTo:scoreRecords }}
 {{ scoreRecords | scopeVars | select: {index | incr}. {name} = {score}\n }}` }) }}
 
+<h4>Querying Objects</h4>
+
+{{ 'live-template' | partial({ rows: 5, template: `{{ [10,20,30,40,50] | assignTo: numbers }}
+{{ { a:1, b:2, c:3 } | assignTo: letters }}
+Number at [3]: <b>{{ numbers | get(3) }}</b>
+Value of 'c': <b>{{ letters | get('c') }}</b>
+Property Value: <b>{{ 'A String' | property('Length') }}</b>` }) }}
+
+<p>
+    There's also <em>{{ pass: field('Id') }}</em> to retrieve a public Field.
+</p>
+
+<h4>Deep Binding</h4>
+
+{{ 'live-template' | partial({ template: `{{ [now] 
+   | get(0)
+   | select: { it.TimeOfDay.TotalHours | round(3) } }}` }) }}
+
+<p>
+    Whilst you can use string expressions to navigate deep into an objects hierarchy, you can't navigate past the point where a 
+    cast is required. In these cases you need to either to assign a temporary variable or use <em>map</em>, <em>get</em>, 
+    <em>let</em>, etc to fetch the instance at which point you can restart traversing the object graph again from that instance's Type.
+    This is needed here because <em>[now]</em> creates a <em>List&lt;object&gt;</em> and <em>it[0].TimeOfDay</em>
+    tries to access <em>TimeOfDay</em> on an <em>object</em> Type.
+</p>
+
 <h4>Mapping and Conversions</h4>
 
 <p>
@@ -269,13 +305,13 @@ Bob's score: {{ [{name:'Alice',score:50},{name:'Bob',score:40}] | toDictionary: 
     <em>values</em> and <em>keys</em> to extract the Dictionaries keys or values collection:
 </p>
 
-{{ 'live-template' | partial({ rows: 8, template: `{{ '
+{{ 'live-template' | partial({ rows: 8, template: `{{'
 Rent:      1000
 Internet:  50
 Mobile:    50
 Food:      400
 Misc:      200
-' | trim | parseKeyValueText(':') | assignTo: expenses }}
+'| trim | parseKeyValueText(':') | assignTo: expenses }}
 Expenses: {{ expenses | values | sum }}` }) }}
 
 <h4>Serialization</h4>
