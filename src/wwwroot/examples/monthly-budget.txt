@@ -1,15 +1,15 @@
 {{ 11200 | assignTo: balance }}
-{{ '
+{{'
 Salary:        4000
 App Royalties: 200
-' | trim | parseKeyValueText(':') | assignTo: monthlyRevenues }}
-{{ '
+'| trim | parseKeyValueText(':') | assignTo: monthlyRevenues }}
+{{'
 Rent      1000
 Internet  50
 Mobile    50
 Food      400
 Misc      200
-' | trim | parseKeyValueText | assignTo: monthlyExpenses }}
+'| trim | parseKeyValueText | assignTo: monthlyExpenses }}
 {{ monthlyRevenues | values | sum | assignTo: totalRevenues }}
 {{ monthlyExpenses | values | sum | assignTo: totalExpenses }}
 {{ subtract(totalRevenues, totalExpenses) | assignTo: totalSavings }}
