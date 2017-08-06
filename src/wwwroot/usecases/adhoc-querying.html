@@ -36,7 +36,7 @@ order: 5
 <div id="output"></div>
 
 {{ `<script>
-$("FORM").ajaxPreview({ 
+$('form').ajaxPreview({ 
     dataType: 'html',
     success: function(r) {
         $("#output").html(r);
@@ -86,10 +86,10 @@ $("FORM").ajaxPreview({
 </p>
 
 <pre class="js"><code>&lt;script&gt;
-$("FORM").ajaxPreview({ 
+$('form').ajaxPreview({ 
     dataType: 'html',
     success: function(r) {
-        $("#state-output").html(r);
+        $("#output").html(r);
     } 
 })
 &lt;/script&gt;
