@@ -129,9 +129,9 @@ var output = context.EvaluateTemplate("&lt;p&gt;{{ pass: 'key' | fromCache }}&lt
 <pre class="cs"><code>double squared(double value) => value * value;</code></pre>
 
 <p>
-    Can also be used with any other .NET Numeric Type, e.g: <em>byte</em>, <em>int</em>, <em>long</em>, <em>decimal</em>, etc.
+    <em>squared</em> can also be used with any other .NET Numeric Type, e.g: <em>byte</em>, <em>int</em>, <em>long</em>, <em>decimal</em>, etc.
     The consequence to this is that there's no method overloading in filters, filters are matched based on their name and their number of arguments
-    and each argument is converted into its filter method Param Type before it's called.
+    and each argument is automatically converted into its filter method Param Type before it's called.
 </p>
 
 <h4>Context Filters</h4>

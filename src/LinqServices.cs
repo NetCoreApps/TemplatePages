@@ -6,6 +6,7 @@ using System.IO;
 using ServiceStack;
 using ServiceStack.Templates;
 using ServiceStack.VirtualPath;
+using ServiceStack.DataAnnotations;
 
 namespace TemplatePages
 {
@@ -56,6 +57,7 @@ namespace TemplatePages
         public string Country { get; set; }
         public string Phone { get; set; }
         public string Fax { get; set; }
+        [Reference]
         public List<Order> Orders { get; set; }
 
         public override string ToString() =>
@@ -65,9 +67,8 @@ namespace TemplatePages
     public class Order
     {
         public int OrderId { get; set; }
-
+        public string CustomerId { get; set; }
         public DateTime OrderDate { get; set; }
-
         public double Total { get; set; }
     }
     

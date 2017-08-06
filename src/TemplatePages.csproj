@@ -15,6 +15,7 @@
     <PackageReference Include="Microsoft.AspNetCore.Server.IISIntegration" Version="1.*" />
     <PackageReference Include="Microsoft.AspNetCore.Server.Kestrel" Version="1.*" />
     <PackageReference Include="Microsoft.Extensions.Logging.Console" Version="1.*" />
+    <PackageReference Include="Microsoft.Data.Sqlite" Version="1.*" />
     <PackageReference Include="System.Collections.NonGeneric" Version="4.3.*" />
     <PackageReference Include="System.IO.FileSystem.DriveInfo" Version="4.3.*" />
     <PackageReference Include="ServiceStack.Core" Version="1.0.*" />
@@ -22,6 +23,8 @@
     <PackageReference Include="ServiceStack.Text.Core" Version="1.0.*" />
     <PackageReference Include="ServiceStack.Client.Core" Version="1.0.*" />
     <PackageReference Include="ServiceStack.Common.Core" Version="1.0.*" />
+    <PackageReference Include="ServiceStack.OrmLite.Core" Version="1.0.*" />
+    <PackageReference Include="ServiceStack.OrmLite.Sqlite.Core" Version="1.0.*" />
   </ItemGroup>
 
 </Project>

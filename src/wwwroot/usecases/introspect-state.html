@@ -15,12 +15,6 @@ order: 4
         width: 100%;
         height: 600px;
     }
-
-    form input {
-        margin: 10px 0 0 10px;
-        width: 80px;
-        padding: 2px 5px;
-    }
 </style>
 
 <form action="/introspect/state">
@@ -54,13 +48,13 @@ order: 4
 
 <hr style="margin:20px 0">
 
-<div id="state-output"></div>
+<div id="output"></div>
 
 {{ `<script>
 $("FORM").ajaxPreview({ 
     dataType: 'html',
     success: function(r) {
-        $("#state-output").html(r);
+        $("#output").html(r);
     } 
 })
 </script>` | raw | assignTo: scripts }}
@@ -79,7 +73,7 @@ $("FORM").ajaxPreview({
 
 <pre class="cs"><code>{{ "IntrospectStateServices.cs" | includeContentFile | htmlencode }}</code></pre>
 
-<h4><a href="https://github.com/NetCoreApps/TemplatePages/blob/master/src/wwwroot/usecases/introspect-state.html">Client UI</a></h4>
+<h4 id="client-ui">Client UI</h4>
 
 <p>
     Then to implement the 
