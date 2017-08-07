@@ -17,9 +17,11 @@ order: 8
         files: 
         { 
             '_layout.html': `{{ 'from layout' | assignTo: layoutArg }}
-I am a Layout with page <br/> {{ page }}`,
-            'page.html' : `I am a Page with a partial <br/> {{ 'my-partial' | partial({ arg: "from page" }) }}`,
-            'my-partial.html' : `I am a partial called with the scoped argument <b>{{ arg }}</b> <br/>
+I am a Layout with page
+{{ page }}`,
+            'page.html' : `I am a Page with a partial
+{{ 'my-partial' | partial({ arg: "from page" }) }}`,
+            'my-partial.html' : `I am a partial called with the scoped argument <b>{{ arg }}</b>
 Who can also access other arguments in scope <b>{{ layoutArg }}</b>`
         } 
     }) 
@@ -60,8 +62,15 @@ Who can also access other arguments in scope <b>{{ layoutArg }}</b>`
 
 <pre class="cs"><code>{{ pass: 'my-partial' | partial }}</code></pre>
 
+<h5>Cascading resolution</h5>
+
 <p>
-    Otherwise the directory structure needs to be provided if they're localted in a sub directory, e.g:
+    If an exact match isn't found it will look for the closest page with that name it can find, starting from the directory
+    where the page that contains the partial is located and traversing up until it reaches the root folder.
+</p>
+
+<p>
+    Otherwise you can specify the virtual path to the partial from the Virtual Files root, e.g:
 </p>
 
 <pre class="cs"><code>{{ pass: 'dir/subdir/my-partial' | partial }}</code></pre>

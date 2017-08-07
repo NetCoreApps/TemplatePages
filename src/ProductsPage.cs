@@ -10,7 +10,7 @@ namespace TemplatePages
     public class ProductsPage : TemplateCodePage
     {
         string render(Product[] products) => $@"
-        <table class='table'>
+        <table class='table table-striped'>
             <thead>
                 <tr>
                     <th></th>

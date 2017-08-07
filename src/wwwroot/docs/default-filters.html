@@ -13,7 +13,7 @@ order: 7
     For examples of querying with filters checkout the <a href="/linq/">Live LINQ Examples</a>, we'll show examples for other useful filters below:
 </p>
 
-<h4>Filters as bindings</h4>
+<h4 id="as-bindings">Filters as bindings</h4>
 
 <p>
     Filters with no arguments can be used in-place of an argument binding, <em>now</em> and <em>utcNow</em> are examples of this:
@@ -33,7 +33,7 @@ UTC now: {{ utcNow | dateFormat('o') }}" }) }}
     }
 }.Init();</code></pre>
 
-<h4>HTML Encoding</h4>
+<h4 id="html-encoding">HTML Encoding</h4>
 
 <p>
     All values of Template Expressions in <b>.html</b> pages are HTML-encoded by default, you can by pass the HTML encoding 
@@ -43,7 +43,7 @@ UTC now: {{ utcNow | dateFormat('o') }}" }) }}
 {{ 'live-template' | partial({ template: "With encoding: {{ '<b>hi</b>' }}
 Without: {{ '<b>hi</b>' | raw }}" }) }}
 
-<h4>Arithmetic</h4>
+<h4 id="arithmetic">Arithmetic</h4>
 
 <p>
     There are no operators in Templates, for any arithmetic calculations you can use the built-in filters:
@@ -65,7 +65,7 @@ Without: {{ '<b>hi</b>' | raw }}" }) }}
 {{ 'live-template' | partial({ template: "1 - 2 + 3 * 4 / 5 = {{ add(sub(1,2), div(mul(3,4), 5)) }}
 ((1 - 2 + 3) * 4) / 5 = {{ 1 | subtract(2) | add(3) | multiply(4) | divide(5) }}" }) }}
 
-<h4>Math</h4>
+<h4 id="math">Math</h4>
 
 <p>
     Most <em>Math</em> APIs are available including <em>pi</em> and <em>e</em> constants:
@@ -75,7 +75,7 @@ Without: {{ '<b>hi</b>' | raw }}" }) }}
 &Sqrt; log<sub>10</sub> 10000  = {{ 10000 | log10 | sqrt }}
 Powers of 2      = {{ 10 | times | select: { it | incr | pow(2) }, }}` }) }}
 
-<h4>Date Functions</h4>
+<h4 id="date-functions">Date Functions</h4>
 
 {{ 'live-template' | partial({ rows: 8, template: "{{ now | addTicks(1) }}
 {{ now | addMilliseconds(1) }}
@@ -86,7 +86,7 @@ Powers of 2      = {{ 10 | times | select: { it | incr | pow(2) }, }}` }) }}
 {{ now | addMonths(1) }}
 {{ now | addYears(1) }}" }) }}
 
-<h4>Formatting</h4>
+<h4 id="formatting">Formatting</h4>
 
 <p>
     Use format filters to customize how values are formatted:
@@ -108,7 +108,7 @@ Time: {{ now.TimeOfDay | timeFormat('h\:mm') }} default: {{ now.TimeOfDay | time
     <li><em>DefaultCulture</em> used by: <em>currency</em></li>
 </ul>
 
-<h4>String functions</h4>
+<h4 id="string-functions">String functions</h4>
 
 <p>
     As can be expected from a templating library there's a comprehensive set of string filters available:
@@ -124,13 +124,13 @@ Time: {{ now.TimeOfDay | timeFormat('h\:mm') }} default: {{ now.TimeOfDay | time
 {{ 'index.of' | indexOf('.') }} + {{ 'last.index.of' | lastIndexOf('.') }}
 {{ 'start' | appendLine | append('end') }}" }) }}
 
-<h4>String Formatting</h4>
+<h4 id="string-formatting">String Formatting</h4>
 
-{{ 'live-template' | partial({ template: "{{ 'aVarName' | humanize }}
+{{ 'live-template' | partial({ template: "{{ 'aVarName' | humanize }} and {{ 'AVarName' | splitCase }}
 {{ 'wAr aNd pEaCe' | titleCase }}
 {{ 'pascalCase' | pascalCase }} and {{ 'CamelCase' | camelCase }}" }) }}
 
-<h4>Trimming and Padding</h4>
+<h4 id="trimming-and-padding">Trimming and Padding</h4>
 
 {{ 'live-template' | partial({ template: "'{{ '  start  ' | trimStart }}', '{{ '  end  ' | trimEnd }}', '{{ '  both  ' | trim }}'
 '{{ 'left' | padLeft(10) }}', '{{ 'right' | padRight(10) }}'
@@ -169,7 +169,7 @@ Time: {{ now.TimeOfDay | timeFormat('h\:mm') }} default: {{ now.TimeOfDay | time
     The default spacing used for indents <em>\t</em> can be overridden with the <em>TemplateConstants.DefaultIndent</em> Argument.
 </blockquote>
 
-<h4>Conditional Tests</h4>
+<h4 id="conditional-tests">Conditional Tests</h4>
 
 <p>
     These filters allow you to test for different conditions:
@@ -190,14 +190,15 @@ equivalentTo: {{ [1,2] | equivalentTo([1,2]) }}, {{ {a:1, b:2} | equivalentTo({a
 or: {{ true | or(true) }}, {{ or(true, false) }}, {{ or(false, false) }}
 and: {{ true | and(true) }}, {{ and(true, false) }}, {{ and(false, false) }}" }) }}
 
-<h4>Conditional Display</h4>
+<h4 id="conditional-display">Conditional Display</h4>
 
 <p>
     These filters can be used in combination with Conditional Test filters above to control what text is displayed:
 </p>
 
-{{ 'live-template' | partial({ rows: 10, template: "if: {{ 'Y' | if(true) }}, {{ 'Y' | if(false) }}, {{ 'Y' | if(1) }}
-when: {{ 'Y' | when(true) }}, {{ 'Y' | when(false) }}, {{ 'Y' | when(1) }}
+{{ 'live-template' | partial({ rows: 11, template: "if: {{ 'Y' | if(true) }}, {{ 'Y' | if(false) | otherwise('N') }}, {{ 'Y' | if(1) }}
+when: {{ 'Y' | when(true) }}, {{ 'Y' | when(false) | otherwise('N') }}, {{ 'Y' | when(1) }}
+if!: {{ 'Y' | if(!true) | otherwise('N') }}, {{ 'Y' | if(!false) }}, {{ 'Y' | if(!1) }}
 ifNot: {{ 'Y' | ifNot(true) }}, {{ 'Y' | ifNot(false) }}, {{ 'Y' | ifNot(1) }}
 unless: {{ 'Y' | unless(true) }}, {{ 'Y' | unless(false) }}, {{ 'Y' | unless(1) }}
 otherwise: {{ null | otherwise('Y') }} or {{ 'even' | if(isEven(1)) | otherwise('odd') }}
@@ -207,7 +208,7 @@ falsy: {{ false | falsy('F') }}, {{ 0 | falsy('F') }}, {{ null | falsy(F) }}
 ifTruthy: {{ 'T' | ifTruthy(true) }}, {{ 'T' | ifTruthy(1) }}, {{ 'T' | ifTruthy(null) }}
 truthy: {{ true | truthy('T') }}, {{ 1 | truthy('T') }}, {{ null | truthy('T') }}" }) }}
 
-<h4>Assignment</h4>
+<h4 id="assignment">Assignment</h4>
 
 <p>
     You can create temporary arguments within a templates scope or modify existing arguments with:
@@ -220,7 +221,7 @@ truthy: {{ true | truthy('T') }}, {{ 1 | truthy('T') }}, {{ null | truthy('T') }
 {{ 5 | times | do: assign(append('num', index), it) }}
 {{ num4 }}" }) }}
 
-<h4>Let Bindings and Scope Vars</h4>
+<h4 id="let-bindings">Let Bindings and Scope Vars</h4>
 
 <p>
     Let bindings allow you to create scoped argument bindings from individual string expressions:
@@ -239,7 +240,7 @@ truthy: {{ true | truthy('T') }}, {{ 1 | truthy('T') }}, {{ null | truthy('T') }
 {{ 'live-template' | partial({ template: `{{ [{name:'Alice',score:50},{name:'Bob',score:40}] | assignTo:scoreRecords }}
 {{ scoreRecords | scopeVars | select: {index | incr}. {name} = {score}\n }}` }) }}
 
-<h4>Querying Objects</h4>
+<h4 id="querying-objects">Querying Objects</h4>
 
 {{ 'live-template' | partial({ rows: 5, template: `{{ [10,20,30,40,50] | assignTo: numbers }}
 {{ { a:1, b:2, c:3 } | assignTo: letters }}
@@ -251,21 +252,21 @@ Property Value: <b>{{ 'A String' | property('Length') }}</b>` }) }}
     There's also <em>{{ pass: field('Id') }}</em> to retrieve a public Field.
 </p>
 
-<h4>Deep Binding</h4>
+<h4 id="deep-binding">Deep Binding</h4>
 
 {{ 'live-template' | partial({ template: `{{ [now] 
    | get(0)
    | select: { it.TimeOfDay.TotalHours | round(3) } }}` }) }}
 
 <p>
-    Whilst you can use string expressions to navigate deep into an objects hierarchy, you can't navigate past the point where a 
+    Whilst you can use string expressions to navigate deep into an objects hierarchy, you can't navigate past where a 
     cast is required. In these cases you need to either to assign a temporary variable or use <em>map</em>, <em>get</em>, 
     <em>let</em>, etc to fetch the instance at which point you can restart traversing the object graph again from that instance's Type.
     This is needed here because <em>[now]</em> creates a <em>List&lt;object&gt;</em> and <em>it[0].TimeOfDay</em>
     tries to access <em>TimeOfDay</em> on an <em>object</em> Type.
 </p>
 
-<h4>Mapping and Conversions</h4>
+<h4 id="mapping">Mapping and Conversions</h4>
 
 <p>
     Use <em>map</em> when you want to transform each item into a different value:
@@ -312,9 +313,9 @@ Mobile:    50
 Food:      400
 Misc:      200
 '| trim | parseKeyValueText(':') | assignTo: expenses }}
-Expenses: {{ expenses | values | sum }}` }) }}
+Expenses: {{ expenses | values | sum | currency }}` }) }}
 
-<h4>Serialization</h4>
+<h4 id="serialization">Serialization</h4>
 
 <p>
     Use the <em>json</em> filter when you want to make your C# objects available to the client JavaScript page:
@@ -339,7 +340,7 @@ var coords = {{ model | json }};` }) }}
 {{ 'live-template' | partial({ template: `{{ [{Name:'Alice',Score:50},{Name:'Bob',Score:40}] | assignTo:scoreRecords }}
 {{ scoreRecords | csv }}` }) }}
 
-<h4>Iterating</h4>
+<h4 id="iterating">Iterating</h4>
 
 <p>
     The <em>select</em> filter and its inverse <em>forEach</em> are the primary way to generate custom output 
@@ -358,7 +359,7 @@ var coords = {{ model | json }};` }) }}
 
 {{ 'live-template' | partial({ rows: 1, template: `{{ range(20) | step({ from: 10, by: 3 }) | join }}` }) }}
 
-<h4>Miscellaneous</h4>
+<h4 id="miscellaneous">Miscellaneous</h4>
 
 <p>
     Use <em>pass</em> to emit a Template Expression without evaluating it:

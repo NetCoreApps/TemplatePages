@@ -7,7 +7,7 @@ order: 13
     Another solution that enables greater control and functionality are <b>Code Pages</b> which utilize the 
     full unlimited power of the C# programming language to enable precise control over the rendering of pages and partials. 
     As Code Pages are normal C# classes they also benefit from the rich editing and debugging experience in C# IDEs 
-    and don't require any special design-time editors, build tools or pre-compilation like Razor, they're just another class 
+    and don't require any special design-time editors, build tools or pre-compilation like Razor as they're just regular classes 
     in your Solution.
 </p>
 
@@ -44,15 +44,17 @@ order: 13
 <pre class="cs"><code>{{ "ProductsPage.cs" | includeContentFile | htmlencode }}</code></pre>
 
 <p>
-    Where with just this implementation, it can now be called by navigating to its virtualPath: <a href="/products">/products</a>.
+    Where with just this implementation, it can now be called by navigating to its virtualPath: 
 </p>
+
+<h4><a href="/products">/products</a></h4>
 
 <p>
     You typically wont need to explicitly register Code Pages since the <em>TemplatePagesFeature</em> populates its
     <em>ScanAssemblies</em> with the AppHost's Service assemblies which will automatically find and register any 
     TemplateCodePage's that are in the same Assembly as ServiceStack Services and just like Services, Code Pages 
     are autowired and resolved from the IOC transiently, so they can also be injected with any IOC registered dependencies
-    by having them as public properties.
+    by declaring them as public properties.
 </p>
 
 <h4>MVC Code Pages</h4>
@@ -68,8 +70,10 @@ order: 13
 <pre class="cs"><code>{{ "ProductServices.cs" | includeContentFile | htmlencode }}</code></pre>
 
 <p>
-    Which is viewable at the Services Route: <a href="/products/view">/products/view</a>.
+    Which is viewable at the Services Route: 
 </p>
+
+<h4><a href="/products/view">/products/view</a></h4>
 
 <p>
     Which displays exactly the same content as calling ProductsPage directly, but instead uses the Routing and the argument populated 
@@ -102,7 +106,7 @@ public object Any(ViewProducts request)
 <h5>Partial Arguments</h5>
 
 <p>
-    You can an Object literal to pass arguments to Code Page partials (the same as page partials), where each property creates a 
+    You can use an Object literal to pass arguments to Code Page partials (i.e. same as page partials), where each property creates a 
     scoped argument that the Code Page has access to. 
 </p>
 
