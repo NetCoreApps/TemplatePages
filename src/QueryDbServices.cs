@@ -14,13 +14,10 @@ namespace TemplatePages
 
     public class QueryDbTemplateFilters : TemplateFilter
     {
-        System.Data.IDbConnection db;
-        public static QueryDbTemplateFilters Create(System.Data.IDbConnection db) => 
-            new QueryDbTemplateFilters { db = db };
-
-        public object dbSelect(string sql) => db.Select<Dictionary<string,object>>(sql);
-        public object dbSingle(string sql) => db.Single<Dictionary<string,object>>(sql);
-        public object dbScalar(string sql) => db.Scalar<object>(sql);
+        public System.Data.IDbConnection Db { get; set; }
+        public object dbSelect(string sql) => Db.Select<Dictionary<string,object>>(sql);
+        public object dbSingle(string sql) => Db.Single<Dictionary<string,object>>(sql);
+        public object dbScalar(string sql) => Db.Scalar<object>(sql);
     }
 
     //[Authenticate] // friends don't let friends deploy to production without this
@@ -29,7 +26,7 @@ namespace TemplatePages
         public object Any(QueryDb request)
         {
             var context = new TemplateContext {
-                TemplateFilters = { QueryDbTemplateFilters.Create(Db) },
+                TemplateFilters = { new QueryDbTemplateFilters { Db = Db } },
                 RenderExpressionExceptions = true
             }.Init();
 
