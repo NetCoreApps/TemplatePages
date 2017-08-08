@@ -126,9 +126,12 @@ Time: {{ now.TimeOfDay | timeFormat('h\:mm') }} default: {{ now.TimeOfDay | time
 
 <h4 id="string-formatting">String Formatting</h4>
 
-{{ 'live-template' | partial({ template: "{{ 'aVarName' | humanize }} and {{ 'AVarName' | splitCase }}
+{{ 'live-template' | partial({ rows:6, template: `{{ 'aVarName' | humanize }} and {{ 'AVarName' | splitCase }}
 {{ 'wAr aNd pEaCe' | titleCase }}
-{{ 'pascalCase' | pascalCase }} and {{ 'CamelCase' | camelCase }}" }) }}
+{{ 'pascalCase' | pascalCase }} and {{ 'CamelCase' | camelCase }}
+{{ 'in the {0} of the {1} I go {2}' | fmt('middle','night','walking') }}
+{{ 'in the {0} of the {1} I go {2} in my {3}' | fmt(['middle','night','walking','sleep']) }}
+{{ 'in the ' | appendFmt('{0} of the {1} I go {2}', 'middle','night','walking') }}` }) }}
 
 <h4 id="trimming-and-padding">Trimming and Padding</h4>
 
