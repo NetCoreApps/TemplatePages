@@ -1,6 +1,6 @@
 <h4>HTML Results (select):</h4>
 {{ "select customerId, companyName, city, country from customer where country = @country" | assignTo: selectSql }}
-{{ selectSql | dbSelect({ country: 'UK'}) | htmltable({ className: "table table-striped", caption: selectSql }) }}
+{{ selectSql | dbSelect({ country: 'UK' }) | htmltable({ className: "table table-striped", caption: selectSql }) }}
 
 <h4>Text Results (single):</h4>
 {{ "select * from customer c join [order] o on c.customerId = o.customerId order by total desc limit 1" | assignTo: singleSql }}

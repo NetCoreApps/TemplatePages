@@ -16,11 +16,15 @@ namespace TemplatePages
     {
         public System.Data.IDbConnection Db { get; set; }
         public object dbSelect(string sql) => Db.Select<Dictionary<string,object>>(sql);
-        public object dbSelect(string sql, Dictionary<string,object> args) => Db.Select<Dictionary<string,object>>(sql, args);
         public object dbSingle(string sql) => Db.Single<Dictionary<string,object>>(sql);
-        public object dbSingle(string sql, Dictionary<string,object> args) => Db.Single<Dictionary<string,object>>(sql, args);
         public object dbScalar(string sql) => Db.Scalar<object>(sql);
-        public object dbScalar(string sql, Dictionary<string,object> args) => Db.Scalar<object>(sql, args);
+        
+        public object dbSelect(string sql, Dictionary<string,object> args) => 
+            Db.Select<Dictionary<string,object>>(sql, args);
+        public object dbSingle(string sql, Dictionary<string,object> args) => 
+            Db.Single<Dictionary<string,object>>(sql, args);
+        public object dbScalar(string sql, Dictionary<string,object> args) => 
+            Db.Scalar<object>(sql, args);
     }
 
     //[Authenticate] // friends don't let friends deploy to production without this
