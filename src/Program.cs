@@ -18,7 +18,7 @@ namespace TemplatePages
         public static IWebHost BuildWebHost(string[] args) =>
             WebHost.CreateDefaultBuilder(args)
                 .UseStartup<Startup>()
-                .UseUrls("http://localhost:5000/")
+                .UseUrls("http://0.0.0.0:5000/")
                 .Build();
     }
 }
