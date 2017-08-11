@@ -133,8 +133,6 @@ Time: {{ now.TimeOfDay | timeFormat('h\:mm') }} default: {{ now.TimeOfDay | time
 {{ 'wAr aNd pEaCe' | titleCase }}
 {{ 'pascalCase' | pascalCase }} and {{ 'CamelCase' | camelCase }}` }) }}
 
-http://localhost:5000/docs/default-filters#string-formatting
-
 <h4 id="trimming-and-padding">Trimming and Padding</h4>
 
 {{ 'live-template' | partial({ template: "'{{ '  start  ' | trimStart }}', '{{ '  end  ' | trimEnd }}', '{{ '  both  ' | trim }}'
