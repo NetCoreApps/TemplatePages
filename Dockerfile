@@ -1,4 +1,4 @@
-FROM microsoft/dotnet:latest
+FROM microsoft/dotnet:2.0-sdk
 COPY src /app
 WORKDIR /app
 RUN ["dotnet", "restore", "--configfile", "NuGet.Config"]
