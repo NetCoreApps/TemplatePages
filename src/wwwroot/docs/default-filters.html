@@ -114,7 +114,7 @@ Time: {{ now.TimeOfDay | timeFormat('h\:mm') }} default: {{ now.TimeOfDay | time
     As can be expected from a templating library there's a comprehensive set of string filters available:
 </p>
 
-{{ 'live-template' | partial({ rows: 9, template: "{{ 'upper' | upper }} and {{ 'LOWER' | lower }}
+{{ 'live-template' | partial({ rows: 12, template: "{{ 'upper' | upper }} and {{ 'LOWER' | lower }}
 {{ 'SubString'|substring(0,3) }} {{ 'SubString'|substring(3) }} {{ 'IsSafe'|substring(2,100) }}
 {{ 'SubStrElipsis' | substringWithElipsis(9) }} {{ 'SubStr' | substringWithElipsis(3,3) }}
 {{ 'left:part' | leftPart(':') }} + {{ 'part:right' | rightPart(':') }}
@@ -122,16 +122,18 @@ Time: {{ now.TimeOfDay | timeFormat('h\:mm') }} default: {{ now.TimeOfDay | time
 {{ 'split.on.first' | splitOnFirst('.') |join}} + {{ 'split.on.last' | splitOnLast('.') |join}}
 {{ 'split.these.words' | split('.') | get(1) }}, {{ 'replace this' | replace('this', 'that') }}
 {{ 'index.of' | indexOf('.') }} + {{ 'last.index.of' | lastIndexOf('.') }}
-{{ 'start' | appendLine | append('end') }}" }) }}
-
-<h4 id="string-formatting">String Formatting</h4>
-
-{{ 'live-template' | partial({ rows:6, template: `{{ 'aVarName' | humanize }} and {{ 'AVarName' | splitCase }}
-{{ 'wAr aNd pEaCe' | titleCase }}
-{{ 'pascalCase' | pascalCase }} and {{ 'CamelCase' | camelCase }}
+{{ 'start' | appendLine | append('end') }}
 {{ 'in the {0} of the {1} I go {2}' | fmt('middle','night','walking') }}
 {{ 'in the {0} of the {1} I go {2} in my {3}' | fmt(['middle','night','walking','sleep']) }}
-{{ 'in the ' | appendFmt('{0} of the {1} I go {2}', 'middle','night','walking') }}` }) }}
+{{ 'in the ' | appendFmt('{0} of the {1} I go {2}', 'middle','night','walking') }}" }) }}
+
+<h4 id="text-style">Text Style</h4>
+
+{{ 'live-template' | partial({ template: `{{ 'aVarName' | humanize }} and {{ 'AVarName' | splitCase }}
+{{ 'wAr aNd pEaCe' | titleCase }}
+{{ 'pascalCase' | pascalCase }} and {{ 'CamelCase' | camelCase }}` }) }}
+
+http://localhost:5000/docs/default-filters#string-formatting
 
 <h4 id="trimming-and-padding">Trimming and Padding</h4>
 
@@ -178,11 +180,12 @@ Time: {{ now.TimeOfDay | timeFormat('h\:mm') }} default: {{ now.TimeOfDay | time
     These filters allow you to test for different conditions:
 </p>
 
-{{ 'live-template' | partial({ rows: 14, template: "starts/ends: {{ 'startsWith' | startsWith('start') }}, {{ 'endsWith' | endsWith('end') }}
+{{ 'live-template' | partial({ rows: 15, template: "starts/ends: {{ 'startsWith' | startsWith('start') }}, {{ 'endsWith' | endsWith('end') }}
 contains: {{ [1,2] | contains(1) }}, {{ [1,2] | contains(3) }}, {{ 'ABC' | contains('A') }}
 Even/Odd: {{ 1 | isEven }}, {{ 1 | isOdd }}
 isNull: {{ null | isNull }}, {{ 1 | isNull }}
 isNotNull: {{ null | isNotNull }}, {{ 1 | isNotNull }}
+exists: {{ null | exists }}, {{ 1 | exists }}, {{ unknownArg | exists }}
 equals: {{ 1 | equals(1) }}, {{ 2 | equals(1) }}, {{ 'A' | equals('A') }} or {{ 1 | eq(1) }}
 notEquals: {{ 2 | notEquals(1) }}, {{ 'A' | notEquals('A') }} or {{ 1 | not(1) }}
 greaterThan: {{ 1 | greaterThan(1) }}, {{ 2 | greaterThan(1) }} or {{ 2 | gt(1) }}, 
@@ -210,6 +213,15 @@ ifFalsy: {{ 'F' | ifFalsy(false) }}, {{ 'F' | ifFalsy(0) }}, {{ 'F' | ifFalsy(nu
 falsy: {{ false | falsy('F') }}, {{ 0 | falsy('F') }}, {{ null | falsy(F) }}
 ifTruthy: {{ 'T' | ifTruthy(true) }}, {{ 'T' | ifTruthy(1) }}, {{ 'T' | ifTruthy(null) }}
 truthy: {{ true | truthy('T') }}, {{ 1 | truthy('T') }}, {{ null | truthy('T') }}" }) }}
+
+<h4 id="content-handling">Content Handling</h4>
+
+{{ 'live-template' | partial({ rows: 6, template: `default: {{ title | default('A Title') }}
+{{ 'The Title' | assignTo: title }}{{ title | default('A Title') }} : {{ 1 | ifExists(title) }}
+{{ noArg }} : {{ noArg | ifExists }} : {{ 1 | ifNotExists(noArg) }} : {{ 1 | ifNo(noArg) }}
+{{ 'empty' | ifEmpty('') }} : {{ 'empty' | ifEmpty([]) }} : {{ 'empty' | ifEmpty([1]) }}
+{{ [1,2,3] | assignTo: nums }}{{ nums | join | assignTo: list }}
+{{ "nums {0}" | fmt(list) | ifNotEmpty(nums) }}{{ "nums {0}" | fmt(list) | ifNotEmpty([]) }}` }) }}
 
 <h4 id="assignment">Assignment</h4>
 
