@@ -11,8 +11,10 @@ order: 6
 <p>
     The only filters registered by default is the 
     <a href="https://github.com/ServiceStack/ServiceStack/blob/master/src/ServiceStack.Common/Templates/TemplateDefaultFilters.cs">TemplateDefaultFilters.cs</a>
-    which contains a comprehensive suite of filters useful within View Engine or Template environment. There's nothing special about the default filters
-    other than they're pre-registered by default, your filters have access to the same APIs and functionality that built-in filters do. 
+    containing a comprehensive suite of filters useful within View Engine or Template environments and 
+    <a href="https://github.com/ServiceStack/ServiceStack/blob/master/src/ServiceStack.Common/Templates/TemplateHtmlFilters.cs">TemplateHtmlFilters.cs</a>. 
+    There's nothing special about these filters other than they're pre-registered by default, your filters have access to the same 
+    APIs and functionality and can do anything that built-in filters can do. 
 </p>
 
 <p>
@@ -20,6 +22,12 @@ order: 6
 </p>
 
 <pre><code>context.TemplateFilters.Clear();</code></pre>
+
+<p>
+    Alternatively you can override default filters with the same name by inserting them at the start of the list:
+</p>
+
+<pre><code>context.TemplateFilters.Insert(0, new MyTemplateFilters());</code></pre>
 
 <h4>What are Filters?</h4>
 
@@ -128,7 +136,7 @@ var output = context.EvaluateTemplate("&lt;p&gt;{{ pass: 'key' | fromCache }}&lt
 <h4>Auto coercion into Filter argument Types</h4>
 
 <p>
-    A unique feature of Filters is that each of their arguments are automatically co-erced into the filter argument Type using the 
+    A unique feature of Filters is that each of their arguments are automatically coerced into the filter argument Type using the 
     powerful conversion facilities built into ServiceStack's 
     <a href="http://docs.servicestack.net/auto-mapping">Auto Mapping Utils</a> and 
     <a href="https://github.com/ServiceStack/ServiceStack.Text">Text Serializers</a> which can deserialize most of .NET's primitive Types like 

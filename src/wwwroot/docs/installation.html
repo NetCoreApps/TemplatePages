@@ -32,7 +32,7 @@ var output = new PageResult(dynamicPage).Result;
 {{ "live-template" | partial({ template: "The time is now: {{ now | dateFormat('HH:mm:ss') }}" }) }}
 
 <p>
-    Evaluating an adhoc template can also be condensed down to just:
+    Evaluating an ad hoc template can also be condensed down to a single line:
 </p>
 
 <pre><code>var output = context.EvaluateTemplate("The time is now: {{ pass: now | dateFormat('HH:mm:ss') }}");</code></pre>

@@ -16,7 +16,7 @@ order: 2
 
 <p>
     There's no pre-compilation, pre-loading or Startup penalty in Template Pages, all Pages are lazily loaded on first use and cached for 
-    fast subsequent access. Its instant Startup, fast runtime performance and sandboxed isolation opens it up to a myraid of use-cases which 
+    fast subsequent access. Its instant Startup, fast runtime performance and sandboxed isolation opens it up to a myriad of use-cases which 
     can provide a Live programming experience to running .NET Apps.
 </p>
 
@@ -24,7 +24,7 @@ order: 2
 
 <p>
     Template Pages is fast, parsing is done using StringSegment for minimal GC pressure, all I/O is non-blocking including async
-    writes to OutputStreams. There's no buffering: Layouts, Pages and Partials are asynchronously written to a forward only stream.
+    writes to OutputStream's. There's no buffering: Layouts, Pages and Partials are asynchronously written to a forward only stream.
     There's also no runtime reflection, each binding within templates executes a compiled C# Expression.
 </p>
 
@@ -59,7 +59,7 @@ order: 2
     The TemplateContext is the sandbox where all templates are executed within, everything your templates have access to and generates 
     is maintained within the TemplateContext. Pages are sourced from its configured
     <a href="http://docs.servicestack.net/virtual-file-system">Virtual File System</a> which by default uses an In Memory Virtual 
-    File System which we can programatically populate:
+    File System which we can programmatically populate:
 </p>
 
 <pre><code>context.VirtualFiles.Write("_layout.html", "I am the Layout: &lt;b&gt;{{ page }}&lt;/b&gt;");

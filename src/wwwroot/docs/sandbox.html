@@ -19,7 +19,7 @@ order: 17
 
 <p>
     If running a template from an untrusted source we recommend running them within a new <em>TemplateContext</em> instance so they're 
-    kept isolated from any other <em>TemplateContext</em> instance. Context's are cheap to create, so there wont be a noticable delay when 
+    kept isolated from any other <em>TemplateContext</em> instance. Context's are cheap to create, so there won't be a noticeable delay when 
     executing in a new instance but they're used to cache compiled lambda expressions which will need to be recreated if executing Templates
     in new TemplateContext instances. For improved performance you can instead have all untrusted templates use the same
     TemplateContext instance that way they're able to reuse compiled expressions.
