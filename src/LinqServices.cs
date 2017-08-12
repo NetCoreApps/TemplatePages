@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.IO;
 using ServiceStack;
 using ServiceStack.Templates;
-using ServiceStack.VirtualPath;
+using ServiceStack.IO;
 using ServiceStack.DataAnnotations;
 
 namespace TemplatePages

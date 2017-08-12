@@ -1,6 +1,6 @@
 using Funq;
 using ServiceStack;
-using ServiceStack.VirtualPath;
+using ServiceStack.IO;
 using ServiceStack.Templates;
 using System.Collections.Generic;
 using System.Linq;

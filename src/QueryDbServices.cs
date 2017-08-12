@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using ServiceStack;
 using ServiceStack.OrmLite;
 using ServiceStack.Templates;
-using ServiceStack.VirtualPath;
+using ServiceStack.IO;
 
 namespace TemplatePages
 {
