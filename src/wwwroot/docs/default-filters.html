@@ -214,12 +214,17 @@ truthy: {{ true | truthy('T') }}, {{ 1 | truthy('T') }}, {{ null | truthy('T') }
 
 <h4 id="content-handling">Content Handling</h4>
 
-{{ 'live-template' | partial({ rows: 6, template: `default: {{ title | default('A Title') }}
+{{ 'live-template' | partial({ rows: 7, template: `default: {{ title | default('A Title') }}
 {{ 'The Title' | assignTo: title }}{{ title | default('A Title') }} : {{ 1 | ifExists(title) }}
 {{ noArg }} : {{ noArg | ifExists }} : {{ 1 | ifNotExists(noArg) }} : {{ 1 | ifNo(noArg) }}
 {{ 'empty' | ifEmpty('') }} : {{ 'empty' | ifEmpty([]) }} : {{ 'empty' | ifEmpty([1]) }}
 {{ [1,2,3] | assignTo: nums }}{{ nums | join | assignTo: list }}
-{{ "nums {0}" | fmt(list) | ifNotEmpty(nums) }}{{ "nums {0}" | fmt(list) | ifNotEmpty([]) }}` }) }}
+{{ "nums {0}" | fmt(list) | ifNotEmpty(nums) }}{{ "nums {0}" | fmt(list) | ifNotEmpty([]) }}
+{{ noArg | noshow }} : {{ 1 | noshow }} : {{ 1 | incr | noshow }}` }) }}
+
+<blockquote>
+    You can use <em>noshow</em> to discard return values of filters with side-effects, block filters, partials, etc.
+</blockquote>
 
 <h4 id="assignment">Assignment</h4>
 
