@@ -105,8 +105,8 @@ public string padRight(string text, int totalWidth, char padChar) => text?.PadRi
 </p>
 
 {{ 'live-template' | partial({ template: '{{ [0,1,2,3,4,5]
-   | where("it >= 3")
-   | select("{{ it | incrBy(10) }}\n") }}' 
+   | where(`it >= 3`)
+   | select(`{{ it | incrBy(10) }}\n`) }}' 
 }) }}
 
 <h4>String Expressions</h4>
