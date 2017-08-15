@@ -1,4 +1,4 @@
-All but first 2 orders in WA:
+   All but first 2 orders in WA:
 {{ customers | zip: it.Orders
    | let({ c: 'it[0]', o: 'it[1]' })
    | where: c.Region = 'WA'
