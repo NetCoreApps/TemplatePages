@@ -171,3 +171,16 @@ caption {
     caption-side: top; 
     text-align: center;
 }
+
+.html-sm {
+    font-size: .75rem;
+}
+.html {
+    font-size: .8rem;
+}
+.html-md {
+    font-size: .9rem;
+}
+.html-sm .output, .html .output, .html-md .output, .html-lg .output {
+    padding: 0;
+}

@@ -3,5 +3,5 @@ All but first 2 orders in WA:
    | let({ c: 'it[0]', o: 'it[1]' })
    | where: c.Region = 'WA'
    | skip(2)
-   | select: { [c.CustomerId, o.OrderId, o.OrderDate] | join(', ') }\n 
-}}
+   | map: o
+   | htmlDump({ className: 'table' }) }}

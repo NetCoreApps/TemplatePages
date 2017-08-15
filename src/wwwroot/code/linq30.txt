@@ -1,3 +1,3 @@
 {{ products 
    | orderBy: it.ProductName 
-   | select: { it | jsv }\n }}
+   | htmlDump({ className: 'table'}) }}

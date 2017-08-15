@@ -235,17 +235,12 @@ truthy: {{ true | truthy('T') }}, {{ 1 | truthy('T') }}, {{ null | truthy('T') }
 
 <h4 id="content-handling">Content Handling</h4>
 
-{{ 'live-template' | partial({ rows: 7, template: `default: {{ title | default('A Title') }}
+{{ 'live-template' | partial({ rows: 6, template: `default: {{ title | default('A Title') }}
 {{ 'The Title' | assignTo: title }}{{ title | default('A Title') }} : {{ 1 | ifExists(title) }}
 {{ noArg }} : {{ noArg | ifExists }} : {{ 1 | ifNotExists(noArg) }} : {{ 1 | ifNo(noArg) }}
 {{ 'empty' | ifEmpty('') }} : {{ 'empty' | ifEmpty([]) }} : {{ 'empty' | ifEmpty([1]) }}
 {{ [1,2,3] | assignTo: nums }}{{ nums | join | assignTo: list }}
-{{ "nums {0}" | fmt(list) | ifNotEmpty(nums) }}{{ "nums {0}" | fmt(list) | ifNotEmpty([]) }}
-{{ noArg | noshow }} : {{ 1 | noshow }} : {{ 1 | incr | noshow }}` }) }}
-
-<blockquote>
-    You can use <em>noshow</em> to discard return values of filters with side-effects, block filters, partials, etc.
-</blockquote>
+{{ "nums {0}" | fmt(list) | ifNotEmpty(nums) }}{{ "nums {0}" | fmt(list) | ifNotEmpty([]) }}` }) }}
 
 <h4 id="control-execution">Control Execution</h4>
 
@@ -255,7 +250,7 @@ truthy: {{ true | truthy('T') }}, {{ 1 | truthy('T') }}, {{ null | truthy('T') }
     to be used from that point on in the expression.
 </p>
 
-{{ 'live-template' | partial({ rows: 11, template: `always {{ 1 | end | default('unreachable') }}
+{{ 'live-template' | partial({ rows: 12, template: `always {{ 1 | end | default('unreachable') }}
 null {{ 1 | endIfNull }}/{{ null | endIfNull | default('N/A') }}
 empty {{ '' | endIfEmpty | default('N/A') }}/{{ [] | endIfEmpty | default('N/A') }}
 if {{ true | ifEnd | use(1) }}/{{ false | ifEnd | use(1) }}:{{ endIf(true) | use(1) }}
@@ -265,7 +260,12 @@ all {{ 5 | times | endIfAll('lt(it,4)') |join }}/{{ 5 | times | endIfAll('lt(it,
 where {{ 1 | endWhere: isString(it) }}/{{ 'a' | endWhere: isString(it) }}
 useFmt {{ arg | endIfExists | useFmt('{0} + {1}', 1, 2) | assignTo: arg }}{{ arg }}
 useFmt {{ arg | endIfExists | useFmt('{0} + {1}', 3, 4) | assignTo: arg }}{{ arg }}
-useFormat {{ arg2 | endIfExists | useFormat('value', 'key={0}') | assignTo: arg2 }}{{ arg2 }}` }) }}
+useFormat {{ arg2 | endIfExists | useFormat('value', 'key={0}') | assignTo: arg2 }}{{ arg2 }}
+{{ noArg | end }} : {{ 1 | end }} : {{ 1 | incr | end }}` }) }}
+
+<blockquote>
+    You can also use <em>end</em> to discard return values of filters with side-effects, block filters, partials, etc.
+</blockquote>
 
 <p>
     The <em>ifUse</em> and <em>useIf</em> filters are the inverse of the <em>end*</em> filters where they continue

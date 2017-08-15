@@ -1,4 +1,4 @@
 {{ products 
    | groupBy: it.Category
    | let({ category: 'it.Key', products: 'it' })
-   | select: {category}:\n{ products | select('{it | jsv}\n') } }}
+   | htmlDump({ className: 'table'}) }}

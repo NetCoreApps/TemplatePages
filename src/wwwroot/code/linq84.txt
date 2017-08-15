@@ -2,8 +2,8 @@
    | groupBy: it.Category
    | let({ 
         g: 'it',
-        minPrice: 'min(g, `it.UnitPrice`)', 
-        category: 'g.Key', 
-        cheapestProducts: 'where(g, `it.UnitPrice = minPrice`)' 
+        MinPrice: 'min(g, `it.UnitPrice`)', 
+        Category: 'g.Key', 
+        CheapestProducts: 'where(g, `it.UnitPrice = MinPrice`)' 
      })
-   | select: { category }\n{ cheapestProducts | jsv }\n }}
+   | map('{ Category, CheapestProducts }') | htmlDump({ className: 'table' }) }}

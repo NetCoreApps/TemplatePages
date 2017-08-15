@@ -1,4 +1,4 @@
 {{ products 
    | orderBy: it.Category
    | thenByDescending: it.UnitPrice
-   | select: { it | jsv }\n }}
+   | htmlDump({ className: 'table'}) }}

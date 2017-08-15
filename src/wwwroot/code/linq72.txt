@@ -1,5 +1,5 @@
 {{ products 
    | groupBy: it.Category
    | where: all(it, 'it.UnitsInStock > 0')
-   | let({ category: 'it.Key', products: 'it' }) 
-   | select: { category }\n{ products | jsv }\n }}
+   | let({ Category: 'it.Key', Products: 'it' }) 
+   | htmlDump({ className: 'table'}) }}

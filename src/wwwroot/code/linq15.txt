@@ -1,4 +1,5 @@
 {{ customers | zip: it.Orders
    | let({ c: 'it[0]', o: 'it[1]' })
    | where: o.Total < 500
-   | select: ({ c.CustomerId }, { o.OrderId }, { o.Total | format('0.0#') })\n }}
+   | map: o
+   | htmlDump({ className: 'table' }) }}

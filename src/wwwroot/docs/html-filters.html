@@ -7,22 +7,22 @@ order: 8
     HTML-specific filters for use in <b>.html</b> page formats.
 </p>
 
-<h4>htmltable</h4>
+<h4>htmlDump</h4>
 
-<p>
-    Generate a HTML <em>&lt;table/&gt;</em> from a Single or List of Dictionaries.
-    <em>headerStyle</em> can be any <a href="/docs/default-filters#text-style">Text Style</a>.
+<p>    
+    Generates a HTML <em>&lt;table/&gt;</em> by recursively traversing the public members of a .NET instance object graph.<br>
+    <em>headerStyle</em> can be any <a href="/docs/default-filters#text-style">Text Style</a>
 </p>
 
 {{ 'live-template' | partial({ template: `{{ [{FirstName: 'Kurt', Age: 27},{FirstName: 'Jimi', Age: 27}] | assignTo: rockstars }}
-{{ rockstars | htmltable }}
-Uses defaults: {{ rockstars | htmltable({ headerTag: 'th', headerStyle: 'splitCase' }) }}` }) }}
+{{ rockstars | htmlDump }}
+Uses defaults: {{ rockstars | htmlDump({ headerTag: 'th', headerStyle: 'splitCase' }) }}` }) }}
 
-<h5>htmltable customizations</h5>
+<h5>htmlDump customizations</h5>
 
 {{ 'live-template' | partial({ rows:3, template: `{{ [{FirstName: 'Kurt', Age: 27},{FirstName: 'Jimi', Age: 27}] | assignTo: rockstars }}
-{{ rockstars | htmltable({ className: "table table-striped", caption: "Rockstars" }) }}
-{{ [] | htmltable({ emptyCaption: "No Rocksars"}) }}` }) }}
+{{ rockstars | htmlDump({ className: "table table-striped", caption: "Rockstars" }) }}
+{{ [] | htmlDump({ emptyCaption: "No Rocksars"}) }}` }) }}
 
 
 {{ "doc-links" | partial({ order }) }}
