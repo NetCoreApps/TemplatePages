@@ -178,7 +178,7 @@ Time: {{ now.TimeOfDay | timeFormat('h\:mm') }} default: {{ now.TimeOfDay | time
     These filters allow you to test for different conditions:
 </p>
 
-{{ 'live-template' | partial({ rows: 15, template: "starts/ends: {{ 'startsWith' | startsWith('start') }}, {{ 'endsWith' | endsWith('end') }}
+{{ 'live-template' | partial({ rows: 16, template: "starts/ends: {{ 'startsWith' | startsWith('start') }}, {{ 'endsWith' | endsWith('end') }}
 contains: {{ [1,2] | contains(1) }}, {{ [1,2] | contains(3) }}, {{ 'ABC' | contains('A') }}
 Even/Odd: {{ 1 | isEven }}, {{ 1 | isOdd }}
 isNull: {{ null | isNull }}, {{ 1 | isNull }}
@@ -186,6 +186,7 @@ isNotNull: {{ null | isNotNull }}, {{ 1 | isNotNull }}
 exists: {{ null | exists }}, {{ 1 | exists }}, {{ unknownArg | exists }}
 equals: {{ 1 | equals(1) }}, {{ 2 | equals(1) }}, {{ 'A' | equals('A') }} or {{ 1 | eq(1) }}
 notEquals: {{ 2 | notEquals(1) }}, {{ 'A' | notEquals('A') }} or {{ 1 | not(1) }}
+counts: {{ [1,2] | length }}, {{ [1,2] | hasMinCount(1) }}, {{ [1,2] | hasMaxCount(1) }}
 greaterThan: {{ 1 | greaterThan(1) }}, {{ 2 | greaterThan(1) }} or {{ 2 | gt(1) }}, 
 greaterEqual: {{ 1 | greaterThanEqual(1) }}, {{ 2 | greaterThanEqual(1) }} or {{ 2 | gte(1) }}
 lessThan: {{ 1 | lessThan(1) }}, {{ 1 | lessThan(2) }} or {{ 1 | lt(2) }}, 
@@ -193,6 +194,26 @@ lessEqual: {{ 1 | lessThanEqual(1) }}, {{ 2 | lessThanEqual(1) }} or {{ 2 | lte(
 equivalentTo: {{ [1,2] | equivalentTo([1,2]) }}, {{ {a:1, b:2} | equivalentTo({a:1, b:2}) }}
 or: {{ true | or(true) }}, {{ or(true, false) }}, {{ or(false, false) }}
 and: {{ true | and(true) }}, {{ and(true, false) }}, {{ and(false, false) }}" }) }}
+
+<h4 id="object-tests">Object Type Tests</h4>
+
+<p>
+    Filters to check the type of objects:
+</p>
+
+
+{{ 'live-template' | partial({ rows: 12, template: "Any Number: {{ 1 | isInteger }}, {{ 1 | toLong | isInteger }}, {{ 1.1 | isNumber }}
+Real Numbers: {{ 1.1 | isDouble }}, {{ 1.1 |toFloat| isFloat }}, {{ 1.1 |toDecimal| isDecimal }}
+ints: {{ 1 | isInt }}, {{ 1 | isLong }}, {{ 1 | toLong | isLong }}
+strings: {{ 'a' | isString }}, {{ 'a' | isChar }}, {{ 'a' | toChar | isChar }}
+bool: {{ false | isBool }}, 
+bytes: {{ 1 | toByte | isByte }}, {{ 'a' | toUtf8Bytes | isBytes }}
+chars: {{ 'abc' | toChars | isChars }}, {{ ['a','b','c'] | toChars | isChars }}
+enumerable: {{ [1] | isEnumerable }}, {{ {a:1} | isEnumerable }}, {{ 'abc' | isEnumerable }}
+list: {{ [1] | isList }}, {{ {a:1} | isList }}, {{ 'abc' | isList }}
+dictionary: {{ {a:1} | isDictionary }}, {{ [1] | isDictionary }}, {{ 'abc' | isDictionary }}
+object dict: {{ {a:1} | isObjectDictionary }}, {{ {'a':'b'} | isObjectDictionary }}
+value/ref type: {{ 1 | isValueType }}, {{ [] | isValueType }}, {{ [] | isClass }}" }) }}
 
 <h4 id="conditional-display">Conditional Display</h4>
 
@@ -225,6 +246,34 @@ truthy: {{ true | truthy('T') }}, {{ 1 | truthy('T') }}, {{ null | truthy('T') }
 <blockquote>
     You can use <em>noshow</em> to discard return values of filters with side-effects, block filters, partials, etc.
 </blockquote>
+
+<h4 id="control-execution">Control Execution</h4>
+
+<p>
+    The <em>end*</em> filters short-circuits the execution of a filter and discard any results.
+    They're useful to use in combination with the <em>use*</em> filters which discards the old value and creates a new value 
+    to be used from that point on in the expression.
+</p>
+
+{{ 'live-template' | partial({ rows: 11, template: `always {{ 1 | end | default('unreachable') }}
+null {{ 1 | endIfNull }}/{{ null | endIfNull | default('N/A') }}
+empty {{ '' | endIfEmpty | default('N/A') }}/{{ [] | endIfEmpty | default('N/A') }}
+if {{ true | ifEnd | use(1) }}/{{ false | ifEnd | use(1) }}:{{ endIf(true) | use(1) }}
+do {{ true | ifDo | select: 1 }}/{{ false | ifDo | select: 1 }}/{{ doIf(true) | use(1) }}
+any {{ 5 | times | endIfAny('it = 4') | join }}/{{ 5 | times | endIfAny('it = 5') | join }}
+all {{ 5 | times | endIfAll('lt(it,4)') |join }}/{{ 5 | times | endIfAll('lt(it,5)') |join }}
+where {{ 1 | endWhere: isString(it) }}/{{ 'a' | endWhere: isString(it) }}
+useFmt {{ arg | endIfExists | useFmt('{0} + {1}', 1, 2) | assignTo: arg }}{{ arg }}
+useFmt {{ arg | endIfExists | useFmt('{0} + {1}', 3, 4) | assignTo: arg }}{{ arg }}
+useFormat {{ arg2 | endIfExists | useFormat('value', 'key={0}') | assignTo: arg2 }}{{ arg2 }}` }) }}
+
+<p>
+    The <em>ifUse</em> and <em>useIf</em> filters are the inverse of the <em>end*</em> filters where they continue
+    execution with a new value if the condition is true:
+</p>
+
+{{ 'live-template' | partial({ rows: 2, template: `ifUse: {{ true | ifUse(1) }} / {{ false | ifUse(1) | default('unreachable') }}
+useIf: {{ 1 | useIf(true) }} / {{ 1 | useIf(false) | default('unreachable') }}` }) }}
 
 <h4 id="assignment">Assignment</h4>
 
@@ -341,6 +390,24 @@ Expenses: {{ expenses | values | sum | currency }}` }) }}
 
 {{ 'live-template' | partial({ template: `{{ [{x:1,y:2},{x:3,y:4}] | assignTo:model }}
 var coords = {{ model | json }};` }) }}
+
+<h4 id="embed">Embedding in JavaScript</h4>
+
+<p>
+    You can use the filters below to embed data on the client in JavaScript. If it's a valid JS Object or JSON it can
+    be embedded as a native data JS structure without quotes, otherwise use <em>jsString</em> to capture it in a 
+    JavaScript string variable:
+</p>
+
+{{ 'live-template' | partial({ rows: 9, template: `{{ '[
+    {"name":"Mc Donald\'s"}
+]' | assignTo:json }}
+var obj = {{ json }};
+var str = '{{ json | jsString }}';
+var str = {{ json | jsQuotedString }};
+var escapeSingle = '{{ "single' quote's" | escapeSingleQuotes }}';
+var escapeDouble = "{{ 'double" quote"s' | escapeDoubleQuotes }}"
+var escapeLines = '{{ "new" | appendLine | append("line") | escapeNewLines }}';` }) }}
 
 <p>
     The <a href="http://docs.servicestack.net/jsv-format">JSV Format</a> is great when you want a human-friendly output 
