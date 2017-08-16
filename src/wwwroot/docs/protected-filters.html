@@ -66,7 +66,8 @@ order: 10
 <pre class="cs">{{ pass: 'my-file.txt' | includeFileWithCache }}<code></code></pre>
 
 <p>
-    Or to if you want the content to be refreshed after 1hr you can use:
+    In which case it will use the <b>1 minute</b> default overridable in <em>Context.Args[TemplateConstants.DefaultFileCacheExpiry]</em>    
+    or if you want the content to be refreshed after 1hr you can use:
 </p>
 
 <pre class="cs">{{ pass(`'my-file.txt' | includeFileWithCache({ expiresInSecs: 3600 })`) }}<code></code></pre>
@@ -138,9 +139,116 @@ order: 10
 <pre class="cs">{{ pass: url | includeUrlWithCache }}<code></code></pre>
 
 <p>
-    Or only cached for 1hr:
+    In which case it will use the <b>1 minute</b> default overridable in <em>Context.Args[TemplateConstants.DefaultUrlCacheExpiry]</em>    
+    or if you want to ensure that no more than 1 url request is made per hour for this url you can specify a custom expiry with:
 </p>
 
 <pre class="cs">{{ pass(`url | includeUrlWithCache({ expiresInSecs: 3600 })`) }}<code></code></pre>
+
+<h3 id="virtual-file-system-apis">Virtual File System APIs</h3>
+
+<p>
+    The <a href="http://docs.servicestack.net/virtual-file-system">Virtual File System APIs</a> are mapped to the following filters:
+</p>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Filter Name</th>
+            <th>
+                <a href="https://github.com/ServiceStack/ServiceStack/tree/master/src/ServiceStack.Interfaces/IO">Virtual File System API</a>
+            </th>
+        </tr>
+    </thead>
+    <tr>
+        <th colspan="2" style="text-align:right">File APIs</th>
+    </tr>
+    <tr>
+        <th>filesFind</th>
+        <td>GetAllMatchingFiles(globPatern)</td>
+    </tr>
+    <tr>
+        <th>fileExists</th>
+        <td>FileExists(virtualPath)</td>
+    </tr>
+    <tr>
+        <th>file</th>
+        <td>GetFile(virtualPath)</td>
+    </tr>
+    <tr>
+        <th>fileWrite</th>
+        <td>WriteFile(virtualPath, contents)</td>
+    </tr>
+    <tr>
+        <th>fileAppend</th>
+        <td>AppendFile(virtualPath, contents)</td>
+    </tr>
+    <tr>
+        <th>fileDelete</th>
+        <td>DeleteFile(virtualPath)</td>
+    </tr>
+    <tr>
+        <th>fileReadAll</th>
+        <td>GetFile(virtualPath).ReadAllText()</td>
+    </tr>
+    <tr>
+        <th>fileReadAllBytes</th>
+        <td>GetFile(virtualPath).ReadAllBytes()</td>
+    </tr>
+    <tr>
+        <th>fileHash</th>
+        <td>GetFileHash(virtualPath)</td>
+    </tr>
+    <tr>
+        <th colspan="2" style="text-align:right">Directory APIs</th>
+    </tr>
+    <tr>
+        <th>dir</th>
+        <td>GetDirectory(virtualPath)</td>
+    </tr>
+    <tr>
+        <th>dirExists</th>
+        <td>DirectoryExists(virtualPath)</td>
+    </tr>
+    <tr>
+        <th>dirFile</th>
+        <td>GetDirectory(dirPath).GetFile(fileName)</td>
+    </tr>
+    <tr>
+        <th>dirFiles</th>
+        <td>.GetDirectory(dirPath).GetFiles()</td>
+    </tr>
+    <tr>
+        <th>dirDirectory</th>
+        <td>GetDirectory(dirPath).GetDirectory(dirName)</td>
+    </tr>
+    <tr>
+        <th>dirDirectories</th>
+        <td>GetDirectory(dirPath).GetDirectories()</td>
+    </tr>
+    <tr>
+        <th>dirFilesFind</th>
+        <td>GetDirectory(dirPath).GetAllMatchingFiles(globPatern)</td>
+    </tr>
+    <tr>
+        <th colspan="2" style="text-align:right">Virtual File System APIs</th>
+    </tr>
+    <tr>
+        <th>vfsAllFiles</th>
+        <td>GetAllFiles()</td>
+    </tr>
+    <tr>
+        <th>vfsAllRootFiles</th>
+        <td>GetRootFiles()</td>
+    </tr>
+    <tr>
+        <th>vfsAllRootDirectories</th>
+        <td>GetRootDirectories()</td>
+    </tr>
+    <tr>
+        <th>vfsCombinePath</th>
+        <td>CombineVirtualPath(basePath, relativePath)</td>
+    </tr>
+</table>
 
 {{ "doc-links" | partial({ order }) }}
