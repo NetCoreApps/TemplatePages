@@ -6,4 +6,4 @@
         Category: 'g.Key', 
         MostExpensiveProducts: 'where(g, `it.UnitPrice = MaxPrice`)' 
      })
-   | map('{ Category, MostExpensiveProducts }') | htmlDump({ className: 'table' }) }}
+   | map('{ Category, MostExpensiveProducts }') | htmlDump }}

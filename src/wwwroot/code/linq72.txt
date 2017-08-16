@@ -2,4 +2,4 @@
    | groupBy: it.Category
    | where: all(it, 'it.UnitsInStock > 0')
    | let({ Category: 'it.Key', Products: 'it' }) 
-   | htmlDump({ className: 'table'}) }}
+   | htmlDump }}

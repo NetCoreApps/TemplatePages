@@ -1,4 +1,4 @@
 {{ products 
    | groupBy: it.Category
    | let({ category: 'it.Key', products: 'it' })
-   | htmlDump({ className: 'table'}) }}
+   | htmlDump }}

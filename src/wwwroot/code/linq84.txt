@@ -6,4 +6,4 @@
         Category: 'g.Key', 
         CheapestProducts: 'where(g, `it.UnitPrice = MinPrice`)' 
      })
-   | map('{ Category, CheapestProducts }') | htmlDump({ className: 'table' }) }}
+   | map('{ Category, CheapestProducts }') | htmlDump }}

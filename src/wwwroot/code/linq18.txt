@@ -5,4 +5,4 @@
    | let({ c: 'it[0]', o: 'it[1]' })
    | where: o.OrderDate  >= cutoffDate 
    | map: o
-   | htmlDump({ className: 'table' }) }}
+   | htmlDump }}

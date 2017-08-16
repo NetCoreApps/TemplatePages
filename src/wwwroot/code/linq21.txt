@@ -4,4 +4,4 @@
    | where: c.Region = 'WA'
    | take: 3
    | map: o
-   | htmlDump({ className: 'table' }) }}
+   | htmlDump }}

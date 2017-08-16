@@ -2,4 +2,4 @@
 {{ words 
    | groupBy: it[0]
    | let({ firstLetter: 'it.Key', words: 'it' })
-   | select: Words that start with the letter '{firstLetter}':\n{ words | select('{it}\n') } }}
+   | select: Words that start with the letter '{firstLetter}':\n{ words | join('\n') }\n }}
