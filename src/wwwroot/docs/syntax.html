@@ -76,11 +76,12 @@ public string padRight(string text, int totalWidth, char padChar) => text?.PadRi
 <h4>Quotes</h4>
 
 <p>
-    Like JS you can define strings using single quotes, double quotes or backticks, e.g:
+    Like JS you can define strings using single quotes, double quotes, prime quotes or backticks, e.g:
 </p>
 
-{{ 'live-template' | partial({ template: "{{ 'single quotes' }}
-{{ \"double quotes\" }}
+{{ 'live-template' | partial({ template: "{{ \"double quotes\" }}
+{{ 'single quotes' }}
+{{ ′prime quotes′ }}
 {{ `backticks` }}" }) }}
 
 <blockquote>
@@ -104,9 +105,9 @@ public string padRight(string text, int totalWidth, char padChar) => text?.PadRi
     and it will be rewritten into its equivalent and more verbose form of:
 </p>
 
-{{ 'live-template' | partial({ template: '{{ [0,1,2,3,4,5]
-   | where(`it >= 3`)
-   | select(`{{ it | incrBy(10) }}\n`) }}' 
+{{ 'live-template' | partial({ template: "{{ [0,1,2,3,4,5]
+   | where(′it >= 3′)
+   | select(′{{ it | incrBy(10) }}\n′) }}" 
 }) }}
 
 <h4>String Expressions</h4>

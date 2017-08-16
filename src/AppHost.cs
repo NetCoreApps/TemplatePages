@@ -8,6 +8,7 @@ using System.Collections;
 using ServiceStack.Text;
 using ServiceStack.Data;
 using ServiceStack.OrmLite;
+using System;
 
 namespace TemplatePages
 {
@@ -20,7 +21,10 @@ namespace TemplatePages
 
         public override void Configure(Container container)
         {
-            SetConfig(new HostConfig { DebugMode = Env.IsWin });
+            SetConfig(new HostConfig { 
+                DebugMode = AppSettings.Get("DebugMode", Environment.GetEnvironmentVariable("OS")?.IndexOf("Windows") >= 0) 
+            });
+
             container.Register<ICustomers>(c => new Customers(TemplateQueryData.Customers));
             container.Register<IDbConnectionFactory>(c => new OrmLiteConnectionFactory(":memory:", SqliteDialect.Provider));
 
