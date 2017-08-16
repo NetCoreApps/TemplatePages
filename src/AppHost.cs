@@ -20,7 +20,7 @@ namespace TemplatePages
 
         public override void Configure(Container container)
         {
-            SetConfig(new HostConfig { DebugMode = !Env.IsUnix });
+            SetConfig(new HostConfig { DebugMode = Env.IsWin });
             container.Register<ICustomers>(c => new Customers(TemplateQueryData.Customers));
             container.Register<IDbConnectionFactory>(c => new OrmLiteConnectionFactory(":memory:", SqliteDialect.Provider));
 
