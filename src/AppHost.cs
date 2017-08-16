@@ -22,7 +22,7 @@ namespace TemplatePages
         public override void Configure(Container container)
         {
             SetConfig(new HostConfig { 
-                DebugMode = AppSettings.Get("DebugMode", Environment.GetEnvironmentVariable("OS")?.IndexOf("Windows") >= 0) 
+                DebugMode = AppSettings.Get("DebugMode", Env.IsWindows) 
             });
 
             container.Register<ICustomers>(c => new Customers(TemplateQueryData.Customers));
