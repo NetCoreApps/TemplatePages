@@ -1,4 +1,5 @@
 {{ 11200 | assignTo: balance }}
+{{ 3     | assignTo: projectedMonths }}
 {{'
 Salary:        4000
 App Royalties: 200
@@ -27,5 +28,5 @@ Total            <b>{{ totalExpenses | currency }}</b>
 Monthly Savings: <b>{{ totalSavings | currency }}</b>
 
 Projected Cash Position:
-{{ 3 | times | map: incr(index)
+{{ projectedMonths | times | map: incr(index)
  | select: { now | addMonths(it) | dateFormat }       <b>{ totalSavings | multiply(it) | add(balance) | currency }</b>\n }}
