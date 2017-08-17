@@ -22,7 +22,8 @@ namespace TemplatePages
         public override void Configure(Container container)
         {
             SetConfig(new HostConfig { 
-                DebugMode = AppSettings.Get("DebugMode", Env.IsWindows),
+                DebugMode = AppSettings.Get("DebugMode", !Env.IsWindows),
+                AdminAuthSecret = Environment.GetEnvironmentVariable("AUTH_SECRET")
             });
 
             Plugins.Add(new ServiceStack.Api.OpenApi.OpenApiFeature());
