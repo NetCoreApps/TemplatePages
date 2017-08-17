@@ -22,8 +22,10 @@ namespace TemplatePages
         public override void Configure(Container container)
         {
             SetConfig(new HostConfig { 
-                DebugMode = AppSettings.Get("DebugMode", Env.IsWindows) 
+                DebugMode = AppSettings.Get("DebugMode", Env.IsWindows),
             });
+
+            Plugins.Add(new ServiceStack.Api.OpenApi.OpenApiFeature());
 
             container.Register<ICustomers>(c => new Customers(TemplateQueryData.Customers));
             container.Register<IDbConnectionFactory>(c => new OrmLiteConnectionFactory(":memory:", SqliteDialect.Provider));
@@ -43,7 +45,8 @@ namespace TemplatePages
                 Args = {
                     ["products"] = TemplateQueryData.Products
                 },
-                RenderExpressionExceptions = true
+                RenderExpressionExceptions = true,
+                EnableDebugTemplate = true,
             });
 
             AfterInitCallbacks.Add(host => {

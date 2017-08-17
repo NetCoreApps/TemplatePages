@@ -17,6 +17,8 @@
     <PackageReference Include="ServiceStack.Common.Core" Version="1.0.*" />
     <PackageReference Include="ServiceStack.OrmLite.Core" Version="1.0.*" />
     <PackageReference Include="ServiceStack.OrmLite.Sqlite.Core" Version="1.0.*" />
+    <PackageReference Include="ServiceStack.OrmLite.Sqlite.Core" Version="1.0.*" />
+    <PackageReference Include="ServiceStack.Api.OpenApi.Core" Version="1.0.*" />
   </ItemGroup>
 
 </Project>
