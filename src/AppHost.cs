@@ -23,7 +23,6 @@ namespace TemplatePages
         {
             SetConfig(new HostConfig { 
                 DebugMode = AppSettings.Get("DebugMode", Env.IsWindows),
-                AdminAuthSecret = Environment.GetEnvironmentVariable("AUTH_SECRET")
             });
 
             Plugins.Add(new ServiceStack.Api.OpenApi.OpenApiFeature());
@@ -47,7 +46,7 @@ namespace TemplatePages
                     ["products"] = TemplateQueryData.Products
                 },
                 RenderExpressionExceptions = true,
-                EnableDebugTemplate = true,
+                EnableDebugTemplateToAll = true,
             });
 
             AfterInitCallbacks.Add(host => {

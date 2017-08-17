@@ -1,0 +1,211 @@
+<!--
+title: Debug Info Filters
+order: 11
+-->
+
+<p>
+    The debug info filters provide an easy to inspect the state of a remote ServiceStack Instance by making a number of metadata
+    objects and APIs available to query. The 
+    <a href="https://github.com/ServiceStack/ServiceStack/blob/master/src/ServiceStack/TemplateInfoFilters.cs">TemplateInfoFilters</a>
+    are pre-registered in ServiceStack's <em>TemplatePagesFeature</em>. You can make them available in a <em>TemplateContext</em> with:
+</p>
+
+<pre class="cs"><code>var context = new TemplatePagesFeature {
+    TemplateFilters = { new TemplateInfoFilters() }
+}.Init();</code></pre>
+
+<h4>Info Filters</h4>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Filter Name</th>
+            <th>API Mapping</th>
+        </tr>
+    </thead>
+    <tr>
+        <th colspan="2" style="text-align:right">Environment APIs</th>
+    </tr>
+    <tr>
+        <th>envVariable</th>
+        <td>Environment.GetEnvironmentVariable(variable)</td>
+    </tr>
+    <tr>
+        <th>envExpandVariables</th>
+        <td>Environment.ExpandEnvironmentVariables(name)</td>
+    </tr>
+    <tr>
+        <th>envProcessorCount</th>
+        <td>Environment.ProcessorCount</td>
+    </tr>
+    <tr>
+        <th>envTickCount</th>
+        <td>Environment.TickCount</td>
+    </tr>
+    <tr>
+        <th>envServerUserAgent</th>
+        <td>Env.ServerUserAgent</td>
+    </tr>
+    <tr>
+        <th>envServiceStackVersion</th>
+        <td>Env.ServiceStackVersion</td>
+    </tr>
+    <tr>
+        <th>envIsWindows</th>
+        <td>Env.IsWindows (net45) / IsOSPlatform(Windows) (netcore)</td>
+    </tr>
+    <tr>
+        <th>envIsLinux</th>
+        <td>Env.IsLinux (net45) / IsOSPlatform(Linux) (netcore)</td>
+    </tr>
+    <tr>
+        <th>envIsOSX</th>
+        <td>Env.IsOSX (net45) / IsOSPlatform(OSX) (netcore)</td>
+    </tr>
+    <tr>
+        <th>networkIpv4Addresses</th>
+        <td>GetAllNetworkInterfaceIpv4Addresses()</td>
+    </tr>
+    <tr>
+        <th>networkIpv6Addresses</th>
+        <td>GetAllNetworkInterfaceIpv6Addresses()</td>
+    </tr>
+    <tr>
+        <th colspan="2" style="text-align:right">User APIs</th>
+    </tr>
+    <tr>
+        <th>userSession</th>
+        <td>IRequest.GetSession()</td>
+    </tr>
+    <tr>
+        <th>userSessionId</th>
+        <td>IRequest.GetSessionId()</td>
+    </tr>
+    <tr>
+        <th>userSession</th>
+        <td>IRequest.GetSession()</td>
+    </tr>
+    <tr>
+        <th>userPermanentSessionId</th>
+        <td>IRequest.GetPermanentSessionId()</td>
+    </tr>
+    <tr>
+        <th>userSessionOptions</th>
+        <td>IRequest.GetSessionOptions()</td>
+    </tr>
+    <tr>
+        <th>userHasRole</th>
+        <td>IAuthSession.HasRole(role)</td>
+    </tr>
+    <tr>
+        <th>userHasPermission</th>
+        <td>IAuthSession.HasPermission(permission)</td>
+    </tr>
+    <tr>
+        <th colspan="2" style="text-align:right">Metadata APIs</th>
+    </tr>
+    <tr>
+        <th>metaAllDtos</th>
+        <td>Metadata.GetOperationDtos()</td>
+    </tr>
+    <tr>
+        <th>metaAllDtoNames</th>
+        <td>Metadata.GetOperationDtos(x => x.Name)</td>
+    </tr>
+    <tr>
+        <th>metaAllOperations</th>
+        <td>Metadata.Operations</td>
+    </tr>
+    <tr>
+        <th>metaAllOperationNames</th>
+        <td>Metadata.GetAllOperationNames()</td>
+    </tr>
+    <tr>
+        <th>metaAllOperationTypes</th>
+        <td>Metadata.GetAllOperationTypes()</td>
+    </tr>
+    <tr>
+        <th>metaOperation</th>
+        <td>Metadata.GetOperation(name)</td>
+    </tr>
+</table>
+
+<hr>
+
+<h4 style="position:absolute; margin: 0 0 0 600px" ><a href="/templates/debug/eval">/templates/debug/eval</a></h4>
+<h3 id="debug-evaluate-template">Debug Evaluate Template</h3>
+
+<p>
+    The Debug Template is a Service in <em>TemplatePagesFeature</em> that's pre-registered in <a href="http://docs.servicestack.net/debugging#debugmode">DebugMode</a>. 
+    The Service can also be available when not in <b>DebugMode</b> by enabling it with:
+</p>
+
+<pre class="cs"><code>Plugins.Add(new TemplatePagesFeature { 
+    EnableDebugTemplate = true
+})</code></pre>
+
+<p>
+    This registers the Service but limits it to Users with the <em>Admin</em> role, alternatively you configure a an 
+    <a href="http://docs.servicestack.net/debugging#authsecret">Admin Secret Key</a> with:
+</p>
+
+<pre class="cs"><code>SetConfig(new HostConfig { AdminAuthSecret = "secretz" })</code></pre>
+
+<p>
+    Which will let you access it by appending the authsecret to the querystring: 
+    <em>/templates/debug/eval?authsecret=secretz</em>
+</p>
+
+<p>
+    If preferred you can make the Debug Template Service available to all users with:
+</p>
+
+<pre class="cs"><code>Plugins.Add(new TemplatePagesFeature { 
+    EnableDebugTemplateToAll = true
+})</code></pre>
+
+<p>
+    Which is the configuration we're using for this .NET Core App where the Debug Template Service is available from:
+</p>
+
+<h4><a href="/templates/debug/eval">/templates/debug/eval</a></h4>
+
+<p>
+    Debug Templates are executed in a new <em>TemplateContext</em> instance that's registered with the above <em>TemplateInfoFilters</em>
+    and a copy of any context arguments registered in the <em>TemplatePagesFeature</em>. It doesn't have access to any other filters
+    or any existing files, pages, partials, etc.
+</p>
+
+<p>
+    In addition to <em>TemplatePagesFeature</em> arguments, Debug Templates are populated with the following additional arguments:
+</p>
+
+<table class="table">
+    <tr>
+        <th>request</th>
+        <td>The current <em>IHttpRequest</em></td>
+    </tr>
+    <tr>
+        <th>appHost</th>
+        <td>The ServiceStack AppHost Instance</td>
+    </tr>
+    <tr>
+        <th>appConfig</th>
+        <td>ServiceStack's AppHost Configuration</td>
+    </tr>
+    <tr>
+        <th>appVirtualFilesPath</th>
+        <td>The Read/Write <em>IVirtualFiles</em> (aka ContentRootPath)</td>
+    </tr>
+    <tr>
+        <th>appVirtualFileSourcesPath</th>
+        <td>Multiple read-only Virtual File Sources (aka WebRootPath)</td>
+    </tr>
+    <tr>
+        <th>meta</th>
+        <td>ServiceStack Metadata Services Object</td>
+    </tr>
+</table>
+
+
+{{ "doc-links" | partial({ order }) }}
