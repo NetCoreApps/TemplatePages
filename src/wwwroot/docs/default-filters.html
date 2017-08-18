@@ -169,7 +169,7 @@ Time: {{ now.TimeOfDay | timeFormat('h\:mm') }} default: {{ now.TimeOfDay | time
 {{ 3 | newLines }}3 new lines above" }) }}
 
 <blockquote>
-    The default spacing used for indents <em>\t</em> can be overridden with the <em>TemplateConstants.DefaultIndent</em> Argument.
+    The default spacing used for indents <em>\t</em> can be overridden with the <em>Args[DefaultIndent]</em>.
 </blockquote>
 
 <h4 id="conditional-tests">Conditional Tests</h4>
@@ -265,6 +265,7 @@ useFormat {{ arg2 | endIfExists | useFormat('value', 'key={0}') | assignTo: arg2
 
 <blockquote>
     You can also use <em>end</em> to discard return values of filters with side-effects, block filters, partials, etc.
+    It also provides an easy way to comment out any expression by prefixing it at the start, e.g <em>{{ end | unreachable }}</em> 
 </blockquote>
 
 <p>

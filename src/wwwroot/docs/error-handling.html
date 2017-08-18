@@ -3,4 +3,315 @@ title: Error Handling
 order: 14
 -->
 
+<p>
+    Templates uses Exceptions for error flow control flow that by default will fail fast by emitting the Exception details at 
+    the point where the error occured before terminating the Stream and rethrowing the Exception which lets you for 
+    instance catch the Exception in Unit Tests.
+</p>
+
+<h4>Handled Exceptions</h4>
+
+<p>
+    You can instead choose to handle exceptions and prevent them from short-circuiting page rendering by assigning them to an 
+    argument using either the <em>assignError</em> filter which will capture any subsequent Exceptions thrown on the page:
+</p>
+
+{{ 'live-template' | partial({ rows:3, template: `{{ 'ex' | assignError }}
+{{ 'An error!' | throw }}
+{{ ex | select: { it.Message } }}` }) }}
+
+<p>
+    Alternatively it can be specified on each call-site where it will capture the Exception thrown by the filter:
+</p>
+
+{{ 'live-template' | partial({ rows:3, template: `{{ 'An error!' | throw({ assignError: 'ex' }) }}
+{{ ex | select: { it.Message } }}` }) }}
+
+<blockquote>
+    An easy way to prettify errors in Web Pages is to use <a href="/docs/html-filters#htmlerror">HTML Error Filters</a>.
+</blockquote>
+
+<h4>Unhandled Exceptions Behavior</h4>
+
+<p>
+    If Exceptions are unassigned they're considered to be unhandled, whilst the default behavior or <em>TemplateContext</em> is to 
+    rethrow Exceptions, but as it's executed within the context of a HTTP Server, ServiceStack's <em>TemplatePagesFeature</em> by 
+    default is configured to:
+</p>
+
+<pre class="cs"><code>new TemplateContext = {
+    SkipExecutingFiltersIfError = true
+}</code></pre>
+
+<p>
+    Which instead captures any unhandled Exceptions in <em>PageResult.LastFilterError</em> and continues rendering the page except
+    it skips evaluating any subsequent filters and instead only evaluates the filters which handle errors, 
+    <a href="https://github.com/ServiceStack/ServiceStack/blob/master/src/ServiceStack.Common/Templates/TemplateConfig.cs">currently</a>:
+</p>
+
+<table class="table">
+    <tr>
+        <th>ifError</th>
+        <td>
+            Only execute the filter if there's an error: <br>
+            <em>{{ pass: ifError | select: FAIL! { it.Message } }}</em>
+        </td>
+    </tr>
+    <tr>
+        <th>lastError</th>
+        <td>
+            Returns the last error on the page or <em>null</em> if there was no error, that's passed to the next filter:<br>
+            <em>{{ pass: lastError | ifExists | select: FAIL! { it.Message } }}</em>
+        </td>
+    </tr>
+    <tr>
+        <th><a href="/docs/html-filters#htmlerror">htmlError</a></th>
+        <td>
+            Display detailed <em>htmlErrorDebug</em> when in <a href="http://docs.servicestack.net/debugging#debugmode">DebugMode</a>
+            otherwise display a more appropriate end-user <em>htmlErrorMessage</em>.
+        </td>
+    </tr>
+    <tr>
+        <th><a href="/docs/html-filters#htmlerrormessage">htmlErrorMessage</a></th>
+        <td>Display the Exception Message</td>
+    </tr>
+    <tr>
+        <th><a href="/docs/html-filters#htmlerrordebug">htmlErrorDebug</a></th>
+        <td>Display a detailed Exception</td>
+    </tr>
+</table>
+
+<p>
+    This behavior provides the optimal UX for developers and end-users as HTML Pages with Exceptions are still rendered well-formed 
+    whilst still being easily able to display a curated error messages for end-users without developers needing to guard against 
+    executing filters when Exceptions occur.
+</p>
+
+<h4>Controlling Unhandled Exception Behavior</h4>
+
+<p>
+    We can also enable this behavior on a per-page basis using the <em>skipExecutingFiltersOnError</em> filter:
+</p>
+
+{{ 'live-template' | partial({ rows:5, template: `{{ skipExecutingFiltersOnError }}
+<h4>{{ 'Before Exception' }}</h4>
+{{ 'An error!' | throw }}
+<h4>{{ 'After Exception' }}</h4>
+{{ htmlErrorMessage }}` }) }}
+
+<p>
+    Here we can see that any normal filters after exceptions are never evaluated unless they're specifically for handling Errors.
+</p>
+
+<h4>Continue Executing Filters on Unhandled Exceptions</h4>
+
+<p>
+    We can also specify that we want to continue executing filters in which case you'll need to manually guard filters you want to
+    control the execution of using the <em>ifNoError</em> or <em>ifError</em> filters:
+</p>
+
+{{ 'live-template' | partial({ rows:8, template: `{{ continueExecutingFiltersOnError }}
+<b style="color:green">{{ ifNoError | select: No Exception thrown yet! }}</b>
+<h4>{{ 'Before Exception' }}</h4>
+{{ 'An error!' | throw }}
+<b style="color:red">{{ ifError | select: There was an error! }}</b>
+<h4>{{ 'After Exception' }}</h4>
+{{ htmlErrorDebug }}` }) }}
+
+<h4>Accessing Page Exceptions</h4>
+
+<p>
+    The last Exception thrown are accessible using the <em>lastError*</em> filters:
+</p>
+
+{{ 'live-template' | partial({ rows:6, template: `{{ continueExecutingFiltersOnError }}
+{{ 'arg' | throwArgumentNullExceptionIf(true) }}
+<table class="table table-striped"><caption>{{ lastError | typeName }}</caption>
+<tr><th>Last Error Message</th><td>{{ lastErrorMessage }}</td></tr>
+<tr><th>Last Error StackTrace</th><td>{{ lastErrorStackTrace }}</td></tr>
+</table>` }) }}
+
+<h4>Throwing Exceptions</h4>
+
+<p>
+    We've included a few of the popular Exception Types, filters prefixed with <em>throw</em> always throws the Exceptions below:
+</p>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Filter</th>
+            <th>Exception</th>
+        </tr>
+    </thead>
+    <tbody>
+    <tr>
+        <th>throw</th>
+        <td>Exception(message)</td>
+    </tr>
+    <tr>
+        <th>throwArgumentException</th>
+        <td>ArgumentException(message)</td>
+    </tr>
+    <tr>
+        <th>throwArgumentNullException</th>
+        <td>ArgumentNullException(paramName)</td>
+    </tr>
+    <tr>
+        <th>throwNotSupportedException</th>
+        <td>NotSupportedException(message)</td>
+    </tr>
+    <tr>
+        <th>throwNotImplementedException</th>
+        <td>NotImplementedException(message)</td>
+    </tr>
+    <tr>
+        <th>throwUnauthorizedAccessException</th>
+        <td>UnauthorizedAccessException(message)</td>
+    </tr>
+    <tr>
+        <th>throwFileNotFoundException</th>
+        <td>FileNotFoundException(message)</td>
+    </tr>
+    <tr>
+        <th>throwOptimisticConcurrencyException</th>
+        <td>OptimisticConcurrencyException(message)</td>
+    </tr>
+    </tbody>
+</table>
+
+<blockquote>
+    You can extend this list with your own custom filters, see the 
+    <a href="https://github.com/ServiceStack/ServiceStack/blob/master/src/ServiceStack.Common/Templates/TemplateDefaultFilters.ErrorHandling.cs">Error Handling Filters</a>    
+    for examples.
+</blockquote>
+
+<p>
+    These filters will only throw if a condition is met:
+</p>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Filter</th>
+            <th>Exception</th>
+        </tr>
+    </thead>
+    <tbody>
+    <tr>
+        <th>throwIf</th>
+        <td>message | Exception(test)</td>
+    </tr>
+    <tr>
+        <th>throwArgumentNullExceptionIf</th>
+        <td>paramName | ArgumentNullException(test)</td>
+    </tr>
+    <tr>
+        <th>ifthrow</th>
+        <td>test | Exception(message)</td>
+    </tr>
+    <tr>
+        <th>ifThrowArgumentNullException</th>
+        <td>test | ArgumentNullException(paramName)</td>
+    </tr>
+    <tr>
+        <th>ifThrowArgumentException</th>
+        <td>
+            test | ArgumentException(message) <br> 
+            test | ArgumentException(message, paramName) <br> 
+        </td>
+    </tr>
+    </tbody>
+</table>
+
+<h4>Ensure Argument Helpers</h4>
+
+<p>
+    The <em>ensureAll*</em> filters assert the state of multiple arguments where it will either throw an Exception unless
+    all the arguments meet the condition or return the Object Dictionary if all conditions are met:
+</p>
+
+{{ 'live-template' | partial({ rows:5, template: `{{ 1 | assignTo: one }}{{ 'bar' | assignTo: foo }}{{ '' | assignTo: empty }}
+{{ { one, foo, empty } | ensureAllArgsNotNull | htmlDump({ caption: 'ensureAllArgsNotNull' }) }}
+ensureAllArgsNotEmpty:
+{{ { one, foo, empty } | ensureAllArgsNotEmpty({ assignError:'ex' }) | htmlDump }}
+{{ ex | htmlErrorMessage }}` }) }}
+
+<p>
+    The <em>ensureAny*</em> filters only requires one of the arguments meet the condition to return the Object Dictionary:
+</p>
+
+{{ 'live-template' | partial({ rows:5, template: `{{ '' | assignTo: empty }}
+{{ { foo, empty } | ensureAnyArgsNotNull | htmlDump({ caption: 'ensureAnyArgsNotNull' }) }}
+ensureAnyArgsNotEmpty:
+{{ { foo, empty } | ensureAnyArgsNotEmpty({ assignError:'ex' }) | htmlDump }}
+{{ ex | htmlErrorMessage }}` }) }}
+
+<h4>Fatal Exceptions</h4>
+
+<p>
+    The Exception Types below are reserved for Exceptions that should never happen, such as incorrect usage of an API where it would've 
+    resulted in a compile error in C#. When these Exceptions are thrown in a filter or a page they'll immediately short-circuit execution of
+    the page and write the Exception details to the output. 
+    <a href="https://github.com/ServiceStack/ServiceStack/blob/master/src/ServiceStack.Common/Templates/TemplateConfig.cs">The Fatal Exceptions include</a>:
+</p>
+
+<ul>
+    <li><em>NotSupportedException</em></li>
+    <li><em>NotImplementedException</em></li>
+    <li><em>TargetInvocationException</em></li>
+</ul>
+
+<h4>Implementing Filter Exceptions</h4>
+
+<p>
+    In order for your own Filter Exceptions to participate in the above Template Error Handling they'll need to be wrapped in an
+    <em>StopFilterExecutionException</em> including both the Template's <em>scope</em> and an optional <b>options</b> object 
+    which is used to check if the <em>assignError</em> binding was provided so it can automatically populate it with the Exception.
+</p>
+
+<p>
+    The easiest way to Implement Exception handling in filters is to call a managed function which catches all Exceptions and 
+    throws them in a <em>StopFilterExecutionException</em>:
+</p>
+
+<pre class="cs">T exec<T>(Func<IDbConnection, T> fn, TemplateScopeContext scope, object options)
+{
+    try
+    {
+        using (var db = DbFactory.Open())
+        {
+            return fn(db);
+        }
+    }
+    catch (Exception ex)
+    {
+        throw new StopFilterExecutionException(scope, options, ex);
+    }
+}
+
+public object dbSelect(TemplateScopeContext scope, string sql, Dictionary<string, object> args) => 
+    exec(db => db.Select<Dictionary<string, object>>(sql, args), scope, null);
+
+public object dbSelect(TemplateScopeContext scope, string sql, Dictionary<string, object> args, object options) => 
+    exec(db => db.Select<Dictionary<string, object>>(sql, args), scope, options);
+
+
+public object dbSingle(TemplateScopeContext scope, string sql, Dictionary<string, object> args) =>
+    exec(db => db.Single<Dictionary<string, object>>(sql, args), scope, null);
+
+public object dbSingle(TemplateScopeContext scope, string sql, Dictionary<string, object> args, object options) =>
+    exec(db => db.Single<Dictionary<string, object>>(sql, args), scope, options);
+
+</pre>
+
+<p>
+    The overloads are so the filters can be called without specifying any filter options.
+</p>
+
+<p>
+    For more examples of different error handling features and strategies checkout:
+    <a href="https://github.com/ServiceStack/ServiceStack/blob/master/tests/ServiceStack.WebHost.Endpoints.Tests/TemplateTests/TemplateErrorHandlingTests.cs">TemplateErrorHandlingTests.cs</a>
+</p>
+
 {{ "doc-links" | partial({ order }) }}

@@ -22,7 +22,40 @@ Uses defaults: {{ rockstars | htmlDump({ headerTag: 'th', headerStyle: 'splitCas
 
 {{ 'live-template' | partial({ rows:3, template: `{{ [{FirstName: 'Kurt', Age: 27},{FirstName: 'Jimi', Age: 27}] | assignTo: rockstars }}
 {{ rockstars | htmlDump({ className: "table table-striped", caption: "Rockstars" }) }}
-{{ [] | htmlDump({ emptyCaption: "No Rocksars"}) }}` }) }}
+{{ [] | htmlDump({ captionIfEmpty: "No Rocksars"}) }}` }) }}
+
+<h4 id="htmlerror">htmlError</h4>
+
+<p>
+    Renders an Exception into HTML, in <a href="http://docs.servicestack.net/debugging#debugmode">DebugMode</a> this renders a
+    detailed view using the <em>htmlErrorDebug</em> filter otherwise it's rendered using <em>htmlErrorMessage</em>.
+</p>
+
+{{ 'live-template' | partial({ rows:3, template: `{{ 'the error' | throw({ assignError: 'ex' }) }}
+{{ ex | htmlError }}
+{{ ex | htmlError({ className: "alert alert-warning" }) }}` }) }}
+
+<h4 id="htmlerrormessage">htmlErrorMessage</h4>
+
+<p>
+    Renders the Exception Message into into HTML using the default class in <em>Args[DefaultErrorClassName]</em>, 
+    overridable with <b>className</b>:
+</p>
+
+{{ 'live-template' | partial({ rows:3, template: `{{ 'the error' | throw({ assignError: 'ex' }) }}
+{{ ex | htmlErrorMessage }}
+{{ ex | htmlErrorMessage({ className: "alert alert-warning" }) }}` }) }}
+
+<h4 id="htmlerrordebug">htmlErrorDebug</h4>
+
+<p>
+    Renders a debug view of the Exception into into HTML using the default class in <em>Args[DefaultErrorClassName]</em>,
+    overridable with <b>className</b>:
+</p>
+
+{{ 'live-template' | partial({ rows:3, template: `{{ 'the error' | throw({ assignError: 'ex' }) }}
+{{ ex | htmlErrorDebug }}
+{{ ex | htmlErrorDebug({ className: "alert alert-warning" }) }}` }) }}
 
 
 {{ "doc-links" | partial({ order }) }}
