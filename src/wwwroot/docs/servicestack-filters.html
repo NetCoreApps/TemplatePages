@@ -1,0 +1,166 @@
+<!--
+title: ServiceStack Filters
+order: 12
+-->
+
+<p>
+    The ServiceStack Filters provide integration with ServiceStack features that are already pre-registered in ServiceStack's 
+    <em>TemplatePagesFeature</em> which are implemented in 
+    <a href="https://github.com/ServiceStack/ServiceStack/blob/master/src/ServiceStack/TemplateServiceStackFilters.cs">TemplateServiceStackFilters</a>.
+</p>
+
+<blockquote>
+    See <a href="/docs/info-filters">Info Filters</a> for accessing the currently authenticated user.
+</blockquote>
+
+<style>
+    h2 {
+        padding: 0;
+        margin: 0;
+    }
+</style>
+
+<h3>sendToGateway</h3>
+
+<p>
+    <em>sendToGateway</em> lets you easily call any ServiceStack Service available through its 
+    <a href="http://docs.servicestack.net/service-gateway">Service Gateway</a> which allows the same API to transparently
+    <a href="http://docs.servicestack.net/service-gateway#service-integration-apis">call an In-Process or Remote Service</a>. 
+</p>
+
+<p>
+    The example below calls this <em>QueryCustomers</em>
+    <a href="http://docs.servicestack.net/autoquery-rdbms">AutoQuery RDBMS Service</a>, its entire implementation is below:
+</p>
+
+<pre class="cs"><code>public class QueryCustomers : QueryDb&lt;Customer&gt;
+{
+    public string CustomerId { get; set; }
+    public string CompanyNameContains { get; set; }
+    public string[] CountryIn { get; set; }
+}
+</code></pre>
+
+{{ 'examples/sendtogateway-customers.html' | includeFile | assignTo: template }}
+{{ "live-template" | partial({ rows:11, template }) }}
+
+<h3>publishToGateway</h3>
+
+<p>
+    <em>publishToGateway</em> is for sending OneWay requests with side-effects to <em>IReturnVoid</em> Services, e.g:
+</p>
+
+<pre class="cs"><code>{{ 'examples/publishToGateway.txt' | includeFile }}</code></pre>
+
+<h3>sendToAutoQuery</h3>
+
+<p>
+    The <em>sendToAutoQuery</em> filter makes requests directly against the <a href="http://docs.servicestack.net/autoquery">AutoQuery API</a>. 
+    The <em>TemplateServiceStackFilters</em> only supports calling 
+    <a href="http://docs.servicestack.net/autoquery-data">AutoQuery Data Services</a> as it's implementation is contained
+    within the <a href="https://www.nuget.org/packages/ServiceStack">ServiceStack</a> NuGet package.
+</p>
+
+<p>
+    <a href="http://docs.servicestack.net/autoquery-data">AutoQuery Data</a>
+    is an open querying abstraction that supports multiple pluggable back-ends that enables rich querying of 
+    <a href="http://docs.servicestack.net/autoquery-memory">In Memory</a> collections, 
+    results from executed <a href="http://docs.servicestack.net/autoquery-service">ServiceStack Services</a> as well as 
+    AWS <a href="http://docs.servicestack.net/autoquery-dynamodb">Dynamo DB</a> data stores. It also maintains the equivalent 
+    external API and wire-format as <a href="http://docs.servicestack.net/autoquery-rdbms">AutoQuery RDBMS</a> Services
+    which is how <a href="https://github.com/ServiceStack/Admin">AutoQuery Viewer</a> is able to transparently support 
+    building custom queries for any AutoQuery Service.
+</p>
+
+<h4>GitHub AutoQuery Data Example</h4>
+
+<p>
+    For this example we'll register a <b>ServiceSource</b> which will call the 
+    <a href="https://github.com/NetCoreApps/TemplatePages/blob/master/src/AutoDataQueryServices.cs">GetGithubRepos Service implementation</a>
+    for any AutoQuery Data DTOs that query <em>GithubRepo</em> data sources: 
+</p>
+
+<pre class="cs">Plugins.Add(new AutoQueryDataFeature { MaxLimit = 100 }
+    .AddDataSource(ctx => ctx.ServiceSource&lt;GithubRepo&gt;(ctx.Dto.ConvertTo&lt;GetGithubRepos&gt;(), 
+        HostContext.Cache, TimeSpan.FromMinutes(10)))
+);
+</pre>
+
+<p>
+    This registration also specifies to cache the response of the <em>GetGithubRepos</em> Service in the registered 
+    <a href="http://docs.servicestack.net/caching">Caching Provider</a> and operate on the cached data set for up to 
+    <b>10 minutes</b> to mitigate GitHub API's rate-limiting. All that's remaining is to create the <em>QueryGitHubRepos</em> 
+    Service by defining the Request DTO below and implement the backing
+    <a href="https://github.com/NetCoreApps/TemplatePages/blob/master/src/AutoDataQueryServices.cs">GetGithubRepos Service</a>
+    it calls which combines a number of GitHub API calls to fetch all Repo's for a GitHub User or Organization:
+</p>
+
+<pre class="cs"><code>public class QueryGitHubRepos : QueryDatao&lt;GithubRepo&gt;
+{
+    public string UserName { get; set; }
+}
+
+public class GetGithubRepos : IReturn&lt;List&lt;GithubRepo&gt;&gt;
+{
+    public string UserName { get; set; }
+}
+
+public class AutoDataQueryServices : Service
+{
+    public object Any(GetGithubRepos request)
+    {
+        var map = new Dictionary&lt;int, GithubRepo&gt;();
+        GetUserRepos(request.UserName).Each(x =&gt; map[x.Id] = x);
+        GetOrgRepos(request.UserName).Each(x =&gt; map[x.Id] = x);
+        GetUserOrgs(request.UserName).Each(org =&gt;
+            GetOrgRepos(org.Login)
+                .Each(repo =&gt; map[repo.Id] = repo));
+
+        return map.Values.ToList();
+    }
+
+    public List&lt;GithubOrg&gt; GetUserOrgs(string githubUsername) =&gt; 
+        GetJson&lt;List&lt;GithubOrg&gt;&gt;($"users/{githubUsername}/orgs");
+    public List&lt;GithubRepo&gt; GetUserRepos(string githubUsername) =&gt; 
+        GetJson&lt;List&lt;GithubRepo&gt;&gt;($"users/{githubUsername}/repos");
+    public List&lt;GithubRepo&gt; GetOrgRepos(string githubOrgName) =&gt; 
+        GetJson&lt;List&lt;GithubRepo&gt;&gt;($"orgs/{githubOrgName}/repos");
+
+    public T GetJson&lt;T&gt;(string route) 
+    {
+        try {
+            return "https://api.github.com".CombineWith(route)
+                .GetJsonFromUrl(requestFilter: req =&gt; req.UserAgent = nameof(AutoDataQueryServices))
+                .FromJson&lt;T&gt;();
+        } catch(Exception) { return default(T); }
+    }
+}
+</code></pre>
+
+<p>
+    That's all that's required to be able to query GitHub's User and Organization APIs, since they're just normal ServiceStack Services
+    we could've used <em>sendToAutoQuery</em> to call <em>QueryGitHubRepos</em> but it would be limited to only being able to call properties
+    explicitly defined on the Request DTO, whereas <em>sendToAutoQuery</em> executes against the <em>IAutoQueryData</em> API which 
+    enables access to all the <a href="http://docs.servicestack.net/autoquery-rdbms#implicit-conventions">Implicit Conventions</a> 
+    and other Querying related functionality:
+</p>
+
+{{ 'examples/sendToAutoQuery-data.html' | includeFile | assignTo: template }}
+{{ "live-template" | partial({ rows:5, template }) }}
+
+<h3>AutoQuery RDBMS</h3>
+
+<p>
+    As <a href="http://docs.servicestack.net/autoquery-rdbms">AutoQuery RDBMS</a> is implemented in 
+    <a href="https://www.nuget.org/packages/ServiceStack.Server">ServiceStack.Server</a> the AutoQuery Filters need to be registered 
+    manually:
+</p>
+
+<pre class="cs"><code>Plugins.Add(new AutoQueryFeature { MaxLimit = 100 });
+    
+Plugins.Add(new TemplatePagesFeature {
+    TemplateFilters = { new TemplateAutoQueryFilters() },
+});</code></pre>
+
+
+{{ "doc-links" | partial({ order }) }}

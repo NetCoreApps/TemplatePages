@@ -7,93 +7,66 @@ order: 6
     The same qualities that make Templates great at   
     <a href="/usecases/introspect-state">querying State of a running .NET App</a>  
     also makes it excel at executing adhoc queries against providers which allow free text queries like 
-    <a href="https://github.com/ServiceStack/ServiceStack.OrmLite#dynamic-result-sets">OrmLite's Dynamic Result Sets</a>:
+    OrmLite's <a href="/docs/db-filters">Database Filters</a> which enables access to its
+    <a href="https://github.com/ServiceStack/ServiceStack.OrmLite#dynamic-result-sets">Dynamic Result Set APIs</a>:
 </p>
 
 <style> 
-    form textarea {
-        padding: 10px;
-        width: 100%;
-        height: 350px;
-    }
-    #output pre {
-        background: none;
-        padding: 0;
-    }
+.live-template .output {
+    max-height: 1500px;
+}
 </style>
 
 {{ 'examples/adhoc-query-db.html' | includeFile | assignTo: template }}
 
-<form action="/db/query">
-    <div class="template">
-        <textarea class="form-control" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" 
-                  name="Page">{{ template }}</textarea>
-    </div>
-</form> 
+{{ "live-template" | partial({ rows:20, template }) }}
 
 <hr style="margin:20px 0">
 
-<div id="output"></div>
-
-{{ `<script>
-$('form').ajaxPreview({ 
-    dataType: 'html',
-    success: function(r) {
-        $("#output").html(r);
-    } 
-})
-</script>` | raw | assignTo: scripts }}
-
-<hr style="margin:20px 0">
-
-<h4>Implementation</h4>
+<h4>Register DB Filters</h4>
 
 <p>
-    To implement <a href="https://github.com/NetCoreApps/TemplatePages/blob/master/src/QueryDbServices.cs">QueryDbServices.cs</a>
-    we created a separate Service using a new <em>TemplateContext</em> instance with a custom set of filters for querying OrmLite
-    with its <a href="https://github.com/ServiceStack/ServiceStack.OrmLite#dynamic-result-sets">Dynamic Result Sets APIs</a>:
+    To access OrmLite's <a href="/docs/db-filters">Database Filters</a> install the 
+    <a href="https://github.com/ServiceStack/ServiceStack.OrmLite#download">OrmLite NuGet package for your RDBMS</a> then add the 
+    <a href="https://github.com/ServiceStack/ServiceStack.OrmLite/blob/master/src/ServiceStack.OrmLite/TemplateDbFilters.cs">TemplateDbFilters</a>
+    to your <em>TemplateContext</em> and register its required <em>IDbConnectionFactory</em> dependency in its IOC, e.g. for SQL Server:
 </p>
 
-<h4><a href="https://github.com/NetCoreApps/TemplatePages/blob/master/src/QueryDbServices.cs">QueryDbServices.cs</a></h4>
+<pre class="cs"><code>var context = new TemplateContext {
+    TemplateFilters = {
+        new TemplateDbFilters(),
+    }
+};
+context.Container.AddSingleton&lt;IDbConnectionFactory&gt;(() => new OrmLiteConnectionFactory(
+    connectionString, SqlServer2012Dialect.Provider));
+context.Init();
+</code></pre>
 
-<pre class="cs"><code>{{ "QueryDbServices.cs" | includeContentFile | htmlencode }}</code></pre>
+<blockquote>
+    If using ServiceStack's <em>TemplatePagesFeature</em> it's Container has already been reassigned to use 
+    <a href="http://docs.servicestack.net/ioc">ServiceStack's Funq IOC</a> so it only needs to be registered once in ServiceStack's IOC.
+</blockquote>
 
 <h4>Always protect free text APIs</h4>
 
 <p>
-    With great power comes great responsibility and when you're exposing a free text API against a production database 
-    it should never be accessible by untrusted parties so at a minimum you'll want to uncomment the <em>[Authenticate]</em>
-    attribute so it's only available <a href="http://docs.servicestack.net/authentication-and-authorization">Authenticated Users</a>,
-    ideally you'll also want to configure it to use a read-only DB Connection.
+    If you're exposing filters enabling a free text API against a production database it should never be accessible by untrusted parties 
+    so you'll want to at a minimum ensure Services are protected with the <em>[Authenticate]</em> attribute so it's only available to
+    <a href="http://docs.servicestack.net/authentication-and-authorization">Authenticated Users</a> and
+    ideally configure it to use a <b>Read Only</b> connection, e.g. for SQLite:
 </p>
+
+<pre class="cs"><code>container.Register&lt;IDbConnectionFactory&gt;(c => new OrmLiteConnectionFactory(
+    $"Data Source={filePath};Read Only=true", SqliteDialect.Provider));</code></pre>
 
 <h4>Populating the database</h4>
 
 <p>
-    The database is populated in the 
+    The database queried above was populated in the 
     <a href="https://github.com/NetCoreApps/TemplatePages/blob/master/src/AppHost.cs">AppHost</a>
     where it re-uses the LINQ data sources to create and populate an In Memory SQLite database on Startup:
 </p>
 
 <pre class="cs"><code>{{ "examples/adhoc-populate-db.txt" | includeFile | htmlencode }}</code></pre>
-
-<h4 id="client-ui">Client UI</h4>
-
-<p>
-    The <a href="https://github.com/NetCoreApps/TemplatePages/blob/master/src/wwwroot/usecases/adhoc-querying.html">Client UI</a>
-    used for this is very similar to <a href="/usecases/introspect-state#client-ui">Introspect State's Client UI</a> where it uses exactly 
-    the same custom javascript:
-</p>
-
-<pre class="js"><code>&lt;script&gt;
-$('form').ajaxPreview({ 
-    dataType: 'html',
-    success: function(r) {
-        $("#output").html(r);
-    } 
-})
-&lt;/script&gt;
-</code></pre>
-
 
 {{ "usecase-links" | partial({ order }) }}

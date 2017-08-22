@@ -1,6 +1,6 @@
 <!--
 title: Error Handling
-order: 14
+order: 15
 -->
 
 <p>
@@ -182,7 +182,7 @@ order: 14
 
 <blockquote>
     You can extend this list with your own custom filters, see the 
-    <a href="https://github.com/ServiceStack/ServiceStack/blob/master/src/ServiceStack.Common/Templates/TemplateDefaultFilters.ErrorHandling.cs">Error Handling Filters</a>    
+    <a href="https://github.com/ServiceStack/ServiceStack/blob/master/src/ServiceStack.Common/Templates/Filters/TemplateDefaultFilters.ErrorHandling.cs">Error Handling Filters</a>    
     for examples.
 </blockquote>
 
@@ -200,25 +200,25 @@ order: 14
     <tbody>
     <tr>
         <th>throwIf</th>
-        <td>message | Exception(test)</td>
+        <td>message | Exception | if(test)</td>
     </tr>
     <tr>
         <th>throwArgumentNullExceptionIf</th>
-        <td>paramName | ArgumentNullException(test)</td>
+        <td>paramName | ArgumentNullException | if(test)</td>
     </tr>
     <tr>
         <th>ifthrow</th>
-        <td>test | Exception(message)</td>
+        <td>if(test) | Exception(message)</td>
     </tr>
     <tr>
         <th>ifThrowArgumentNullException</th>
-        <td>test | ArgumentNullException(paramName)</td>
+        <td>if(test) | ArgumentNullException(paramName)</td>
     </tr>
     <tr>
         <th>ifThrowArgumentException</th>
         <td>
-            test | ArgumentException(message) <br> 
-            test | ArgumentException(message, paramName) <br> 
+            if(test) | ArgumentException(message) <br> 
+            if(test) | ArgumentException(message, paramName) <br> 
         </td>
     </tr>
     </tbody>
@@ -262,6 +262,30 @@ ensureAnyArgsNotEmpty:
     <li><em>TargetInvocationException</em></li>
 </ul>
 
+<h4>Rendering Exceptions</h4>
+
+<p>
+    The <em>OnExpressionException</em> delegate in 
+    <a href="https://github.com/ServiceStack/ServiceStack/blob/master/src/ServiceStack.Common/Templates/PageFormat.cs">Page Formats</a>
+    are able to control how Exceptions in filter expressions are rendered where if preferred exceptions can be rendered in-line
+    in the filter expression where they occured with:
+</p>
+
+<pre class="cs"><code>var context = new TemplateContext {
+    RenderExpressionExceptions = true
+}.Init();</code></pre>
+    
+<p>
+    The <em>OnExpressionException</em> can also suppress Exceptions from being displayed by capturing any naked Exception Types registered in 
+    <a href="https://github.com/ServiceStack/ServiceStack/blob/master/src/ServiceStack.Common/Templates/TemplateConfig.cs">TemplateConfig.CaptureAndEvaluateExceptionsToNull</a>
+    and evaluate the filter expression to <em>null</em> which by default will suppress the following naked Exceptions thrown in filters:
+</p>
+
+<ul>
+    <li><em>NullReferenceException</em></li>
+    <li><em>ArgumentNullException</em></li>
+</ul>
+
 <h4>Implementing Filter Exceptions</h4>
 
 <p>
@@ -272,7 +296,8 @@ ensureAnyArgsNotEmpty:
 
 <p>
     The easiest way to Implement Exception handling in filters is to call a managed function which catches all Exceptions and 
-    throws them in a <em>StopFilterExecutionException</em>:
+    throws them in a <em>StopFilterExecutionException</em> as seen in OrmLite's 
+    <a href="https://github.com/ServiceStack/ServiceStack.OrmLite/blob/master/src/ServiceStack.OrmLite/TemplateDbFilters.cs">TemplateDbFilters</a>:
 </p>
 
 <pre class="cs">T exec<T>(Func<IDbConnection, T> fn, TemplateScopeContext scope, object options)

@@ -1,0 +1,3 @@
+{{ { id, firstName, lastName, age } | ensureAllArgsNotNull | publishToGateway('StoreContact') }}
+{{ { id }  | sendToGateway('GetContact') | assignTo: contact }}
+{{ contact | selectPartial: contact-details }}

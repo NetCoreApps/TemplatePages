@@ -20,10 +20,8 @@ $(".live-pages").each(function(){
             contentType: "application/json",
             dataType: "html"
         }).done(function(data){
-            el.find(".output").html(data);
-        }).fail(function(){
-            el.addClass("error");
-        });
+            el.removeClass('error').find(".output").html(data)
+        }).fail(function(jqxhr){ handleError(el, jqxhr) })
     })
     .trigger("input")
 
@@ -43,10 +41,8 @@ $(".live-template").each(function(){
             contentType: "application/json",
             dataType: "html"
         }).done(function(data){
-            el.find(".output").html(data);
-        }).fail(function(){
-            el.addClass("error");
-        });
+            el.removeClass('error').find(".output").html(data)
+        }).fail(function(jqxhr){ handleError(el, jqxhr) })
     })
     .trigger("input")
 
@@ -74,10 +70,8 @@ $(".linq-preview").each(function(){
             contentType: "application/json",
             dataType: "html"
         }).done(function(data){
-            el.find(".output").html(data);
-        }).fail(function(){
-            el.addClass("error");
-        });
+            el.removeClass('error').find(".output").html(data);
+        }).fail(function(jqxhr){ handleError(el, jqxhr) })
     })
     .trigger("input")
 
@@ -90,14 +84,14 @@ $("h2,h3,h4").each(function(){
     if (text.indexOf("<") >= 0) return;
 
     if (!el.attr('id')) {
-        var safeName = text.toLowerCase().replace(/\s+/g, "-").replace(/[^a-zA-Z0-9_-]+/g,"");
-        el.attr('id', safeName);
+        var safeName = text.toLowerCase().replace(/\s+/g, "-").replace(/[^a-zA-Z0-9_-]+/g,"")
+        el.attr('id', safeName)
     }
 
     el.on('click', function(){
-        var id = el.attr('id');
-        location.href = "#" + id;
-    });
+        var id = el.attr('id')
+        location.href = "#" + id
+    })
 })
 
 $.fn.ajaxPreview = function(opt) {
@@ -113,9 +107,7 @@ $.fn.ajaxPreview = function(opt) {
             contentType: 'application/json',
             dataType: opt.dataType || 'json',
             success: opt.success,
-            error: opt.error || function(jq,status,errMsg) { 
-                console.log('ERROR ajaxPreview', errMsg);
-            }
+            error: opt.error || function(jq,status,errMsg) { handleError(el, jqxhr) }
         })
     })
     .first().trigger("input")
@@ -123,4 +115,19 @@ $.fn.ajaxPreview = function(opt) {
     return this.each(function(){ 
         $(this).submit(function(e){ e.preventDefault() }) 
     });
+}
+
+function handleError(el, jqxhr) {
+    try {
+        console.log('template error:', jqxhr.status, jqxhr.statusText)
+        el.addClass('error')
+        var errorResponse = JSON.parse(jqxhr.responseText);
+        var status = errorResponse.responseStatus;
+        if (status) {
+            el.find('.output').html('<div class="alert alert-danger"><pre>' + status.errorCode + ' ' + status.message +
+             '\n\nStackTrace:\n' + status.stackTrace + '</pre></div>')
+        }
+    } catch(e) {
+        el.find('.output').html('<div class="alert alert-danger"><pre>' + jqxhr.status + ' ' + jqxhr.statusText + '</pre></div>')
+    }
 }

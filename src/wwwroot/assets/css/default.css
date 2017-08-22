@@ -184,3 +184,6 @@ caption {
 .html-sm .output, .html .output, .html-md .output, .html-lg .output {
     padding: 0;
 }
+.error .output {
+    padding: 0;
+}

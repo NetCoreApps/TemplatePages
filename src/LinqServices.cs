@@ -7,6 +7,7 @@ using ServiceStack;
 using ServiceStack.Templates;
 using ServiceStack.IO;
 using ServiceStack.DataAnnotations;
+using System.Threading.Tasks;
 
 namespace TemplatePages
 {
@@ -17,9 +18,10 @@ namespace TemplatePages
         public Dictionary<string,string> Files { get; set; }
     }
 
+    [ReturnExceptionsInJson]
     public class LinqServices : Service
     {
-        public object Any(EvaluateLinq request)
+        public async Task<object> Any(EvaluateLinq request)
         {
             var context = ((AppHost)AppHost.Instance).LinqContext;
 
@@ -29,8 +31,7 @@ namespace TemplatePages
             }
 
             var pageResult = new PageResult(context.OneTimePage(request.Template));
-
-            return pageResult;
+            return await pageResult.RenderToStringAsync();
         }
     }
  

@@ -15,7 +15,7 @@ namespace TemplatePages
     public class AppHost : AppHostBase
     {
         public AppHost()
-            : base("ServiceStack Template Pages", typeof(TemplateServices).GetAssembly()) { }
+            : base("Template Pages", typeof(TemplateServices).GetAssembly()) { }
 
         public TemplateContext LinqContext;
 
@@ -38,6 +38,13 @@ namespace TemplatePages
                 TemplateQueryData.Customers.Each(x => db.Save(x, references:true));
                 db.InsertAll(TemplateQueryData.Products);
             }
+
+            Plugins.Add(new AutoQueryFeature { MaxLimit = 100 });
+
+            Plugins.Add(new AutoQueryDataFeature { MaxLimit = 100 }
+                .AddDataSource(ctx => ctx.ServiceSource<GithubRepo>(ctx.Dto.ConvertTo<GetGithubRepos>(), 
+                    HostContext.Cache, TimeSpan.FromMinutes(10)))
+            );
 
             var customFilters = new CustomTemplateFilters();
             Plugins.Add(new TemplatePagesFeature {
