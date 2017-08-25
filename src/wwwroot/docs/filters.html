@@ -17,17 +17,21 @@ order: 6
     APIs and functionality and can do anything that built-in filters can do. 
 </p>
 
-<p>
-    If you want to start from a clean slate, the default filters can be removed by clearing the <em>TemplateFilters</em> collection:
-</p>
-
-<pre><code>context.TemplateFilters.Clear();</code></pre>
+<h5 id="shadowing">Shadowing Filters</h5>
 
 <p>
-    Alternatively you can override default filters with the same name by inserting them at the start of the list:
+    You can easily override default filters with the same name and arguments by inserting them at the start of the <em>TemplateFilters</em> list:
 </p>
 
 <pre><code>context.TemplateFilters.Insert(0, new MyTemplateFilters());</code></pre>
+
+<h5 id="removing">Removing Default Filters</h5>
+
+<p>
+    Or if you want to start from a clean slate, the default filters can be removed by clearing the collection:
+</p>
+
+<pre><code>context.TemplateFilters.Clear();</code></pre>
 
 <h4>What are Filters?</h4>
 

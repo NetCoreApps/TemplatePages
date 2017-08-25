@@ -4,36 +4,86 @@ order: 2
 -->
 
 <p>
-    ServiceStack Templates is a simple, highly-extensible, portable, sandboxed, high-performance general-purpose templating engine 
-    for .NET and .NET Core. It's designed from the ground-up to incrementally adoptable where its basic usage is simple enough for
-    non-technical users to use whilst it progressively enables access to more power and functionality allowing it to scale up to 
-    support full server-rendering Web Server workloads and beyond, where its high-fidelity with JavaScript syntax allows it to 
-    seamlessly integrate with client-side JavaScript Single Page App frameworks where its syntax is compatible with 
+    ServiceStack Templates is a simple and elegant, highly-extensible, portable, sandboxed, high-performance general-purpose templating
+    engine for .NET and .NET Core. It's designed from the ground-up to be incrementally adoptable where its basic usage is simple enough 
+    for non-technical users to use whilst it progressively enables access to more power and functionality allowing it to scale up to 
+    support full server-rendering Web Server workloads and beyond. Its high-fidelity with JavaScript syntax allows it to use a common
+    language for seamlessly integrating with client-side JavaScript Single Page App frameworks where its syntax is compatible with 
     <a href="https://vuejs.org/v2/guide/syntax.html#Filters">Vue filters</a>.
 </p>
 
 <h3>Instant Startup</h3>
 
 <p>
-    There's no pre-compilation, pre-loading or Startup penalty in Template Pages, all Pages are lazily loaded on first use and cached for 
-    fast subsequent access. Its instant Startup, fast runtime performance and sandboxed isolation opens it up to a myriad of use-cases which 
-    can provide a Live programming experience to running .NET Apps.
+    There's no pre-compilation, pre-loading or Startup penalty, all Pages are lazily loaded on first use and cached for fast subsequent 
+    evaluation. Its instant Startup, fast runtime performance and sandboxed isolation opens it up to a myriad of new use-cases which
+    can enhance .NET Apps with a rich Live programming experience.
 </p>
 
 <h3>Fast Runtime Performance</h3>
 
 <p>
-    Template Pages is fast, parsing is done using StringSegment for minimal GC pressure, all I/O is non-blocking including async
+    ServiceStack Templates is very fast, parsing is done using StringSegment for minimal GC pressure, all I/O is non-blocking inc. async
     writes to OutputStream's. There's no buffering: Layouts, Pages and Partials are asynchronously written to a forward only stream.
-    There's also no runtime reflection, each binding within templates executes a compiled C# Expression.
+    There's no runtime reflection, each filter or binding within template expressions executes compiled and cached C# Expressions.
+</p>
+
+<p>
+    Templates also makes it easy to develop high-performance Apps by default where there's no additional effort to utilize async programming 
+    as calling async filters is a transparent implementation detail indistinguishable from sync filters, e.g. the 
+    <a href="/docs/db-filters">DB Fitlers</a> 
+    leverages one of .NET's fastest ORM's and exactly the same code can be made async by registering to use
+    <a href="https://github.com/ServiceStack/ServiceStack.OrmLite/blob/master/src/ServiceStack.OrmLite/TemplateDbFiltersAsync.cs">TemplateDbFiltersAsync</a>
+    instead of the sync 
+    <a href="https://github.com/ServiceStack/ServiceStack.OrmLite/blob/master/src/ServiceStack.OrmLite/TemplateDbFilters.cs">TemplateDbFilters</a>.
+</p>
+
+<h3>Functional, Reactive and Declarative</h3>
+
+<p>
+    Template Pages are pure, they don't have any coupling to external components or static classes and default filters don't mutate any external state.
+    There's no imperative statements, everything is an expression forcing a more readable and declarative style of programming 
+    that's easier to quickly determine the subject of expressions and the states that need to be met for filters to be executed. 
+    Conceptually Templates are "evaluated" in that they take in arguments, filters and templates as inputs and evaluates them to an output stream. 
+    They're highly testable by design where the same environment used to create the context can be easily re-created in Unit tests 
+    including simulating pages in a File System using the built-in In Memory Virtual File System. 
+</p>
+
+<h3>Optimal Development Experience</h3>
+
+<p>
+    The above attributes enables the fastest iterative development experience available in .NET with a Live Development experience that
+    supports <a href="/docs/hot-reloading">Hot Reloading</a> out of the box and for the first time in .NET, you can build entire 
+    <a href="/usecases/web-templates">Wep Apps and Web APIs</a> without ever having to build your App or manually Refresh pages.
 </p>
 
 <h3>Simple</h3>
 
 <p>
-    There's no language constructs embedded in Template Pages itself, all functionality is enabled by filters, where even the 
-    default filters can be removed, stripping ServiceStack Templates back to its core functionality where the only functionality
-    available within Templates is the concept of Layouts and where to insert the Page using simple "mustache" syntax:
+    There are 2 main concepts in Template Expressions: <a href="/docs/arguments">Arguments</a> - variables which can be made available 
+    through a number of cascading sources and <a href="/docs/filters">Filters</a> - C# public methods registered in the list of <em>TemplateFilters</em> 
+    in the <em>PageResult</em> or <em>TemplateContext</em> that the template is executed within. 
+</p>
+
+<p>
+    Layouts, Pages and Partials are all just "pages", evaluated in the same way with access to arguments and filters. Even parameters passed 
+    to partials are just scoped arguments, accessed like any other arguments. Typically pages are sourced from the configured 
+    File System but when access to more advanced functionality is required they can also be <a href="/docs/code-pages">Code Pages</a> implemented
+    in pure C# that are otherwise interchangeable and can be used anywhere a normal page is requested.
+</p>
+
+<p>
+    There's no language constructs or reserved words in Templates itself, all functionality is implemented inside filters.
+    There's also nothing special about <a href="/docs/default-filters">Default Filters</a> other than they're pre-registered by default.
+    They can just as easily be <a href="/docs/filters#shadowing">shadowed or removed</a> letting you use your own filters to invent your 
+    own preferred language and naming scheme.
+</p>
+
+<p>
+    Templates are <a href="/docs/sandbox">sandboxed</a>, they can't call static methods or methods on instances, invoke setters or access anything 
+    outside of the arguments and filters made available to them. Without filters, expressions wouldn't have any methods or functionality 
+    they can call, leaving them with the only thing they can do which is access arguments and replace their variable placeholders, including the 
+    <em>{{ pass: page }}</em> placeholder to tell the Layout where to render the page:
 </p>
 
 {{ "live-pages" | partial(
@@ -41,11 +91,21 @@ order: 2
         page: 'page', 
         files: 
         { 
-            '_layout.html': 'I am the Layout: <b>{{ page }}</b>',
+            '_layout.html': 'I am the Layout: <b>{{ page }}</b>',   
             'page.html' : 'I am the Page' 
         } 
     }) 
 }}
+
+<h4 id="cascading-resolution">Cascading Resolution</h4>
+
+<p>
+    There's no special folders like <em>/Views</em> or <em>/Views/Shared</em> required to store layouts or share partials or artificial
+    "Areas" concept to isolate website sections. Different websites or sections can just be intuitively grouped into different 
+    folders and Templates will automatically resolve the closest layout it finds for each page. Cascading resolution also applies to 
+    including files or partial pages where you can use just its name to resolve the closest one, or an absolute path from the 
+    <em>WebRootPath</em> to include a specific partial or file from a different folder.
+</p>
 
 <h3>Simple Example Walkthrough</h3>
 
@@ -57,15 +117,26 @@ order: 2
 
 <p>
     The TemplateContext is the sandbox where all templates are executed within, everything your templates have access to and generates 
-    is maintained within the TemplateContext. Pages are sourced from its configured
-    <a href="http://docs.servicestack.net/virtual-file-system">Virtual File System</a> which by default uses an In Memory Virtual 
-    File System which we can programmatically populate:
+    is maintained within the TemplateContext. Once initialize you can start using it to evaluate templates which you can do with just:
+</p>
+
+<pre class="cs"><code>var output = context.EvaluateTemplate("{{ pass: 12.34 | currency }}");</code></pre>
+
+<p>
+    Templates only have access to filters and arguments defined within its Context, which for an empty Context are the comprehensive
+    suite of safe filters in <a href="/docs/default-filters">Default Filters</a> and <a href="/docs/html-filters">HTML Filters</a>.
+</p>
+
+<p>
+    Typically you'll want to use ServiceStack templates to render entire pages which are sourced from its configured
+    <a href="http://docs.servicestack.net/virtual-file-system">Virtual File System</a> which uses an In Memory Virtual 
+    File System by default that we can programmatically populate:
 </p>
 
 <pre><code>context.VirtualFiles.Write("_layout.html", "I am the Layout: &lt;b&gt;{{ page }}&lt;/b&gt;");
 context.VirtualFiles.Write("page.html", "I am the Page");
 </code></pre>
-
+    
 <p>
     Templates are rendered using a <em>PageResult</em> essentially a rendering context that a minimum needs to be provided the Page to render:
 </p>
@@ -85,7 +156,7 @@ context.VirtualFiles.Write("page.html", "I am the Page");
 <pre><code>string output = await pageResult.RenderToStringAsync();</code></pre>
 
 <p>
-    All I/O within Templates are non-blocking, but if you're using the default In Memory Virtual FileSystem there is no I/O
+    All I/O within Templates are non-blocking, but if you're using the default In Memory Virtual FileSystem there's no I/O
     so you can safely block to get the generated output with:
 </p>
 
@@ -94,19 +165,5 @@ context.VirtualFiles.Write("page.html", "I am the Page");
 <p>
     Both APIs returns the result you see in the Live Example above.
 </p>
-
-<h4>Cascading Layout Selection</h4>
-
-<p>
-    One key aspect missing above is how the layout the page was rendered in, was chosen? It simply chooses the <i>closest</i> 
-    <em>_layout.html</em> it can find starting from the directory where the page is located, traversing all the way up until it 
-    reaches the root directory. If no layout page was found, the page is rendered without one.
-</p>
-
-<p>
-    If preferred, you can choose a different name for the default Layout page with:
-</p>
-
-<pre><code>context.DefaultLayoutPage = "_template";</code></pre>
-
+    
 {{ "doc-links" | partial({ order }) }}

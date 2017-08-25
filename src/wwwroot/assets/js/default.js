@@ -36,7 +36,7 @@ $(".live-template").each(function(){
 
         $.ajax({
             type: "POST",
-            url: "/template/eval",
+            url: "/template/eval" + location.search,
             data: JSON.stringify(request),
             contentType: "application/json",
             dataType: "html"
@@ -130,4 +130,13 @@ function handleError(el, jqxhr) {
     } catch(e) {
         el.find('.output').html('<div class="alert alert-danger"><pre>' + jqxhr.status + ' ' + jqxhr.statusText + '</pre></div>')
     }
+}
+
+function queryStringParams(qs) {
+    qs = (qs || document.location.search).split('+').join(' ')
+    var params = {}, tokens, re = /[?&]?([^=]+)=([^&]*)/g
+    while (tokens = re.exec(qs)) {
+        params[tokens[1]] = tokens[2];
+    }
+    return params;
 }

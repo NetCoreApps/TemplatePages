@@ -25,7 +25,12 @@ h1 {
     color: #c7254e;
     border-radius: 3px;
 }
-
+#content a em {
+    color: #007bff;
+}
+#content a:hover em {
+    color: #0056b3;
+}
 #content h2, #content h3, #content h4 {
     padding: 15px 0;
 }
@@ -33,8 +38,6 @@ a:hover {
     text-decoration: none;
 }
 #content a {
-    color: #4283b9;
-    font-weight: 600;
 }
 li.active a, #content li.active a {
     font-weight: bold;

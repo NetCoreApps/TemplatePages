@@ -1,0 +1,146 @@
+<!--
+title: Filters API Reference
+order: 26
+-->
+
+<form style="margin: 0 0 20px 0">
+    <div class="row">
+        <div class="col-auto">
+            <div class="input-group">
+                <label for="nameContains" style="line-height:2rem;margin:0 10px 0 0">Search for available filters:</label>
+                <input type="text" id="nameContains" name="nameContains" class="form-control" placeholder="Filter Name Contains" 
+                       value="{{ nameContains | ifExists }}"
+                       autofocus onfocus="var hold=this.value; this.value=''; this.value=hold"
+                       autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">
+                <span class="input-group-btn"><button class="btn btn-primary" type="submit">Go!</button></span>
+                <input type="hidden" name="tab">
+            </div>
+        </div>
+    </div>
+</form>
+
+<ul id="filters" class="nav nav-tabs" role="tablist">
+    <li class="nav-item">
+        <a class="nav-link" data-toggle="tab" href="#default-filters" role="tab">Default Filters</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" data-toggle="tab" href="#html-filters" role="tab">HTML Filters</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" data-toggle="tab" href="#protected-filters" role="tab">Protected Filters</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" data-toggle="tab" href="#info-filters" role="tab">Info Filters</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" data-toggle="tab" href="#redis-filters" role="tab">Redis Filters</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" data-toggle="tab" href="#db-filters" role="tab">DB Filters</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" data-toggle="tab" href="#ss-filters" role="tab">ServiceStack</a>
+    </li>
+</ul>
+
+{{ `<script>
+var tab = queryStringParams()['tab'] || 'default-filters';
+$("#" + tab).addClass('active');
+$(".nav-link[href$=" + tab + "]").addClass('active');
+$(".result .output").css({ maxHeight: $(document).height() - 550 })
+
+$("FORM").submit(function(){
+    $("input[name=tab]").val($(".tab-pane.active").attr('id'))
+})
+</script>` | raw | assignTo: scripts }}
+
+<style>
+    .result .output {
+        margin: 0;
+        padding: 0;
+        max-height: auto;
+        font-size: 16px;
+        border-radius: 0;
+        border-top: 0;
+    }
+    .live-template {
+        padding-top: 0;
+    }
+    .live-template textarea {
+        border-top: 0;
+        border-radius: 0;
+    }
+    td:first-child {
+        text-align: right
+    }
+</style>
+
+{{ 8 | assignTo: rows }}
+<div class="tab-content">
+    <div class="tab-pane" id="default-filters" role="tabpanel">
+{{ "live-template" | partial({ rows, className, template:`{{ 'TemplateDefaultFilters' | assignTo: filter }}
+<table class="table table-striped"><caption>{{ filter | filterLinkToSrc }}</caption>
+{{ filter | filtersAvailable
+    | where: contains(lower(it.Name), lower(default(nameContains,'')))
+    | select: <tr><td>{ it.FirstParam }</td><td>{ it.Body }</td><td>{ it.Return }</td></tr>
+}}
+</table>` }) }}
+    </div>
+    <div class="tab-pane" id="html-filters" role="tabpanel">
+{{ "live-template" | partial({ rows, className, template:`{{ 'TemplateHtmlFilters' | assignTo: filter }}
+<table class="table table-striped"><caption>{{ filter | filterLinkToSrc }}</caption>
+{{ filter | filtersAvailable
+    | where: contains(lower(it.Name), lower(default(nameContains,'')))
+    | select: <tr><td>{ it.FirstParam }</td><td>{ it.Body }</td><td>{ it.Return }</td></tr>
+}}
+</table>` }) }}
+    </div>
+    <div class="tab-pane" id="protected-filters" role="tabpanel">
+{{ "live-template" | partial({ rows, className, template:`{{ 'TemplateProtectedFilters' | assignTo: filter }}
+<table class="table table-striped"><caption>{{ filter | filterLinkToSrc }}</caption>
+{{ filter | filtersAvailable
+    | where: contains(lower(it.Name), lower(default(nameContains,'')))
+    | select: <tr><td>{ it.FirstParam }</td><td>{ it.Body }</td><td>{ it.Return }</td></tr>
+}}
+</table>` }) }}
+    </div>
+    <div class="tab-pane" id="info-filters" role="tabpanel">
+{{ "live-template" | partial({ rows, className, template:`{{ 'TemplateInfoFilters' | assignTo: filter }}
+<table class="table table-striped"><caption>{{ filter | filterLinkToSrc }}</caption>
+{{ filter | filtersAvailable
+    | where: contains(lower(it.Name), lower(default(nameContains,'')))
+    | select: <tr><td>{ it.FirstParam }</td><td>{ it.Body }</td><td>{ it.Return }</td></tr>
+}}
+</table>` }) }}
+    </div>
+    <div class="tab-pane" id="redis-filters" role="tabpanel">
+{{ "live-template" | partial({ rows, className, template:`{{ 'TemplateRedisFilters' | assignTo: filter }}
+<table class="table table-striped"><caption>{{ filter | filterLinkToSrc }}</caption>
+{{ filter | filtersAvailable
+    | where: contains(lower(it.Name), lower(default(nameContains,'')))
+    | select: <tr><td>{ it.FirstParam }</td><td>{ it.Body }</td><td>{ it.Return }</td></tr>
+}}
+</table>` }) }}
+    </div>
+    <div class="tab-pane" id="db-filters" role="tabpanel">
+{{ "live-template" | partial({ rows, className, template:`{{ 'TemplateDbFiltersAsync' | assignTo: filter }}
+<table class="table table-striped"><caption>{{ filter | filterLinkToSrc }}</caption>
+{{ filter | filtersAvailable
+    | where: contains(lower(it.Name), lower(default(nameContains,'')))
+    | select: <tr><td>{ it.FirstParam }</td><td>{ it.Body }</td><td>{ it.Return }</td></tr>
+}}
+</table>` }) }}
+    </div>
+    <div class="tab-pane" id="ss-filters" role="tabpanel">
+{{ "live-template" | partial({ rows, className, template:`{{ 'TemplateServiceStackFilters' | assignTo: filter }}
+<table class="table table-striped"><caption>{{ filter | filterLinkToSrc }}</caption>
+{{ filter | filtersAvailable
+    | where: contains(lower(it.Name), lower(default(nameContains,'')))
+    | select: <tr><td>{ it.FirstParam }</td><td>{ it.Body }</td><td>{ it.Return }</td></tr>
+}}
+</table>` }) }}
+    </div>
+</div>
+
+
+{{ "doc-links" | partial({ order }) }}

@@ -28,13 +28,13 @@ order: 6
 <p>
     To access OrmLite's <a href="/docs/db-filters">Database Filters</a> install the 
     <a href="https://github.com/ServiceStack/ServiceStack.OrmLite#download">OrmLite NuGet package for your RDBMS</a> then add the 
-    <a href="https://github.com/ServiceStack/ServiceStack.OrmLite/blob/master/src/ServiceStack.OrmLite/TemplateDbFilters.cs">TemplateDbFilters</a>
+    <a href="https://github.com/ServiceStack/ServiceStack.OrmLite/blob/master/src/ServiceStack.OrmLite/TemplateDbFiltersAsync.cs">TemplateDbFiltersAsync</a>
     to your <em>TemplateContext</em> and register its required <em>IDbConnectionFactory</em> dependency in its IOC, e.g. for SQL Server:
 </p>
 
 <pre class="cs"><code>var context = new TemplateContext {
     TemplateFilters = {
-        new TemplateDbFilters(),
+        new TemplateDbFiltersAsync(),
     }
 };
 context.Container.AddSingleton&lt;IDbConnectionFactory&gt;(() => new OrmLiteConnectionFactory(

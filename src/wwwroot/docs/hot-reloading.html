@@ -1,6 +1,48 @@
 <!--
 title: Hot Reloading
-order: 16
+order: 17
 -->
+
+<p>
+    Templates has a simple, but effective configuration-free hot-reloading feature built-in that's enabled 
+    when registering the <a href="/docs/view-engine">TemplatePagesFeature</a> plugin:
+</p>
+
+<pre class="cs"><code>Plugins.Add(new TemplatePagesFeature());</code></pre>
+
+<p>
+    It can then be enabled in your website by adding the expression below at the top of your <b>_layout.html</b>:
+</p>
+
+<pre class="cs">{{ pass: ifDebug | select: &lt;script&gt;{ '/js/hot-loader.js' | includeFile }&lt;/script&gt; }}</pre>
+
+<blockquote>
+    An easy way to temporarily disable hot reloading is to prefix the expression with the end filter <em>{{ pass: end | ifDebug ... }}</em>
+</blockquote>
+
+<p>
+    This will embed the dependency-free <a href="https://github.com/ServiceStack/ServiceStack/blob/master/src/ServiceStack/js/hot-loader.js">hot-loader.js</a>
+    script during development that will poll the service endpoint below:
+</p>
+
+<pre class="url"><code>/templates/hotreload/page?path=path/to/page&amp;eTag=lastETagReceived</code></pre>
+
+<p>
+    Which responds with whether or not the client should reload their current page, preserving their current scroll offset.
+</p>
+
+<h4>Implementation</h4>
+
+<p>
+    The Service is just a wrapper around the <em>ITemplatePages.GetLastModified(page)</em> API which returns the 
+    last modified date of the page and any of its dependencies by scanning each expression in the page's AST to 
+    find each referenced partial or included file to find the most recent modified date which it compares against 
+    the eTag provided by the client to determine whether or not any of the pages resources have changed.
+</p>
+
+<p>
+    Since it's just scanning the AST instead of evaluating it, it will only be able to find files and partials 
+    that were staticaly referenced, i.e. with a string literal as opposed to a dynamically created string.
+</p>
 
 {{ "doc-links" | partial({ order }) }}

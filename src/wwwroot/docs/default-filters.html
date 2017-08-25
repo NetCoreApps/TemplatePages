@@ -201,7 +201,6 @@ and: {{ true | and(true) }}, {{ and(true, false) }}, {{ and(false, false) }}" })
     Filters to check the type of objects:
 </p>
 
-
 {{ 'live-template' | partial({ rows: 12, template: "Any Number: {{ 1 | isInteger }}, {{ 1 | toLong | isInteger }}, {{ 1.1 | isNumber }}
 Real Numbers: {{ 1.1 | isDouble }}, {{ 1.1 |toFloat| isFloat }}, {{ 1.1 |toDecimal| isDecimal }}
 ints: {{ 1 | isInt }}, {{ 1 | isLong }}, {{ 1 | toLong | isLong }}
@@ -214,6 +213,18 @@ list: {{ [1] | isList }}, {{ {a:1} | isList }}, {{ 'abc' | isList }}
 dictionary: {{ {a:1} | isDictionary }}, {{ [1] | isDictionary }}, {{ 'abc' | isDictionary }}
 object dict: {{ {a:1} | isObjectDictionary }}, {{ {'a':'b'} | isObjectDictionary }}
 value/ref type: {{ 1 | isValueType }}, {{ [] | isValueType }}, {{ [] | isClass }}" }) }}
+
+<h4 id="object-conversions">Object Conversions</h4>
+
+<p>
+    Conversions and transformations between different types:
+</p>
+
+{{ 'live-template' | partial({ rows: 5, template: `toInt: {{ '1' | typeName }}, {{ '1' | toInt | typeName }}, {{ 1 | toDouble | typeName }}
+toChar: {{ ',' | typeName }},  {{ ',' | toChar |typeName }}, {{'true' | toBool | typeName }}
+{{ {a:1,b:2,c:'',d:null} | assignTo: o }}
+toKeys: {{ o | toKeys | join }}, toValues:  {{ o | toValues | join }}
+without: {{ o | withoutNullValues | toKeys|join }} / {{ o | withoutEmptyValues | toKeys| join }}` }) }}
 
 <h4 id="conditional-display">Conditional Display</h4>
 
@@ -246,15 +257,19 @@ truthy: {{ true | truthy('T') }}, {{ 1 | truthy('T') }}, {{ null | truthy('T') }
 
 <p>
     The <em>end*</em> filters short-circuits the execution of a filter and discard any results.
-    They're useful to use in combination with the <em>use*</em> filters which discards the old value and creates a new value 
+    They're useful to use in combination with the 
+    <a href="/docs/filters-reference?nameContains=use&amp;tab=default-filters"><em>use*</em> filters</a>
+    which discards the old value and creates a new value 
     to be used from that point on in the expression.
+    <a href="/docs/filters-reference?nameContains=show&amp;tab=default-filters"><em>show</em> is an alias</a>
+    for <em>use</em> that reads better when used at the end of an expression.
 </p>
 
 {{ 'live-template' | partial({ rows: 12, template: `always {{ 1 | end | default('unreachable') }}
 null {{ 1 | endIfNull }}/{{ null | endIfNull | default('N/A') }}
 empty {{ '' | endIfEmpty | default('N/A') }}/{{ [] | endIfEmpty | default('N/A') }}
-if {{ true | ifEnd | use(1) }}/{{ false | ifEnd | use(1) }}:{{ endIf(true) | use(1) }}
-do {{ true | ifDo | select: 1 }}/{{ false | ifDo | select: 1 }}/{{ doIf(true) | use(1) }}
+if {{ true | ifEnd | use(1) }}/{{ false | ifEnd | use(1) }}:{{ endIf(true) | show: 1 }}
+do {{ true | ifDo | select: 1 }}/{{ false | ifDo | select: 1 }}/{{ doIf(true) | show: 1 }}
 any {{ 5 | times | endIfAny('it = 4') | join }}/{{ 5 | times | endIfAny('it = 5') | join }}
 all {{ 5 | times | endIfAll('lt(it,4)') |join }}/{{ 5 | times | endIfAll('lt(it,5)') |join }}
 where {{ 1 | endWhere: isString(it) }}/{{ 'a' | endWhere: isString(it) }}
@@ -265,7 +280,7 @@ useFormat {{ arg2 | endIfExists | useFormat('value', 'key={0}') | assignTo: arg2
 
 <blockquote>
     You can also use <em>end</em> to discard return values of filters with side-effects, block filters, partials, etc.
-    It also provides an easy way to comment out any expression by prefixing it at the start, e.g <em>{{ end | unreachable }}</em> 
+    It also provides an easy way to comment out any expression by prefixing it at the start, e.g: <em>{{ pass: end | unreachable }}</em> 
 </blockquote>
 
 <p>
@@ -275,6 +290,17 @@ useFormat {{ arg2 | endIfExists | useFormat('value', 'key={0}') | assignTo: arg2
 
 {{ 'live-template' | partial({ rows: 2, template: `ifUse: {{ true | ifUse(1) }} / {{ false | ifUse(1) | default('unreachable') }}
 useIf: {{ 1 | useIf(true) }} / {{ 1 | useIf(false) | default('unreachable') }}` }) }}
+
+<p>
+    There's also an 
+    <a href="/docs/filters-reference?nameContains=only&amp;tab=default-filters"><em>only*</em> filter</a>
+    for each 
+    <a href="/docs/filters-reference?nameContains=end&amp;tab=default-filters"><em>end*</em> filter</a>    
+    above with the inverse behavior, e.g:
+</p>
+
+{{ 'live-template' | partial({ rows: 3, template: `endIfEmpty: {{ a | endIfEmpty | show: a is not empty }}
+onlyIfEmpty: {{ a | onlyIfEmpty | show: a is empty }}` }) }}
 
 <h4 id="assignment">Assignment</h4>
 
@@ -475,5 +501,11 @@ var escapeLines = '{{ "new" | appendLine | append("line") | escapeNewLines }}';`
     Checkout the <a href="/linq/">Live LINQ examples</a> to explore the various collection and querying features.
 </p>
 
+<h3>Filter API Reference</h3>
+
+<p>
+    See the Filter API Reference for the 
+    <a href="/docs/filters-reference?tab=default-filters">full list of default filters available</a>.
+</p>
 
 {{ "doc-links" | partial({ order }) }}

@@ -3,4 +3,149 @@ title: Redis Filters
 order: 14
 -->
 
+<p>
+    The Redis Filters provide connectivity with a <a href="https://redis.io">Redis</a> Server instance using the 
+    <a href="https://github.com/ServiceStack/ServiceStack.Redis">ServiceStack.Redis</a> library. To enable, install 
+    the <a href="https://www.nuget.org/packages/ServiceStack.Redis/">ServiceStack.Redis</a> NuGet Package, then 
+    register a <a href="https://github.com/ServiceStack/ServiceStack.Redis#redis-client-managers">Redis Client Manager</a>
+    in the IOC:
+</p>
+
+<pre class="cs"><code>container.AddSingleton&lt;IRedisClientsManager&gt;(() => new RedisManagerPool(connString));</code></pre>
+
+<p>
+    Then to enable in templates register 
+    <a href="https://github.com/ServiceStack/ServiceStack.Redis/blob/master/src/ServiceStack.Redis/TemplateRedisFilters.cs">TemplateRedisFilters</a>:
+</p>
+
+<pre class="cs"><code>var context = new TemplateContext { 
+    TemplateFilters {
+        new TemplateRedisFilters()
+    }
+}.Init();</code></pre>
+
+<p>
+    Your templates are now able to use the <a href="/docs/filters-reference?tab=redis-filters">available Redis Filters</a>.
+</p>
+
+<h4 id="redisCall">redisCall</h4>
+
+<p>
+    This is your main interface into Redis which utilizes the 
+    <a href="https://github.com/ServiceStack/ServiceStack.Redis#generic-apis-for-calling-custom-redis-commands">Custom Commands API</a>
+    to be able to execute any arbitrary Redis command. It can either be called with a string similar to commands sent 
+    with <a href="https://redis.io/topics/rediscli">redis-cli</a>, e.g:
+</p>
+
+<pre class="cs"><code>{{ pass: 'GET foo' | redisCall }}</code></pre>
+
+<p>
+    This works for most Redis commands but uses internal heuristics to determine where to split the command into the multiple arguments that 
+    redis-server natively understands. A more deterministic usage which doesn't rely on any heuristics is to pass an array of arguments:
+</p>
+
+<pre class="cs"><code>{{ pass: ['GET', 'foo'] | redisCall }}</code></pre>
+
+<p>
+    <em>redisCall</em> returns either a single <em>object</em> for redis commands returning single values or a List or nested List of
+    objects for Redis commands returning <a href="https://redis.io/topics/protocol">complex Responses</a>.
+</p>
+
+<h4 id="redisInfo">redisInfo</h4>
+
+<p>
+    Returns the Redis Server Info from <a href="https://redis.io/commands/info">Redis Info</a> command in a String Dictionary.
+</p>
+
+<h4 id="redisSearchKeys">redisSearchKeys</h4>
+
+<p>
+    Provides an efficient API for searching Redis Keys by utilizing 
+    <a href="https://redis.io/commands/scan">Redis's non-blocking SCAN</a> command, to fetch results and a server-side LUA script
+    to populate the results with metadata. Results are returned in a typed <em>List&lt;RedisSearchResult&gt;</em>:
+</p>
+
+<pre class="cs"><code>public class RedisSearchResult
+{
+    public string Id { get; set; }
+    public string Type { get; set; }
+    public long Ttl { get; set; }
+    public long Size { get; set; }
+}</code></pre>
+
+<h4 id="redisSearchKeysAsJson">redisSearchKeysAsJson</h4>
+
+<p>
+    If preferred, you can access the search results as JSON and parse it on the client instead.
+</p>
+
+<h4 id="redisConnection">redisConnection</h4>
+
+<p>
+    Returns the current Connection Info in an Object Dictionary containing: <em>{{ pass: host, port, db }}</em>
+</p>
+
+<h4 id="redisToConnectionString">redisToConnectionString</h4>
+
+<p>
+    Converts an <em>redisConnection</em> Object Dictionary into a 
+    <a href="https://github.com/ServiceStack/ServiceStack.Redis#redis-connection-strings">Redis Connection String</a>.
+</p>
+
+<h3>Redis Examples</h3>
+
+<p>
+    <a href="http://redis.netcore.io">redis.netcore.io</a> is a generic Redis Database Viewer that provides a human-friendly view
+    of any Redis data Type, including a dedicated UI to create and populate any Redis data type which was built using just
+    ServiceStack Templates and the above Redis Filters:
+</p>
+
+<p>
+    <a href="http://redis.netcore.io"><img src="https://raw.githubusercontent.com/ServiceStack/Assets/master/img/livedemos/redis-netcore/redis-netcore.png" 
+        style="max-width:850px" alt=".NET Core Redis Viewer"></a>
+</p>
+
+<p>
+    All functionality is maintained in a single <a href="https://github.com/NetCoreApps/WebTemplates/blob/master/src/apps/redis/index.html">index.html</a>
+    weighing under <b>&lt;200 LOC</b> including HTML and JavaScript. It's a good example of how the declarative style of programming
+    that ServiceStack Templates encourages a highly-readable code-base that packs a lot of functionality in a tiny foot print.
+</p>
+
+<h4>Run against your local Redis instance</h4>
+
+<p>
+    You can run the above <a href="https://github.com/NetCoreApps/WebTemplates/tree/master/src/apps/redis">Redis</a> WebApp
+    against your local redis instance by cloning the <a href="https://github.com/NetCoreApps/WebTemplates">WebTemplates</a> GitHub project
+    and in the <a href="https://github.com/NetCoreApps/WebTemplates/tree/master/src/apps">/src/apps</a> folder run:
+</p>
+
+<pre class="sh"><code>dotnet bin/web.dll ../redis/web.settings</code></pre>
+
+<p>
+    As this is a <a href="/usecases/web-templates">Web Template</a> Web App it doesn't need any compilation so after 
+    <a href="https://github.com/NetCoreApps/WebTemplates/tree/master/src/apps">running the Redis Web App</a>
+    you can modify the source code and see changes in real-time thanks to its built-in <a href="/docs/hot-reloading">Hot Reloading</a> support.
+</p>
+
+<h5>Populate redis with the Northiwnd database</h5>
+
+<p>
+    You can use the
+    <a href="https://github.com/NetCoreApps/WebTemplates/tree/master/src/support/northwind-data">northwind-data</a> 
+    project to populate a Redis instance with Northiwnd test data by running:
+</p>
+
+<pre class="sh"><code>dotnet run redis localhost:6379</code></pre>
+
+<h4>Server Generated HTML</h4>
+
+<p>
+    It's not immediatly obvious when running this locally since both Templates and Redis are super fast, but the Redis App was developed as
+    a traditional Website where all HTML is server-generated and every search box key stroke and click on search results performs 
+    a full-page reload. There's a slight sub-second delay that causes a noticable flicker when hosted on the Internet due to network lag, but 
+    otherwise server-generated Template Websites can enable a highly responsive UI (especially in Intranets) with great SEO and deep-linking
+    and back-button support working as expected without the complexity of adopting a client-side JavaScript SPA framework and build-system.
+</p>
+
+
 {{ "doc-links" | partial({ order }) }}

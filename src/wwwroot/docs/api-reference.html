@@ -1,6 +1,6 @@
 <!--
 title: API Reference
-order: 24
+order: 25
 -->
 
 <h3 class="ref">TemplateContext</h3>
@@ -13,7 +13,7 @@ order: 24
 <h4>Preconfigured defaults</h4>
 
 <p>
-    Some <a href="/docs/configuration">default filters</a> when called without arguments will use the default configuration 
+    Some <a href="/docs/default-filters">default filters</a> when called without arguments will use the default configuration 
     shown below that can be overridden by replacing their default value in the TemplateContext's <em>Args</em> collection:
 </p>
 
@@ -113,11 +113,18 @@ foreach (var file in fs.GetAllMatchingFiles("*.html"))
     default filter.
 </p>
 
+<h4>CheckForModifiedPages</h4>
+
+<p>
+    Whether to check for modified pages by default when not in DebugMode, defaults to <em>true</em>.
+    Note: if <b>DebugMode</b> is <em>true</em> it will always check for changes.
+</p>
+
 <h4>CheckForModifiedPagesAfter</h4>
 
 <p>
-    How long to wait before checking if the backing files of pages have changed and to reload them. 
-    Defaults to <em>null</em> which is to never check. Note: if <b>DebugMode</b> is <em>true</em> it will always check for changes.
+    If provided will specify how long to wait before checking if backing files of pages have changed and to reload them if they have.
+    Note: if <b>DebugMode</b> is <em>true</em> it will always check for changes.
 </p>
 
 <h4>RenderExpressionExceptions</h4>

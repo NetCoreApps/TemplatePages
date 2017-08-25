@@ -42,7 +42,8 @@ namespace TemplatePages
             var context = new TemplateContext {
                 TemplateFilters = {
                     new TemplateProtectedFilters(),
-                }
+                },
+                ExcludeFiltersNamed = { "fileWrite","fileAppend","fileDelete","dirDelete" }
             }.Init();
 
             foreach (var entry in request.Files.Safe())
@@ -63,18 +64,20 @@ namespace TemplatePages
         public async Task<string> Any(EvaluateTemplate request)
         {
             var context = new TemplateContext {
-                Args = {
-                    [TemplateConstants.Request] = base.Request,
-                },
                 TemplateFilters = {
-                    new TemplateServiceStackFilters(),
                     new TemplateDbFilters(),
+                    new TemplateAutoQueryFilters(),
+                    new TemplateServiceStackFilters(),
+                    new CustomTemplateFilters(),
                 }
             };
             //Register any dependencies filters need:
             context.Container.AddSingleton(() => base.GetResolver().TryResolve<IDbConnectionFactory>());
             context.Init();
-            var pageResult = new PageResult(context.OneTimePage(request.Template));
+            var pageResult = new PageResult(context.OneTimePage(request.Template)) 
+            {
+                Args = base.Request.GetTemplateRequestParams()
+            };
             return await pageResult.RenderToStringAsync(); // render to string so [ReturnExceptionsInJson] can detect Exceptions and return JSON
         }
     }

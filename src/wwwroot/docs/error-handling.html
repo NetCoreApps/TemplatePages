@@ -34,9 +34,9 @@ order: 15
 <h4>Unhandled Exceptions Behavior</h4>
 
 <p>
-    If Exceptions are unassigned they're considered to be unhandled, whilst the default behavior or <em>TemplateContext</em> is to 
-    rethrow Exceptions, but as it's executed within the context of a HTTP Server, ServiceStack's <em>TemplatePagesFeature</em> by 
-    default is configured to:
+    If Exceptions are unassigned they're considered to be unhandled. The default behavior for <em>TemplateContext</em> is to 
+    rethrow Exceptions, but as ServiceStack's <em>TemplatePagesFeature</em> is executed within the context of a HTTP Server 
+    it's default is configured to:
 </p>
 
 <pre class="cs"><code>new TemplateContext = {

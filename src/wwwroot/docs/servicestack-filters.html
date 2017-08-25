@@ -52,7 +52,7 @@ order: 12
 
 <pre class="cs"><code>{{ 'examples/publishToGateway.txt' | includeFile }}</code></pre>
 
-<h3>sendToAutoQuery</h3>
+<h3 id="sendToAutoQuery-data">sendToAutoQuery</h3>
 
 <p>
     The <em>sendToAutoQuery</em> filter makes requests directly against the <a href="http://docs.servicestack.net/autoquery">AutoQuery API</a>. 
@@ -141,26 +141,71 @@ public class AutoDataQueryServices : Service
     That's all that's required to be able to query GitHub's User and Organization APIs, since they're just normal ServiceStack Services
     we could've used <em>sendToAutoQuery</em> to call <em>QueryGitHubRepos</em> but it would be limited to only being able to call properties
     explicitly defined on the Request DTO, whereas <em>sendToAutoQuery</em> executes against the <em>IAutoQueryData</em> API which 
-    enables access to all the <a href="http://docs.servicestack.net/autoquery-rdbms#implicit-conventions">Implicit Conventions</a> 
+    enables access to all <a href="http://docs.servicestack.net/autoquery-rdbms#implicit-conventions">Implicit Conventions</a> 
     and other Querying related functionality:
 </p>
 
 {{ 'examples/sendToAutoQuery-data.html' | includeFile | assignTo: template }}
-{{ "live-template" | partial({ rows:5, template }) }}
+{{ "live-template" | partial({ rows:6, template }) }}
 
 <h3>AutoQuery RDBMS</h3>
 
 <p>
-    As <a href="http://docs.servicestack.net/autoquery-rdbms">AutoQuery RDBMS</a> is implemented in 
-    <a href="https://www.nuget.org/packages/ServiceStack.Server">ServiceStack.Server</a> the AutoQuery Filters need to be registered 
-    manually:
+    <a href="http://docs.servicestack.net/autoquery-rdbms">AutoQuery RDBMS</a> is implemented in the
+    <a href="https://www.nuget.org/packages/ServiceStack.Server">ServiceStack.Server</a> NuGet package
+    which you'll need to install along with the
+    <a href="https://github.com/ServiceStack/ServiceStack.OrmLite#download">OrmLite NuGet package for your RDBMS</a>
+    which can then be registered in the IOC with:
 </p>
 
-<pre class="cs"><code>Plugins.Add(new AutoQueryFeature { MaxLimit = 100 });
+<pre class="cs"><code>container.AddSingleton&lt;IDbConnectionFactory&gt;(() => 
+    new OrmLiteConnectionFactory(connectionString, SqlServer2012Dialect.Provider));</code></pre>
     
-Plugins.Add(new TemplatePagesFeature {
+<p>
+    AutoQuery can then be enabled by registering the <em>AutoQueryFeature</em> plugin:
+</p>
+
+<pre class="cs"><code>Plugins.Add(new AutoQueryFeature { MaxLimit = 100 });</code></pre>
+
+<p>
+    Which will let you start developing <a href="http://docs.servicestack.net/autoquery-rdbms">AutoQuery Services</a>.
+    To then let your Templates to call AutoQuery Services directly, register the <em>TemplateAutoQueryFilters</em>:
+</p>
+
+<pre class="cs">Plugins.Add(new TemplatePagesFeature {
     TemplateFilters = { new TemplateAutoQueryFilters() },
-});</code></pre>
+});</pre>
+
+<h4 id="sendToAutoQuery-rdbms">sendToAutoQuery</h4>
+
+<p>
+    As they share the same semantics and wire-format, you can use the same <b>sendToAutoQuery</b> filter name to call
+    either AutoQuery Data or AutoQuery RDBMS Services which automatically gets routed to the appropriate implementation. 
+    This also means that you can replace your implementation to from AutoQuery Data to RDBMS and vice-versa behind the
+    scenes and your templates will continue to work untouched.
+</p>
+
+<p>
+    For this example we'll re-use the same <em>QueryCustomers</em> AutoQuery Implementation that the 
+    <a href="/docs/servicestack-filters#sendtogateway">sendToGateway</a> uses:
+</p>
+
+<pre class="cs"><code>public class QueryCustomers : QueryDb<Customer> 
+{
+    public string CustomerId { get; set; }
+    public string CompanyNameContains { get; set; }
+    public string[] CountryIn { get; set; }
+}    
+</code></pre>
+
+<p>
+    But instead of being limited by explicit properties on the Request DTO 
+    <em>sendToAutoQuery</em> extends the queryability of AutoQuery Services to enable querying all
+    <a href="http://docs.servicestack.net/autoquery-rdbms#implicit-conventions">implicit conventions</a> as well:
+</p>
+
+{{ 'examples/sendToAutoQuery-rdms.html' | includeFile | assignTo: template }}
+{{ "live-template" | partial({ rows:6, template }) }}
 
 
 {{ "doc-links" | partial({ order }) }}
