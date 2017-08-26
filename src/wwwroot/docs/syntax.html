@@ -134,4 +134,20 @@ public string padRight(string text, int totalWidth, char padChar) => text?.PadRi
     | where: it = 3 and isOdd(it)
     | join }}" }) }}
 
+<h4>Multi-line Comments</h4>
+
+<p>
+    Everything within multi-line comments <em>{{&zwnj;*</em> and <em>*&zwnj;}}</em> is ignored and removed from the page.
+</p>
+
+<p>
+    An alternative way to temporarily disable an expression is to prefix the expression with the <em>end</em> filter to 
+    immediately short-circuit it, e.g: <em>{{ pass: end | now | dateFormat }}</em>
+</p>
+
+<p>
+    See <a href="/docs/view-engine#ignoring-pages">Ignoring Pages</a> for different options for ignoring entire pages and 
+    templates.
+</p>
+
 {{ "doc-links" | partial({ order }) }}
