@@ -102,20 +102,7 @@ public void Linq43()
 } 
 </code></pre>
 
-<div class="linq-preview html-sm">
-    <div class="files">
-        <section>
-            <h5>month-orders.html</h5>
-            <textarea class="form-control" rows="3">{{ "code/linq43-month-orders.txt" | includeFile }}</textarea>
-        </section>
-    </div>
-    <div class="template">
-        <textarea autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" class="form-control" rows="16">{{ "code/linq43.txt" | includeFile }}</textarea>
-    </div>
-    <div class="result">
-        <div class="output"></div>
-    </div>
-</div> 
+{{ "linq-preview" | partial({ rows: 16, output: "html-sm", example: "linq43" }) }}
 
 <h3>linq44: GroupBy - Comparer</h3>
 
