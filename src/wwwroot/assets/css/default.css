@@ -112,7 +112,7 @@ li.active a, #content li.active a {
 @media screen and (max-width: 1300px)
 {
     #content {
-        margin-left: 290px;
+        margin-left: 160px;
     }
 }
 pre {
