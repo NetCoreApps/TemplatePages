@@ -16,7 +16,7 @@ order: 20
 </p>
 
 <p>
-    To enable this we need to specify the path where our "API Pages" are located when registering TemplatePagesFeature:
+    To enable this we need to specify the path where our "API Pages" are located when registering <em>TemplatePagesFeature</em>:
 </p>
 
 <pre class="cs"><code>Plugins.Add(new TemplatePagesFeature {
@@ -43,8 +43,8 @@ order: 20
 
 <p>
     To demonstrate API Pages in action we've added Web APIs equivalents for Rockwind's 
-    <a href="http://rockwind-sqlite.netcore.io/northwind/customers">customers</a> and
-    <a href="http://rockwind-sqlite.netcore.io/northwind/products">products</a> HTML pages with the implementation below:
+    <a href="http://rockwind-sqlite.web-app.io/northwind/customers">customers</a> and
+    <a href="http://rockwind-sqlite.web-app.io/northwind/products">products</a> HTML pages with the implementation below:
 </p>
 
 <style>
@@ -53,7 +53,7 @@ order: 20
     }
 </style>
 
-<h4><a href="http://rockwind-sqlite.netcore.io/api/customers">/api/customers</a></h4>
+<h4><a href="http://rockwind-sqlite.web-app.io/api/customers">/api/customers</a></h4>
 
 <p>
     The entire implementation of the customers API is below:
@@ -72,54 +72,54 @@ order: 20
     <tr>
         <th>All Customers</th>
         <td>
-            <div><a href="http://rockwind-sqlite.netcore.io/api/customers">/api/customers</a></div>
-            <div><a href="http://rockwind-sqlite.netcore.io/api/customers.csv">/api/customers.csv</a></div>
-            <div><a href="http://rockwind-sqlite.netcore.io/api/customers.html">/api/customers.html</a></div>
-            <div><a href="http://rockwind-sqlite.netcore.io/api/customers?format=html">/api/customers?format=html</a></div>
+            <div><a href="http://rockwind-sqlite.web-app.io/api/customers">/api/customers</a></div>
+            <div><a href="http://rockwind-sqlite.web-app.io/api/customers.csv">/api/customers.csv</a></div>
+            <div><a href="http://rockwind-sqlite.web-app.io/api/customers.html">/api/customers.html</a></div>
+            <div><a href="http://rockwind-sqlite.web-app.io/api/customers?format=html">/api/customers?format=html</a></div>
             <div style="margin:5px 0 0 0;color:#888;font-size:13px"><b>Accept</b> HTTP Header also supported</div>
         </td>
     </tr>
     <tr>
         <th>Alfreds Futterkiste Details</th>
         <td>
-            <div><a href="http://rockwind-sqlite.netcore.io/api/customers/ALFKI">/api/customers/ALFKI</a></div>
-            <div><a href="http://rockwind-sqlite.netcore.io/api/customers/ALFKI.csv">/api/customers/ALFKI.csv</a></div>
-            <div><a href="http://rockwind-sqlite.netcore.io/api/customers/ALFKI.html">/api/customers/ALFKI.html</a></div>
+            <div><a href="http://rockwind-sqlite.web-app.io/api/customers/ALFKI">/api/customers/ALFKI</a></div>
+            <div><a href="http://rockwind-sqlite.web-app.io/api/customers/ALFKI.csv">/api/customers/ALFKI.csv</a></div>
+            <div><a href="http://rockwind-sqlite.web-app.io/api/customers/ALFKI.html">/api/customers/ALFKI.html</a></div>
         </td>
     </tr>
     <tr>
         <th>As List</th>
         <td>
-            <div><a href="http://rockwind-sqlite.netcore.io/api/customers?id=ALFKI">/api/customers?id=ALFKI</a></div>
-            <div><a href="http://rockwind-sqlite.netcore.io/api/customers.csv?id=ALFKI">/api/customers.csv?id=ALFKI</a></div>
-            <div><a href="http://rockwind-sqlite.netcore.io/api/customers.html?id=ALFKI">/api/customers.html?id=ALFKI</a></div>
+            <div><a href="http://rockwind-sqlite.web-app.io/api/customers?id=ALFKI">/api/customers?id=ALFKI</a></div>
+            <div><a href="http://rockwind-sqlite.web-app.io/api/customers.csv?id=ALFKI">/api/customers.csv?id=ALFKI</a></div>
+            <div><a href="http://rockwind-sqlite.web-app.io/api/customers.html?id=ALFKI">/api/customers.html?id=ALFKI</a></div>
         </td>
     </tr>
     <tr>
         <th>Customers in Germany</th>
         <td>
-            <div><a href="http://rockwind-sqlite.netcore.io/api/customers?country=Germany">/api/customers?country=Germany</a></div>
-            <div><a href="http://rockwind-sqlite.netcore.io/api/customers.csv?country=Germany">/api/customers.csv?country=Germany</a></div>
-            <div><a href="http://rockwind-sqlite.netcore.io/api/customers.html?country=Germany">/api/customers.html?country=Germany</a></div>
+            <div><a href="http://rockwind-sqlite.web-app.io/api/customers?country=Germany">/api/customers?country=Germany</a></div>
+            <div><a href="http://rockwind-sqlite.web-app.io/api/customers.csv?country=Germany">/api/customers.csv?country=Germany</a></div>
+            <div><a href="http://rockwind-sqlite.web-app.io/api/customers.html?country=Germany">/api/customers.html?country=Germany</a></div>
         </td>
     </tr>
     <tr>
         <th>Customers in London</th>
         <td>
-            <div><a href="http://rockwind-sqlite.netcore.io/api/customers?city=London">/api/customers?city=London</a></div>
-            <div><a href="http://rockwind-sqlite.netcore.io/api/customers.csv?city=London">/api/customers.csv?city=London</a></div>
-            <div><a href="http://rockwind-sqlite.netcore.io/api/customers.html?city=London">/api/customers.html?city=London</a></div>
+            <div><a href="http://rockwind-sqlite.web-app.io/api/customers?city=London">/api/customers?city=London</a></div>
+            <div><a href="http://rockwind-sqlite.web-app.io/api/customers.csv?city=London">/api/customers.csv?city=London</a></div>
+            <div><a href="http://rockwind-sqlite.web-app.io/api/customers.html?city=London">/api/customers.html?city=London</a></div>
         </td>
     </tr>    
     <tr>
         <th>Combination Query</th>
         <td>
-            <a href="http://rockwind-sqlite.netcore.io/api/customers?city=London&amp;country=UK&amp;limit=3">/api/customers?city=London&amp;country=UK&amp;limit=3</a>
+            <a href="http://rockwind-sqlite.web-app.io/api/customers?city=London&amp;country=UK&amp;limit=3">/api/customers?city=London&amp;country=UK&amp;limit=3</a>
         </td>
     </tr>
 </table>
 
-<h4><a href="http://rockwind-sqlite.netcore.io/api/products">/api/products</a></h4>
+<h4><a href="http://rockwind-sqlite.web-app.io/api/products">/api/products</a></h4>
 
 <p>
     The Products API is an example of a more complex API where data is sourced from multiple tables:
@@ -138,49 +138,49 @@ order: 20
     <tr>
         <th>All Products</th>
         <td>
-            <div><a href="http://rockwind-sqlite.netcore.io/api/products">/api/products</a></div>
-            <div><a href="http://rockwind-sqlite.netcore.io/api/products.csv">/api/products.csv</a></div>
-            <div><a href="http://rockwind-sqlite.netcore.io/api/products.html">/api/products.html</a></div>
+            <div><a href="http://rockwind-sqlite.web-app.io/api/products">/api/products</a></div>
+            <div><a href="http://rockwind-sqlite.web-app.io/api/products.csv">/api/products.csv</a></div>
+            <div><a href="http://rockwind-sqlite.web-app.io/api/products.html">/api/products.html</a></div>
         </td>
     </tr>
     <tr>
         <th>Chai Product Details</th>
         <td>
-            <div><a href="http://rockwind-sqlite.netcore.io/api/products/1">/api/products/1</a></div>
-            <div><a href="http://rockwind-sqlite.netcore.io/api/products/1.csv">/api/products/1.csv</a></div>
-            <div><a href="http://rockwind-sqlite.netcore.io/api/products/1.html">/api/products/1.html</a></div>
+            <div><a href="http://rockwind-sqlite.web-app.io/api/products/1">/api/products/1</a></div>
+            <div><a href="http://rockwind-sqlite.web-app.io/api/products/1.csv">/api/products/1.csv</a></div>
+            <div><a href="http://rockwind-sqlite.web-app.io/api/products/1.html">/api/products/1.html</a></div>
         </td>
     </tr>
     <tr>
         <th>As List</th>
         <td>
-            <div><a href="http://rockwind-sqlite.netcore.io/api/products?id=1">/api/products?id=1</a></div>
-            <div><a href="http://rockwind-sqlite.netcore.io/api/products.csv?id=1">/api/products.csv?id=1</a></div>
-            <div><a href="http://rockwind-sqlite.netcore.io/api/products.html?id=1">/api/products.html?id=1</a></div>
+            <div><a href="http://rockwind-sqlite.web-app.io/api/products?id=1">/api/products?id=1</a></div>
+            <div><a href="http://rockwind-sqlite.web-app.io/api/products.csv?id=1">/api/products.csv?id=1</a></div>
+            <div><a href="http://rockwind-sqlite.web-app.io/api/products.html?id=1">/api/products.html?id=1</a></div>
         </td>
     </tr>
     <tr>
         <th>Beverage Products</th>
         <td>
-            <div><a href="http://rockwind-sqlite.netcore.io/api/products?category=Beverages">/api/products?category=Beverages</a></div>
-            <div><a href="http://rockwind-sqlite.netcore.io/api/products.csv?category=Beverages">/api/products.csv?category=Beverages</a></div>
-            <div><a href="http://rockwind-sqlite.netcore.io/api/products.html?category=Beverages">/api/products.html?category=Beverages</a></div>
+            <div><a href="http://rockwind-sqlite.web-app.io/api/products?category=Beverages">/api/products?category=Beverages</a></div>
+            <div><a href="http://rockwind-sqlite.web-app.io/api/products.csv?category=Beverages">/api/products.csv?category=Beverages</a></div>
+            <div><a href="http://rockwind-sqlite.web-app.io/api/products.html?category=Beverages">/api/products.html?category=Beverages</a></div>
         </td>
     </tr>
     <tr>
         <th>Bigfoot Breweries Products</th>
         <td>
-            <div><a href="http://rockwind-sqlite.netcore.io/api/products?supplier=Bigfoot+Breweries">/api/products?supplier=Bigfoot+Breweries</a></div>
-            <div><a href="http://rockwind-sqlite.netcore.io/api/products.csv?supplier=Bigfoot+Breweries">/api/products.csv?supplier=Bigfoot+Breweries</a></div>
-            <div><a href="http://rockwind-sqlite.netcore.io/api/products.html?supplier=Bigfoot+Breweries">/api/products.html?supplier=Bigfoot+Breweries</a></div>
+            <div><a href="http://rockwind-sqlite.web-app.io/api/products?supplier=Bigfoot+Breweries">/api/products?supplier=Bigfoot+Breweries</a></div>
+            <div><a href="http://rockwind-sqlite.web-app.io/api/products.csv?supplier=Bigfoot+Breweries">/api/products.csv?supplier=Bigfoot+Breweries</a></div>
+            <div><a href="http://rockwind-sqlite.web-app.io/api/products.html?supplier=Bigfoot+Breweries">/api/products.html?supplier=Bigfoot+Breweries</a></div>
         </td>
     </tr>
     <tr>
         <th>Products containing Tofu</th>
         <td>
-            <div><a href="http://rockwind-sqlite.netcore.io/api/products?nameContains=Tofu">/api/products?nameContains=Tofu</a></div>
-            <div><a href="http://rockwind-sqlite.netcore.io/api/products.csv?nameContains=Tofu">/api/products.csv?nameContains=Tofu</a></div>
-            <div><a href="http://rockwind-sqlite.netcore.io/api/products.html?nameContains=Tofu">/api/products.html?nameContains=Tofu</a></div>
+            <div><a href="http://rockwind-sqlite.web-app.io/api/products?nameContains=Tofu">/api/products?nameContains=Tofu</a></div>
+            <div><a href="http://rockwind-sqlite.web-app.io/api/products.csv?nameContains=Tofu">/api/products.csv?nameContains=Tofu</a></div>
+            <div><a href="http://rockwind-sqlite.web-app.io/api/products.html?nameContains=Tofu">/api/products.html?nameContains=Tofu</a></div>
         </td>
     </tr>
 </table>

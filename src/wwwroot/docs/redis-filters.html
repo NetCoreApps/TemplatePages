@@ -95,13 +95,13 @@ order: 14
 <h3>Redis Examples</h3>
 
 <p>
-    <a href="http://redis.netcore.io">redis.netcore.io</a> is a generic Redis Database Viewer that provides a human-friendly view
+    <a href="http://redis.web-app.io">redis.web-app.io</a> is a generic Redis Database Viewer that provides a human-friendly view
     of any Redis data Type, including a dedicated UI to create and populate any Redis data type which was built using just
     ServiceStack Templates and the above Redis Filters:
 </p>
 
 <p>
-    <a href="http://redis.netcore.io"><img src="https://raw.githubusercontent.com/ServiceStack/Assets/master/img/livedemos/redis-netcore/redis-netcore.png" 
+    <a href="http://redis.web-app.io"><img src="https://raw.githubusercontent.com/ServiceStack/Assets/master/img/livedemos/redis-netcore/redis-netcore.png" 
         style="max-width:850px" alt=".NET Core Redis Viewer"></a>
 </p>
 
@@ -119,7 +119,7 @@ order: 14
     and in the <a href="https://github.com/NetCoreApps/WebApp/tree/master/src/apps">/src/apps</a> folder run:
 </p>
 
-<pre class="sh"><code>dotnet web/app,dll ../redis/web.settings</code></pre>
+<pre class="sh"><code>dotnet web/app.dll ../redis/web.settings</code></pre>
 
 <p>
     As this is a <a href="/usecases/web-templates">Web Template</a> Web App it doesn't need any compilation so after 
@@ -127,12 +127,12 @@ order: 14
     you can modify the source code and see changes in real-time thanks to its built-in <a href="/docs/hot-reloading">Hot Reloading</a> support.
 </p>
 
-<h5>Populate redis with the Northiwnd database</h5>
+<h5>Populate redis with the Northwind database</h5>
 
 <p>
     You can use the
     <a href="https://github.com/NetCoreApps/WebApp/tree/master/src/support/northwind-data">northwind-data</a> 
-    project to populate a Redis instance with Northiwnd test data by running:
+    project to populate a Redis instance with Northwind test data by running:
 </p>
 
 <pre class="sh"><code>dotnet run redis localhost:6379</code></pre>
