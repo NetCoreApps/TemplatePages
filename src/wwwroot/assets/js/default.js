@@ -107,7 +107,7 @@ $.fn.ajaxPreview = function(opt) {
             contentType: 'application/json',
             dataType: opt.dataType || 'json',
             success: opt.success,
-            error: opt.error || function(jq,status,errMsg) { handleError(el, jqxhr) }
+            error: opt.error || function(jqxhr,status,errMsg) { handleError(el, jqxhr) }
         })
     })
     .first().trigger("input")

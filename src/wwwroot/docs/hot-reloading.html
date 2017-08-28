@@ -16,13 +16,9 @@ order: 17
 
 <pre class="cs">{{ pass: ifDebug | select: &lt;script&gt;{ '/js/hot-loader.js' | includeFile }&lt;/script&gt; }}</pre>
 
-<blockquote>
-    An easy way to temporarily disable hot reloading is to prefix the expression with the end filter <em>{{ pass: end | ifDebug ... }}</em>
-</blockquote>
-
 <p>
     This will embed the dependency-free <a href="https://github.com/ServiceStack/ServiceStack/blob/master/src/ServiceStack/js/hot-loader.js">hot-loader.js</a>
-    script during development that will poll the service endpoint below:
+    script during <a href="http://docs.servicestack.net/debugging#debugmode">development</a> to poll the service endpoint below:
 </p>
 
 <pre class="url"><code>/templates/hotreload/page?path=path/to/page&amp;eTag=lastETagReceived</code></pre>
@@ -30,6 +26,11 @@ order: 17
 <p>
     Which responds with whether or not the client should reload their current page, preserving their current scroll offset.
 </p>
+
+<blockquote>
+    An easy way to temporarily disable hot reloading is to prefix the expression with the <em>end</em> filter 
+    <em>{{ pass: end | ifDebug ... }}</em> or if preferred you can just use comments <em>{{&zwnj;* ifDebug ... *&zwnj;}}</em> 
+</blockquote>
 
 <h4>Implementation</h4>
 

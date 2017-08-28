@@ -52,12 +52,12 @@ order: 2
 <h3>Optimal Development Experience</h3>
 
 <p>
-    The above attributes enables the fastest iterative development experience available in .NET with a Live Development experience that
-    supports <a href="/docs/hot-reloading">Hot Reloading</a> out of the box and for the first time in .NET, you can build entire 
-    <a href="/usecases/web-templates">Wep Apps and Web APIs</a> without ever having to build your App or manually Refresh pages.
+    The above attributes enables an instant iterative development workflow with a Live Development experience that supports 
+    configuration-free <a href="/docs/hot-reloading">Hot Reloading</a> out of the box that lets you build entire 
+    <a href="/usecases/web-templates">Wep Apps and Web APIs</a> without ever having to compile or manually Refresh pages.
 </p>
 
-<h3>Super Simple</h3>
+<h3>Simplicity end-to-end</h3>
 
 <p>
     There are 2 main concepts in Template Expressions: <a href="/docs/arguments">Arguments</a> - variables which can be made available 
@@ -86,6 +86,8 @@ order: 2
     <em>{{ pass: page }}</em> placeholder to tell the Layout where to render the page:
 </p>
 
+<h3>Quick Example Walkthrough</h3>
+
 {{ "live-pages" | partial(
     {
         page: 'page', 
@@ -96,18 +98,6 @@ order: 2
         } 
     }) 
 }}
-
-<h4 id="cascading-resolution">Cascading Resolution</h4>
-
-<p>
-    There's no special folders like <em>/Views</em> or <em>/Views/Shared</em> required to store layouts or share partials or artificial
-    "Areas" concept to isolate website sections. Different websites or sections can just be intuitively grouped into different 
-    folders and Templates will automatically resolve the closest layout it finds for each page. Cascading resolution also applies to 
-    including files or partial pages where you can use just its name to resolve the closest one, or an absolute path from the 
-    <em>WebRootPath</em> to include a specific partial or file from a different folder.
-</p>
-
-<h3>Simple Example Walkthrough</h3>
 
 <p>
     To render the pages we first create and initialize a <em>TemplateContext</em>
@@ -124,7 +114,7 @@ order: 2
 
 <p>
     Templates only have access to filters and arguments defined within its Context, which for an empty Context are the comprehensive
-    suite of safe filters in <a href="/docs/default-filters">Default Filters</a> and <a href="/docs/html-filters">HTML Filters</a>.
+    suite of safe <a href="/docs/default-filters">Default Filters</a> and <a href="/docs/html-filters">HTML Filters</a>.
 </p>
 
 <p>
@@ -156,8 +146,8 @@ context.VirtualFiles.Write("page.html", "I am the Page");
 <pre><code>string output = await pageResult.RenderToStringAsync();</code></pre>
 
 <p>
-    All I/O within Templates are non-blocking, but if you're using the default In Memory Virtual FileSystem there's no I/O
-    so you can safely block to get the generated output with:
+    All I/O within Templates is non-blocking, but if you're evaluating an adhoc template or using the default In Memory Virtual FileSystem 
+    there's no I/O so you can safely block to get the generated output with:
 </p>
 
 <pre><code>string output = pageResult.Result;</code></pre>
@@ -166,4 +156,31 @@ context.VirtualFiles.Write("page.html", "I am the Page");
     Both APIs returns the result you see in the Live Example above.
 </p>
     
+<h4 id="cascading-resolution">Cascading Resolution</h4>
+
+<p>
+    There's no special folders like <em>/Views</em> or <em>/Views/Shared</em> required to store layouts or share partials or artificial
+    "Areas" concept to isolate website sections. Different websites or sections can just be intuitively grouped into different 
+    folders and Templates will automatically resolve the closest layout it finds for each page. Cascading resolution also applies to 
+    including files or partial pages where you can use just its name to resolve the closest one, or an absolute path from the 
+    <em>WebRootPath</em> to include a specific partial or file from a different folder.
+</p>
+
+<h4 id="late-bound">Late-bound flexibility</h4>
+
+<p>
+    There's no static coupling to concrete classes, static methods or other filters, ambiguous method exceptions or namespace collisions. 
+    Each filter is self-contained and can easily be shared and dropped into any Web App by 
+    <a href="/docs/filters#registering-filters">registering them in a list</a>. Inspired by the power and 
+    <a href="http://mythz.servicestack.net">flexibility in Smalltalk and LISP</a>, filters are late-bound at run-time to the first matching filter 
+    in the user-defined list of <em>TemplateFilters</em>. So if <a href="/docs/db-filters"><em>TemplateDbFiltersAsync</em> DB Filter</a> 
+    was inserted before the sync <em>TemplateDbFilters</em> all templates will continue to run unmodified except that all DB requests will now be async. 
+    This ability to shadow filters enables high-level intent-based APIs decoupled from implementations which 
+    <a href="/docs/servicestack-filters#sendToAutoQuery-rdbms">sendToAutoQuery</a> leverages to automatically route filter invocations to 
+    the appropriate implementation depending of if it's an <a href="http://docs.servicestack.net/autoquery-rdbms">AutoQuery RDBMS</a> or an 
+    <a href="http://docs.servicestack.net/autoquery-data">AutoQuery Data</a> request masking their implementations as a transparent detail. 
+    This flexibility also makes it easy create proxies, intercept and inject behavior like logging or profiling without modifying existing implementations.
+</p>
+
+
 {{ "doc-links" | partial({ order }) }}

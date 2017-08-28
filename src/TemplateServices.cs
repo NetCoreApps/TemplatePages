@@ -25,15 +25,6 @@ namespace TemplatePages
         public string Template { get; set; }
     }
 
-    public class ReturnExceptionsInJsonAttribute : ResponseFilterAttribute
-    {
-        public override void Execute(IRequest req, IResponse res, object responseDto)
-        {
-            if (responseDto is Exception || responseDto is IHttpError)
-                req.ResponseContentType = MimeTypes.Json;
-        }
-    }
-
     [ReturnExceptionsInJson]
     public class TemplateServices : Service
     {
