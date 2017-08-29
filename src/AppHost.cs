@@ -37,6 +37,9 @@ namespace TemplatePages
                 db.CreateTable<Product>();
                 TemplateQueryData.Customers.Each(x => db.Save(x, references:true));
                 db.InsertAll(TemplateQueryData.Products);
+
+                db.CreateTable<Quote>();
+                db.Insert(new Quote { Id = 1, Url = "https://gist.githubusercontent.com/gistlyn/0ab7494dfbff78466ef622d501662027/raw/b3dd1e9f8e82c169a32829071aa7f761c6494843/quote.md" });
             }
 
             Plugins.Add(new AutoQueryFeature { MaxLimit = 100 });
@@ -48,7 +51,10 @@ namespace TemplatePages
 
             var customFilters = new CustomTemplateFilters();
             Plugins.Add(new TemplatePagesFeature {
-                TemplateFilters = { customFilters },
+                TemplateFilters = { 
+                    customFilters,
+                    new TemplateDbFiltersAsync()
+                },
                 Args = {
                     ["products"] = TemplateQueryData.Products
                 },
@@ -107,5 +113,11 @@ namespace TemplatePages
 
             return path;
         }
+    }
+
+    public class Quote
+    {
+        public int Id { get; set; }
+        public string Url { get; set; }
     }
 }

@@ -6,10 +6,10 @@ title: Quote of the Day
 
 <p class="pre">{{ 'select url from quote where id= @id' | dbScalar({ id }) | urlContents | htmlencode }}</p>
 
-<h3><a href="">Code</a></h3>
+<h3><a href="https://github.com/NetCoreApps/TemplatePages/blob/master/src/wwwroot/examples/quote.html">Code</a></h3>
 
 <pre class="cs"><code>{{ 'examples/quote.html' | includeFile }}</code></pre>
 
-<h3><a href="">After</a></h3>
+<h3><a href="https://github.com/NetCoreApps/TemplatePages/blob/master/src/wwwroot/examples/qotd.html">After</a></h3>
 
 {{ 'examples/quote' | partial({ id }) }}

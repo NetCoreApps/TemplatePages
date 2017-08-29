@@ -28,25 +28,113 @@ order: 2
     There's no runtime reflection, each filter or binding within template expressions executes compiled and cached C# Expressions.
 </p>
 
+<h4>Declarative, high-level, Intent-based</h4>
+
 <p>
-    Templates also makes it easy to develop high-performance Apps by default where there's no additional effort to utilize async programming 
-    as calling async filters is a transparent implementation detail indistinguishable from sync filters, e.g. the 
-    <a href="/docs/db-filters">DB Fitlers</a> 
-    leverages one of .NET's fastest ORM's and exactly the same code can be made async by registering to use
-    <a href="https://github.com/ServiceStack/ServiceStack.OrmLite/blob/master/src/ServiceStack.OrmLite/TemplateDbFiltersAsync.cs">TemplateDbFiltersAsync</a>
-    instead of the sync 
-    <a href="https://github.com/ServiceStack/ServiceStack.OrmLite/blob/master/src/ServiceStack.OrmLite/TemplateDbFilters.cs">TemplateDbFilters</a>.
+    High-level APIs are usually synonymous with being slow by virtue of paying some penalty for their high-level abstraction,
+    but in the domain of I/O and Streams such-as rendering text to Streams they make it trivial to compose high-level functionality
+    that's implemented more efficiently than would be typically written in C# / ASP.NET MVC Apps.
 </p>
 
-<h3>Functional, Reactive and Declarative</h3>
+<p>
+    As an example let's analyze the Template below:
+</p>
+
+<pre class="cs"><code>{{ 'examples/quote.html' | includeFile }}</code></pre>
 
 <p>
-    Template Pages are pure, they don't have any coupling to external components or static classes and default filters don't mutate any external state.
-    There's no imperative statements, everything is an expression forcing a more readable and declarative style of programming 
-    that's easier to quickly determine the subject of expressions and the states that need to be met for filters to be executed. 
+    The intent of Template code is clear even if it's the first time reading it. From left-to-right we can deduce that it
+     retrieves a url from the quote table, downloads its contents of and converts it to markdown before replacing the text "Razor" and
+     "2010" and displaying the <em>raw</em> non-HTML encoded html output. 
+</p>
+
+<p>
+    In MVC the typical and easiest approach would be to create a an MVC Controller Action, use EF to make a sync call to access the database,
+    a sync call with a new HTTP Client to download the content which is buffered inside the Controller action before returned inside a View Model
+    that is handed off to MVC to execute the View inside the current La.
+</p>
+
+<p>
+    What does Templates do? That depends on which <a href="/docs/db-filters">DB Filter</a> is registered, if your RDBMS supports ADO.NET's async API you can register 
+    <a href="https://github.com/ServiceStack/ServiceStack.OrmLite/blob/master/src/ServiceStack.OrmLite/TemplateDbFiltersAsync.cs">TemplateDbFiltersAsync</a>
+    to execute all queries asynchronously, otherwise if your using an RDBMS whose ADO.NET Provider doesn't support async you can register the
+    <a href="https://github.com/ServiceStack/ServiceStack.OrmLite/blob/master/src/ServiceStack.OrmLite/TemplateDbFilters.cs">TemplateDbFilters</a>
+    to execute the DB request synchronously without paying for any <i>pseudo-async</i> overhead, in each case the exact same code executes
+    the most optimal ADO.NET APIs. Template also benefits from using the much faster 
+    <a href="https://github.com/ServiceStack/ServiceStack.OrmLite">OrmLite</a> and also saves on the abstraction cost from generating a 
+    parameterized SQL Statement a Typed Expression-based API.
+</p>
+
+{{ "live-template" | partial({ output:'no-scroll', rows:1, template: "{{ 'select url from quote where id= @id' | dbScalar({ id:1 }) | htmlLink }}" }) }}
+
+<p>
+    The next question becomes what is <em>id</em> bound to? Akin to JavaScript's prototype chain it uses the closest argument in its 
+    <a href="/docs/arguments">Arguments hierarchy</a>, e.g. when evaluated as a view page it could be set by the queryString or 
+    when evaluated as a partial could set from the scoped arguments it was called with.
+</p>
+
+<p>
+    The url returned from the db is then passed to the <em>urlContents</em> filter which if it was the last filter in the expression
+    avoids any buffering by asynchronously streaming the url content stream directly to the forward-only HTTP Response Stream:
+</p>
+
+<pre class="cs"><code>{{ pass: url | urlContents }}</code></pre>
+
+<p>
+    <em>urlContents</em> is a <a href="/docs/filters#block-filters">Block Filter</a> which instead of returning a value writes its 
+    response to the OutputStream it's given. But then how can we then convert it to Markdown if it's already written to the Response Stream?
+    Templates analyzes the Expression's AST to determine if there's any filters remaining, if there is it gives the <em>urlContents</em> 
+    Block filter a <em>MemoryStream</em> to write to, then forwards its buffered output to the next filter. Since they don't return values, 
+    the only thing that can come after a Block Filter is other Block filters or <a href="/docs/transformers">Stream Transformers</a>. 
+    <em>markdown</em> is one such <a href="/docs/transformers#filter-transformers">Filter Transformer</a> which takes in a stream of Markdown 
+    and returns a Stream of HTML.
+</p>
+
+<pre class="cs"><code>{{ pass: url | urlContents | markdown }}</code></pre>
+
+<p>
+    The <em>assignTo</em> filter is used to set a value in the current scope. After Block Filters, a different <em>assignTo</em> Block Filter
+    is used with the same name and purpose but a different implementation that reads all the contents of the stream into a UTF-8 Stream
+    and sets a value in the current scope before returning an empty Stream so nothing gets written to the Response. 
+</p>
+
+<pre class="cs"><code>{{ pass: url | urlContents | markdown | assignTo: quote }}</code></pre>
+
+<p>
+    Once the streamed output is captured and assigned it goes back into becoming a normal argument that opens it up to be 
+    able to use all filters again, which is how we're able to use the string <em>replace</em> filters before rendering the final result :)
+</p>
+
+<h4><a href="/examples/qotd?id=1">/examples/qotd?id=1</a></h4>
+
+<p>
+    So whilst it conceptually looks like each filter is transforming large buffered strings inside every filter, the expression is 
+    inspected to determine and utilize the most efficient implementation allowable. At the same time filters are not statically bound to 
+    any implementation so you could for instance <a href="/docs/filters#registering-filters">insert a Custom Filter</a> before the Default 
+    Filters containing the same name and arguments count to have templates execute your custom filters instead, all whilst the template's 
+    source code and intent remains untouched.
+</p>
+
+<h3>Pure, Functional and Reactive</h3>
+
+<p>
+    Templates are pure at both the library-level where they're a clean library with no external dependencies outside 
+    <a href="https://www.nuget.org/packages/ServiceStack.Common">ServiceStack.Common</a>, no coupling to web frameworks, external configuration files, 
+    designiner tooling, build tools, pre-compilation steps or have any special deployment requirements. 
+    It binds to simple, clean, small interfaces for its 
+    <a href="http://docs.servicestack.net/virtual-file-system">Virtual File System</a>, 
+    <a href="http://docs.servicestack.net/ioc">IOC</a> and
+    <a href="http://docs.servicestack.net/appsettings">App Settings</a> providers which are easily overrided to 
+    <a href="/docs/view-engine#view-engine-in-servicestack">integrate cleanly into external web frameworks</a>.
+</p>
+
+<p>
+    They're also pure at the code-level where it doesn't have any coupling to concrete dependencies, components or static classes. Default filters 
+    don't mutate any external state. There's no imperative statements, everything is an expression forcing a more readable and declarative style of 
+    programming that's easier to quickly determine the subject of expressions and the states that need to be met for filters to be executed. 
     Conceptually Templates are "evaluated" in that they take in arguments, filters and templates as inputs and evaluates them to an output stream. 
     They're highly testable by design where the same environment used to create the context can be easily re-created in Unit tests 
-    including simulating pages in a File System using the built-in In Memory Virtual File System. 
+    including simulating pages in a File System using the built-in In Memory Virtual File System.     
 </p>
 
 <h3>Optimal Development Experience</h3>
@@ -173,9 +261,7 @@ context.VirtualFiles.Write("page.html", "I am the Page");
     Each filter is self-contained and can easily be shared and dropped into any Web App by 
     <a href="/docs/filters#registering-filters">registering them in a list</a>. Inspired by the power and 
     <a href="http://mythz.servicestack.net">flexibility in Smalltalk and LISP</a>, filters are late-bound at run-time to the first matching filter 
-    in the user-defined list of <em>TemplateFilters</em>. So if <a href="/docs/db-filters"><em>TemplateDbFiltersAsync</em> DB Filter</a> 
-    was inserted before the sync <em>TemplateDbFilters</em> all templates will continue to run unmodified except that all DB requests will now be async. 
-    This ability to shadow filters enables high-level intent-based APIs decoupled from implementations which 
+    in the user-defined list of <em>TemplateFilters</em>. This ability to shadow filters enables high-level intent-based APIs decoupled from implementations which 
     <a href="/docs/servicestack-filters#sendToAutoQuery-rdbms">sendToAutoQuery</a> leverages to automatically route filter invocations to 
     the appropriate implementation depending of if it's an <a href="http://docs.servicestack.net/autoquery-rdbms">AutoQuery RDBMS</a> or an 
     <a href="http://docs.servicestack.net/autoquery-data">AutoQuery Data</a> request masking their implementations as a transparent detail. 

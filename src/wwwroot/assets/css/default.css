@@ -188,3 +188,9 @@ caption {
 .error .output {
     padding: 0;
 }
+.no-scroll .output {
+    overflow: hidden;
+}
+.pre {
+    white-space: pre-wrap;
+}
