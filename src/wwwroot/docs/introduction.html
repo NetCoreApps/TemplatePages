@@ -28,97 +28,6 @@ order: 2
     There's no runtime reflection, each filter or binding within template expressions executes compiled and cached C# Expressions.
 </p>
 
-<h4>Declarative, high-level, Intent-based</h4>
-
-<p>
-    High-level APIs are usually synonymous with being slow by virtue of paying some penalty for their high-level abstraction,
-    but in the domain of I/O and Streams such-as rendering text to Streams they make it trivial to compose high-level functionality
-    that's implemented more efficiently than would be typically written in C# / ASP.NET MVC Apps.
-</p>
-
-<p>
-    As an example let's analyze the Template below:
-</p>
-
-<pre class="cs"><code>{{ 'examples/quote.html' | includeFile }}</code></pre>
-
-<p>
-    The intent of Template code is clear even if it's the first time reading it. From left-to-right we can deduce that it
-     retrieves a url from the quote table, downloads its contents of and converts it to markdown before replacing the text "Razor" and
-     "2010" and displaying the <em>raw</em> non-HTML encoded html output. 
-</p>
-
-<p>
-    In MVC the typical and easiest approach would be to create a an MVC Controller Action, use EF to make a sync call to access the database,
-    a sync call with a new HTTP Client to download the content which is buffered inside the Controller action before returned inside a View Model
-    that is handed off to MVC to execute the View inside the default Layout.
-</p>
-
-<p>
-    What does Templates do? lets look at the first filter:
-</p>
-
-{{ "live-template" | partial({ output:'no-scroll', rows:1, template: "{{ 'select url from quote where id= @id' | dbScalar({ id:1 }) | htmlLink }}" }) }}
-
-<p>
-    What filter implmentation gets called depends on which <a href="/docs/db-filters">DB Filter</a> is registered, if your RDBMS supports ADO.NET's 
-    async API you can register 
-    <a href="https://github.com/ServiceStack/ServiceStack.OrmLite/blob/master/src/ServiceStack.OrmLite/TemplateDbFiltersAsync.cs">TemplateDbFiltersAsync</a>
-    to execute all queries asynchronously, otherwise if using an RDBMS whose ADO.NET Provider doesn't support async you can register the
-    <a href="https://github.com/ServiceStack/ServiceStack.OrmLite/blob/master/src/ServiceStack.OrmLite/TemplateDbFilters.cs">TemplateDbFilters</a>
-    to execute each DB request synchronously without paying for any <i>pseudo-async</i> overhead, in each case the exact same code executes
-    the most optimal ADO.NET APIs. Template also benefits from using the much faster 
-    <a href="https://github.com/ServiceStack/ServiceStack.OrmLite">OrmLite</a> and also saves on the abstraction cost from generating a 
-    parameterized SQL Statement from a Typed Expression-based API.    
-</p>
-
-<p>
-    The next question becomes what is <em>id</em> bound to? Similar to JavaScript's prototype chain it uses the first argument it finds 
-    in its <a href="/docs/arguments">Arguments hierarchy</a>, e.g. when evaluated as a view page it could be set by the queryString or 
-    when the same page is evaluated as a partial could set from the scoped arguments it was called with.
-</p>
-
-<p>
-    The url returned from the db is then passed to the <em>urlContents</em> filter which if it was the last filter in the expression
-    avoids any buffering by asynchronously streaming the url content stream directly to the forward-only HTTP Response Stream:
-</p>
-
-<pre class="cs"><code>{{ pass: url | urlContents }}</code></pre>
-
-<p>
-    <em>urlContents</em> is a <a href="/docs/filters#block-filters">Block Filter</a> which instead of returning a value writes its 
-    response to the OutputStream it's given. But then how can we then convert it to Markdown if it's already written to the Response Stream?
-    Templates analyzes the Expression's AST to determine if there's any filters remaining, if there is it gives the <em>urlContents</em> 
-    Block filter a <em>MemoryStream</em> to write to, then forwards its buffered output to the next filter. Since they don't return values, 
-    the only thing that can come after a Block Filter is other Block filters or <a href="/docs/transformers">Stream Transformers</a>. 
-    <em>markdown</em> is one such <a href="/docs/transformers#filter-transformers">Filter Transformer</a> which takes in a stream of Markdown 
-    and returns a Stream of HTML.
-</p>
-
-<pre class="cs"><code>{{ pass: url | urlContents | markdown }}</code></pre>
-
-<p>
-    The <em>assignTo</em> filter is used to set a value in the current scope. After Block Filters, a different <em>assignTo</em> Block Filter
-    is used with the same name and purpose but a different implementation that reads all the contents of the stream into a UTF-8 Stream
-    and sets a value in the current scope before returning an empty Stream so nothing gets written to the Response. 
-</p>
-
-<pre class="cs"><code>{{ pass: url | urlContents | markdown | assignTo: quote }}</code></pre>
-
-<p>
-    Once the streamed output is captured and assigned it goes back into becoming a normal argument that opens it up to be 
-    able to use all filters again, which is how we're able to use the string <em>replace</em> filters before rendering the final result :)
-</p>
-
-<h4><a href="/examples/qotd?id=1">/examples/qotd?id=1</a></h4>
-
-<p>
-    So whilst it conceptually looks like each filter is transforming large buffered strings inside every filter, the expression is 
-    inspected to determine and utilize the most efficient implementation allowable. At the same time filters are not statically bound to 
-    any implementation so you could for instance <a href="/docs/filters#registering-filters">insert a Custom Filter</a> before the Default 
-    Filters containing the same name and arguments count to have templates execute your custom filters instead, all whilst the template's 
-    source code and intent remains untouched.
-</p>
 
 <h3>Pure, Functional and Reactive</h3>
 
@@ -135,8 +44,8 @@ order: 2
 
 <p>
     They're also pure at the code-level where it doesn't have any coupling to concrete dependencies, components or static classes. Default filters 
-    don't mutate any external state. There's no imperative statements, everything is an expression forcing a more readable and declarative style of 
-    programming that's easier to quickly determine the subject of expressions and the states that need to be met for filters to be executed. 
+    don't mutate any external state. There's no imperative statements, everything is an expression forcing a more readable and declarative  
+    programming-style that's easier to quickly determine the subject of expressions and the states that need to be met for filters to be executed. 
     Conceptually Templates are "evaluated" in that they take in arguments, filters and templates as inputs and evaluates them to an output stream. 
     They're highly testable by design where the same environment used to create the context can be easily re-created in Unit tests 
     including simulating pages in a File System using the built-in In Memory Virtual File System.     
@@ -259,7 +168,123 @@ context.VirtualFiles.Write("page.html", "I am the Page");
     <em>WebRootPath</em> to include a specific partial or file from a different folder.
 </p>
 
-<h4 id="late-bound">Late-bound flexibility</h4>
+<h3>High-level, Declarative and Intent-based</h3>
+
+<p>
+    High-level APIs are usually synonymous with being slow by virtue of paying a penalty for their high-level abstraction,
+    but in the domain of I/O and Streams such-as rendering text to Streams they make it trivial to compose high-level functionality
+    that's implemented more efficiently than would be typically written in C# / ASP.NET MVC Apps.
+</p>
+
+<p>
+    As an example let's analyze the Template below:
+</p>
+
+<pre class="cs"><code>{{ 'examples/quote.html' | includeFile }}</code></pre>
+
+<p>
+    The intent of Template code should be clear even if it's the first time reading it. From left-to-right we can deduce that it
+     retrieves a url from the quote table, downloads its contents of and converts it to markdown before replacing the text "Razor" and
+     "2010" and displaying the <em>raw</em> non-HTML encoded html output. 
+</p>
+
+<h5>Implementation using ASP.NET MVC</h5>
+<p>
+    In MVC the typical and easiest approach would be to create a an MVC Controller Action, use EF to make a sync call to access the database,
+    a sync call with a new HTTP Client to download the content which is buffered inside the Controller action before returned inside a View Model
+    that is handed off to MVC to execute the View inside the default Layout.
+</p>
+
+<h5>Implementation using Templates</h5>
+<p>
+    What does Templates do? lets step through the first filter:
+</p>
+
+{{ "live-template" | partial({ output:'no-scroll', rows:1, template: "{{ 'select url from quote where id= @id' | dbScalar({ id:1 }) | htmlLink }}" }) }}
+
+<p>
+    What filter implmentation gets called depends on which <a href="/docs/db-filters">DB Filter</a> is registered, if your RDBMS supports ADO.NET's 
+    async API you can register 
+    <a href="https://github.com/ServiceStack/ServiceStack.OrmLite/blob/master/src/ServiceStack.OrmLite/TemplateDbFiltersAsync.cs">TemplateDbFiltersAsync</a>
+    to execute all queries asynchronously, otherwise if using an RDBMS whose ADO.NET Provider doesn't support async you can register the
+    <a href="https://github.com/ServiceStack/ServiceStack.OrmLite/blob/master/src/ServiceStack.OrmLite/TemplateDbFilters.cs">TemplateDbFilters</a>
+    to execute each DB request synchronously without paying for any <i>pseudo-async</i> overhead, in each case the exact same code executes
+    the most optimal ADO.NET APIs. Template also benefits from using the much faster 
+    <a href="https://github.com/ServiceStack/ServiceStack.OrmLite">OrmLite</a> and also saves on the abstraction cost from generating a 
+    parameterized SQL Statement from a Typed Expression-based API.    
+</p>
+
+<h5>Arguments chain</h5>
+<p>
+    The next question becomes what is <em>id</em> bound to? Similar to JavaScript's prototype chain it uses the first argument it finds 
+    in its <a href="/docs/arguments">Arguments hierarchy</a>, e.g. when evaluated as a view page it could be set by the queryString or 
+    when the same page is evaluated as a partial it could be set from the scoped arguments it was called with.
+</p>
+
+<h5>Async I/O</h5>
+<p>
+    The url returned from the db is then passed to the <em>urlContents</em> filter which if it was the last filter in the expression
+    avoids any buffering by asynchronously streaming the url content stream directly to the forward-only HTTP Response Stream:
+</p>
+
+<pre class="cs"><code>{{ pass: url | urlContents }}</code></pre>
+
+<p>
+    <em>urlContents</em> is a <a href="/docs/filters#block-filters">Block Filter</a> which instead of returning a value writes its 
+    response to the OutputStream it's given. But then how could we convert it to Markdown if it's already written to the Response Stream?
+    Templates analyzes the Expression's AST to determine if there's any filters remaining, if there is it gives the <em>urlContents</em> 
+    Block filter a <em>MemoryStream</em> to write to, then forwards its buffered output to the next filter. Since they don't return values, 
+    the only thing that can come after a Block Filter is other Block filters or <a href="/docs/transformers">Stream Transformers</a>. 
+    <em>markdown</em> is one such <a href="/docs/transformers#filter-transformers">Filter Transformer</a> which takes in a stream of Markdown 
+    and returns a Stream of HTML.
+</p>
+
+<pre class="cs"><code>{{ pass: url | urlContents | markdown }}</code></pre>
+
+<h5>Same intent, different implementations</h5>
+<p>
+    The <em>assignTo</em> filter is used to set a value in the current scope. After Block Filters, a different <em>assignTo</em> Block Filter
+    is used with the same name and purpose but a different implementation that reads all the contents of the stream into a UTF-8 string
+    and sets a value in the current scope before returning an empty Stream so nothing is written to the Response. 
+</p>
+
+<pre class="cs"><code>{{ pass: url | urlContents | markdown | assignTo: quote }}</code></pre>
+
+<p>
+    Once the streamed output is captured and assigned it goes back into becoming a normal argument that opens it up to be 
+    able to use all filters again, which is how we're able to use the string <em>replace</em> filters before rendering the final result :)
+</p>
+
+<h4><a href="/examples/qotd?id=1">/examples/qotd?id=1</a></h4>
+
+<h5>Using the most efficient implementation allowable</h5>
+<p>
+    So whilst it conceptually looks like each filter is transforming large buffered strings inside every filter, the expression is 
+    inspected to determine and utilize the most efficient implementation allowable. At the same time filters are not statically bound to 
+    any implementation so you could for instance <a href="/docs/filters#registering-filters">insert a Custom Filter</a> before the Default 
+    Filters containing the same name and arguments count to have templates execute your custom filters instead, all whilst the template's 
+    source code and intent remains untouched.
+</p>
+
+<h5>Intent-based code is easier to augment</h5>
+<p>
+    If it was later discovered that some URLs were slow or rate-limited and you needed to introduce caching, your original C# code
+    would require a fair amount of rework, in templates you can simply add <em>WithCache</em> to call the
+    <a href="/docs/protected-filters#includeurlwithcache">urlContentsWithCache</a> filter to return locally cached contents 
+    on subsequent requests.
+</p>
+
+<pre class="cs"><code>{{ pass: url | urlContentsWithCache | markdown }}</code></pre>
+
+<p>
+    As there's very little ceremony in Templates, a chain of filters looks like it's using its own DSL to accomplish each task and
+    given <a href="/docs/filters#registering-filters">implementing and registering custom filters </a> is trivial you're 
+    encouraged to write the intent of your code first then implement any filters that are missing to realize its intent. Once 
+    you've captured the intent of what you want to do, it's less likely to ever need to change, focus is instead on 
+    fixing any bugs and making the filter implementations as efficient as possible, which benefits all existing code using the same filter.
+</p>
+
+<h3 id="late-bound">Late-bound flexibility</h3>
 
 <p>
     There's no static coupling to concrete classes, static methods or other filters, ambiguous method exceptions or namespace collisions. 

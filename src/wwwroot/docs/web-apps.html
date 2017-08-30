@@ -6,7 +6,7 @@ order: 25
 <p>
     <a href="https://github.com/NetCoreApps/WebApp">Web Apps</a> are a new approach to dramtically simplify .NET Wep App development 
     and provide the most productive development experience possible whilst maximizing re-use and component sharing. 
-    They also open up a number of new use-cases for maintaining a clean isolation between front-end and back-end development with
+    They also open up a number of new use-cases for maintaining clean isolation between front-end and back-end development with
     front-end developers not needing any knowledge of C#/.NET to be able to develop UIs for high-performance .NET Web Apps. 
     Web Apps also make it easy to establish and share an approved suite of functionality amongst multiple websites all 
     consuming the same back-end systems and data stores.
@@ -30,13 +30,14 @@ order: 25
 <p>
     All complexity with C#, .NET, namespaces, references, .dlls, strong naming, packages, MVC, Razor, build tools, IDE environments, etc 
     has been eliminated leaving all Web Developers needing to do is run a cross-platform 
-    <a href="https://github.com/ServiceStack/WebApp">web/app.dll</a> .NET Core executable and configure a simple 
+    <a href="https://github.com/ServiceStack/WebApp">web/app.dll</a> .NET Core 2.0 executable and configure a simple 
     <a href="https://github.com/NetCoreApps/WebApp/blob/master/src/apps/bare/web.settings">web.settings</a>    
     text file to specify which website folder to use, which ServiceStack features to enable, which db or redis providers to connect to, etc.
     Not needing to build also greatly simplifies deployments where multiple websites can be deployed with a 
     <a href="https://github.com/NetCoreApps/WebApp/blob/master/src/WebApp/run.deploy.apps.sh">single rsync</a> or xcopy command or 
     if deploying your App in a Docker Container, you just need to 
-    <a href="https://github.com/NetCoreApps/WebApp/blob/master/Dockerfile">copy your website files</a>.
+    <a href="https://github.com/NetCoreApps/WebApp/blob/master/Dockerfile">copy your website files</a>, or just the <em>web.settings</em>    
+    if you're using an S3 or Azure Virtual File System.
 </p>
 
 <h4>Rapid Dev Workflow</h4>
@@ -49,6 +50,114 @@ order: 25
     you'll need to restart <em>web/app.dll</em> to pick up any changes to your <em>web.settings</em> or added any 
     .dlls to your <em>/plugins</em> folder.
 </p>
+
+<h3>Getting Started</h3>
+
+<p>
+    The easiest way to get started to either clone the <a href="https://github.com/ServiceStack/WebAppStarter">WebAppStarter</a> GitHub project:
+</p>
+
+<pre class="cs"><code>git clone git@github.com:ServiceStack/WebAppStarter.git</code></pre>
+
+<p>
+    Or download a zip of it from <a href="https://github.com/ServiceStack/WebAppStarter/archive/master.zip">github.com/ServiceStack/WebAppStarter/archive/master.zip</a>.
+</p>
+
+<p>
+    This contains 2 folders, <a href="https://github.com/ServiceStack/WebAppStarter/tree/master/app">/app</a> contains all source code and 
+    assets for your Web App and <a href="https://github.com/ServiceStack/WebAppStarter/tree/master/web">/web</a> contains a copy of the WebApp 
+    binaries from <a href="https://github.com/ServiceStack/WebApp">ServiceStack/WebApp</a>. There's also 
+    <a href="https://github.com/ServiceStack/WebAppStarter/blob/master/start-app.bat">start-app.bat</a> and 
+    <a href="https://github.com/ServiceStack/WebAppStarter/blob/master/start-app.sh">start-app.sh</a> scripts for running your app in 
+    Windows, OSX and Linux. Both scripts run the same command:
+</p>
+
+<pre class="sh"><code>dotnet web/app.dll ../app/web.settings</code></pre>
+
+<p>
+    Which can be run instead of the script, it also means <em>cat start-app.bat | sh</em> will also run the app on OSX and Linux.
+</p>
+
+<p>
+    Once running you can view your App on <em>http://localhost:5000/</em> which you can keep running whilst developing your app
+    which will reload the page you're currently viewing on each file save using the built-in <a href="/docs/hot-reloading">Hot Reloading</a>.
+</p>
+
+<p>
+    <em>/app</em> is an example of a single Web App, you can have multiple Web Apps in different folders and run each with:         
+</p>
+
+<pre class="sh"><code>dotnet web/app.dll ../&lt;app name&gt;/web.settings</code></pre>
+
+<h3>Web Apps</h3>
+
+<p>
+    We've developed a number of Web Apps to illustrate the various features available and to showcase the different kind of Web Apps
+    that can easily be developed. The source code for each app is maintained in
+    <a href="https://github.com/NetCoreApps/WebApp/tree/master/src/apps">NetCoreApps/WebApp/apps</a>. Each app uses the same unmodified
+    WebApp Binary that's contained in your Getting Started project. 
+</p>
+
+<h4>Bare Web App</h4>
+<div class="source"><a href="https://github.com/NetCoreApps/WebApp/tree/master/src/apps/bare">/bare</a></div>
+
+<p>
+    The Getting Started project contains a copy of the <a href="http://bare.web-app.io">bare.web-app.io</a> project below 
+    which is representative of a typical Company splash Website:
+</p>
+
+<a href="http://bare.web-app.io"><img src="/assets/img/screenshots/bare.png" alt="Bare WebApp screenshot"></a>
+
+<p>
+    The benefits over using a static website is improved maintenance
+    as you can extract and use its common <a href="https://github.com/NetCoreApps/WebApp/blob/master/src/apps/bare/_layout.html">_layout.html</a>
+    instead of having it duplicated in each page. 
+    The <a href="https://github.com/NetCoreApps/WebApp/blob/master/src/apps/bare/menu.html">menu.html</a> partial also makes menu items
+    easier to maintain by just adding an entry in the JavaScript object literal. A dynamic menu also makes it possible to highlight the active menu item.
+</p>
+
+<pre class="cs"><code>{{ 'examples/webapps-menu.html' | includeFile }}</code></pre>
+
+<p>
+    The other primary benefit is that this is an example of a website that can be maintained by someone who doesn't have any
+    programming experience. The title of each page is maintained metadata HTML comments:
+</p>
+
+<pre class="cs"><code>&lt;!--
+title: About Us
+--&gt;
+</code></pre>
+
+<p>
+    Template's syntax is the ideal way to convey variable substition, e.g: <em>&lt;title&gt;{{ pass: title }}&lt;/title&gt;</em> 
+    and even embedding a partial reads like english <em>{{ pass: 'menu' | partial }}</em> which is both intuitive and works well 
+    with GUI HTML designers.
+</p>
+
+<h4>Redis</h4>
+
+<p>
+    For the Redis Web App, we wanted to 
+</p>
+
+<a href="http://redis.web-app.io"><img src="/assets/img/screenshots/redis.png" alt="Redis WebApp Screenshot"></a>
+
+<h4>Rockwind</h4>
+
+<a href="http://rockwind-sqlite.web-app.io"><img src="/assets/img/screenshots/rockwind.png" alt="Rockwind WebApp screenshot"></a>
+
+<h4>Rockwind VFS</h4>
+
+<a href="http://rockwind-aws.web-app.io"><img src="/assets/img/screenshots/rockwind.png" alt="Rockwind VFS WebApp screenshot"></a>
+
+<h4>Plugins</h4>
+
+<a href="http://plugins.web-app.io"><img src="/assets/img/screenshots/plugins.png" alt="Plugins WebApp screenshot"></a>
+
+<h4>Chat</h4>
+
+<a href="http://chat.web-app.io"><img src="/assets/img/screenshots/chat.png" alt="Chat WebApp screenshot"></a>
+
 
 
 {{ "usecase-links" | partial({ order }) }}

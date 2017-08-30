@@ -194,3 +194,15 @@ caption {
 .pre {
     white-space: pre-wrap;
 }
+.alias, .source {
+    float: right;
+    margin: -50px 0 0 0;
+    color: #888;
+}
+.alias:before {
+    content: "alias: "
+}
+
+#content img {
+    max-width: 900px !important;
+}

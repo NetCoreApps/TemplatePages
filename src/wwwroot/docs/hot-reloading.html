@@ -14,7 +14,7 @@ order: 17
     It can then be enabled in your website by adding the expression below at the top of your <b>_layout.html</b>:
 </p>
 
-<pre class="cs">{{ 'examples/hot-reloading.txt' | includeFile }}</pre>
+<pre class="cs">{{ 'examples/hot-reloading.txt' | includeFile | htmlencode }}</pre>
 
 <p>
     This will embed the dependency-free <a href="https://github.com/ServiceStack/ServiceStack/blob/master/src/ServiceStack/js/hot-loader.js">hot-loader.js</a>
@@ -32,6 +32,14 @@ order: 17
     <em>{{ pass: end | ifDebug ... }}</em> or if preferred you can just use comments <em>{{&zwnj;* ifDebug ... *&zwnj;}}</em> 
 </blockquote>
 
+<h4>When to reload</h4>
+
+<p>
+    Hot Reloading only monitors Template Pages. You'll need to do a hard refresh with <em>Ctrl+Shift+F5</em> if making changes to 
+    <em>.css</em> or <em>.js</em> to force the browser to not use its cache. For App Code or Configuration changes you'll 
+    need to restart your App to pick up the changes.
+</p>
+
 <h4>Implementation</h4>
 
 <p>
@@ -42,8 +50,8 @@ order: 17
 </p>
 
 <p>
-    Since it's just scanning the AST instead of evaluating it, it will only be able to find files and partials 
-    that were staticaly referenced, i.e. with a string literal as opposed to a dynamically created string.
+    Since it's just scanning the AST instead of evaluating it, it will only be able to find files and partials that were 
+    staticaly referenced, i.e. the typical case of using a string literal for the file name as opposed to a dynamically creating it.
 </p>
 
 {{ "doc-links" | partial({ order }) }}
