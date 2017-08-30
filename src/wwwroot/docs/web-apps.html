@@ -137,10 +137,40 @@ title: About Us
 <h4>Redis</h4>
 
 <p>
-    For the Redis Web App, we wanted to 
+    For the Redis Browser Web App, we wanted to implement an App that was an ideal candidate for a Single Page App but constrain ourselves
+    to do all HTML rendering on the server and have each interaction request a full-page reload to see how a traditional server-generated
+    Web App feels like with the performance of .NET Core 2.0 and Templates. We're pleasantly surprised with the result as when 
+    the App is run locally as the responsiveness is effectively indistinguishable from an Ajax App. When hosted on the Internet 
+    there is a sub-second delay which causes a noticable flicker but it still retains a pleasant UX that's faster than most websites.
+</p>
+
+<p>
+    The benefits of a traditional website is that it doesn't break the web where the back button and deep linking work without effort 
+    and you get to avoid the complexity train of adopting a premier JavaScript SPA Framework's configuration, dependencies, workflow 
+    and build system which has become overkill for small projects.
 </p>
 
 <a href="http://redis.web-app.io"><img src="/assets/img/screenshots/redis.png" alt="Redis WebApp Screenshot"></a>
+
+<p>
+    We've had a sordid history developing Redis UI's where we've built them using the popular JavaScript frameworks that appeared 
+    dominant at the time but have since fallen off the radar, starting with the
+    <a href="http://redisadminui.servicestack.net/">Redis Admin UI</a> (<a href="https://github.com/ServiceStackApps/RedisAdminUI">src</a>) 
+    which was built using 
+    <a href="https://github.com/google/closure-library">Google's Closure Library</a> that as it works different to everything else 
+    we had to do a complete rewrite when we created <a href="http://redisreact.servicestack.net">redisreact.servicestack.net</a>
+    (<a href="https://github.com/ServiceStackApps/RedisReact">src</a>) using the hot new React framework, unfortunately it uses React's old 
+    deprecated ES5 syntax and Reflux which is sufficiently different that it's going to require a significant refactor to bring it up
+    to our current recommended <a href="http://docs.servicestack.net/templates-single-page-apps">TypeScript + React + Redux + WebPack</a>
+    JavaScript SPA Stack.
+</p>
+
+<h5>Beautiful code</h5>
+
+<p>
+    One of the Beautiful things about HTML is that it's the one true constant in Web development that never gets left behind.
+    
+</p>
 
 <h4>Rockwind</h4>
 
