@@ -51,26 +51,31 @@ order: 2
 <p>
     In MVC the typical and easiest approach would be to create a an MVC Controller Action, use EF to make a sync call to access the database,
     a sync call with a new HTTP Client to download the content which is buffered inside the Controller action before returned inside a View Model
-    that is handed off to MVC to execute the View inside the current La.
+    that is handed off to MVC to execute the View inside the default Layout.
 </p>
 
 <p>
-    What does Templates do? That depends on which <a href="/docs/db-filters">DB Filter</a> is registered, if your RDBMS supports ADO.NET's async API you can register 
-    <a href="https://github.com/ServiceStack/ServiceStack.OrmLite/blob/master/src/ServiceStack.OrmLite/TemplateDbFiltersAsync.cs">TemplateDbFiltersAsync</a>
-    to execute all queries asynchronously, otherwise if your using an RDBMS whose ADO.NET Provider doesn't support async you can register the
-    <a href="https://github.com/ServiceStack/ServiceStack.OrmLite/blob/master/src/ServiceStack.OrmLite/TemplateDbFilters.cs">TemplateDbFilters</a>
-    to execute the DB request synchronously without paying for any <i>pseudo-async</i> overhead, in each case the exact same code executes
-    the most optimal ADO.NET APIs. Template also benefits from using the much faster 
-    <a href="https://github.com/ServiceStack/ServiceStack.OrmLite">OrmLite</a> and also saves on the abstraction cost from generating a 
-    parameterized SQL Statement a Typed Expression-based API.
+    What does Templates do? lets look at the first filter:
 </p>
 
 {{ "live-template" | partial({ output:'no-scroll', rows:1, template: "{{ 'select url from quote where id= @id' | dbScalar({ id:1 }) | htmlLink }}" }) }}
 
 <p>
-    The next question becomes what is <em>id</em> bound to? Akin to JavaScript's prototype chain it uses the closest argument in its 
-    <a href="/docs/arguments">Arguments hierarchy</a>, e.g. when evaluated as a view page it could be set by the queryString or 
-    when evaluated as a partial could set from the scoped arguments it was called with.
+    What filter implmentation gets called depends on which <a href="/docs/db-filters">DB Filter</a> is registered, if your RDBMS supports ADO.NET's 
+    async API you can register 
+    <a href="https://github.com/ServiceStack/ServiceStack.OrmLite/blob/master/src/ServiceStack.OrmLite/TemplateDbFiltersAsync.cs">TemplateDbFiltersAsync</a>
+    to execute all queries asynchronously, otherwise if using an RDBMS whose ADO.NET Provider doesn't support async you can register the
+    <a href="https://github.com/ServiceStack/ServiceStack.OrmLite/blob/master/src/ServiceStack.OrmLite/TemplateDbFilters.cs">TemplateDbFilters</a>
+    to execute each DB request synchronously without paying for any <i>pseudo-async</i> overhead, in each case the exact same code executes
+    the most optimal ADO.NET APIs. Template also benefits from using the much faster 
+    <a href="https://github.com/ServiceStack/ServiceStack.OrmLite">OrmLite</a> and also saves on the abstraction cost from generating a 
+    parameterized SQL Statement from a Typed Expression-based API.    
+</p>
+
+<p>
+    The next question becomes what is <em>id</em> bound to? Similar to JavaScript's prototype chain it uses the first argument it finds 
+    in its <a href="/docs/arguments">Arguments hierarchy</a>, e.g. when evaluated as a view page it could be set by the queryString or 
+    when the same page is evaluated as a partial could set from the scoped arguments it was called with.
 </p>
 
 <p>
@@ -120,7 +125,7 @@ order: 2
 <p>
     Templates are pure at both the library-level where they're a clean library with no external dependencies outside 
     <a href="https://www.nuget.org/packages/ServiceStack.Common">ServiceStack.Common</a>, no coupling to web frameworks, external configuration files, 
-    designiner tooling, build tools, pre-compilation steps or have any special deployment requirements. 
+    designiner tooling, build tools, pre-compilation steps or require any special deployment requirements. 
     It binds to simple, clean, small interfaces for its 
     <a href="http://docs.servicestack.net/virtual-file-system">Virtual File System</a>, 
     <a href="http://docs.servicestack.net/ioc">IOC</a> and
@@ -211,7 +216,7 @@ order: 2
     File System by default that we can programmatically populate:
 </p>
 
-<pre><code>context.VirtualFiles.Write("_layout.html", "I am the Layout: &lt;b&gt;{{ page }}&lt;/b&gt;");
+<pre><code>context.VirtualFiles.Write("_layout.html", "I am the Layout: &lt;b&gt;{{ pass: page }}&lt;/b&gt;");
 context.VirtualFiles.Write("page.html", "I am the Page");
 </code></pre>
     
@@ -247,9 +252,9 @@ context.VirtualFiles.Write("page.html", "I am the Page");
 <h4 id="cascading-resolution">Cascading Resolution</h4>
 
 <p>
-    There's no special folders like <em>/Views</em> or <em>/Views/Shared</em> required to store layouts or share partials or artificial
-    "Areas" concept to isolate website sections. Different websites or sections can just be intuitively grouped into different 
-    folders and Templates will automatically resolve the closest layout it finds for each page. Cascading resolution also applies to 
+    There's no forced special centralized folders like <em>/Views</em> or <em>/Views/Shared</em> required to store layouts or share partials or 
+    artificial "Areas" concept to isolate website sections. Different websites or sections are intuitively grouped into different 
+    folders and Templates automatically resolves the closest layout it finds for each page. Cascading resolution also applies to 
     including files or partial pages where you can use just its name to resolve the closest one, or an absolute path from the 
     <em>WebRootPath</em> to include a specific partial or file from a different folder.
 </p>
@@ -265,7 +270,8 @@ context.VirtualFiles.Write("page.html", "I am the Page");
     <a href="/docs/servicestack-filters#sendToAutoQuery-rdbms">sendToAutoQuery</a> leverages to automatically route filter invocations to 
     the appropriate implementation depending of if it's an <a href="http://docs.servicestack.net/autoquery-rdbms">AutoQuery RDBMS</a> or an 
     <a href="http://docs.servicestack.net/autoquery-data">AutoQuery Data</a> request masking their implementations as a transparent detail. 
-    This flexibility also makes it easy create proxies, intercept and inject behavior like logging or profiling without modifying existing implementations.
+    This flexibility also makes it easy create proxies, intercept and inject behavior like logging or profiling without modifying existing 
+    filter implementations or template source code.
 </p>
 
 

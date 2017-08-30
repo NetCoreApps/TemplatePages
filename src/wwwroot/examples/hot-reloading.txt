@@ -1,0 +1,1 @@
+{{ ifDebug | select: <script>{ '/js/hot-loader.js' | includeFile }</script> }}

@@ -60,6 +60,7 @@ namespace TemplatePages
                 },
                 RenderExpressionExceptions = true,
                 EnableDebugTemplateToAll = true,
+                ExcludeFiltersNamed = { "dbExec" }
             });
 
             AfterInitCallbacks.Add(host => {
