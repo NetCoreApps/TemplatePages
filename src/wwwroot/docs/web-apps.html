@@ -479,8 +479,125 @@ defaultFileCacheExpirySecs     60</code></pre>
 </blockquote>
 
 <h3>Rockwind VFS</h3>
+<div class="source">
+    <a href="https://github.com/NetCoreApps/WebApp/tree/master/src/apps/rockwind-vfs">/rockwind-vfs</a> - 
+    <a href="http://rockwind-aws.web-app.io">rockwind-aws.web-app.io</a>
+</div>
+
+<p>
+    <a href="https://github.com/NetCoreApps/WebApp/tree/master/src/apps/rockwind-vfs">/rockwind-vfs</a> is a clone of
+    the Rockwind Web App with 3 differences: It uses the <em>resolveAsset</em> filter for each <em>.js</em>, <em>.css</em> and 
+    <em>image</em> web asset so that it's able to generate external URLs directly to the S3 Bucket, Azure Blob Container or CDN 
+    hosting a copy of your files to both reduce the load on your Web App and maximize the responsiveness to the end user.    
+</p>
+
+<p>
+    To maximize responsiveness when using remote storage, all 
+    <a href="https://github.com/NetCoreApps/WebApp/blob/master/src/apps/rockwind-vfs/rockstars/alive/grohl/index.html">embedded files utilize caching</a>:
+</p>
+
+<pre class="tpl"><code>{{ pass: "content.md" | includeFileWithCache | markdown }}</code></pre>
+
+<p>
+    The other difference is that each table and column has been quoted in "double-quotes" so that it works in PostgreSQL which
+    otherwise treats unquoted symbols as lowercase. This version of the App also works with SQL Server and SQLite as they also 
+    support <em>"Table"</em> quotes but not MySql which uses <em>`BackTicks`</em> or <em>[SquareBrackets]</em>. It's therefore
+    infeasible to develop Apps that support both PostgreSQL and MySql unless you're willing to use all <b>lowercase</b>, 
+    <b>snake_case</b> or the <em>sqlQuote</em> filter for every table and column.
+</p>
 
 <a href="http://rockwind-aws.web-app.io"><img src="/assets/img/screenshots/rockwind.png" alt="Rockwind VFS WebApp screenshot"></a>
+
+<h4>resolveAsset</h4>
+
+<p>
+    If using a remote file storage like AWS S3 or Azure Blob Storage it's a good idea to use the <em>resolveAsset</em> filter 
+    for each external file reference. By default it returns the same path it was called with so it will continue to work locally 
+    but then ServiceStack effectively becomes a proxy where it has to call the remote Storage Service for each requested download.
+</p>
+
+<pre class="html"><code>&lt;link rel="stylesheet" href="{{ pass: 'assets/css/bootstrap.css' | resolveAsset }}" /&gt;
+
+&lt;img src="{{ pass: 'splash.jpg' | resolveAsset }}" id="splash" alt="Dave Grohl" /&gt;</code></pre>
+
+<p>
+    ServiceStack asynchronously writes each file to the Response Stream with the last <em>Last-Modified</em> HTTP Header to 
+    enable browser caching so it's still a workable solution but for optimal performance you can specify an <em>args.assetsBase</em>
+    to populate the <em>assetsBase</em> TemplateContext Argument the <em>resolveAsset</em> filter uses to generate
+    an external URL reference to the file on the remote storage sevice, reducing the load and improving the performance of your App, 
+    especially if it's configured to use a CDN. 
+</p>
+
+<h5><a href="https://github.com/NetCoreApps/WebApp/blob/master/src/apps/rockwind-vfs/web.aws.settings">web.aws.settings</a></h5>
+
+<p>
+    The AWS settings shows an example of this where every external resource 
+    <a href="http://rockwind-aws.web-app.io">rockwind-aws.web-app.io</a> has been replaced with a direct reference to the 
+    asset on the S3 bucket:
+</p>
+
+<pre class="settings"><code># Note: values prefixed with '$' are resolved from Environment Variables
+debug false
+name AWS S3 PostgreSQL Web App
+bind *
+port 5000
+db postgres
+db.connection $AWS_RDS_POSTGRES
+files s3
+files.config {AccessKey:$AWS_ACCESS_KEY,SecretKey:$AWS_SECRET_KEY,Region:us-east-1,Bucket:rockwind}
+args.assetsBase http://s3-postgresql.s3-website-us-east-1.amazonaws.com/
+
+# Reduces an S3 API call, but takes longer for modified pages to appear
+checkForModifiedPagesAfterSecs 60
+defaultFileCacheExpirySecs     60</code></pre>
+
+<p>
+    With all files being sourced from S3 and the App configured to use AWS RDS PostgreSQL, the AWS settings is an example of 
+    a <b>Pure Web App</b> where the entire App is hosted on managed cloud services that's decoupled from the .NET Core 2.0 binary 
+    that runs it that for the most part wont require redeploying the Web App binary unless making configuration changes or 
+    upgrading the <em>web/app.dll</em> as any App changes can just be uploaded straight to S3 which changes reflected within the
+    <em>checkForModifiedPagesAfterSecs</em> setting, which tells the Web App how long to wait before checking for file changes
+    whilst <em>defaultFileCacheExpirySecs</em> specifies how long to cache files like <em>content.md</em> for.
+</p>
+
+<h5><a href="https://github.com/NetCoreApps/WebApp/blob/master/Dockerfile">DockerFile</a></h5>
+
+<p>
+    Deployments are also greatly simplified as all that's needed is to deploy the WebApp binary and web.settings of your Cloud App,
+    e.g. here's the DockerFile for <a href="http://rockwind-aws.web-app.io">rockwind-aws.web-app.io</a> - deployed to AWS ECS following our 
+    <a href="http://docs.servicestack.net/deploy-netcore-docker-aws-ecs">.NET Core Docker Deployment Guidelines</a>:
+</p>
+
+<pre class="docker" style="overflow:hidden"><code>FROM microsoft/dotnet:2.0-sdk
+COPY src/apps/web /web
+ADD https://raw.githubusercontent.com/NetCoreApps/WebApp/master/src/apps/rockwind-vfs/web.aws.settings /web/web.settings
+WORKDIR /web
+EXPOSE 5000/tcp
+ENV ASPNETCORE_URLS https://*:5000
+ENTRYPOINT ["dotnet", "/web/app.dll"]</code></pre>
+
+<h5><a href="https://github.com/NetCoreApps/WebApp/blob/master/src/apps/rockwind-vfs/web.azure.settings">web.azure.settings</a></h5>
+
+<p>
+    We can also create "Azure Cloud Apps" in the same way as AWS Cloud Apps above, which runs the same 
+    <a href="https://github.com/NetCoreApps/WebApp/tree/master/src/apps/rockwind-vfs">/rockwind-vfs</a>
+    Web App but using an Azure hosted SQL Server database and Blob Storage:
+</p>
+
+<pre class="settings"><code># Note: values prefixed with '$' are resolved from Environment Variables
+debug false
+name Azure Blob SQL Server Web App
+bind *
+port 5000
+db sqlserver
+db.connection $AZURE_SQL_CONNECTION_STRING
+files azure
+files.config {ConnectionString:$AZURE_BLOB_CONNECTION_STRING,ContainerName:rockwind}
+args.assetsBase https://servicestack.blob.core.windows.net/rockwind/
+
+# Reduces an S3 API call, but takes longer for modified pages to appear
+checkForModifiedPagesAfterSecs 60
+defaultFileCacheExpirySecs     60</code></pre>
 
 <h3>Plugins</h3>
 
