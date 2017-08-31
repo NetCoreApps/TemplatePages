@@ -528,6 +528,8 @@ defaultFileCacheExpirySecs     60</code></pre>
     especially if it's configured to use a CDN. 
 </p>
 
+<h4>Pure Cloud Apps</h4>
+
 <h5><a href="https://github.com/NetCoreApps/WebApp/blob/master/src/apps/rockwind-vfs/web.aws.settings">web.aws.settings</a></h5>
 
 <p>
@@ -553,7 +555,7 @@ defaultFileCacheExpirySecs     60</code></pre>
 
 <p>
     With all files being sourced from S3 and the App configured to use AWS RDS PostgreSQL, the AWS settings is an example of 
-    a <b>Pure Web App</b> where the entire App is hosted on managed cloud services that's decoupled from the .NET Core 2.0 binary 
+    a <b>Pure Cloud App</b> where the entire App is hosted on managed cloud services that's decoupled from the .NET Core 2.0 binary 
     that runs it that for the most part wont require redeploying the Web App binary unless making configuration changes or 
     upgrading the <em>web/app.dll</em> as any App changes can just be uploaded straight to S3 which changes reflected within the
     <em>checkForModifiedPagesAfterSecs</em> setting, which tells the Web App how long to wait before checking for file changes
@@ -600,13 +602,254 @@ checkForModifiedPagesAfterSecs 60
 defaultFileCacheExpirySecs     60</code></pre>
 
 <h3>Plugins</h3>
+<div class="source">
+    <a href="https://github.com/NetCoreApps/WebApp/tree/master/src/apps/plugins">/plugins</a> - 
+    <a href="http://plugins.web-app.io">plugins.web-app.io</a>
+</div>
+
+<p>
+    Up till now the Apps above only have only used functionality built into ServiceStack, to enable even greater functionality
+    but still retain all the benefits of having a Web App you can drop <b>.dll</b> with custom functionality into your 
+    Web App's <em>/plugins</em> folder. The plugins support in Web Apps is as friction-less as we could make it, there's no 
+    configuration to maintain or special interfaces to implement, you're able to reuse your existing implementation <b>.dll's</b> as-is.
+</p>
+
+<p>
+    Plugins allow "no touch" sharing of 
+    <a href="http://docs.servicestack.net/plugins">ServiceStack Plugins</a>, 
+    <a href="http://docs.servicestack.net/create-your-first-webservice">Services</a>, 
+    <a href="http://templates.servicestack.net/docs/filters">Template Filters</a>
+    <a href="http://templates.servicestack.net/docs/code-pages">Template Code Pages</a>,
+    <a href="http://docs.servicestack.net/validation">Validators</a>, etc.
+    contained within <b>.dll's</b> or <b>.exe's</b> dropped in a Web App's 
+    <a href="https://github.com/NetCoreApps/WebApp/tree/master/src/apps/plugins/plugins">/plugins</a> folder which are auto-registered 
+    on startup. This source code for plugins used in this App were built from the .NET Core 2.0 projects in the
+    <a href="https://github.com/NetCoreApps/WebApp/tree/master/src/example-plugins">/example-plugins</a> folder. The 
+    <a href="http://plugins.web-app.io">plugins.web-app.io</a> Web App below walks through examples of using Custom Filters, 
+    Services and Validators:
+</p>
 
 <a href="http://plugins.web-app.io"><img src="/assets/img/screenshots/plugins.png" alt="Plugins WebApp screenshot"></a>
 
+<h4>Registering ServiceStack Plugins</h4>
+
+<p>
+    <a href="http://docs.servicestack.net/plugins">ServiceStack Plugins</a> can be added to your App by 
+    by listing it's Type Name in the <em>features</em> config entry in 
+    <a href="https://github.com/NetCoreApps/WebApp/blob/master/src/apps/plugins/web.settings">web.settings</a>:
+</p>
+
+<pre class="settings"><code>debug true
+name Web App Plugins
+port 5000
+contentRoot ~/../plugins
+webRoot ~/../plugins
+features CustomPlugin, OpenApiFeature, PostmanFeature, CorsFeature, ValidationFeature
+CustomPlugin { ShowProcessLinks: true }
+ValidationFeature { ScanAppHostAssemblies: true }
+</code></pre>
+
+<p>
+    All plugins listed in <em>features</em> will be added to your Web App's AppHost in the order they're specified. 
+    They can further customized by adding a separate config entry with the Plugin Name and a JavaScript Object literal to 
+    populate the Plugin at registration, e.g the config above is equivalent to:
+</p>
+
+<pre class="cs"><code>Plugins.Add(new CustomPlugin { ShowProcessLinks = true });
+Plugins.Add(new OpenApiFeature());
+Plugins.Add(new PostmanFeature());
+Plugins.Add(new CorsFeature());
+Plugins.Add(new ValidationFeature { ScanAppHostAssemblies = true });</code></pre>
+
+<h4>Custom Plugin</h4>
+
+<p>
+    In this case it tells our <a href="https://github.com/NetCoreApps/WebApp/blob/master/src/example-plugins/ServerInfo/CustomPlugin.cs">CustomPlugin</a>
+    from <b>/plugins/ServerInfo.dll</b> to also show Process Links in its
+    <a href="http://plugins.web-app.io/metadata">/metadata</a> Page:
+</p>
+
+<pre class="cs"><code>public class CustomPlugin : IPlugin
+{
+    public bool ShowDrivesLinks { get; set; } = true;
+    
+    public bool ShowProcessLinks { get; set; }
+
+    public void Register(IAppHost appHost)
+    {
+        if (ShowDrivesLinks)
+        {
+            var diskFormat = Env.IsWindows ? "NTFS" : "ext2";
+            appHost.GetPlugin&lt;MetadataFeature&gt;()
+                .AddPluginLink("/drives", "All Disks")
+                .AddPluginLink($"/drives?DriveFormatIn={diskFormat}", $"{diskFormat} Disks");
+        }
+
+        if (ShowProcessLinks)
+        {
+            appHost.GetPlugin&lt;MetadataFeature&gt;()
+                .AddPluginLink("/processes", "All Processes")
+                .AddPluginLink("/process/current", "Current Process");
+        }
+    }
+}</code></pre>
+
+<p>
+    Where as it was first registered in the list will appear before any links registered by other plugins:
+</p>
+
+<img src="http://plugins.web-app.io/assets/img/metadata-screenshot.png" alt="Metadata screenshot">
+
+<h4>Built-in Plugins</h4>
+
+<p>
+    It also tells the <em>ValidationFeature</em> to scan all Service Assemblies for Validators and to automatically register them
+    which is how ServiceStack was able to find the
+    <a href="https://github.com/NetCoreApps/WebApp/blob/master/src/example-plugins/ServerInfo/ContactServices.cs">ContactValidator</a>
+    used to validate the <em>StoreContact</em> request.
+</p>
+
+<p>
+    Other optional plugins registered in this Web App is the metadata Services required for 
+    <a href="http://docs.servicestack.net/openapi">Open API</a>, 
+    <a href="http://docs.servicestack.net/postman">Postman</a> as well as
+    <a href="http://docs.servicestack.net/corsfeature">support for CORS</a>.
+    You can check the <a href="/metadata/debug">/metadata/debug</a> Template for all Plugins loaded in your AppHost.
+</p>
+
+<h3>ServiceStack Ecosystem</h3>
+
+<p>
+    All Services loaded by plugins continue to benefit from ServiceStack's rich metadata services, including being listed 
+    in the <a href="/metadata">/metadata</a> page, being able to explore and interact with Services using 
+    <a href="/swagger-ui/">/swagger-ui/</a> as well as being able to generate Typed APIs for the most popular
+    <a href="http://docs.servicestack.net/add-servicestack-reference">Mobile, Web and Desktop platforms</a>.
+</p>
+
 <h3>Chat</h3>
+<div class="source">
+    <a href="https://github.com/NetCoreApps/WebApp/tree/master/src/apps/chat">/chat</a> - 
+    <a href="http://chat.web-app.io">chat.web-app.io</a>
+</div>
+
+<p>
+    <a href="https://github.com/NetCoreApps/WebApp/tree/master/src/apps/chat">/chat</a> is an example of the ultimate form 
+    of extensibility where instead of just being able to add Services, Filters and Plugins, etc. You can add your entire 
+    <em>AppHost</em> which Web Apps will use instead of its own. This vastly expands the use-cases that can be built with 
+    Web Apps as it gives you complete fine-grained control over how your App is configured.
+</p>
 
 <a href="http://chat.web-app.io"><img src="/assets/img/screenshots/chat.png" alt="Chat WebApp screenshot"></a>
 
+<h4>Develop back-end using .NET IDE's</h4>
 
+<p>
+    For <a href="http://chat.web-app.io">chat.web-app.io</a> we've taken a copy of the existing .NET Core 2.0 
+    <a href="https://github.com/NetCoreApps/Chat">Chat App</a> and split its C# code and <em>AppHost</em> to
+    <a href="https://github.com/NetCoreApps/WebApp/tree/master/src/example-plugins/Chat">/example-plugins/Chat</a>
+    and its files to <a href="https://github.com/NetCoreApps/WebApp/tree/master/src/apps/chat">/apps/chat</a> where it behaves 
+    just like any other Web App except it uses the Chat AppHost and implementation in the 
+    <a href="https://github.com/NetCoreApps/WebApp/blob/master/src/example-plugins/Chat/Program.cs">SelfHost Chat App</a>.
+</p>
+
+<p>
+    Customizations from the original 
+    <a href="https://github.com/NetCoreApps/Chat/blob/master/src/Chat/Startup.cs">.NET Core Chat implementation</a> 
+    includes removing MVC and Razor dependencies and configuration, extracting its 
+    <a href="https://github.com/NetCoreApps/WebApp/blob/master/src/apps/chat/_layout.html">_layout.html</a> and 
+    converting <a href="https://github.com/NetCoreApps/WebApp/blob/master/src/apps/chat/index.html">index.html</a>
+    to use Templates from its original 
+    <a href="https://github.com/NetCoreApps/Chat/blob/master/src/Chat/wwwroot/default.cshtml">default.cshtml</a>.
+    We've also added the ability to evaluate Template source code from the Chat window as seen in the screenshot above.
+</p>
+
+<h4>Chat AppHost</h4>
+
+<pre class="cs"><code>public class Startup
+{
+    public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
+    {
+        loggerFactory.AddConsole();
+        var appSettings = new TextFileSettings("~/../../apps/chat/web.settings".MapProjectPath());
+        app.UseServiceStack(new AppHost(appSettings));
+    }
+}
+
+public class AppHost : AppHostBase
+{
+    public AppHost() : base("Chat Web App", typeof(ServerEventsServices).GetAssembly()) {}
+    public AppHost(IAppSettings appSettings) : this() => AppSettings = appSettings;
+
+    public override void Configure(Container container)
+    {
+        Plugins.AddIfNotExists(new TemplatePagesFeature()); //Already added if it's running as a Web App
+        
+        Plugins.Add(new ServerEventsFeature());
+
+        SetConfig(new HostConfig
+        {
+            DefaultContentType = MimeTypes.Json,
+            AllowSessionIdsInHttpParams = true,
+        });
+
+        this.CustomErrorHttpHandlers.Remove(HttpStatusCode.Forbidden);
+
+        //Register all Authentication methods you want to enable for this web app.            
+        Plugins.Add(new AuthFeature(
+            () => new AuthUserSession(),
+            new IAuthProvider[] {
+                new TwitterAuthProvider(AppSettings),   //Sign-in with Twitter
+                new FacebookAuthProvider(AppSettings),  //Sign-in with Facebook
+                new GithubAuthProvider(AppSettings),    //Sign-in with GitHub
+            }));
+
+        container.RegisterAutoWiredAs&lt;MemoryChatHistory, IChatHistory&gt;();
+
+        Plugins.Add(new CorsFeature(
+            allowOriginWhitelist: new[] { "http://localhost", "http://null.jsbin.com" },
+            allowCredentials: true,
+            allowedHeaders: "Content-Type, Allow, Authorization"));
+    }
+}</code></pre>
+
+<h5>Reusing Web App's web.setting and files</h5>
+
+<p>
+    One nice thing from being able to reuse existing AppHost's is that we can develop it as a stand-alone .NET Core App
+    where it's more productive when creating back-end C# Services and custom filter implementations with access 
+    to .NET IDE tooling and debugging. 
+</p>
+
+<p>
+    To account for these 2 modes we need to use <em>AddIfNotExists</em> to only register the <em>TemplatePagesFeature</em> plugin 
+    when running as a stand-alone App and add an additional constructor to reuse the existing <em>web.settings</em> and files when 
+    running as a Console App which reuses it as its <a href="http://docs.servicestack.net/appsettings">IAppSettings</a> 
+    provider for storing custom App config like OAuth App keys required for enabling Sign-In's via with Twitter, Facebook and GitHub 
+    when running on <em>http://localhost:5000</em>:        
+</p>
+
+<pre class="cs"><code>debug true
+name Chat Web App
+port 5000
+contentRoot ~/../chat
+webRoot ~/../chat
+
+oauth.RedirectUrl http://localhost:5000/
+oauth.CallbackUrl http://localhost:5000/auth/{0}
+oauth.twitter.ConsumerKey JvWZokH73rdghDdCFCFkJtCEU
+oauth.twitter.ConsumerSecret WNeOT6YalxXDR4iWZjc4jVjFaydoDcY8jgRrGc5FVLjsVlY2Y8
+oauth.facebook.Permissions email
+oauth.facebook.AppId 447523305684110
+oauth.facebook.AppSecret 7d8a16d5c7cbbfab4b49fd51183c93a0
+oauth.github.Scopes user
+oauth.github.ClientId dbe8c242e3d1099f4558
+oauth.github.ClientSecret 42c8db8d0ca72a0ef202e0c197d1377670c990f4
+</code></pre>
+
+<p>
+    After the back-end has been implemented we can build and copy the compiled <b>Chat.dll</b> into the Chat's 
+    <a href="https://github.com/NetCoreApps/WebApp/tree/master/src/apps/chat/plugins">/plugins</a> folder where 
+    we can take advantage of the improved development experience and simplified deployments.
+</p>
 
 {{ "usecase-links" | partial({ order }) }}

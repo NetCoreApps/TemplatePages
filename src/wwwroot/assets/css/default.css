@@ -108,13 +108,6 @@ li.active a, #content li.active a {
     line-height: 2rem;
     z-index: 1;
 }
-
-@media screen and (max-width: 1300px)
-{
-    #content {
-        margin-left: 160px;
-    }
-}
 pre {
     background: #f8f8f8;
     padding: 10px;
@@ -205,4 +198,29 @@ caption {
 
 #content img {
     max-width: 900px !important;
+}
+
+::-webkit-scrollbar { width:7px; height:5px }
+::-webkit-scrollbar-thumb { background-color:#ccc; }
+
+@media (max-width: 1366px) {
+    #content {
+        margin-left: 220px;
+    }
+}
+@media (max-width: 1024px) {
+    #sidebar .inner {
+        width: 215px;
+    }
+    #content {
+        margin-left: 160px;
+    }
+    #content img {
+        max-width: 650px !important;
+    }
+}
+@media (max-width: 768px) {
+    #content img {
+        max-width: 450px !important;
+    }
 }
