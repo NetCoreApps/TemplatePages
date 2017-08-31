@@ -1,0 +1,16 @@
+{{ id | endIfEmpty | useFmt(
+    'select o.Id, 
+            {0} Employee, 
+            OrderDate, ShipCountry, ShippedDate, 
+            {1} Total 
+        from {2} o
+            inner join
+            OrderDetail d on o.Id = d.OrderId
+            inner join 
+            Employee e on o.EmployeeId = e.Id
+        where CustomerId = @id
+        group by o.Id, EmployeeId, FirstName, LastName, OrderDate, ShipCountry, ShippedDate',
+            sqlConcat(["e.FirstName", "' '", "e.LastName"]), 
+            sqlCurrency("sum((d.Unitprice * d.Quantity) - d.discount)"), 
+            sqlQuote("Order"))
+    | dbSelect({ id }) | assignTo: orders }}
