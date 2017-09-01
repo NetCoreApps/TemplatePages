@@ -64,7 +64,7 @@ li.active a, #content li.active a {
 #sidebar {
     position: absolute;
     z-index: 10;
-    top: 61px;
+    top: 50px;
     left: 0;
     bottom: 0;
     overflow-x: hidden;
@@ -74,7 +74,7 @@ li.active a, #content li.active a {
 }
 #sidebar .inner {
     width: 270px;
-    padding: 40px 20px 60px 40px;    
+    padding: 40px 20px 0 40px;    
 }
 #sidebar ul {
     list-style-type: none;
