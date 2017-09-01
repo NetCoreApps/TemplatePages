@@ -7,21 +7,16 @@ order: 1
     ServiceStack Templates is available in the <a href="https://www.nuget.org/packages/ServiceStack.Common">ServiceStack.Common</a> NuGet Package:
 </p>
 
-<pre>
-    <code>PM> Install-Package ServiceStack.Common</code>
-</pre>
+<pre><code>PM> Install-Package ServiceStack.Common</code></pre>
 
 <p>
     Or if using .NET Core:
 </p>
 
-<pre>
-    <code>PM> Install-Package ServiceStack.Common.Core</code>
-</pre>
+<pre><code>PM> Install-Package ServiceStack.Common.Core</code></pre>
 
 <p>
-    Once installed you can begin playing around with ServiceStack Templates! Start evaluating templates by creating 
-    and rendering a dynamic page:
+    You're now all set to play with ServiceStack Templates! Start by creating and rendering a dynamic page:
 </p>
 
 <pre><code>var context = new TemplateContext().Init();
@@ -32,7 +27,7 @@ var output = new PageResult(dynamicPage).Result;
 {{ "live-template" | partial({ template: "The time is now: {{ now | dateFormat('HH:mm:ss') }}" }) }}
 
 <p>
-    Evaluating an ad hoc template can also be condensed down to a single line:
+    Evaluating ad hoc templates can also be condensed down to a single line:
 </p>
 
 <pre><code>var output = context.EvaluateTemplate("The time is now: {{ pass: now | dateFormat('HH:mm:ss') }}");</code></pre>
@@ -44,13 +39,42 @@ var output = new PageResult(dynamicPage).Result;
     register the <em>TemplatePagesFeature</em> plugin:
 </p>
 
-<pre>
-<code>
-    public void Configure(Container container)
-    {
-        Plugins.Add(new TemplatePagesFeature());
-    }
-</code>
-</pre>
+<pre><code>public void Configure(Container container)
+{
+    Plugins.Add(new TemplatePagesFeature());
+}</code></pre>
+
+<h2>Starter Projects</h2>
+
+<p>
+    The Starter Projects below provide a quick way to get started with a pre-configured ServiceStack Template Web App.
+</p>
+
+<h3><a href="https://github.com/NetCoreApps/TemplatesBootstrapStarter">.NET Core 2.0 Boostrap Starter</a></h3>
+
+<p>
+    Clone the <a href="https://github.com/NetCoreApps/TemplatesBootstrapStarter">TemplatesBootstrapStarter</a>
+    GitHub project to start from a Bootstrap v4 and jQuery .NET Core 2.0 App:
+</p>
+
+<a href="https://github.com/NetCoreApps/TemplatesBootstrapStarter">
+    <img src="/assets/img/screenshots/templates-bootstrap.png" alt=".NET Core Starter Template">
+</a>
+
+<h3>ASP.NET v4.5 Boostrap Starter</h3>
+
+<p>
+    For ASP.NET v4.5 projects create a new <b>ServiceStack ASP.NET Templates with Bootstrap</b> from the VS.NET Templates in
+    <a href="http://docs.servicestack.net/templates-overview#servicestackvs-vsnet-extension">ServiceStackVS VS.NET Extension</a>
+    to create an ASP.NET v4.5 Project using
+    <a href="http://docs.servicestack.net/create-your-first-webservice#step-4-exploring-the-servicestack-solution">ServiceStack's recommended project structure</a>:    
+</p>
+
+<p>
+    <a href="https://github.com/ServiceStack/ServiceStackVS">
+        <img src="/assets/img/screenshots/ssvs-bootstrap.png" alt="ASP.NET v4.5 Starter Template">
+    </a>
+</p>
+
 
 {{ "doc-links" | partial({ order }) }}

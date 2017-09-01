@@ -68,7 +68,7 @@ order: 2
 </p>
 
 <p>
-    Layouts, Pages and Partials are all just "pages", evaluated in the same way with access to arguments and filters. Even parameters passed 
+    Layouts, Pages and Partials are all just "pages", evaluated in the same way with access to arguments and filters. Parameters passed 
     to partials are just scoped arguments, accessed like any other arguments. Typically pages are sourced from the configured 
     File System but when access to more advanced functionality is required they can also be <a href="/docs/code-pages">Code Pages</a> implemented
     in pure C# that are otherwise interchangeable and can be used anywhere a normal page is requested.
@@ -78,13 +78,20 @@ order: 2
     There's no language constructs or reserved words in Templates itself, all functionality is implemented inside filters.
     There's also nothing special about the <a href="/docs/default-filters">Default Filters</a> included with Templates
     other than they're pre-registered by default. External filters can do anything built-in filters can do which can just
-    as easily be <a href="/docs/filters#shadowing">shadowed or removed</a> giving you a clean slate where you can define your own
+    as easily be <a href="/docs/filters#shadowing">shadowed or removed</a> giving you a clean slate where you're free to define your own
     language and preferred language naming scheme.
 </p>
 
 <p>
+    They're non-invasive, by default ServiceStack's <a href="/docs/view-engine">View Engine</a> is configured to handle
+    <em>.html</em> files but can be configured to handle any html extension or <a href="/docs/page-formats">text file format</a>. 
+    When a page doesn't contain any Template Expressions it's contents are returned as-is, making it easy to adopt in existing
+    static websites.
+</p>
+
+<p>
     Templates are <a href="/docs/sandbox">sandboxed</a>, they can't call static or instance methods, invoke setters or access anything 
-    outside of the arguments and filters made available to them. Without filters, expressions wouldn't have any methods or functionality 
+    outside of the arguments and filters made available to them. Without filters, expressions wouldn't have any methods 
     they can call, leaving them with the only thing they can do which is access arguments and replace their variable placeholders, 
     including the <em>{{ pass: page }}</em> placeholder to tell the Layout where to render the page:
 </p>
@@ -308,6 +315,5 @@ context.VirtualFiles.Write("page.html", "I am the Page");
     This flexibility also makes it easy create proxies, intercept and inject behavior like logging or profiling without modifying existing 
     filter implementations or template source code.
 </p>
-
 
 {{ "doc-links" | partial({ order }) }}
