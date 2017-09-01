@@ -3,4 +3,231 @@ title: Deploying Web Apps
 order: 26
 -->
 
-{{ "usecase-links" | partial({ order }) }}
+<p>
+    As all <a href="/docs/web-apps">Web Apps</a> use the same pre-compiled <a href="https://github.com/NetCoreWebApps/Web">/web</a> binary, 
+    deployment is greatly simplified as it only needs to be concerned with deploying static files and starting <em>web/app.dll</em> 
+    with the App's <em>web.settings</em>. 
+</p>
+
+<h3>Deploying multiple Web Apps to Ubuntu</h3>
+
+<p>
+    A common way for reliably hosting .NET Core Apps on Ubuntu is to use <a href="http://supervisord.org/index.html">supervisor</a> 
+    to monitor the <em>dotnet</em> self-hosting processes behind an nginx reverse proxy which handles external HTTP requests to
+    your website and proxies them to the dotnet process running your Web App on a local port. You'll need access to a Unix 
+    environment on your client Desktop, either using Linux, OSX or 
+    <a href="https://github.com/ServiceStack/redis-windows#option-1-install-redis-on-ubuntu-on-windows">Installing Windows Subsystem for Linux (WSL)</a>.
+</p>
+
+<h4>Setup the deploy User Account</h4>
+
+<p>
+    We'll start by creating a dedicated user account for hosting and running your .NET Core Apps to mitigate potential abuse. 
+    SSH into your Ubuntu server and create the <em>deploy</em> user account with a <em>/home/deploy</em> home directory and add 
+    them to the <em>sudo</em> group:
+</p>
+
+<pre class="sh"><code>sudo useradd -m deploy
+sudo usermod -aG sudo deploy</code></pre>
+
+<p>
+    For seamless deployments use <em>visudo</em> to allow <em>deploy</em> to run <em>supervisorctl</em> without
+    prompting for a password:
+</p>
+
+<pre class="txt"><code># Allow members of group sudo to execute any command
+%sudo   ALL=(ALL:ALL) ALL
+%deploy ALL=(ALL:ALL) NOPASSWD: /usr/bin/supervisorctl</code></pre>
+
+<blockquote>
+    In vi type <em>i</em> to start editing a file and <em>ESC</em> to quit edit mode and <em>:wq</em> to save your changes before exiting.
+</blockquote>
+
+<h4>Setup supervisor</h4>
+
+<p>
+    Install supervisor using apt-get:
+</p>
+
+<pre class="sh"><code>sudo apt-get install supervisor</code></pre>
+
+<p>
+    You'll need to create a separate config file for each app in <em>/etc/supervisor/conf.d/</em>. 
+    We can use the same template below for all 
+    <a href="https://github.com/NetCoreWebApps/WebApp/tree/master/src/apps">/apps</a> by replacing <em>bare</em>
+    with the name of the App:
+</p>
+
+<h5>/etc/supervisor/conf.d/web.bare.conf</h5>
+
+<pre class="txt"><code>[program:web-bare]
+command=/usr/bin/dotnet /home/deploy/apps/web/app.dll web.bare.settings
+directory=/home/deploy/apps/web
+autostart=true
+autorestart=true
+stderr_logfile=/var/log/web-bare.err.log
+stdout_logfile=/var/log/web-bare.out.log
+environment=ASPNETCORE_ENVIRONMENT=Production
+user=deploy
+stopsignal=INT</code></pre>
+
+<h4>Setup nginx</h4>
+
+<p>
+    You'll also need to create a separate config for each website on nginx in <em>/etc/nginx/sites-available/</em>. 
+    You can use the same template for each website but you'll need to change the <em>server_name</em> with the domain name
+    you want to use for the App and use a different port number for each App:
+</p>
+
+<h5>/etc/nginx/sites-available/bare.web-app.io</h5>
+
+<pre class="txt"><code>server {
+    listen       80;
+    server_name bare.web-app.io;
+
+    location / {
+        proxy_pass http://localhost:5001;
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection keep-alive;
+        proxy_cache_bypass $http_upgrade;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+        proxy_buffering off;
+        proxy_ignore_client_abort off;
+        proxy_intercept_errors on;
+
+        client_max_body_size 500m;
+    }
+}</code></pre>
+
+<p>
+    You'll then need to create symlink for each website to tell nginx you want each website to be enabled:
+</p>
+
+<pre class="sh"><code>ln -s /etc/nginx/sites-available/bare.web-app.io /etc/nginx/sites-enabled/bare.web-app.io</code></pre>
+
+<p>
+    After this we can tell nginx to reload its configuration, as there's nothing listening to <em>http://localhost:5001</em>
+    yet nginx will return a 502 Bad Gateway response, but will start working as soon as our deployed .NET Core Apps are up and running.
+</p>
+
+<pre class="sh"><code>/etc/init.d/nginx reload</code></pre>
+
+<h5>Setting up SSH keys</h5>
+
+<p>
+    We can now exit our remote Linux server and return to our local machine and prepare our deployment script. 
+    Before doing this we recommend 
+    <a href="https://www.digitalocean.com/community/tutorials/how-to-set-up-ssh-keys--2">setting up SSH and copying your SSH public key to your remote server</a>
+    which is both more secure and more convenient than using a password.
+</p>
+
+<h4>Create the deployment script</h4>
+
+<p>
+    We use <em>sed</em> in our deployment script to generate the release web.settings from each App's local <em>web.settings</em>    
+    that we save in the <em>/web</em> folder that gets deployed with our apps. The main configuration to change is to set 
+    <em>debug false</em> and to select a different port number which matches the port number used in its nginx configuration. 
+    We can then use <em>rsync</em> to efficiently copy all <em>/app</em> and <em>/web</em> folders to our remote server and use 
+    ssh to run a remote command instructing <em>supervisorctl</em> to restart all its Services:
+</p>
+
+<h5>deploy.apps.sh</h5>
+
+<pre class="sh"><code>cat ../apps/bare/web.settings | sed "/debug/s/ .*/ false/" | sed "/port/s/ .*/ 5001/" > ../apps/web/web.bare.settings
+cat ../apps/redis/web.settings | sed "/debug/s/ .*/ false/" | sed "/port/s/ .*/ 5002/" > ../apps/web/web.redis.settings
+cat ../apps/rockwind/web.sqlite.settings | sed "/debug/s/ .*/ false/" | sed "/port/s/ .*/ 5003/" > ../apps/web/web.rockwind-sqlite.settings
+cat ../apps/rockwind-vfs/web.sqlite.settings | sed "/debug/s/ .*/ false/" | sed "/port/s/ .*/ 5004/" > ../apps/web/web.rockwind-vfs-sqlite.settings
+cat ../apps/plugins/web.settings | sed "/debug/s/ .*/ false/" | sed "/port/s/ .*/ 5005/" > ../apps/web/web.plugins.settings
+cat ../apps/chat/web.release.settings | sed "/port/s/ .*/ 5006/" > ../apps/web/web.chat.settings
+
+rsync -avz -e 'ssh' ../apps deploy@web-app.io:/home/deploy
+
+ssh deploy@web-app.io "sudo supervisorctl restart all"</code></pre>
+
+<h4>Run the deployment script</h4>
+
+<p>
+    To run the deployment script we need to make it executable before running it:
+</p>
+
+<pre class="sh"><code>chmod +x deploy.apps.sh
+./deploy.apps.sh</code></pre>
+
+<p>
+    If all went well you'll be able to view each app using the domain name they've been configured with in nginx.     
+    Now whenever you need to redeploy again you'll only need to re-run <em>./deploy.apps.sh</em> which will only copy the files that
+    have changed before restarting all services. 
+</p>
+
+<p>
+    You can also choose to restart only the app that was changed by specifying its <em>program</em> name in 
+    <em>/etc/supervisor/conf.d/web.*.conf</em>, e.g:
+</p>
+
+<pre class="sh"><code>ssh deploy@web-app.io "sudo supervisorctl restart web-bare"</code></pre>
+
+<h3>Using Travis CI to deploy using Docker to AWS ECS</h3>
+
+<p>
+    A popular combination for deploying .NET Core Apps is to use the online <a href="https://travis-ci.org">Travis CI</a> 
+    Continuous Integration Service to package your App in a Docker Container and deploy it to AWS ECS which takes care of
+    the management and deployment of Docker instances over a configured cluster of EC2 compute instances.
+</p>
+
+<p>
+    The easiest way to set this up is to clone the <a href="https://github.com/NetCoreWebApps/Rockwind.Aws">Rockwind.Aws</a>
+    Web App which is pre-configured with a working scripts using Travis CI to package the Web App in a Docker container 
+    and deploy it to AWS ECS.
+    In your local copy replace the <a href="https://github.com/NetCoreWebApps/Rockwind.Aws/tree/master/app">/app</a> folder with your
+    App files then you'll then change the url in the <em>Dockerfile</em> to point to a plain-text copy of your App's 
+    <em>web.settings</em>, e.g:
+</p>
+
+<h5><a href="https://github.com/NetCoreWebApps/Rockwind.Aws/blob/master/Dockerfile">Dockerfile</a></h5>
+
+<pre class="docker" style="overflow:hidden"><code>FROM microsoft/dotnet:2.0-sdk
+COPY web /web
+ADD https://raw.githubusercontent.com/NetCoreWebApps/Rockwind.Aws/master/app/web.settings /web/web.settings
+WORKDIR /web
+EXPOSE 5000/tcp
+ENV ASPNETCORE_URLS https://*:5000
+ENTRYPOINT ["dotnet", "/web/app.dll"]</code></pre>
+
+<p>
+    The only other file that needs to change is <em>deploy-envs.sh</em> to configure it to use your App's deployment settings:
+</p>
+
+<h5><a href="https://github.com/NetCoreWebApps/Rockwind.Aws/blob/master/deploy-envs.sh">deploy-envs.sh</a></h5>
+
+<pre class="sh"><code>#!/bin/bash
+
+# set environment variables used in deploy.sh and AWS task-definition.json:
+export IMAGE_NAME=netcoreapps-rockwind-aws
+export IMAGE_VERSION=latest
+
+export AWS_DEFAULT_REGION=us-east-1
+export AWS_ECS_CLUSTER_NAME=default
+export AWS_VIRTUAL_HOST=rockwind-aws.web-app.io
+
+# set any sensitive information in travis-ci encrypted project settings:
+# required: AWS_ACCOUNT_ID, AWS_ACCESS_KEY, AWS_SECRET_KEY
+# optional: SERVICESTACK_LICENSE</code></pre>
+
+<h4>Setup AWS ECS and Travis CI</h4>
+
+<p>
+    After configuring your App deployment scripts you'll then need to 
+    <a href="http://docs.servicestack.net/deploy-netcore-docker-aws-ecs#1-create-the-ecsinstancerole-role">Setup your AWS ECS</a>
+    with an EC2 instance to deploy to and 
+    <a href="http://docs.servicestack.net/deploy-netcore-docker-aws-ecs#create-project-in-travis-ci">Create your project in Travis CI</a>.
+    You'll then need to add your AWS Account details in the Travis CI project using
+    <a href="http://docs.servicestack.net/deploy-netcore-docker-aws-ecs#ci-environment-variables">Secure Environment Variables</a>
+    to store your <em>AWS_ACCOUNT_ID</em>, <em>AWS_ACCESS_KEY</em> and <em>AWS_SECRET_KEY</em> as well as any sensitive info and 
+    connection strings your App uses.
+</p>
+
+{{ "doc-links" | partial({ order }) }}
