@@ -4,12 +4,13 @@ order: 2
 -->
 
 <p>
-    ServiceStack Templates is a simple and elegant, highly-extensible, portable, sandboxed, high-performance general-purpose templating
-    engine for .NET and .NET Core. It's designed from the ground-up to be incrementally adoptable where its basic usage is simple enough 
+    ServiceStack Templates is a simple and elegant, <a href="/docs/filters">highly-extensible</a>, <a href="/docs/sandbox">sandboxed</a>, 
+    high-performance <a href="/docs/page-formats">general-purpose</a> templating engine for .NET 4.5 and .NET Core. 
+    It's designed from the ground-up to be incrementally adoptable where its basic usage is simple enough 
     for non-technical users to use whilst it progressively enables access to more power and functionality allowing it to scale up to 
     support full server-rendering Web Server workloads and beyond. Its high-fidelity with JavaScript syntax allows it to use a common
-    language for seamlessly integrating with client-side JavaScript Single Page App frameworks where its syntax is compatible with 
-    <a href="https://vuejs.org/v2/guide/syntax.html#Filters">Vue filters</a>.
+    language for seamlessly integrating with client-side JavaScript Single Page App frameworks where its syntax is designed to be 
+    compatible with <a href="https://vuejs.org/v2/guide/syntax.html#Filters">Vue filters</a>.
 </p>
 
 <h3>Instant Startup</h3>
@@ -23,22 +24,21 @@ order: 2
 <h3>Fast Runtime Performance</h3>
 
 <p>
-    ServiceStack Templates is very fast, parsing is done using StringSegment for minimal GC pressure, all I/O is non-blocking inc. async
+    ServiceStack Templates is fast, parsing is done using StringSegment for minimal GC pressure, all I/O is non-blocking inc. async
     writes to OutputStream's. There's no buffering: Layouts, Pages and Partials are asynchronously written to a forward only stream.
     There's no runtime reflection, each filter or binding within template expressions executes compiled and cached C# Expressions.
 </p>
-
 
 <h3>Pure, Functional and Reactive</h3>
 
 <p>
     Templates are pure at both the library-level where they're a clean library with no external dependencies outside 
     <a href="https://www.nuget.org/packages/ServiceStack.Common">ServiceStack.Common</a>, no coupling to web frameworks, external configuration files, 
-    designiner tooling, build tools, pre-compilation steps or require any special deployment requirements. 
+    designer tooling, build tools, pre-compilation steps or require any special deployment requirements. 
     It binds to simple, clean, small interfaces for its 
     <a href="http://docs.servicestack.net/virtual-file-system">Virtual File System</a>, 
     <a href="http://docs.servicestack.net/ioc">IOC</a> and
-    <a href="http://docs.servicestack.net/appsettings">App Settings</a> providers which are easily overrided to 
+    <a href="http://docs.servicestack.net/appsettings">AppSettings</a> providers which are easily overridden to 
     <a href="/docs/view-engine#view-engine-in-servicestack">integrate cleanly into external web frameworks</a>.
 </p>
 
@@ -47,8 +47,8 @@ order: 2
     don't mutate any external state. There's no imperative statements, everything is an expression forcing a more readable and declarative  
     programming-style that's easier to quickly determine the subject of expressions and the states that need to be met for filters to be executed. 
     Conceptually Templates are "evaluated" in that they take in arguments, filters and templates as inputs and evaluates them to an output stream. 
-    They're highly testable by design where the same environment used to create the context can be easily re-created in Unit tests 
-    including simulating pages in a File System using the built-in In Memory Virtual File System.     
+    They're highly testable by design where the same environment used to create the context can easily be re-created in Unit tests, 
+    including simulating pages in a File System using its In Memory Virtual File System.     
 </p>
 
 <h3>Optimal Development Experience</h3>
@@ -63,8 +63,8 @@ order: 2
 
 <p>
     There are 2 main concepts in Template Expressions: <a href="/docs/arguments">Arguments</a> - variables which can be made available 
-    through a number of cascading sources and <a href="/docs/filters">Filters</a> - C# public methods registered in the list of <em>TemplateFilters</em> 
-    in the <em>PageResult</em> or <em>TemplateContext</em> that the template is executed within. 
+    through a number of cascading sources and <a href="/docs/filters">Filters</a> - public C# methods that exist in the list of 
+    <em>TemplateFilters</em> registered in the PageResult or TemplateContext that templates are executed within. 
 </p>
 
 <p>
@@ -76,16 +76,17 @@ order: 2
 
 <p>
     There's no language constructs or reserved words in Templates itself, all functionality is implemented inside filters.
-    There's also nothing special about <a href="/docs/default-filters">Default Filters</a> other than they're pre-registered by default.
-    They can just as easily be <a href="/docs/filters#shadowing">shadowed or removed</a> letting you use your own filters to invent your 
-    own preferred language and naming scheme.
+    There's also nothing special about the <a href="/docs/default-filters">Default Filters</a> included with Templates
+    other than they're pre-registered by default. External filters can do anything built-in filters can do which can just
+    as easily be <a href="/docs/filters#shadowing">shadowed or removed</a> giving you a clean slate where you can define your own
+    language and preferred language naming scheme.
 </p>
 
 <p>
-    Templates are <a href="/docs/sandbox">sandboxed</a>, they can't call static methods or methods on instances, invoke setters or access anything 
+    Templates are <a href="/docs/sandbox">sandboxed</a>, they can't call static or instance methods, invoke setters or access anything 
     outside of the arguments and filters made available to them. Without filters, expressions wouldn't have any methods or functionality 
-    they can call, leaving them with the only thing they can do which is access arguments and replace their variable placeholders, including the 
-    <em>{{ pass: page }}</em> placeholder to tell the Layout where to render the page:
+    they can call, leaving them with the only thing they can do which is access arguments and replace their variable placeholders, 
+    including the <em>{{ pass: page }}</em> placeholder to tell the Layout where to render the page:
 </p>
 
 <h3>Quick Example Walkthrough</h3>
@@ -130,7 +131,7 @@ context.VirtualFiles.Write("page.html", "I am the Page");
 </code></pre>
     
 <p>
-    Templates are rendered using a <em>PageResult</em> essentially a rendering context that a minimum needs to be provided the Page to render:
+    Templates are rendered using a <em>PageResult</em> essentially a rendering context that needs to be provided the Page to render:
 </p>
 
 <pre><code>var pageResult = new PageResult(context.GetPage("page"));</code></pre>
@@ -142,7 +143,7 @@ context.VirtualFiles.Write("page.html", "I am the Page");
 <pre><code>await pageResult.WriteToAsync(responseStream);</code></pre>
 
 <p>
-    Or if you just want to access the output as a string you can use the convenience extension method:
+    Or to access the output as a string you can use the convenience extension method:
 </p>
 
 <pre><code>string output = await pageResult.RenderToStringAsync();</code></pre>
@@ -203,7 +204,7 @@ context.VirtualFiles.Write("page.html", "I am the Page");
 {{ "live-template" | partial({ output:'no-scroll', rows:1, template: "{{ 'select url from quote where id= @id' | dbScalar({ id:1 }) | htmlLink }}" }) }}
 
 <p>
-    What filter implmentation gets called depends on which <a href="/docs/db-filters">DB Filter</a> is registered, if your RDBMS supports ADO.NET's 
+    What filter implementation gets called depends on which <a href="/docs/db-filters">DB Filter</a> is registered, if your RDBMS supports ADO.NET's 
     async API you can register 
     <a href="https://github.com/ServiceStack/ServiceStack.OrmLite/blob/master/src/ServiceStack.OrmLite/TemplateDbFiltersAsync.cs">TemplateDbFiltersAsync</a>
     to execute all queries asynchronously, otherwise if using an RDBMS whose ADO.NET Provider doesn't support async you can register the
@@ -216,9 +217,9 @@ context.VirtualFiles.Write("page.html", "I am the Page");
 
 <h5>Arguments chain</h5>
 <p>
-    The next question becomes what is <em>id</em> bound to? Similar to JavaScript's prototype chain it uses the first argument it finds 
-    in its <a href="/docs/arguments">Arguments hierarchy</a>, e.g. when evaluated as a view page it could be set by the queryString or 
-    when the same page is evaluated as a partial it could be set from the scoped arguments it was called with.
+    The next question becomes what is <em>id</em> bound to? Similar to JavaScript's prototype chain it resolves the closest argument 
+    in its <a href="/docs/arguments">Arguments hierarchy</a>, e.g. when evaluated as a view page it could be set by the 
+    queryString or when the same page is evaluated as a partial it could be set from the scoped arguments it was called with.
 </p>
 
 <h5>Async I/O</h5>
@@ -234,7 +235,7 @@ context.VirtualFiles.Write("page.html", "I am the Page");
     response to the OutputStream it's given. But then how could we convert it to Markdown if it's already written to the Response Stream?
     Templates analyzes the Expression's AST to determine if there's any filters remaining, if there is it gives the <em>urlContents</em> 
     Block filter a <em>MemoryStream</em> to write to, then forwards its buffered output to the next filter. Since they don't return values, 
-    the only thing that can come after a Block Filter is other Block filters or <a href="/docs/transformers">Stream Transformers</a>. 
+    the only thing that can come after a Block Filter are other Block filters or <a href="/docs/transformers">Stream Transformers</a>. 
     <em>markdown</em> is one such <a href="/docs/transformers#filter-transformers">Filter Transformer</a> which takes in a stream of Markdown 
     and returns a Stream of HTML.
 </p>
@@ -260,7 +261,7 @@ context.VirtualFiles.Write("page.html", "I am the Page");
 <h5>Using the most efficient implementation allowable</h5>
 <p>
     So whilst it conceptually looks like each filter is transforming large buffered strings inside every filter, the expression is 
-    inspected to determine and utilize the most efficient implementation allowable. At the same time filters are not statically bound to 
+    inspected to utilize the most efficient implementation allowable. At the same time filters are not statically bound to 
     any implementation so you could for instance <a href="/docs/filters#registering-filters">insert a Custom Filter</a> before the Default 
     Filters containing the same name and arguments count to have templates execute your custom filters instead, all whilst the template's 
     source code and intent remains untouched.
@@ -276,12 +277,21 @@ context.VirtualFiles.Write("page.html", "I am the Page");
 
 <pre class="cs"><code>{{ pass: url | urlContentsWithCache | markdown }}</code></pre>
 
+<h4>Simplified Language</h4>
+
 <p>
     As there's very little ceremony in Templates, a chain of filters looks like it's using its own DSL to accomplish each task and
     given <a href="/docs/filters#registering-filters">implementing and registering custom filters </a> is trivial you're 
     encouraged to write the intent of your code first then implement any filters that are missing to realize its intent. Once 
     you've captured the intent of what you want to do, it's less likely to ever need to change, focus is instead on 
     fixing any bugs and making the filter implementations as efficient as possible, which benefits all existing code using the same filter.
+</p>
+
+<p>    
+    To improve readability and make it more approachable, templates aims to normalize the mechanics of the underlying implementation from 
+    the code's intent so you can use the same syntax to access an argument, e.g. <em>{{ pass: arg }}</em> as you would a filter without 
+    arguments  <em>{{ pass: now }}</em> and just like JavaScript you can use <em>obj.Property</em> syntax to access both a public property 
+    on a Type or an entry in a Dictionary.
 </p>
 
 <h3 id="late-bound">Late-bound flexibility</h3>
@@ -294,7 +304,7 @@ context.VirtualFiles.Write("page.html", "I am the Page");
     in the user-defined list of <em>TemplateFilters</em>. This ability to shadow filters enables high-level intent-based APIs decoupled from implementations which 
     <a href="/docs/servicestack-filters#sendToAutoQuery-rdbms">sendToAutoQuery</a> leverages to automatically route filter invocations to 
     the appropriate implementation depending of if it's an <a href="http://docs.servicestack.net/autoquery-rdbms">AutoQuery RDBMS</a> or an 
-    <a href="http://docs.servicestack.net/autoquery-data">AutoQuery Data</a> request masking their implementations as a transparent detail. 
+    <a href="http://docs.servicestack.net/autoquery-data">AutoQuery Data</a> request, masking their implementations as a transparent detail. 
     This flexibility also makes it easy create proxies, intercept and inject behavior like logging or profiling without modifying existing 
     filter implementations or template source code.
 </p>

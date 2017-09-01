@@ -4,8 +4,8 @@ order: 25
 -->
 
 <p>
-    <a href="https://github.com/NetCoreWebApps/WebApp">Web Apps</a> are a new approach to dramtically simplify .NET Wep App development 
-    and provide the most productive development experience possible whilst maximizing re-use and component sharing. 
+    <a href="https://github.com/NetCoreWebApps/WebApp">Web Apps</a> are a new approach to dramatically simplify .NET Wep App development 
+    and provide the most productive development experience possible whilst maximizing reuse and component sharing. 
     They also open up a number of new use-cases for maintaining clean isolation between front-end and back-end development with
     front-end developers not needing any knowledge of C#/.NET to be able to develop UIs for high-performance .NET Web Apps. 
     Web Apps also make it easy to establish and share an approved suite of functionality amongst multiple websites all 
@@ -46,7 +46,7 @@ order: 25
     The iterative development experience is also unparalleled for a .NET App, no compilation is required so you can just leave
     the <em>web/app.dll</em> running whilst you add the template <em>.html</em> files needed to build your App and thanks
     to the built-in <a href="/docs/hot-reloading">Hot Reloading</a> support, pages will refresh automatically as you save.
-    You'll just need to do a full page refresh when modifying external .css/.js files to by-pass the browser cache and
+    You'll just need to do a full page refresh when modifying external .css/.js files to bypass the browser cache and
     you'll need to restart <em>web/app.dll</em> to pick up any changes to your <em>web.settings</em> or added any 
     .dlls to your <em>/plugins</em> folder.
 </p>
@@ -162,7 +162,7 @@ title: About Us
 </code></pre>
 
 <p>
-    Template's syntax is also the ideal way to convey variable substition, e.g: <em>&lt;title&gt;{{ pass: title }}&lt;/title&gt;</em> 
+    Template's syntax is also the ideal way to convey variable substitution, e.g: <em>&lt;title&gt;{{ pass: title }}&lt;/title&gt;</em> 
     and even embedding a partial reads like english <em>{{ pass: 'menu' | partial }}</em> which is both intuitive and works well 
     with GUI HTML designers.
 </p>
@@ -185,7 +185,7 @@ contentRoot ~/../bare
 webRoot ~/../bare</code></pre>
 
 <blockquote>
-    <em>debug true</em> also controls the level of diagnostics availalbe and whether or not <a href="/docs/hot-reloading">Hot Reloading</a> is enabled.
+    <em>debug true</em> also controls the level of diagnostics available and whether or not <a href="/docs/hot-reloading">Hot Reloading</a> is enabled.
 </blockquote>
 
 <h3>Redis</h3>
@@ -199,7 +199,7 @@ webRoot ~/../bare</code></pre>
     to do all HTML rendering on the server and have each interaction request a full-page reload to see how a traditional server-generated
     Web App feels like with the performance of .NET Core 2.0 and Templates. We're pleasantly surprised with the result as when 
     the App is run locally as the responsiveness is effectively indistinguishable from an Ajax App. When hosted on the Internet 
-    there is a sub-second delay which causes a noticable flicker but it still retains a pleasant UX that's faster than most websites.
+    there is a sub-second delay which causes a noticeable flicker but it still retains a pleasant UX that's faster than most websites.
 </p>
 
 <p>
@@ -232,7 +232,7 @@ webRoot ~/../bare</code></pre>
     all Template and JavaScript Source Code in <b>&lt; 200 lines</b> which also includes all as server logic as it doesn't rely on any 
     back-end Services and just uses the <a href="/docs/redis-filters">Redis Filters</a> to interface with Redis directly.
     The <a href="https://github.com/NetCoreWebApps/WebApp/blob/master/src/apps/redis/index.html">source code</a> also serves as a good 
-    demostration of the declarative coding style that Templates encourages that in addition to being highly-readable requires orders 
+    demonstration of the declarative coding style that Templates encourages that in addition to being highly-readable requires orders 
     of magnitude less code than our previous Redis JavaScript SPA's with a comparable feature-set.
 </p>
 
@@ -265,7 +265,7 @@ redis.connection localhost:6379</code></pre>
 </div>
 
 <p>
-    The Rockwind website shows an example of combinding multiple websites in a single Web App - a 
+    The Rockwind website shows an example of combining multiple websites in a single Web App - a 
     <b><em>Rock</em>stars</b> Content Website and a dynamic data-driven UI for the <b>North<em>wind</em></b> database which can 
     run against either SQL Server, MySql or SQLite database using just configuration. It also includes 
     <a href="/docs/api-pages">API Pages</a> examples for rapidly develop Web APIs.
@@ -539,7 +539,7 @@ defaultFileCacheExpirySecs     60</code></pre>
     ServiceStack asynchronously writes each file to the Response Stream with the last <em>Last-Modified</em> HTTP Header to 
     enable browser caching so it's still a workable solution but for optimal performance you can specify an <em>args.assetsBase</em>
     to populate the <em>assetsBase</em> TemplateContext Argument the <em>resolveAsset</em> filter uses to generate
-    an external URL reference to the file on the remote storage sevice, reducing the load and improving the performance of your App, 
+    an external URL reference to the file on the remote storage service, reducing the load and improving the performance of your App, 
     especially if it's configured to use a CDN. 
 </p>
 
@@ -571,7 +571,7 @@ defaultFileCacheExpirySecs     60</code></pre>
 <p>
     With all files being sourced from S3 and the App configured to use AWS RDS PostgreSQL, the AWS settings is an example of 
     a <b>Pure Cloud App</b> where the entire App is hosted on managed cloud services that's decoupled from the .NET Core 2.0 binary 
-    that runs it that for the most part wont require redeploying the Web App binary unless making configuration changes or 
+    that runs it that for the most part won't require redeploying the Web App binary unless making configuration changes or 
     upgrading the <em>web/app.dll</em> as any App changes can just be uploaded straight to S3 which changes reflected within the
     <em>checkForModifiedPagesAfterSecs</em> setting, which tells the Web App how long to wait before checking for file changes
     whilst <em>defaultFileCacheExpirySecs</em> specifies how long to cache files like <em>content.md</em> for.
