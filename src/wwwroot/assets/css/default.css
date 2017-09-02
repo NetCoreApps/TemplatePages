@@ -48,7 +48,6 @@ li.active a, #content li.active a {
     z-index: 2;
     position: fixed;
     width: 100%;
-    background-color: #fff;
     box-shadow: 0 0 1px rgba(0,0,0,0.25);
 }
 #body #sidebar {
@@ -57,9 +56,17 @@ li.active a, #content li.active a {
 #body {
     position: relative;
     z-index: 1;
-    padding: 0 60px 30px;
-    padding-top: 60px;
+    padding: 60px 60px 30px;
     overflow-x: hidden;
+}
+#scroll-screen {
+    background:#fff;
+    opacity:.5;
+    z-index:2;
+    position:fixed;
+    height:64px;
+    width:100%;
+    left:220px;
 }
 #sidebar {
     position: absolute;

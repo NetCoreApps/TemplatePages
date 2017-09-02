@@ -56,27 +56,27 @@ public string padRight(string text, int totalWidth, char padChar) => text?.PadRi
     within templates and it will get converted into the most appropriate .NET Type, e.g:
 </p>
 
-{{ 'live-template' | partial({ rows: 8, template: "{{  null | typeName }}
-{{  true | typeName  }}
-{{  1 | typeName  }}
-{{  1.1 | typeName  }}
-{{  'string' | typeName  }}
-{{  ['array', 'items'] | typeName  }}
-{{  { key: 'value' } | typeName  }}
+{{ 'live-template' | partial({ rows: 8, template: "{{ null               | typeName }}
+{{ true               | typeName }}
+{{ 1                  | typeName }}
+{{ 1.1                | typeName }}
+{{ 'string'           | typeName }}
+{{ ['array', 'items'] | typeName }}
+{{ { key: 'value' }   | typeName }}
 " }) }}
 
 <p>
     ES6 Shorthand notation is also supported where you can use the argument name as its property name in a Dictionary:
 </p>
 
-{{ 'live-template' | partial({ template: "{{ 'foo' | assignTo: bar }}
-{{ { bar } | assignTo: obj }}
+{{ 'live-template' | partial({ template: "{{ 'foo'    | assignTo: bar }}
+{{ { bar }  | assignTo: obj }}
 {{ obj['bar'] }}" }) }}
 
 <h4>Quotes</h4>
 
 <p>
-    Like JS you can define strings using single quotes, double quotes, prime quotes or backticks, e.g:
+    As strings are prevalent in Templates, you can define them using single quotes, double quotes, prime quotes or backticks:
 </p>
 
 {{ 'live-template' | partial({ rows:4, template: "{{ \"double quotes\" }}
@@ -122,10 +122,10 @@ public string padRight(string text, int totalWidth, char padChar) => text?.PadRi
 
 {{ 'live-template' | partial({ template: "{{ [0,1,2,3,4,5] | where('num >= 3', { it: 'num' }) | join }}" }) }}
 
-<h4>SQL-like syntax</h4>
+<h4>Boolean Expressions</h4>
 
 <p>
-    To maximize readability and intuitiveness for non-programmers, string expressions adopt an SQL-like syntax where
+    To maximize readability and intuitiveness for non-programmers, boolean expressions adopt an SQL-like syntax where
     instead of using <em>&amp;&amp;</em>, <em>||</em> or <em>==</em> operator syntax to define boolean expressions you'd instead
     use the more user-friendly <em>and</em>, <em>or</em> and <em>=</em> alternatives, e.g:
 </p>

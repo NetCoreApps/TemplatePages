@@ -3,14 +3,84 @@ title: ServiceStack Templates
 -->
 
 <p>
-    ServiceStack Templates is an exciting new templating language that can be used as a simple, fast, clean, portable alternative 
-    to Razor and Razor Pages that's better suited for maintaining content-heavy websites, 
-    easily facilitates a live programming environment for .NET Apps, makes it easy to introspect the state of running .NET Apps,
-    provides non-technical users a fun and intuitive way to generate text documents like email templates, and lots more!
+    At its core ServiceStack Templates is a <a href="/docs/introduction#simplicity-end-to-end">simple</a>, fast, and extremely versatile 
+    dynamic templating language for .NET and .NET Core that utilizes an <a href="/docs/syntax">Expressive Syntax</a> to compose high-level 
+    functionality using .NET <a href="/docs/filters">filters</a> and <a href="/docs/arguments">arguments</a>.
 </p>
 
 <p>
-    Get started learning ServiceStack Templates by going through the <a href="/docs/installation">Interactive Guide</a>.
+    It's small, lightweight footprint provides a fun and clean alternative to MVC Razor that's easily 
+    <a href="/docs/view-engine">integrated into any web framework</a> and runs identically in 
+    <a href="/docs/view-engine#runs-everywhere">every platform ServiceStack runs on</a>, it can also
+    be returned in <a href="/docs/mvc-aspnet">ASP.NET MVC</a> and <a href="/docs/mvc-aspnet">ASP.NET MVC Core</a> 
+    Controllers - in all cases, using the same <a href="/introduction#instant-startup">high-performance implementation</a>    
+    to asynchronously write to a forward-only OutputStream for max performance and maximum potential reuse of your Source Code.
+</p>
+
+<p>
+    Templates are lazily loaded and <a href="/docs/introduction#late-bound">late-bound</a> for Instant Startup, doesn't require any 
+    pre-compilation, have coupling to any external configuration files, build tools, designer tooling or have 
+    any special deployment requirements.
+    It can be used as a general purpose templating language to enhance <a href="/docs/page-formats">any text format</a> and
+    includes built-in support for <em>.html</em>.
+</p>
+
+<p>
+    Templates are evaluated in an <a href="/docs/sandbox">Isolated Sandboxed</a> that enables fine-grained control over exactly
+    what functionality and instances are available to different Templates. They're pre-configured with a comprehensive suite of safe 
+    <a href="/docs/default-filters">Default Filters</a> which when running in trusted contexts can easily be granted access to 
+    <a href="/docs/filters-reference">enhanced functionality</a>.
+</p>
+
+<p>
+    Templates are designed to be incrementally adoptable where its initial form is
+    <a href="/docs/web-apps#ideal-for-web-designers-and-content-authors">ideal for non-programmers</a>, 
+    that can gradually adopt more power and functionality when needed where they can leverage existing Services or MVC Controllers 
+    to enable an 
+    <a href="/docs/model-view-controller">MVC programming model</a> or have <em>.html</em> pages upgraded to use 
+    <a href="/docs/code-pages">Code Pages</a> where they can utilize the full unlimited power of the C# programming language to 
+    enable precise control over the rendering of pages and partials. Code pages take precedence and are interchangeable wherever 
+    normal <em>.html</em> pages are requested making them a non-invasive alternative whenever advanced functionality is required.
+</p>
+
+<h3>Templates Ecosystem</h3>
+
+<p>
+    These qualities opens Templates up to a number of new use-cases that's better suited than Razor for maintaining 
+    <a href="/usecases/content-websites">content-heavy websites</a>, <a href="/usecases/live-documents">live documents</a>,
+    <a href="/usecases/email-templates">Email Templates</a> and can easily 
+    <a href="/usecases/introspect-state">introspect the state of running .NET Apps</a> where they provide 
+    <a href="/docs/info-filters#debug-template">valuable insight at a glance</a> with support for 
+    <a href="/usecases/adhoc-querying">Adhoc querying</a>.
+</p>
+
+<h3>Web Apps</h3>
+
+<p>
+    One use-case made possible by Templates that we're very excited about is <a href="/docs/web-apps">Web Apps</a> - a new approach to 
+    dramatically simplify .NET Web App development and provide the most productive development experience possible whilst maximizing 
+    reuse and component sharing. 
+</p>
+
+<p>
+    Web Apps leverages Templates to develop entire content-rich, data-driven websites without needing to write any C#, compile projects 
+    or manually refresh pages - resulting in the easiest and fastest way to develop Web Apps in .NET!
+</p>
+
+<h5>Pure Cloud Apps</h5>
+
+<p>
+    Web Apps also enable the development of <a href="/docs/web-apps#pure-cloud-apps">Pure Cloud Apps</a> where the same Web App 
+    can be developed and run entirely on <em>AWS S3 and RDS</em> or <em>Azure Blob Storage and SQL Server</em> by just changing
+    the App's <em>web.settings</em> file the pre-compiled <a href="https://github.com/NetCoreWebApps/Web">Web App Binary</a> is 
+    deployed with.
+</p>
+
+<h3>Learn ServiceStack Templates</h3>
+
+<p>
+    Get started learning ServiceStack Templates by going through the <a href="/docs/installation">Interactive Guide</a> and creating
+    a <a href="/docs/installation#starter-projects">Starter Project</a>.
 </p>
 
 <p>
@@ -24,5 +94,23 @@ title: ServiceStack Templates
 </p>
 
 {{ "linq-preview" | partial({ rows: 10, example: "linq01" }) }}
+
+<h3>Free for OSS and Commercial Projects</h3>
+
+<p>
+    We believe we've only just scratched the surface of what's possible with Templates and we'd love to see what new 
+    use-cases it can help achieve and would like to encourage an ecosystem of pluggable and reusable filters so whilst ServiceStack is a 
+    <a href="https://github.com/ServiceStack/ServiceStack/blob/master/license.txt">dual-licensed</a> platform with a 
+    <a href="https://servicestack.net/pricing">commercial license</a> for closed-source projects, the core of Templates is 
+    being developed in <a href="https://www.nuget.org/packages/ServiceStack.Common">ServiceStack.Common</a> which is an unrestricted
+    library that's free for OSS and commercial usage. 
+</p>
+
+<p>
+    ServiceStack's <a href="https://servicestack.net/download#free-quotas">existing free-quota restrictions</a>
+    only applies if you're using <a href="https://github.com/ServiceStack/ServiceStack.OrmLite">OrmLite</a>,
+    <a href="https://github.com/ServiceStack/ServiceStack.Redis">ServiceStack.Redis</a> or exceed the allowed free-quota of 
+    ServiceStack Services.
+</p>
 
 {{ "doc-links" | partial({ order: 0 }) }}
