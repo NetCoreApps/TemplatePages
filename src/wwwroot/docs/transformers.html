@@ -14,7 +14,7 @@ order: 16
 {
     private static readonly MarkdownSharp.Markdown markdown = new MarkdownSharp.Markdown();
 
-    public static async Task<Stream> TransformToHtml(Stream markdownStream)
+    public static async Task&lt;Stream&gt; TransformToHtml(Stream markdownStream)
     {
         using (var reader = new StreamReader(markdownStream))
         {
@@ -134,9 +134,7 @@ context.VirtualFiles.WriteFile("page.html", "
 
 <h5>PageResult with Filter Transformer</h5>
 
-<pre class="cs"><code>
-var html = new PageResult(context.GetPage("page")).Result;
-</code></pre>
+<pre class="cs"><code>var html = new PageResult(context.GetPage("page")).Result;</code></pre>
 
 <h4 id="htmlencode">htmlencode</h4>
 
