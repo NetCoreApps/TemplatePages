@@ -28,7 +28,7 @@ UTC now: {{ utcNow | dateFormat('o') }}" }) }}
 </p>
 
 <pre class="cs"><code>var context = new TemplateContext {
-    Args {
+    Args = {
         [TemplateConstants.DefaultDateFormat] = "yyyy-MM-dd HH:mm:ss"
     }
 }.Init();</code></pre>

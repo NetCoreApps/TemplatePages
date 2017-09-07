@@ -162,7 +162,7 @@ foreach (var file in fs.GetAllMatchingFiles("*.html"))
 </p>
 
 <pre class="cs"><code>new PageResult(page) { 
-    Args { 
+    Args = { 
         ["myArg"] = "argValue",
     }
 }</code></pre>
@@ -174,7 +174,7 @@ foreach (var file in fs.GetAllMatchingFiles("*.html"))
 </p>
 
 <pre class="cs"><code>new PageResult(page) { 
-    TemplateFilters { new MyFilters() }
+    TemplateFilters = { new MyFilters() }
 }</code></pre>
 
 <h4>OutputTransformers</h4>
