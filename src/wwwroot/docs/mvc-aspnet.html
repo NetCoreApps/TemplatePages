@@ -10,14 +10,7 @@ order: 23
     you can use Constructor Injection to access the <em>ITemplatePages</em> dependency:
 </p>
 
-<pre class="cs"><code>public class HomeController : Controller
-{
-    ITemplatePages pages;
-    public HomeController(ITemplatePages pages) => this.pages = pages;
-
-    public Task&lt;MvcPageResult&gt; Index() =>
-        new PageResult(pages.GetPage("index")).ToMvcResultAsync();
-}</code></pre>
+{{ 'gfm/mvc-aspnet/01.md' | githubMarkdown }}
 
 <h4>ASP.NET MVC + Templates Demo</h4>
 

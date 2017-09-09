@@ -16,23 +16,7 @@ order: 4
 
 <h3>HTML Page Format</h3>
 
-<pre class="cs"><code>public class HtmlPageFormat : PageFormat
-{
-    public HtmlPageFormat()
-    {
-        ArgsPrefix = "&lt;!--";
-        ArgsSuffix = "--&gt;";
-        Extension = "html";
-        ContentType = MimeTypes.Html;
-        EncodeValue = HtmlEncodeValue;
-        ResolveLayout = HtmlResolveLayout;
-        OnExpressionException = HtmlExpressionException;
-    }
-    public static string HtmlEncodeValue(object value) { /*impl*/ }
-    public TemplatePage HtmlResolveLayout(TemplatePage page) { /*impl*/ }
-    public virtual object HtmlExpressionException(PageResult result, Exception ex) { /*impl*/ }
-    public static async Task<Stream> HtmlEncodeTransformer(Stream stream) { /*impl*/ }
-}</code></pre>
+{{ 'gfm/page-formats/01.md' | githubMarkdown }}
 
 <p>
     The <em>HtmlPageFormat</em> is used to specify: 
@@ -73,15 +57,7 @@ order: 4
     By contrast here is what the <em>MarkdownPageFormat</em> looks like which is able to use most of the default implementations:
 </p>
 
-<pre class="cs"><code>public class MarkdownPageFormat : PageFormat
-{
-    public MarkdownPageFormat()
-    {
-        Extension = "md";
-        ContentType = MimeTypes.MarkdownText;
-    }
-}
-</code></pre>
+{{ 'gfm/page-formats/02.md' | githubMarkdown }}
 
 <h3>Registering a new PageFormat</h3>
 
@@ -89,9 +65,7 @@ order: 4
     To register a new Page Format you just need to add it to the TemplateContext's PageFormat collection:
 </p>
 
-<pre class="cs"><code>var context = new TemplateContext { 
-    PageFormats = { new MarkdownPageFormat() }
-}.Init();</code></pre>
+{{ 'gfm/page-formats/03.md' | githubMarkdown }}
 
 <p>
     Which now lets you resolve pages with a <b>.md</b> file extension who will use the behavior defined in <em>MarkdownPageFormat</em>.

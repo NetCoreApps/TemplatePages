@@ -17,23 +17,7 @@ order: 27
     shown below that can be overridden by replacing their default value in the TemplateContext's <em>Args</em> collection:
 </p>
 
-<pre class="cs"><code>var context = new TemplateContext { 
-    Args = {
-        [TemplateConstants.MaxQuota] = 10000,
-        [TemplateConstants.DefaultCulture] = CultureInfo.CurrentCulture,
-        [TemplateConstants.DefaultDateFormat] = "yyyy-MM-dd",
-        [TemplateConstants.DefaultDateTimeFormat] = "u",
-        [TemplateConstants.DefaultTimeFormat] = "h\\:mm\\:ss",
-        [TemplateConstants.DefaultFileCacheExpiry] = TimeSpan.FromMinutes(1),
-        [TemplateConstants.DefaultUrlCacheExpiry] = TimeSpan.FromMinutes(1),
-        [TemplateConstants.DefaultIndent] = "\t",
-        [TemplateConstants.DefaultNewLine] = Environment.NewLine,
-        [TemplateConstants.DefaultJsConfig] = "excludetypeinfo",
-        [TemplateConstants.DefaultStringComparison] = StringComparison.Ordinal,
-        [TemplateConstants.DefaultTableClassName] = "table",
-        [TemplateConstants.DefaultErrorClassName] = "alert alert-danger",
-    }
-}.Init();</code></pre>
+{{ 'gfm/api-reference/01.md' | githubMarkdown }}
 
 <h4>Args</h4>
 
@@ -49,15 +33,7 @@ order: 27
     <em>VirtualFiles</em> collection from an external source, e.g:
 </p>
 
-<pre class="cs"><code>var fs = new FileSystemVirtualFiles("~/template-files".MapProjectPath());
-foreach (var file in fs.GetAllMatchingFiles("*.html"))
-{
-    if (!MyAllowFile(file)) continue;
-    using (var stream = file.OpenRead())
-    {
-        context.VirtualFiles.WriteFile(file.VirtualPath, stream);
-    }
-}</code></pre>
+{{ 'gfm/api-reference/02.md' | githubMarkdown }}
 
 <p>
     Alternatively if you want to enable access to an entire sub directory you can replace the Virtual Files with a 

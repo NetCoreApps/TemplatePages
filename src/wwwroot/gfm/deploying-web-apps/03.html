@@ -1,0 +1,14 @@
+<div class="gfm"><div class="highlight highlight-source-shell"><pre><span class="pl-c"><span class="pl-c">#!</span>/bin/bash</span>
+
+<span class="pl-c"><span class="pl-c">#</span> set environment variables used in deploy.sh and AWS task-definition.json:</span>
+<span class="pl-k">export</span> IMAGE_NAME=netcoreapps-rockwind-aws
+<span class="pl-k">export</span> IMAGE_VERSION=latest
+
+<span class="pl-k">export</span> AWS_DEFAULT_REGION=us-east-1
+<span class="pl-k">export</span> AWS_ECS_CLUSTER_NAME=default
+<span class="pl-k">export</span> AWS_VIRTUAL_HOST=rockwind-aws.web-app.io
+
+<span class="pl-c"><span class="pl-c">#</span> set any sensitive information in travis-ci encrypted project settings:</span>
+<span class="pl-c"><span class="pl-c">#</span> required: AWS_ACCOUNT_ID, AWS_ACCESS_KEY, AWS_SECRET_KEY</span>
+<span class="pl-c"><span class="pl-c">#</span> optional: SERVICESTACK_LICENSE</span></pre></div>
+</div>

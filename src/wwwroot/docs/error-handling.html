@@ -39,9 +39,7 @@ order: 15
     it's default is configured to:
 </p>
 
-<pre class="cs"><code>new TemplateContext = {
-    SkipExecutingFiltersIfError = true
-}</code></pre>
+{{ 'gfm/error-handling/01.md' | githubMarkdown }}
 
 <p>
     Which instead captures any unhandled Exceptions in <em>PageResult.LastFilterError</em> and continues rendering the page except
@@ -271,9 +269,7 @@ ensureAnyArgsNotEmpty:
     in the filter expression where they occured with:
 </p>
 
-<pre class="cs"><code>var context = new TemplateContext {
-    RenderExpressionExceptions = true
-}.Init();</code></pre>
+{{ 'gfm/error-handling/02.md' | githubMarkdown }}
     
 <p>
     The <em>OnExpressionException</em> can also suppress Exceptions from being displayed by capturing any naked Exception Types registered in 
@@ -300,35 +296,7 @@ ensureAnyArgsNotEmpty:
     <a href="https://github.com/ServiceStack/ServiceStack.OrmLite/blob/master/src/ServiceStack.OrmLite/TemplateDbFilters.cs">TemplateDbFilters</a>:
 </p>
 
-<pre class="cs">T exec<T>(Func<IDbConnection, T> fn, TemplateScopeContext scope, object options)
-{
-    try
-    {
-        using (var db = DbFactory.Open())
-        {
-            return fn(db);
-        }
-    }
-    catch (Exception ex)
-    {
-        throw new StopFilterExecutionException(scope, options, ex);
-    }
-}
-
-public object dbSelect(TemplateScopeContext scope, string sql, Dictionary<string, object> args) => 
-    exec(db => db.Select<Dictionary<string, object>>(sql, args), scope, null);
-
-public object dbSelect(TemplateScopeContext scope, string sql, Dictionary<string, object> args, object options) => 
-    exec(db => db.Select<Dictionary<string, object>>(sql, args), scope, options);
-
-
-public object dbSingle(TemplateScopeContext scope, string sql, Dictionary<string, object> args) =>
-    exec(db => db.Single<Dictionary<string, object>>(sql, args), scope, null);
-
-public object dbSingle(TemplateScopeContext scope, string sql, Dictionary<string, object> args, object options) =>
-    exec(db => db.Single<Dictionary<string, object>>(sql, args), scope, options);
-
-</pre>
+{{ 'gfm/error-handling/03.md' | githubMarkdown }}
 
 <p>
     The overloads are so the filters can be called without specifying any filter options.

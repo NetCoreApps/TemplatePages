@@ -1,0 +1,23 @@
+<div class="gfm"><div class="highlight highlight-text-html-basic"><pre>&lt;<span class="pl-ent">nav</span> <span class="pl-e">id</span>=<span class="pl-s"><span class="pl-pds">"</span>sidebar<span class="pl-pds">"</span></span>&gt;
+&lt;<span class="pl-ent">div</span> <span class="pl-e">class</span>=<span class="pl-s"><span class="pl-pds">"</span>inner<span class="pl-pds">"</span></span>&gt;
+
+&lt;<span class="pl-ent">ul</span>&gt;
+    &lt;<span class="pl-ent">li</span>&gt;
+        &lt;<span class="pl-ent">h5</span>&gt;docs&lt;/<span class="pl-ent">h5</span>&gt;
+    &lt;/<span class="pl-ent">li</span>&gt;
+    {{ docLinks | select: &lt;<span class="pl-ent">li</span> <span class="pl-e">class</span>=<span class="pl-s"><span class="pl-pds">"</span>{ 'active' | if(equals(it.Key, PathInfo)) }<span class="pl-pds">"</span></span>&gt;&lt;<span class="pl-ent">a</span> <span class="pl-e">href</span>=<span class="pl-s"><span class="pl-pds">"</span>{ it.Key }<span class="pl-pds">"</span></span>&gt;{ it.Value }&lt;/<span class="pl-ent">a</span>&gt;&lt;/<span class="pl-ent">li</span>&gt; }}
+
+    &lt;<span class="pl-ent">li</span>&gt;
+        &lt;<span class="pl-ent">h5</span>&gt;use cases&lt;/<span class="pl-ent">h5</span>&gt;
+    &lt;/<span class="pl-ent">li</span>&gt;
+    {{ useCaseLinks | select: &lt;<span class="pl-ent">li</span> <span class="pl-e">class</span>=<span class="pl-s"><span class="pl-pds">"</span>{ 'active' | if(equals(it.Key, PathInfo)) }<span class="pl-pds">"</span></span>&gt;&lt;<span class="pl-ent">a</span> <span class="pl-e">href</span>=<span class="pl-s"><span class="pl-pds">"</span>{ it.Key }<span class="pl-pds">"</span></span>&gt;{ it.Value }&lt;/<span class="pl-ent">a</span>&gt;&lt;/<span class="pl-ent">li</span>&gt; }}
+
+    &lt;<span class="pl-ent">li</span>&gt;
+        &lt;<span class="pl-ent">h5</span>&gt;linq examples&lt;/<span class="pl-ent">h5</span>&gt;
+    &lt;/<span class="pl-ent">li</span>&gt;
+    {{ linqLinks | select: &lt;<span class="pl-ent">li</span> <span class="pl-e">class</span>=<span class="pl-s"><span class="pl-pds">"</span>{ 'active' | if(equals(it.Key, PathInfo)) }<span class="pl-pds">"</span></span>&gt;&lt;<span class="pl-ent">a</span> <span class="pl-e">href</span>=<span class="pl-s"><span class="pl-pds">"</span>{ it.Key }<span class="pl-pds">"</span></span>&gt;{ it.Value }&lt;/<span class="pl-ent">a</span>&gt;&lt;/<span class="pl-ent">li</span>&gt; }}
+&lt;/<span class="pl-ent">ul</span>&gt;
+
+&lt;/<span class="pl-ent">div</span>&gt;
+&lt;/<span class="pl-ent">nav</span>&gt;</pre></div>
+</div>

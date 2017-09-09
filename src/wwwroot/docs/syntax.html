@@ -23,7 +23,7 @@ order: 3
     passed as the first argument to the filter which is implemented as:
 </p>
 
-<pre class="cs"><code>public string upper(string text) => text?.ToUpper();</code></pre>
+{{ 'gfm/syntax/01.md' | githubMarkdown }}
 
 <p>
     This can also be rewritten without the "pipe" symbol by calling the filter with an argument instead:
@@ -46,8 +46,7 @@ order: 3
     <em>padRight</em> default filters:
 </p>
 
-<pre class="cs"><code>public string substring(string text, int startIndex) => text.SafeSubstring(startIndex);
-public string padRight(string text, int totalWidth, char padChar) => text?.PadRight(totalWidth, padChar);</code></pre>
+{{ 'gfm/syntax/02.md' | githubMarkdown }}
 
 <h4 id="javascript-literals">JavaScript literal notation</h4>
 

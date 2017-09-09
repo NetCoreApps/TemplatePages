@@ -10,8 +10,7 @@ order: 13
     and register it in your IOC, e.g:
 </p>
 
-<pre class="cs"><code>container.AddSingleton&lt;IDbConnectionFactory&gt;(() => 
-    new OrmLiteConnectionFactory(connectionString, SqlServer2012Dialect.Provider));</code></pre>
+{{ 'gfm/db-filters/01.md' | githubMarkdown }}
 
 <p>
     Then to enable register either
@@ -21,11 +20,7 @@ order: 13
     to avoid the <i>pseudo async</i> overhead of wrapping synchronous results in <em>Task</em> results.
 </p>
 
-<pre class="cs"><code>var context = new TemplateContext { 
-    TemplateFilters = {
-        new TemplateDbFiltersAsync()
-    }
-}.Init();</code></pre>
+{{ 'gfm/db-filters/02.md' | githubMarkdown }}
 
 <p>
     Now your templates will have access to the <a href="/docs/filters-reference?tab=db-filters">available DB Filters</a>

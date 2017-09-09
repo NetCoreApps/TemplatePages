@@ -1,0 +1,18 @@
+<div class="gfm"><div class="highlight highlight-source-cs"><pre><span class="pl-k">var</span> <span class="pl-en">context </span>= <span class="pl-k">new</span> <span class="pl-en">TemplateContext</span>
+{
+    TemplateFilters = { <span class="pl-k">new</span> <span class="pl-en">TemplateProtectedFilters</span>() },
+    FilterTransformers =
+    {
+        [<span class="pl-s"><span class="pl-pds">"</span>markdown<span class="pl-pds">"</span></span>] = MarkdownPageFormat.TransformToHtml
+    }
+}.<span class="pl-en">Init</span>();
+
+<span class="pl-en">context.VirtualFiles.WriteFile</span>("doc.md", "## The Heading
+
+The Content");
+
+<span class="pl-en">context.VirtualFiles.WriteFile</span>("page.html", "
+&lt;div id="content"&gt;
+    {{ <span class="pl-s"><span class="pl-pds">'</span>doc.md<span class="pl-pds">'</span></span> | includeFile | markdown }}
+&lt;/div&gt;");</pre></div>
+</div>

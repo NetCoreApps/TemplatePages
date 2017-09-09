@@ -1,0 +1,12 @@
+<div class="gfm"><div class="highlight highlight-source-cs"><pre><span class="pl-en">container.Register</span>&lt;<span class="pl-en">IDbConnectionFactory</span>&gt;(c =&gt; 
+    <span class="pl-k">new</span> <span class="pl-en">OrmLiteConnectionFactory</span>(<span class="pl-s"><span class="pl-pds">"</span>:memory:<span class="pl-pds">"</span></span>, SqliteDialect.Provider));
+
+<span class="pl-k">using</span> (<span class="pl-en">var</span> db = <span class="pl-en">container.Resolve</span>&lt;<span class="pl-en">IDbConnectionFactory</span>&gt;()<span class="pl-en">.Open</span>())
+{
+    <span class="pl-en">db.CreateTable</span>&lt;<span class="pl-en">Order</span>&gt;();
+    <span class="pl-en">db.CreateTable</span>&lt;<span class="pl-en">Customer</span>&gt;();
+    <span class="pl-en">db.CreateTable</span>&lt;<span class="pl-en">Product</span>&gt;();
+    <span class="pl-en">TemplateQueryData.Customers.Each</span>(x =&gt; db.Save(x, references:<span class="pl-c1">true</span>));
+    <span class="pl-en">db.InsertAll</span>(TemplateQueryData.Products);
+}</pre></div>
+</div>

@@ -302,7 +302,7 @@ redis.connection localhost:6379</code></pre>
     API Page below:
 </p>
 
-<pre class="html"><code>{{ 'examples/api-customers.txt' | includeFile }}</code></pre>
+{{ 'gfm/api-pages/02.md' | githubMarkdown }}
 
 <p>
     Is all the code needed to generate the following API endpoints:
@@ -482,7 +482,7 @@ defaultFileCacheExpirySecs     60</code></pre>
     contains a good example containing a number of things to watch out for:
 </p>
 
-<pre class="tpl"><code>{{ 'examples/webapps-customer-db.html' | includeFile }}</code></pre>
+{{ 'gfm/web-apps/01.md' | githubMarkdown }}
 
 <p>
     Use <em>sqlConcat</em> to concatenate strings using the RDBMS-specific SQL for the configured database. Likewise
@@ -532,9 +532,7 @@ defaultFileCacheExpirySecs     60</code></pre>
     but then ServiceStack effectively becomes a proxy where it has to call the remote Storage Service for each requested download.
 </p>
 
-<pre class="html"><code>&lt;link rel="stylesheet" href="{{ pass: 'assets/css/bootstrap.css' | resolveAsset }}" /&gt;
-
-&lt;img src="{{ pass: 'splash.jpg' | resolveAsset }}" id="splash" alt="Dave Grohl" /&gt;</code></pre>
+{{ 'gfm/web-apps/02.md' | githubMarkdown }}
 
 <p>
     ServiceStack asynchronously writes each file to the Response Stream with the last <em>Last-Modified</em> HTTP Header to 
@@ -587,13 +585,7 @@ defaultFileCacheExpirySecs     60</code></pre>
     <a href="http://docs.servicestack.net/deploy-netcore-docker-aws-ecs">.NET Core Docker Deployment Guideline</a>:
 </p>
 
-<pre class="docker" style="overflow:hidden"><code>FROM microsoft/dotnet:2.0-sdk
-COPY web /web
-ADD https://raw.githubusercontent.com/NetCoreWebApps/Rockwind.Aws/master/app/web.settings /web/web.settings
-WORKDIR /web
-EXPOSE 5000/tcp
-ENV ASPNETCORE_URLS https://*:5000
-ENTRYPOINT ["dotnet", "/web/app.dll"]</code></pre>
+{{ 'gfm/web-apps/03.md' | githubMarkdown }}
 
 <h5><a href="https://github.com/NetCoreWebApps/Rockwind.Azure/blob/master/app/web.settings">Rockwind.Azure/web.settings</a></h5>
 
@@ -673,11 +665,7 @@ ValidationFeature { ScanAppHostAssemblies: true }
     populate the Plugin at registration, e.g the config above is equivalent to:
 </p>
 
-<pre class="cs"><code>Plugins.Add(new CustomPlugin { ShowProcessLinks = true });
-Plugins.Add(new OpenApiFeature());
-Plugins.Add(new PostmanFeature());
-Plugins.Add(new CorsFeature());
-Plugins.Add(new ValidationFeature { ScanAppHostAssemblies = true });</code></pre>
+{{ 'gfm/web-apps/04.md' | githubMarkdown }}
 
 <h4>Custom Plugin</h4>
 
@@ -687,30 +675,7 @@ Plugins.Add(new ValidationFeature { ScanAppHostAssemblies = true });</code></pre
     <a href="http://plugins.web-app.io/metadata">/metadata</a> Page:
 </p>
 
-<pre class="cs"><code>public class CustomPlugin : IPlugin
-{
-    public bool ShowDrivesLinks { get; set; } = true;
-    
-    public bool ShowProcessLinks { get; set; }
-
-    public void Register(IAppHost appHost)
-    {
-        if (ShowDrivesLinks)
-        {
-            var diskFormat = Env.IsWindows ? "NTFS" : "ext2";
-            appHost.GetPlugin&lt;MetadataFeature&gt;()
-                .AddPluginLink("/drives", "All Disks")
-                .AddPluginLink($"/drives?DriveFormatIn={diskFormat}", $"{diskFormat} Disks");
-        }
-
-        if (ShowProcessLinks)
-        {
-            appHost.GetPlugin&lt;MetadataFeature&gt;()
-                .AddPluginLink("/processes", "All Processes")
-                .AddPluginLink("/process/current", "Current Process");
-        }
-    }
-}</code></pre>
+{{ 'gfm/web-apps/05.md' | githubMarkdown }}
 
 <p>
     Where as it was first registered in the list will appear before any links registered by other plugins:
@@ -783,52 +748,7 @@ Plugins.Add(new ValidationFeature { ScanAppHostAssemblies = true });</code></pre
 
 <h4>Chat AppHost</h4>
 
-<pre class="cs"><code>public class Startup
-{
-    public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
-    {
-        loggerFactory.AddConsole();
-        var appSettings = new TextFileSettings("~/../../apps/chat/web.settings".MapProjectPath());
-        app.UseServiceStack(new AppHost(appSettings));
-    }
-}
-
-public class AppHost : AppHostBase
-{
-    public AppHost() : base("Chat Web App", typeof(ServerEventsServices).GetAssembly()) {}
-    public AppHost(IAppSettings appSettings) : this() => AppSettings = appSettings;
-
-    public override void Configure(Container container)
-    {
-        Plugins.AddIfNotExists(new TemplatePagesFeature()); //Already added if it's running as a Web App
-        
-        Plugins.Add(new ServerEventsFeature());
-
-        SetConfig(new HostConfig
-        {
-            DefaultContentType = MimeTypes.Json,
-            AllowSessionIdsInHttpParams = true,
-        });
-
-        this.CustomErrorHttpHandlers.Remove(HttpStatusCode.Forbidden);
-
-        //Register all Authentication methods you want to enable for this web app.            
-        Plugins.Add(new AuthFeature(
-            () => new AuthUserSession(),
-            new IAuthProvider[] {
-                new TwitterAuthProvider(AppSettings),   //Sign-in with Twitter
-                new FacebookAuthProvider(AppSettings),  //Sign-in with Facebook
-                new GithubAuthProvider(AppSettings),    //Sign-in with GitHub
-            }));
-
-        container.RegisterAutoWiredAs&lt;MemoryChatHistory, IChatHistory&gt;();
-
-        Plugins.Add(new CorsFeature(
-            allowOriginWhitelist: new[] { "http://localhost", "http://null.jsbin.com" },
-            allowCredentials: true,
-            allowedHeaders: "Content-Type, Allow, Authorization"));
-    }
-}</code></pre>
+{{ 'gfm/web-apps/06.md' | githubMarkdown }}
 
 <h5>Reusing Web App's web.setting and files</h5>
 

@@ -20,14 +20,7 @@ order: 18
     To enable Template Pages as a View Engine in ServiceStack you just need to register the <em>TemplatePagesFeature</em> plugin:
 </p>
 
-<pre>
-<code>
-    public void Configure(Container container)
-    {
-        Plugins.Add(new TemplatePagesFeature());
-    }
-</code>
-</pre>
+{{ 'gfm/view-engine/01.md' | githubMarkdown }}
 
 <p>
     <em>TemplatePagesFeature</em> is a subclass of <em>TemplateContext</em> which defines the context on which all ServiceStack 
@@ -51,7 +44,7 @@ order: 18
 
 <p>If preferred, you can change which <b>.html</b> extension gets handled by Template Pages with:</p>
 
-<pre><code>Plugins.Add(new TemplatePagesFeature { HtmlExtension = ".htm" });</code></pre>
+{{ 'gfm/view-engine/02.md' | githubMarkdown }}
 
 <h4 id="runs-everywhere">Runs Everywhere</h4>
 
@@ -128,19 +121,14 @@ order: 18
     a different layout in their pages metadata header, e.g:
 </p>
 
-<pre class="html"><code>&lt;!--
-layout: mobile-layout
---&gt;</code></pre>
+{{ 'gfm/view-engine/03.md' | githubMarkdown }}
 
 <p>
     Where it instead embed the page using the closest <b>mobile-layout.html</b> it can find, starting from the Page's directory.
     If your templates are instead embedded in the different folder you can request it directly from the root dir:
 </p>
 
-<pre class="html"><code>&lt;!--
-layout: templates/mobile-layout
---&gt;</code></pre>
-
+{{ 'gfm/view-engine/04.md' | githubMarkdown }}
 
 <h4>Pretty URLs by default</h4>
 
@@ -184,7 +172,7 @@ layout: templates/mobile-layout
     <a href="https://github.com/NetCoreApps/TemplatePages/blob/master/src/wwwroot/sidebar.html">sidebar.html</a>:
 </p>
 
-<pre class="tpl" style="overflow:hidden"><code>{{ "sidebar.html" | includeFile | htmlencode }}</code></pre>
+{{ 'gfm/view-engine/05.md' | githubMarkdown }}
 
 <h4>Forbidden Pages</h4>
 
@@ -199,26 +187,11 @@ layout: templates/mobile-layout
     You can ignore ServiceStack Templates from evaluating static <b>.html</b> files with the following page arguments:
 </p>
 
-<pre class="cs"><code>&lt;!--
-ignore: page
---&gt;
+{{ 'gfm/view-engine/06.md' | githubMarkdown }}
 
-Nothing in this page will be evaluated but will still be rendered inside the closest Layout.
-</code></pre>
+{{ 'gfm/view-engine/07.md' | githubMarkdown }}
 
-<pre class="cs"><code>&lt;!--
-ignore: template
---&gt;
-
-This page will not be evaluated nor will it have a Layout.
-</code></pre>
-
-<pre class="cs"><code>&lt;!--
-layout: none
---&gt;
-
-This page will be evaluated but rendered without a layout.
-</code></pre>
+{{ 'gfm/view-engine/08.md' | githubMarkdown }}
 
 <blockquote>
     Complete <b>.html</b> pages starting with <em>&lt;!DOCTYPE HTML&gt;</em> or <em>&lt;html</em> have their layouts ignored by default.

@@ -1,0 +1,5 @@
+<div class="gfm"><div class="highlight highlight-source-cs"><pre><span class="pl-k">var</span> <span class="pl-en">output </span>= <span class="pl-k">new</span> <span class="pl-en">PageResult</span>(<span class="pl-en">context.OneTimePage</span>("&lt;p&gt;{{ <span class="pl-s"><span class="pl-pds">'</span>hello<span class="pl-pds">'</span></span> | echo }}&lt;/p&gt;"))
+{
+    TemplateFilters = { <span class="pl-k">new</span> <span class="pl-en">MyFilter</span>() }
+}.<span class="pl-en">Result</span>;</pre></div>
+</div>

@@ -1,0 +1,9 @@
+<div class="gfm"><div class="highlight highlight-source-cs"><pre><span class="pl-k">var</span> <span class="pl-en">result </span>= <span class="pl-k">new</span> <span class="pl-en">PageResult</span>(<span class="pl-en">context.GetPage</span>("page")) 
+{
+    Args = { {<span class="pl-s"><span class="pl-pds">"</span>title<span class="pl-pds">"</span></span>, <span class="pl-s"><span class="pl-pds">"</span>The Title<span class="pl-pds">"</span></span>} },
+    ContentType = MimeTypes.Html,
+    OutputTransformers = { MarkdownPageFormat.TransformToHtml },
+};
+
+<span class="pl-k">var</span> <span class="pl-en">html </span>= <span class="pl-k">await</span> <span class="pl-en">result.RenderToStringAsync</span>();</pre></div>
+</div>

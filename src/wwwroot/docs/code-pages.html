@@ -41,7 +41,7 @@ order: 21
 
 <h4><a href="https://github.com/NetCoreApps/TemplatePages/blob/master/src/ProductsPage.cs">ProductsPage.cs</a></h4>
 
-<pre class="cs"><code>{{ "ProductsPage.cs" | includeContentFile | htmlencode }}</code></pre>
+{{ 'gfm/code-pages/01.md' | githubMarkdown }}
 
 <p>
     Where with just this implementation, it can now be called by navigating to its virtualPath: 
@@ -67,7 +67,7 @@ order: 21
 
 <h4><a href="https://github.com/NetCoreApps/TemplatePages/blob/master/src/ProductServices.cs">ProductServices.cs</a></h4>
 
-<pre class="cs"><code>{{ "ProductServices.cs" | includeContentFile | htmlencode }}</code></pre>
+{{ 'gfm/code-pages/02.md' | githubMarkdown }}
 
 <p>
     Which is viewable at the Services Route: 
@@ -87,14 +87,7 @@ order: 21
     and injecting the <em>IRequest</em> manually:
 </p>
 
-<pre class="cs"><code>public ITemplatePages Pages { get; set; }
-
-public object Any(ViewProducts request) 
-{
-    var codePage = Pages.GetCodePage("products");
-    (codePage as IRequiresRequest)?.Request = Request;
-    return new PageResult(codePage) { ... };
-}</code></pre>
+{{ 'gfm/code-pages/03.md' | githubMarkdown }}
 
 <h4>Code Pages as Partials</h4>
 
@@ -138,7 +131,7 @@ public object Any(ViewProducts request)
 
 <h4 id="code-page-partials"><a href="https://github.com/NetCoreApps/TemplatePages/blob/master/src/CodePagePartials.cs">CodePagePartials.cs</a></h4>
 
-<pre class="cs"><code>{{ "CodePagePartials.cs" | includeContentFile | htmlencode }}</code></pre>
+{{ 'gfm/code-pages/04.md' | githubMarkdown }}
 
 <p>
     The <em>customerCard</em> partial shows another example where Code Pages are useful where they're able to access any IOC 
@@ -167,7 +160,7 @@ public object Any(ViewProducts request)
     the <em>PathInfo</em> argument and <em>CustomerCardPartial</em> has direct access to the configured database:
 </p>
 
-<pre class="cs"><code>{{ "examples/servicestack-code-page.txt" | includeFile | htmlencode }}</code></pre>
+{{ 'gfm/code-pages/05.md' | githubMarkdown }}
 
 <p>
     Since they have access to the same functionality ServiceStack Services do, ServiceStackCodePage's can provide

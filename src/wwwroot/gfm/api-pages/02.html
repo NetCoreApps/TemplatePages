@@ -1,0 +1,17 @@
+<div class="gfm"><div class="highlight highlight-source-js"><pre>{{ limit <span class="pl-k">|</span> <span class="pl-en">default</span>(<span class="pl-c1">100</span>) <span class="pl-k">|</span> assignTo<span class="pl-k">:</span> limit }}
+
+{{ <span class="pl-s"><span class="pl-pds">'</span>select Id, CompanyName, ContactName, ContactTitle, City, Country from Customer<span class="pl-pds">'</span></span> <span class="pl-k">|</span> assignTo<span class="pl-k">:</span> sql }}
+
+{{ PathArgs <span class="pl-k">|</span> endIfEmpty <span class="pl-k">|</span> <span class="pl-en">useFmt</span>(<span class="pl-s"><span class="pl-pds">'</span>{0} where Id = @id<span class="pl-pds">'</span></span>, sql) 
+            <span class="pl-k">|</span> <span class="pl-en">dbSingle</span>({ id<span class="pl-k">:</span> PathArgs[<span class="pl-c1">0</span>] }) 
+            <span class="pl-k">|</span> <span class="pl-k">return</span> }}
+
+{{ id       <span class="pl-k">|</span> endIfEmpty <span class="pl-k">|</span> <span class="pl-en">use</span>(<span class="pl-s"><span class="pl-pds">'</span>Id = @id<span class="pl-pds">'</span></span>)           <span class="pl-k">|</span> addTo<span class="pl-k">:</span> filters }}
+{{ city     <span class="pl-k">|</span> endIfEmpty <span class="pl-k">|</span> <span class="pl-en">use</span>(<span class="pl-s"><span class="pl-pds">'</span>City = @city<span class="pl-pds">'</span></span>)       <span class="pl-k">|</span> addTo<span class="pl-k">:</span> filters }}
+{{ country  <span class="pl-k">|</span> endIfEmpty <span class="pl-k">|</span> <span class="pl-en">use</span>(<span class="pl-s"><span class="pl-pds">'</span>Country = @country<span class="pl-pds">'</span></span>) <span class="pl-k">|</span> addTo<span class="pl-k">:</span> filters }}
+{{ filters  <span class="pl-k">|</span> endIfEmpty <span class="pl-k">|</span> <span class="pl-en">useFmt</span>(<span class="pl-s"><span class="pl-pds">'</span>{0} where {1}<span class="pl-pds">'</span></span>, sql, <span class="pl-en">join</span>(filters, <span class="pl-s"><span class="pl-pds">'</span> and <span class="pl-pds">'</span></span>))     <span class="pl-k">|</span> assignTo<span class="pl-k">:</span> sql }}
+{{ sql      <span class="pl-k">|</span> <span class="pl-en">appendFmt</span>(<span class="pl-s"><span class="pl-pds">"</span> ORDER BY CompanyName {0}<span class="pl-pds">"</span></span>, <span class="pl-en">sqlLimit</span>(limit))               <span class="pl-k">|</span> assignTo<span class="pl-k">:</span> sql }}
+
+{{ sql      <span class="pl-k">|</span> <span class="pl-en">dbSelect</span>({ id, city, country }) 
+            <span class="pl-k">|</span> <span class="pl-k">return</span> }}</pre></div>
+</div>

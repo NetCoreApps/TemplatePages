@@ -1,0 +1,17 @@
+<div class="gfm"><div class="highlight highlight-source-cs"><pre><span class="pl-k">var</span> <span class="pl-en">context </span>= <span class="pl-k">new</span> <span class="pl-en">TemplateContext</span> {
+    PageFormats = { <span class="pl-k">new</span> <span class="pl-en">MarkdownPageFormat</span>() }
+}.<span class="pl-en">Init</span>();
+
+<span class="pl-en">context.VirtualFiles.WriteFile</span>("_layout.html", @"
+&lt;html&gt;
+  &lt;title&gt;{{ title }}&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+  {{ page }}
+&lt;/body&gt;");
+
+<span class="pl-en">context.VirtualFiles.WriteFile</span>("page.md",  @"
+## Transformers
+
+The Content");</pre></div>
+</div>

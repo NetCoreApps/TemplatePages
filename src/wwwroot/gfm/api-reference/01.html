@@ -1,0 +1,18 @@
+<div class="gfm"><div class="highlight highlight-source-cs"><pre><span class="pl-k">var</span> <span class="pl-en">context </span>= <span class="pl-k">new</span> <span class="pl-en">TemplateContext</span> { 
+    Args = {
+        [TemplateConstants.MaxQuota] = <span class="pl-c1">10000</span>,
+        [TemplateConstants.DefaultCulture] = CultureInfo.CurrentCulture,
+        [TemplateConstants.DefaultDateFormat] = <span class="pl-s"><span class="pl-pds">"</span>yyyy-MM-dd<span class="pl-pds">"</span></span>,
+        [TemplateConstants.DefaultDateTimeFormat] = <span class="pl-s"><span class="pl-pds">"</span>u<span class="pl-pds">"</span></span>,
+        [TemplateConstants.DefaultTimeFormat] = <span class="pl-s"><span class="pl-pds">"</span>h<span class="pl-cce">\\</span>:mm<span class="pl-cce">\\</span>:ss<span class="pl-pds">"</span></span>,
+        [TemplateConstants.DefaultFileCacheExpiry] = TimeSpan.FromMinutes(<span class="pl-c1">1</span>),
+        [TemplateConstants.DefaultUrlCacheExpiry] = TimeSpan.FromMinutes(<span class="pl-c1">1</span>),
+        [TemplateConstants.DefaultIndent] = <span class="pl-s"><span class="pl-pds">"</span><span class="pl-cce">\t</span><span class="pl-pds">"</span></span>,
+        [TemplateConstants.DefaultNewLine] = Environment.NewLine,
+        [TemplateConstants.DefaultJsConfig] = <span class="pl-s"><span class="pl-pds">"</span>excludetypeinfo<span class="pl-pds">"</span></span>,
+        [TemplateConstants.DefaultStringComparison] = StringComparison.Ordinal,
+        [TemplateConstants.DefaultTableClassName] = <span class="pl-s"><span class="pl-pds">"</span>table<span class="pl-pds">"</span></span>,
+        [TemplateConstants.DefaultErrorClassName] = <span class="pl-s"><span class="pl-pds">"</span>alert alert-danger<span class="pl-pds">"</span></span>,
+    }
+}.<span class="pl-en">Init</span>();</pre></div>
+</div>

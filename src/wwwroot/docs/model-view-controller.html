@@ -24,19 +24,13 @@ order: 20
 
 <h4><a href="https://github.com/NetCoreApps/TemplatePages/blob/master/src/CustomerServices.cs">CustomerServices.cs</a></h4>
 
-<pre class="cs"><code>{{ "CustomerServices.cs" | includeContentFile }}</code></pre>
+{{ 'gfm/model-view-controller/01.md' | githubMarkdown }}
 
 <p>
     The above can Service can also be made slightly shorter by using the <em>Request.GetPage()</em> extension method, e.g:
 </p>
 
-<pre class="cs"><code>public class CustomerServices : Service
-{
-    public object Any(ViewCustomer request) =>
-        new PageResult(Request.GetPage("examples/customer")) {
-            Model = TemplateQueryData.GetCustomer(request.Id)
-        };
-}</code></pre>
+{{ 'gfm/model-view-controller/02.md' | githubMarkdown }}
 
 <h5>Model PageResult Property</h5>
 
@@ -48,7 +42,7 @@ order: 20
 
 <h4><a href="https://github.com/NetCoreApps/TemplatePages/blob/master/src/wwwroot/examples/customer.html">examples/customer.html</a></h4>
 
-<pre class="tpl"><code>{{ "examples/customer.html" | includeFile | htmlencode }}</code></pre>
+{{ 'gfm/model-view-controller/03.md' | githubMarkdown }}
 
 <p>
     Now that we have the Service handling the Request and populating the Model for our page we can use it to view each Customer

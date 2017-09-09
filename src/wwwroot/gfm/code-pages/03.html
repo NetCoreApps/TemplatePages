@@ -1,0 +1,9 @@
+<div class="gfm"><div class="highlight highlight-source-cs"><pre><span class="pl-k">public</span> <span class="pl-en">ITemplatePages</span> Pages { <span class="pl-k">get</span>; <span class="pl-k">set</span>; }
+
+<span class="pl-k">public</span> <span class="pl-k">object </span>Any(ViewProducts request) 
+{
+    <span class="pl-k">var</span> <span class="pl-en">codePage </span>= Pages.GetCodePage(<span class="pl-s"><span class="pl-pds">"</span>products<span class="pl-pds">"</span></span>);
+    (codePage <span class="pl-k">as</span> <span class="pl-en">IRequiresRequest</span>)?.Request = Request;
+    <span class="pl-k">return</span> <span class="pl-k">new</span> <span class="pl-en">PageResult</span>(<span class="pl-en">codePage</span>) { ... };
+}</pre></div>
+</div>

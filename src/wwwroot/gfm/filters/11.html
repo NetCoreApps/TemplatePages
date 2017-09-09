@@ -1,0 +1,6 @@
+<div class="gfm"><div class="highlight highlight-source-cs"><pre><span class="pl-k">public</span> <span class="pl-k">object </span>assignTo(TemplateScopeContext scope, <span class="pl-k">object </span><span class="pl-k">value</span>, <span class="pl-k">string </span>argName) <span class="pl-c">//from filter</span>
+{
+    scope.ScopedParams[argName] = <span class="pl-k">value</span>;
+    <span class="pl-k">return</span> IgnoreResult.Value;
+}</pre></div>
+</div>

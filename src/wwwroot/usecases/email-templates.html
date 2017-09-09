@@ -89,7 +89,7 @@ $("FORM").ajaxPreview({
 
 <h4><a href="https://github.com/NetCoreApps/TemplatePages/blob/master/src/EmailTemplatesService.cs">EmailTemplatesService.cs</a></h4>
 
-<pre class="cs"><code>{{ "EmailTemplatesService.cs" | includeContentFile | htmlencode }}</code></pre>
+{{ 'gfm/email-templates/01.md' | githubMarkdown }}
 
 <p>
     The source code for this 
@@ -98,15 +98,7 @@ $("FORM").ajaxPreview({
     <a href="https://v4-alpha.getbootstrap.com/components/navs/#tabs">Bootstrap Tabs</a> that only uses this custom javascript:
 </p>
 
-<pre class="js"><code>&lt;script&gt;
-$("FORM").ajaxPreview({ 
-    success: function(r) {
-        $("#html-preview").html(r.htmlEmail);
-        $("#text-preview").html(r.textEmail);
-    } 
-})
-&lt;/script&gt;
-</code></pre>
+{{ 'gfm/email-templates/02.md' | githubMarkdown }}
 
 <p>
     Which calls the generic <em>ajaxPreview</em> jQuery plugin in 

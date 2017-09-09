@@ -71,7 +71,7 @@ $('form').ajaxPreview({
 
 <h4><a href="https://github.com/NetCoreApps/TemplatePages/blob/master/src/IntrospectStateServices.cs">IntrospectStateServices.cs</a></h4>
 
-<pre class="cs"><code>{{ "IntrospectStateServices.cs" | includeContentFile | htmlencode }}</code></pre>
+{{ 'gfm/introspect-state/01.md' | githubMarkdown }}
 
 <h4 id="client-ui">Client UI</h4>
 
@@ -81,15 +81,7 @@ $('form').ajaxPreview({
     we just used a FORM containing Bootstrap Tabs that only uses this custom javascript:
 </p>
 
-<pre class="js"><code>&lt;script&gt;
-$('form').ajaxPreview({ 
-    dataType: 'html',
-    success: function(r) {
-        $("#output").html(r);
-    } 
-})
-&lt;/script&gt;
-</code></pre>
+{{ 'gfm/introspect-state/02.md' | githubMarkdown }}
 
 <p>
     Which calls the generic <em>ajaxPreview</em> jQuery plugin in 
@@ -105,9 +97,7 @@ $('form').ajaxPreview({
     which can optionally be made available to everyone with:
 </p>
 
-<pre class="cs"><code>Plugins.Add(new TemplatePagesFeature { 
-    EnableDebugTemplateToAll = true
-})</code></pre>
+{{ 'gfm/introspect-state/03.md' | githubMarkdown }}
 
 <p>
     Which we've done in this App so you can inspect this Servers State from:

@@ -31,7 +31,7 @@ order: 24
     If you want to start from a clean slate, the default filters can be removed by clearing the <em>TemplateFilters</em> collection:
 </p>
 
-<pre><code>context.TemplateFilters.Clear();</code></pre>
+{{ 'gfm/sandbox/01.md' | githubMarkdown }}
 
 <h4 id="disable-filters">Disabling adhoc Filters</h4>
 
@@ -40,9 +40,7 @@ order: 24
     by adding to the <em>ExcludeFiltersNamed</em> collection:
 </p>
 
-<pre class="cs">var context = new TemplateContext {
-    ExcludeFiltersNamed = { "partial", "selectPartial" }
-}.Init();</pre>
+{{ 'gfm/sandbox/02.md' | githubMarkdown }}
 
 <blockquote>
     Filters can also be disabled on an individual <em>PageResult</em> by populating its <em>ExcludeFiltersNamed</em> collection.
@@ -57,10 +55,6 @@ order: 24
     that can generate instances are limited to a <em>MaxQuota</em> of <b>10000</b> iterations. This quota can be modified with:    
 </p>
 
-<pre class="cs">var context = new TemplateContext {
-    Args = {
-        [TemplateConstants.MaxQuota] = 1000
-    }
-}.Init();</pre>
+{{ 'gfm/sandbox/03.md' | githubMarkdown }}
 
 {{ "doc-links" | partial({ order }) }}

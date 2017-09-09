@@ -22,7 +22,7 @@ order: 6
     You can easily override default filters with the same name and arguments by inserting them at the start of the <em>TemplateFilters</em> list:
 </p>
 
-<pre><code>context.TemplateFilters.Insert(0, new MyTemplateFilters());</code></pre>
+{{ 'gfm/filters/01.md' | githubMarkdown }}
 
 <h5 id="removing">Removing Default Filters</h5>
 
@@ -30,7 +30,7 @@ order: 6
     Or if you want to start from a clean slate, the default filters can be removed by clearing the collection:
 </p>
 
-<pre><code>context.TemplateFilters.Clear();</code></pre>
+{{ 'gfm/filters/02.md' | githubMarkdown }}
 
 <h4>What are Filters?</h4>
 
@@ -38,16 +38,7 @@ order: 6
     Filters are just C# public instance methods from a class that inherits from <em>TemplateFilter</em>, e.g:
 </p>
 
-<pre class="cs"><code>class MyFilter : TemplateFilter
-{
-    public string echo(string text) => $"{text} {text}";
-    public double squared(double value) => value * value;
-    public string greetArg(string key) => $"Hello {Context.Args[key]}";
-            
-    public ICacheClient Cache { get; set; }
-    public string fromCache(string key) => Cache.Get<string>(key);
-}
-</code></pre>
+{{ 'gfm/filters/03.md' | githubMarkdown }}
 
 <h4 id="registering-filters">Registering Filters</h4>
 
@@ -61,19 +52,11 @@ order: 6
     Filters can be registered by adding them to the <em>context.TemplateFilters</em> collection directly:
 </p>
 
-<pre class="cs"><code>var context = new TemplateContext
-{
-    Args =
-    {
-        ["contextArg"] = "foo"
-    },
-    TemplateFilters = { new MyFilter() }
-}.Init();
-</code></pre>
+{{ 'gfm/filters/04.md' | githubMarkdown }}
 
 <p>That can now be called with:</p>
 
-<pre class="cs"><code>var output = context.EvaluateTemplate("&lt;p&gt;{{ pass: 'contextArg' | greetArg }}&lt;/p&gt;");</code></pre>
+{{ 'gfm/filters/05.md' | githubMarkdown }}
 
 <p>
     This is also shows that Filters are initialized and have access to the <em>TemplateContext</em> through the <em>Context</em> property.
@@ -85,11 +68,7 @@ order: 6
     If you only want to use a custom filter in a single Template, it can be registered on the <em>PageResult</em> that renders it instead:
 </p>
 
-<pre class="cs"><code>var output = new PageResult(context.OneTimePage("&lt;p&gt;{{ pass: 'hello' | echo }}&lt;/p&gt;"))
-{
-    TemplateFilters = { new MyFilter() }
-}.Result;
-</code></pre>
+{{ 'gfm/filters/06.md' | githubMarkdown }}
 
 <h5>Autowired using TemplateContext IOC</h5>
 
@@ -99,16 +78,7 @@ order: 6
     should be Autowired by either adding it to the <em>ScanTypes</em> collection:
 </p>
 
-<pre class="cs"><code>var context = new TemplateContext
-{
-    ScanTypes = { typeof(MyFilter) }
-};
-context.Container.AddSingleton<ICacheClient>(() => new MemoryCacheClient());
-context.Container.Resolve<ICacheClient>().Set("key", "foo");
-context.Init();
-
-var output = context.EvaluateTemplate("&lt;p&gt;{{ pass: 'key' | fromCache }}&lt;/p&gt;");
-</code></pre>
+{{ 'gfm/filters/07.md' | githubMarkdown }}
 
 <p>
     When the <em>TemplateContext</em> is initialized it will go through each Type and create an autowired instance of each Type
@@ -116,11 +86,7 @@ var output = context.EvaluateTemplate("&lt;p&gt;{{ pass: 'key' | fromCache }}&lt
     an entire Assembly, e.g:
 </p>
 
-<pre class="cs"><code>var context = new TemplateContext
-{
-    ScanAssemblies = { typeof(MyFilter).GetAssembly() }
-};
-</code></pre>
+{{ 'gfm/filters/08.md' | githubMarkdown }}
 
 <p>
     Where it will search each Type in the Assembly for Template Filters and automatically register them.
@@ -134,7 +100,7 @@ var output = context.EvaluateTemplate("&lt;p&gt;{{ pass: 'key' | fromCache }}&lt
     inserting your filters as the first item in the collection, e.g:
 </p>
 
-<pre class="cs"><code>context.TemplateFilters.Insert(0, new MyTemplateFilters());</code></pre>
+{{ 'gfm/filters/09.md' | githubMarkdown }}
 
 <h4>Auto coercion into Filter argument Types</h4>
 
@@ -147,7 +113,7 @@ var output = context.EvaluateTemplate("&lt;p&gt;{{ pass: 'key' | fromCache }}&lt
     Types and any Numeric Type into any other Numeric Type which is how, despite only accepting doubles: 
 </p>
 
-<pre class="cs"><code>double squared(double value) => value * value;</code></pre>
+{{ 'gfm/filters/10.md' | githubMarkdown }}
 
 <p>
     <em>squared</em> can also be used with any other .NET Numeric Type, e.g: <em>byte</em>, <em>int</em>, <em>long</em>, <em>decimal</em>, etc.
@@ -162,12 +128,7 @@ var output = context.EvaluateTemplate("&lt;p&gt;{{ pass: 'key' | fromCache }}&lt
     can be used to access arguments in the current scope or add new ones as done by the <em>assignTo</em> filter:
 </p>
 
-<pre class="cs"><code>public object assignTo(TemplateScopeContext scope, object value, string argName) //from filter
-{
-    scope.ScopedParams[argName] = value;
-    return IgnoreResult.Value;
-}
-</code></pre>
+{{ 'gfm/filters/11.md' | githubMarkdown }}
 
 <h4 id="block-filters">Block Filters</h4>
 
@@ -177,18 +138,7 @@ var output = context.EvaluateTemplate("&lt;p&gt;{{ pass: 'key' | fromCache }}&lt
     <em>TemplateScopeContext</em> OutputStream as seem with the implementation of the <em>includeFile</em> protected filter:
 </p>
 
-<pre class="cs"><code>public async Task includeFile(TemplateScopeContext scope, string virtualPath)
-{
-    var file = scope.Context.VirtualFiles.GetFile(virtualPath);
-    if (file == null)
-        throw new FileNotFoundException($"includeFile '{virtualPath}' was not found");
-
-    using (var reader = file.OpenRead())
-    {
-        await reader.CopyToAsync(scope.OutputStream);
-    }
-}
-</code></pre>
+{{ 'gfm/filters/12.md' | githubMarkdown }}
 
 <blockquote>
     For maximum performance all default filters which perform any I/O use Block filters to write directly to the OutputStream 

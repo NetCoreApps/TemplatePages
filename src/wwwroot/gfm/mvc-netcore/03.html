@@ -1,0 +1,27 @@
+<div class="gfm"><div class="highlight highlight-source-cs"><pre><span class="pl-k">public</span> <span class="pl-k">class</span> <span class="pl-en">Startup</span>
+{
+    <span class="pl-k">public</span> <span class="pl-k">void</span> <span class="pl-en">ConfigureServices</span>(<span class="pl-en">IServiceCollection</span> <span class="pl-smi">services</span>)
+    {
+        <span class="pl-k">var</span> <span class="pl-en">context </span>= <span class="pl-k">new</span> <span class="pl-en">TemplatePagesFeature</span>();
+        services.AddSingleton(context);
+        services.AddSingleton(context.Pages);
+    }
+
+    <span class="pl-k">public</span> <span class="pl-k">void</span> <span class="pl-en">Configure</span>(<span class="pl-en">IApplicationBuilder</span> <span class="pl-smi">app</span>)
+    {
+        app.UseServiceStack(<span class="pl-k">new</span> <span class="pl-en">AppHost</span>());
+    }
+}
+
+<span class="pl-k">public</span> <span class="pl-k">class</span> <span class="pl-en">MyServices</span> : <span class="pl-en">Service</span> {}
+
+<span class="pl-k">public</span> <span class="pl-k">class</span> <span class="pl-en">AppHost</span> : <span class="pl-en">AppHostBase</span>
+{
+    <span class="pl-k">public</span> <span class="pl-en">AppHost</span>() : <span class="pl-c1">base</span>("ServiceStack Template Pages", typeof(MyServices).<span class="pl-en">GetAssembly</span>()) {}
+
+    <span class="pl-k">public</span> <span class="pl-k">override</span> <span class="pl-k">void</span> <span class="pl-en">Configure</span>(<span class="pl-en">Container</span> <span class="pl-smi">container</span>)
+    {
+        Plugins.Add(container.Resolve&lt;TemplatePagesFeature&gt;());
+    }
+}</pre></div>
+</div>

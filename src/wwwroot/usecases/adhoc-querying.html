@@ -32,15 +32,7 @@ order: 6
     to your <em>TemplateContext</em> and register its required <em>IDbConnectionFactory</em> dependency in its IOC, e.g. for SQL Server:
 </p>
 
-<pre class="cs"><code>var context = new TemplateContext {
-    TemplateFilters = {
-        new TemplateDbFiltersAsync(),
-    }
-};
-context.Container.AddSingleton&lt;IDbConnectionFactory&gt;(() => new OrmLiteConnectionFactory(
-    connectionString, SqlServer2012Dialect.Provider));
-context.Init();
-</code></pre>
+{{ 'gfm/adhoc-querying/01.md' | githubMarkdown }}
 
 <blockquote>
     If using ServiceStack's <em>TemplatePagesFeature</em> it's Container has already been reassigned to use 
@@ -56,8 +48,7 @@ context.Init();
     ideally configure it to use a <b>Read Only</b> connection, e.g. for SQLite:
 </p>
 
-<pre class="cs"><code>container.Register&lt;IDbConnectionFactory&gt;(c => new OrmLiteConnectionFactory(
-    $"Data Source={filePath};Read Only=true", SqliteDialect.Provider));</code></pre>
+{{ 'gfm/adhoc-querying/02.md' | githubMarkdown }}
 
 <h4>Populating the database</h4>
 
@@ -67,6 +58,6 @@ context.Init();
     where it re-uses the LINQ data sources to create and populate an In Memory SQLite database on Startup:
 </p>
 
-<pre class="cs"><code>{{ "examples/adhoc-populate-db.txt" | includeFile | htmlencode }}</code></pre>
+{{ 'gfm/adhoc-querying/03.md' | githubMarkdown }}
 
 {{ "usecase-links" | partial({ order }) }}

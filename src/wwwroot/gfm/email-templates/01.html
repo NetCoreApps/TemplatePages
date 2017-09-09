@@ -1,0 +1,56 @@
+<div class="gfm"><div class="highlight highlight-source-cs"><pre><span class="pl-k">using</span> <span class="pl-en">System.Linq</span>;
+<span class="pl-k">using</span> <span class="pl-en">System.Collections.Generic</span>;
+<span class="pl-k">using</span> <span class="pl-en">ServiceStack</span>;
+<span class="pl-k">using</span> <span class="pl-en">ServiceStack.Templates</span>;
+<span class="pl-k">using</span> <span class="pl-en">ServiceStack.IO</span>;
+
+<span class="pl-k">namespace</span> <span class="pl-en">TemplatePages</span>
+{
+    [Route(<span class="pl-s"><span class="pl-pds">"</span>/emails/order-confirmation/preview<span class="pl-pds">"</span></span>)]
+    <span class="pl-k">public</span> <span class="pl-k">class</span> <span class="pl-en">PreviewHtmlEmail</span> : <span class="pl-en">IReturn</span>&lt;<span class="pl-en">PreviewHtmlEmailResponse</span>&gt;
+    {
+        <span class="pl-k">public </span><span class="pl-k">string</span> <span class="pl-en">EmailTemplate</span> { <span class="pl-k">get</span>; <span class="pl-k">set</span>; }
+        <span class="pl-k">public </span><span class="pl-k">string</span> <span class="pl-en">HtmlTemplate</span> { <span class="pl-k">get</span>; <span class="pl-k">set</span>; }
+        <span class="pl-k">public </span><span class="pl-k">string</span> <span class="pl-en">PreviewCustomerId</span> { <span class="pl-k">get</span>; <span class="pl-k">set</span>; }
+    }
+
+    <span class="pl-k">public</span> <span class="pl-k">class</span> <span class="pl-en">PreviewHtmlEmailResponse</span> 
+    {
+        <span class="pl-k">public </span><span class="pl-k">string</span> <span class="pl-en">HtmlEmail</span> { <span class="pl-k">get</span>; <span class="pl-k">set</span>; }
+        <span class="pl-k">public </span><span class="pl-k">string</span> <span class="pl-en">TextEmail</span> { <span class="pl-k">get</span>; <span class="pl-k">set</span>; }
+    }
+
+    <span class="pl-k">public</span> <span class="pl-k">class</span> <span class="pl-en">EmailTemplatesServices</span> : <span class="pl-en">Service</span>
+    {
+        <span class="pl-k">public </span><span class="pl-en">ICustomers</span> <span class="pl-en">Customers</span> { <span class="pl-k">get</span>; <span class="pl-k">set</span>; }
+
+        <span class="pl-k">public</span> <span class="pl-k">object</span> <span class="pl-en">Any</span>(<span class="pl-en">PreviewHtmlEmail</span> <span class="pl-smi">request</span>)
+        {
+            <span class="pl-k">var</span> <span class="pl-en">customer </span>= Customers.GetCustomer(request.PreviewCustomerId) 
+                ?? Customers.GetAllCustomers().First();
+
+            <span class="pl-k">var</span> <span class="pl-en">context </span>= <span class="pl-k">new</span> <span class="pl-en">TemplateContext</span> {
+                PageFormats = { <span class="pl-k">new</span> <span class="pl-en">MarkdownPageFormat</span>() },
+                Args = {
+                    [<span class="pl-s"><span class="pl-pds">"</span>customer<span class="pl-pds">"</span></span>] = customer,
+                    [<span class="pl-s"><span class="pl-pds">"</span>order<span class="pl-pds">"</span></span>] = customer.Orders.LastOrDefault(),
+                }
+            }.Init();
+
+            context.VirtualFiles.WriteFile(<span class="pl-s"><span class="pl-pds">"</span>email.md<span class="pl-pds">"</span></span>, request.EmailTemplate);
+            context.VirtualFiles.WriteFile(<span class="pl-s"><span class="pl-pds">"</span>layout.html<span class="pl-pds">"</span></span>, request.HtmlTemplate);
+
+            <span class="pl-k">var</span> <span class="pl-en">textEmail </span>= <span class="pl-k">new</span> <span class="pl-en">PageResult</span>(context.GetPage(<span class="pl-s"><span class="pl-pds">"</span>email<span class="pl-pds">"</span></span>)).Result;
+            <span class="pl-k">var</span> <span class="pl-en">htmlEmail </span>= <span class="pl-k">new</span> <span class="pl-en">PageResult</span>(context.GetPage(<span class="pl-s"><span class="pl-pds">"</span>email<span class="pl-pds">"</span></span>)) {
+                Layout = <span class="pl-s"><span class="pl-pds">"</span>layout<span class="pl-pds">"</span></span>,
+                PageTransformers = { MarkdownPageFormat.TransformToHtml }
+            }.Result;
+
+            <span class="pl-k">return</span> <span class="pl-k">new</span> <span class="pl-en">PreviewHtmlEmailResponse</span> {
+                TextEmail = textEmail,
+                HtmlEmail = htmlEmail,
+            };
+        }
+    }
+}</pre></div>
+</div>

@@ -9,23 +9,7 @@ order: 16
     of a Transformer which converts Markdown Input and returns a Stream of HTML output:
 </p>
 
-
-<pre class="cs"><code>public class MarkdownPageFormat : PageFormat
-{
-    private static readonly MarkdownSharp.Markdown markdown = new MarkdownSharp.Markdown();
-
-    public static async Task&lt;Stream&gt; TransformToHtml(Stream markdownStream)
-    {
-        using (var reader = new StreamReader(markdownStream))
-        {
-            var md = await reader.ReadToEndAsync();
-            var html = markdown.Transform(md);
-            return MemoryStreamFactory.GetStream(html.ToUtf8Bytes());
-        }
-    }
-}
-</code></pre>
-
+{{ 'gfm/transformers/01.md' | githubMarkdown }}
 
 <h4 id="output-transformers">Output Transformers</h4>
 
@@ -34,32 +18,11 @@ order: 16
     and <b>page</b> both contain markdown, e.g:
 </p>
 
-<pre class="cs"><code>var context = new TemplateContext {
-    PageFormats = { new MarkdownPageFormat() }
-}.Init();
-
-context.VirtualFiles.WriteFile("_layout.md", @"
-The Header
-
-{{ pass: page }}");
-
-context.VirtualFiles.WriteFile("page.md",  @"
-## {{ pass: title }}
-
-The Content");
-</code></pre>
+{{ 'gfm/transformers/02.md' | githubMarkdown }}
 
 <h5>PageResult with Output Transformer</h5>
 
-<pre class="cs"><code>var result = new PageResult(context.GetPage("page")) 
-{
-    Args = { {"title", "The Title"} },
-    ContentType = MimeTypes.Html,
-    OutputTransformers = { MarkdownPageFormat.TransformToHtml },
-};
-
-var html = await result.RenderToStringAsync();
-</code></pre>
+{{ 'gfm/transformers/03.md' | githubMarkdown }}
 
 <p>
     After the Template is evaluated it's entire output gets passed into the chain of OutputTransformers defined, which in this case will
@@ -74,35 +37,11 @@ var html = await result.RenderToStringAsync();
     Markdown and the <b>_layout</b> was already in HTML, e.g:
 </p>
 
-<pre class="cs"><code>var context = new TemplateContext {
-    PageFormats = { new MarkdownPageFormat() }
-}.Init();
-
-context.VirtualFiles.WriteFile("_layout.html", @"
-&lt;html&gt;
-  &lt;title&gt;{{ pass: title }}&lt;/title&gt;
-&lt;/head&gt;
-&lt;body&gt;
-  {{ pass: page }}
-&lt;/body&gt;");
-
-context.VirtualFiles.WriteFile("page.md",  @"
-## {{ title }}
-
-The Content");
-</code></pre>
+{{ 'gfm/transformers/04.md' | githubMarkdown }}
 
 <h5>PageResult with Page Transformer</h5>
 
-<pre class="cs"><code>var result = new PageResult(context.GetPage("page")) 
-{
-    Args = { {"title", "The Title"} },
-    ContentType = MimeTypes.Html,
-    PageTransformers = { MarkdownPageFormat.TransformToHtml },
-};
-
-var html = await result.RenderToStringAsync();
-</code></pre>
+{{ 'gfm/transformers/05.md' | githubMarkdown }}
 
 <h4 id="filter-transformers">Filter Transformers</h4>
 
@@ -113,28 +52,11 @@ var html = await result.RenderToStringAsync();
     your Templates under, e.g:
 </p>
 
-<pre class="cs"><code>var context = new TemplateContext
-{
-    TemplateFilters = { new TemplateProtectedFilters() },
-    FilterTransformers =
-    {
-        ["markdown"] = MarkdownPageFormat.TransformToHtml
-    }
-}.Init();
-
-context.VirtualFiles.WriteFile("doc.md", "## The Heading
-
-The Content");
-
-context.VirtualFiles.WriteFile("page.html", "
-&lt;div id="content"&gt;
-    {{ pass: 'doc.md' | includeFile | markdown }}
-&lt;/div&gt;");
-</code></pre>
+{{ 'gfm/transformers/06.md' | githubMarkdown }}
 
 <h5>PageResult with Filter Transformer</h5>
 
-<pre class="cs"><code>var html = new PageResult(context.GetPage("page")).Result;</code></pre>
+{{ 'gfm/transformers/07.md' | githubMarkdown }}
 
 <h4 id="htmlencode">htmlencode</h4>
 

@@ -1,0 +1,4 @@
+<div class="gfm"><div class="highlight highlight-source-js"><pre>{{ <span class="pl-s"><span class="pl-pds">'</span>select url from quote where id= @id<span class="pl-pds">'</span></span> <span class="pl-k">|</span> <span class="pl-en">dbScalar</span>({ id }) <span class="pl-k">|</span> urlContents <span class="pl-k">|</span> markdown <span class="pl-k">|</span> assignTo<span class="pl-k">:</span> quote }}
+
+{{ quote <span class="pl-k">|</span> <span class="pl-en">replace</span>(<span class="pl-s"><span class="pl-pds">'</span>Razor<span class="pl-pds">'</span></span>, <span class="pl-s"><span class="pl-pds">'</span>Templates<span class="pl-pds">'</span></span>) <span class="pl-k">|</span> <span class="pl-en">replace</span>(<span class="pl-s"><span class="pl-pds">'</span>2010<span class="pl-pds">'</span></span>, <span class="pl-smi">now</span>.<span class="pl-smi">Year</span>) <span class="pl-k">|</span> raw }}</pre></div>
+</div>

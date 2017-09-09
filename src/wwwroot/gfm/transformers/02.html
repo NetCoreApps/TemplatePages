@@ -1,0 +1,14 @@
+<div class="gfm"><div class="highlight highlight-source-cs"><pre><span class="pl-k">var</span> <span class="pl-en">context </span>= <span class="pl-k">new</span> <span class="pl-en">TemplateContext</span> {
+    PageFormats = { <span class="pl-k">new</span> <span class="pl-en">MarkdownPageFormat</span>() }
+}.<span class="pl-en">Init</span>();
+
+<span class="pl-en">context.VirtualFiles.WriteFile</span>("_layout.md", @"
+The Header
+
+{{ page }}<span class="pl-s"><span class="pl-pds">"</span>);</span>
+<span class="pl-s"></span>
+<span class="pl-s">context.VirtualFiles.WriteFile(<span class="pl-pds">"</span></span><span class="pl-en">page.md</span>",  @"
+## {{ title }}
+
+<span class="pl-en">The</span> Content");</pre></div>
+</div>

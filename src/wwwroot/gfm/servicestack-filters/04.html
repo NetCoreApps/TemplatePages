@@ -1,0 +1,41 @@
+<div class="gfm"><div class="highlight highlight-source-cs"><pre><span class="pl-k">public</span> <span class="pl-k">class</span> <span class="pl-en">QueryGitHubRepos</span> : <span class="pl-en">QueryDatao</span>&lt;<span class="pl-en">GithubRepo</span>&gt;
+{
+    <span class="pl-k">public </span><span class="pl-k">string</span> <span class="pl-en">UserName</span> { <span class="pl-k">get</span>; <span class="pl-k">set</span>; }
+}
+
+<span class="pl-k">public</span> <span class="pl-k">class</span> <span class="pl-en">GetGithubRepos</span> : <span class="pl-en">IReturn</span>&lt;<span class="pl-en">List</span>&lt;<span class="pl-en">GithubRepo</span>&gt;<span class="pl-k">&gt;</span>
+{
+    <span class="pl-k">public </span><span class="pl-k">string</span> <span class="pl-en">UserName</span> { <span class="pl-k">get</span>; <span class="pl-k">set</span>; }
+}
+
+<span class="pl-k">public</span> <span class="pl-k">class</span> <span class="pl-en">AutoDataQueryServices</span> : <span class="pl-en">Service</span>
+{
+    <span class="pl-k">public</span> <span class="pl-k">object</span> <span class="pl-en">Any</span>(<span class="pl-en">GetGithubRepos</span> <span class="pl-smi">request</span>)
+    {
+        <span class="pl-k">var</span> <span class="pl-en">map </span>= <span class="pl-k">new</span> <span class="pl-en">Dictionary</span>&lt;<span class="pl-k">int</span>, GithubRepo&gt;();
+        GetUserRepos(request.UserName).Each(x =&gt; map[x.Id] = x);
+        GetOrgRepos(request.UserName).Each(x =&gt; map[x.Id] = x);
+        GetUserOrgs(request.UserName).Each(org =&gt;
+            GetOrgRepos(org.Login)
+                .Each(repo =&gt; map[repo.Id] = repo));
+
+        <span class="pl-k">return</span> map.Values.ToList();
+    }
+
+    <span class="pl-k">public</span> <span class="pl-en">List</span>&lt;<span class="pl-en">GithubOrg</span>&gt; <span class="pl-en">GetUserOrgs</span>(<span class="pl-k">string</span> <span class="pl-smi">githubUsername</span>) =&gt; 
+        GetJson&lt;List&lt;GithubOrg&gt;&gt;(<span class="pl-pds">$"</span><span class="pl-s">users/</span>{githubUsername}<span class="pl-s">/orgs</span><span class="pl-pds">"</span>);
+    <span class="pl-k">public</span> <span class="pl-en">List</span>&lt;<span class="pl-en">GithubRepo</span>&gt; <span class="pl-en">GetUserRepos</span>(<span class="pl-k">string</span> <span class="pl-smi">githubUsername</span>) =&gt; 
+        GetJson&lt;List&lt;GithubRepo&gt;&gt;(<span class="pl-pds">$"</span><span class="pl-s">users/</span>{githubUsername}<span class="pl-s">/repos</span><span class="pl-pds">"</span>);
+    <span class="pl-k">public</span> <span class="pl-en">List</span>&lt;<span class="pl-en">GithubRepo</span>&gt; <span class="pl-en">GetOrgRepos</span>(<span class="pl-k">string</span> <span class="pl-smi">githubOrgName</span>) =&gt; 
+        GetJson&lt;List&lt;GithubRepo&gt;&gt;(<span class="pl-pds">$"</span><span class="pl-s">orgs/</span>{githubOrgName}<span class="pl-s">/repos</span><span class="pl-pds">"</span>);
+
+    <span class="pl-k">public</span> <span class="pl-en">T</span> <span class="pl-en">GetJson</span>&lt;<span class="pl-en">T</span>&gt;(<span class="pl-k">string</span> <span class="pl-smi">route</span>) 
+    {
+        <span class="pl-k">try</span> {
+            <span class="pl-k">return</span> <span class="pl-s"><span class="pl-pds">"</span>https://api.github.com<span class="pl-pds">"</span></span>.CombineWith(route)
+                .GetJsonFromUrl(requestFilter: req =&gt; req.UserAgent = <span class="pl-k">nameof</span>(<span class="pl-en">AutoDataQueryServices</span>))
+                .FromJson&lt;T&gt;();
+        } <span class="pl-k">catch</span>(<span class="pl-en">Exception</span>) { <span class="pl-k">return</span> <span class="pl-k">default</span>(<span class="pl-en">T</span>); }
+    }
+}</pre></div>
+</div>

@@ -10,9 +10,7 @@ order: 11
     are pre-registered in ServiceStack's <em>TemplatePagesFeature</em>. You can make them available in a <em>TemplateContext</em> with:
 </p>
 
-<pre class="cs"><code>var context = new TemplatePagesFeature {
-    TemplateFilters = { new TemplateInfoFilters() }
-}.Init();</code></pre>
+{{ 'gfm/info-filters/01.md' | githubMarkdown }}
 
 <h4>Info Filters</h4>
 
@@ -144,16 +142,14 @@ order: 11
     The Service can also be available when not in <b>DebugMode</b> by enabling it with:
 </p>
 
-<pre class="cs"><code>Plugins.Add(new TemplatePagesFeature { 
-    EnableDebugTemplate = true
-})</code></pre>
+{{ 'gfm/info-filters/02.md' | githubMarkdown }}
 
 <p>
     This registers the Service but limits it to Users with the <em>Admin</em> role, alternatively you configure an 
     <a href="http://docs.servicestack.net/debugging#authsecret">Admin Secret Key</a>:
 </p>
 
-<pre class="cs"><code>SetConfig(new HostConfig { AdminAuthSecret = "secret" })</code></pre>
+{{ 'gfm/info-filters/03.md' | githubMarkdown }}
 
 <p>
     Which will let you access it by appending the authsecret to the querystring: 
@@ -164,9 +160,7 @@ order: 11
     Alternatively if preferred you can make the Debug Template Service available to all users with:
 </p>
 
-<pre class="cs"><code>Plugins.Add(new TemplatePagesFeature { 
-    EnableDebugTemplateToAll = true
-})</code></pre>
+{{ 'gfm/info-filters/04.md' | githubMarkdown }}
 
 <p>
     Which is the configuration used in this .NET Core App which makes the Debug Template Service accessible to everyone:

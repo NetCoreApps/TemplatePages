@@ -1,0 +1,31 @@
+<div class="gfm"><div class="highlight highlight-text-html-basic"><pre><span class="pl-c"><span class="pl-c">&lt;!--</span></span>
+<span class="pl-c">title: Customer Details</span>
+<span class="pl-c"><span class="pl-c">--&gt;</span></span>
+
+&lt;<span class="pl-ent">h2</span>&gt;{{ CompanyName }}&lt;/<span class="pl-ent">h2</span>&gt;
+
+&lt;<span class="pl-ent">table</span> <span class="pl-e">class</span>=<span class="pl-s"><span class="pl-pds">"</span>table table-bordered<span class="pl-pds">"</span></span>&gt;
+    &lt;<span class="pl-ent">tr</span>&gt;
+        &lt;<span class="pl-ent">th</span>&gt;Address&lt;/<span class="pl-ent">th</span>&gt;
+        &lt;<span class="pl-ent">td</span>&gt;
+            {{ Address }} 
+            {{ City }}, {{ PostalCode }}, {{ Country }}            
+        &lt;/<span class="pl-ent">td</span>&gt;
+    &lt;/<span class="pl-ent">tr</span>&gt;
+    &lt;<span class="pl-ent">tr</span>&gt;
+        &lt;<span class="pl-ent">th</span>&gt;Phone&lt;/<span class="pl-ent">th</span>&gt;
+        &lt;<span class="pl-ent">td</span>&gt;{{ Phone }}&lt;/<span class="pl-ent">td</span>&gt;
+    &lt;/<span class="pl-ent">tr</span>&gt;
+    &lt;<span class="pl-ent">tr</span>&gt;
+        &lt;<span class="pl-ent">th</span>&gt;Fax&lt;/<span class="pl-ent">th</span>&gt;
+        &lt;<span class="pl-ent">td</span>&gt;{{ Fax }}&lt;/<span class="pl-ent">td</span>&gt;
+    &lt;/<span class="pl-ent">tr</span>&gt;
+&lt;/<span class="pl-ent">table</span>&gt;
+
+&lt;<span class="pl-ent">h4</span>&gt;{{ CompanyName }}'s Orders&lt;/<span class="pl-ent">h4</span>&gt;
+
+&lt;<span class="pl-ent">table</span> <span class="pl-e">class</span>=<span class="pl-s"><span class="pl-pds">"</span>table <span class="pl-pds">"</span></span>&gt;
+{{ Orders 
+   | select: &lt;<span class="pl-ent">tr</span>&gt;&lt;<span class="pl-ent">td</span>&gt;{ it.OrderId }&lt;/<span class="pl-ent">td</span>&gt;&lt;<span class="pl-ent">td</span>&gt;{ it.OrderDate }&lt;/<span class="pl-ent">td</span>&gt;&lt;<span class="pl-ent">td</span>&gt;{ it.Total | currency }&lt;/<span class="pl-ent">td</span>&gt;&lt;/<span class="pl-ent">tr</span>&gt; }}
+&lt;/<span class="pl-ent">table</span>&gt;</pre></div>
+</div>

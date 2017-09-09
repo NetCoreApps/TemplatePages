@@ -113,14 +113,14 @@ order: 2
     To render the pages we first create and initialize a <em>TemplateContext</em>
 </p>
 
-<pre><code>var context = new TemplateContext().Init();</code></pre>
+{{ 'gfm/introduction/01.md' | githubMarkdown }}
 
 <p>
     The TemplateContext is the sandbox where all templates are executed within, everything your templates have access to and generates 
     is maintained within the TemplateContext. Once initialize you can start using it to evaluate templates which you can do with just:
 </p>
 
-<pre class="cs"><code>var output = context.EvaluateTemplate("{{ pass: 12.34 | currency }}");</code></pre>
+{{ 'gfm/introduction/02.md' | githubMarkdown }}
 
 <p>
     Templates only have access to filters and arguments defined within its Context, which for an empty Context are the comprehensive
@@ -133,34 +133,32 @@ order: 2
     File System by default that we can programmatically populate:
 </p>
 
-<pre><code>context.VirtualFiles.Write("_layout.html", "I am the Layout: &lt;b&gt;{{ pass: page }}&lt;/b&gt;");
-context.VirtualFiles.Write("page.html", "I am the Page");
-</code></pre>
+{{ 'gfm/introduction/03.md' | githubMarkdown }}
     
 <p>
     Templates are rendered using a <em>PageResult</em> essentially a rendering context that needs to be provided the Page to render:
 </p>
 
-<pre><code>var pageResult = new PageResult(context.GetPage("page"));</code></pre>
+{{ 'gfm/introduction/04.md' | githubMarkdown }}
 
 <p>
     The template output can then be asynchronously rendered to any Stream:
 </p>
 
-<pre><code>await pageResult.WriteToAsync(responseStream);</code></pre>
+{{ 'gfm/introduction/05.md' | githubMarkdown }}
 
 <p>
     Or to access the output as a string you can use the convenience extension method:
 </p>
 
-<pre><code>string output = await pageResult.RenderToStringAsync();</code></pre>
+{{ 'gfm/introduction/06.md' | githubMarkdown }}
 
 <p>
     All I/O within Templates is non-blocking, but if you're evaluating an adhoc template or using the default In Memory Virtual FileSystem 
     there's no I/O so you can safely block to get the generated output with:
 </p>
 
-<pre><code>string output = pageResult.Result;</code></pre>
+{{ 'gfm/introduction/07.md' | githubMarkdown }}
 
 <p>
     Both APIs returns the result you see in the Live Example above.
@@ -188,7 +186,7 @@ context.VirtualFiles.Write("page.html", "I am the Page");
     As an example let's analyze the Template below:
 </p>
 
-<pre class="cs"><code>{{ 'examples/quote.html' | includeFile }}</code></pre>
+{{ 'gfm/introduction/08.md' | githubMarkdown }}
 
 <p>
     The intent of Template code should be clear even if it's the first time reading it. From left-to-right we can deduce that it

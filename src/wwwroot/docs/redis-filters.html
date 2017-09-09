@@ -11,18 +11,14 @@ order: 14
     in the IOC:
 </p>
 
-<pre class="cs"><code>container.AddSingleton&lt;IRedisClientsManager&gt;(() => new RedisManagerPool(connString));</code></pre>
+{{ 'gfm/redis-filters/01.md' | githubMarkdown }}
 
 <p>
     Then to enable in templates register 
     <a href="https://github.com/ServiceStack/ServiceStack.Redis/blob/master/src/ServiceStack.Redis/TemplateRedisFilters.cs">TemplateRedisFilters</a>:
 </p>
 
-<pre class="cs"><code>var context = new TemplateContext { 
-    TemplateFilters = {
-        new TemplateRedisFilters()
-    }
-}.Init();</code></pre>
+{{ 'gfm/redis-filters/02.md' | githubMarkdown }}
 
 <p>
     Your templates are now able to use the <a href="/docs/filters-reference?tab=redis-filters">available Redis Filters</a>.
@@ -65,13 +61,7 @@ order: 14
     to populate the results with metadata. Results are returned in a typed <em>List&lt;RedisSearchResult&gt;</em>:
 </p>
 
-<pre class="cs"><code>public class RedisSearchResult
-{
-    public string Id { get; set; }
-    public string Type { get; set; }
-    public long Ttl { get; set; }
-    public long Size { get; set; }
-}</code></pre>
+{{ 'gfm/redis-filters/03.md' | githubMarkdown }}
 
 <h4 id="redisSearchKeysAsJson">redisSearchKeysAsJson</h4>
 

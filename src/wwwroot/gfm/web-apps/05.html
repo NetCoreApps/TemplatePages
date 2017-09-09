@@ -1,0 +1,25 @@
+<div class="gfm"><div class="highlight highlight-source-cs"><pre><span class="pl-k">public</span> <span class="pl-k">class</span> <span class="pl-en">CustomPlugin</span> : <span class="pl-en">IPlugin</span>
+{
+    <span class="pl-k">public </span><span class="pl-k">bool</span> <span class="pl-en">ShowDrivesLinks</span> { <span class="pl-k">get</span>; <span class="pl-k">set</span>; } = <span class="pl-c1">true</span>;
+    
+    <span class="pl-k">public </span><span class="pl-k">bool</span> <span class="pl-en">ShowProcessLinks</span> { <span class="pl-k">get</span>; <span class="pl-k">set</span>; }
+
+    <span class="pl-k">public</span> <span class="pl-k">void</span> <span class="pl-en">Register</span>(<span class="pl-en">IAppHost</span> <span class="pl-smi">appHost</span>)
+    {
+        <span class="pl-k">if</span> (<span class="pl-en">ShowDrivesLinks</span>)
+        {
+            <span class="pl-k">var</span> <span class="pl-en">diskFormat </span>= Env.IsWindows ? <span class="pl-s"><span class="pl-pds">"</span>NTFS<span class="pl-pds">"</span></span> : <span class="pl-s"><span class="pl-pds">"</span>ext2<span class="pl-pds">"</span></span>;
+            appHost.GetPlugin&lt;MetadataFeature&gt;()
+                .AddPluginLink(<span class="pl-s"><span class="pl-pds">"</span>/drives<span class="pl-pds">"</span></span>, <span class="pl-s"><span class="pl-pds">"</span>All Disks<span class="pl-pds">"</span></span>)
+                .AddPluginLink(<span class="pl-pds">$"</span><span class="pl-s">/drives?DriveFormatIn=</span>{diskFormat}<span class="pl-pds">"</span>, <span class="pl-pds">$"</span>{diskFormat}<span class="pl-s"> Disks</span><span class="pl-pds">"</span>);
+        }
+
+        <span class="pl-k">if</span> (<span class="pl-en">ShowProcessLinks</span>)
+        {
+            appHost.GetPlugin&lt;MetadataFeature&gt;()
+                .AddPluginLink(<span class="pl-s"><span class="pl-pds">"</span>/processes<span class="pl-pds">"</span></span>, <span class="pl-s"><span class="pl-pds">"</span>All Processes<span class="pl-pds">"</span></span>)
+                .AddPluginLink(<span class="pl-s"><span class="pl-pds">"</span>/process/current<span class="pl-pds">"</span></span>, <span class="pl-s"><span class="pl-pds">"</span>Current Process<span class="pl-pds">"</span></span>);
+        }
+    }
+}</pre></div>
+</div>

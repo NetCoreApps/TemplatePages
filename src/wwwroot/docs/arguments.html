@@ -15,11 +15,7 @@ order: 5
     Essentially this can be thought of as where global variables are maintained, anything defined here is available to every template, partial, filter, etc:
 </p>
 
-<pre><code>var context = new TemplateContext { 
-    Args = {
-        ["arg"] = 1
-    }
-}.Init();</code></pre>
+{{ 'gfm/arguments/01.md' | githubMarkdown }}
 
 <h4>Page Arguments</h4>
 
@@ -60,11 +56,7 @@ page arg: <b>{{ arg }}</b>'
     Arguments can also be defined in the <em>PageResult</em> context that renders the page, this takes precedence over the above:
 </p>
 
-<pre><code>var context = new PageResult(context.GetPage("page")) { 
-    Args = {
-        ["arg"] = 4
-    }
-};</code></pre>
+{{ 'gfm/arguments/02.md' | githubMarkdown }}
 
 <h4>Scoped Arguments</h4>
 

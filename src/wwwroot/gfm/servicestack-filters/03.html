@@ -1,0 +1,5 @@
+<div class="gfm"><div class="highlight highlight-source-cs"><pre><span class="pl-en">Plugins.Add</span>(new AutoQueryDataFeature { MaxLimit = <span class="pl-c1">100</span> }
+    .<span class="pl-en">AddDataSource</span>(ctx =&gt; ctx.ServiceSource&lt;GithubRepo&gt;(ctx.Dto.ConvertTo&lt;GetGithubRepos&gt;(), 
+        HostContext.Cache, TimeSpan.FromMinutes(<span class="pl-c1">10</span>)))
+);</pre></div>
+</div>

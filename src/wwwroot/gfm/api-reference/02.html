@@ -1,0 +1,10 @@
+<div class="gfm"><div class="highlight highlight-source-cs"><pre><span class="pl-k">var</span> <span class="pl-en">fs </span>= <span class="pl-k">new</span> <span class="pl-en">FileSystemVirtualFiles</span>(<span class="pl-s"><span class="pl-pds">"</span>~/template-files<span class="pl-pds">"</span></span>.<span class="pl-en">MapProjectPath</span>());
+<span class="pl-k">foreach</span> (<span class="pl-en">var</span> file in fs.<span class="pl-en">GetAllMatchingFiles</span>(<span class="pl-s"><span class="pl-pds">"</span>*.html<span class="pl-pds">"</span></span>))
+{
+    <span class="pl-k">if</span> (!MyAllowFile(file)) <span class="pl-k">continue</span>;
+    <span class="pl-k">using</span> (<span class="pl-k">var</span> <span class="pl-en">stream </span>= file.OpenRead())
+    {
+        context.VirtualFiles.WriteFile(file.VirtualPath, stream);
+    }
+}</pre></div>
+</div>

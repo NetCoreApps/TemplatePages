@@ -8,25 +8,7 @@ order: 22
     with the <em>TemplatePagesFeature</em> plugin enabled:
 </p>
 
-<pre class="cs"><code>public class Startup
-{
-    public void Configure(IApplicationBuilder app)
-    {
-        app.UseServiceStack(new AppHost());
-    }
-}
-
-public class MyServices : Service {}
-
-public class AppHost : AppHostBase
-{
-    public AppHost() : base("ServiceStack Template Pages", typeof(MyServices).GetAssembly()) { }
-
-    public override void Configure(Container container)
-    {
-        Plugins.Add(new TemplatePagesFeature());
-    }
-}</code></pre>
+{{ 'gfm/mvc-netcore/01.md' | githubMarkdown }}
 
 <p>
     This let you use the <a href="/docs/view-engine">View Engine</a> and <a href="/docs/code-pages">Code Pages</a> features
@@ -41,11 +23,7 @@ public class AppHost : AppHostBase
     <em>ToMvcResult()</em> extension method to wrap it in an MVC ActionResult, e.g:
 </p>
 
-<pre class="cs"><code>public class HomeController : Controller
-{
-    public ActionResult Index() =>
-        new PageResult(HostContext.TryResolve&lt;ITemplatePages&gt;().GetPage("index")).ToMvcResult();
-}</code></pre>
+{{ 'gfm/mvc-netcore/02.md' | githubMarkdown }}
 
 <p>
     This has the same effect as it has in a ServiceStack Service where the <em>PageResult</em> sets the Content-Type 
@@ -61,44 +39,13 @@ public class AppHost : AppHostBase
     IOC then resolve the same instance in your ServiceStack AppHost, e.g:
 </p>
 
-<pre class="cs"><code>public class Startup
-{
-    public void ConfigureServices(IServiceCollection services)
-    {
-        var context = new TemplatePagesFeature();
-        services.AddSingleton(context);
-        services.AddSingleton(context.Pages);
-    }
-
-    public void Configure(IApplicationBuilder app)
-    {
-        app.UseServiceStack(new AppHost());
-    }
-}
-
-public class MyServices : Service {}
-
-public class AppHost : AppHostBase
-{
-    public AppHost() : base("ServiceStack Template Pages", typeof(MyServices).GetAssembly()) {}
-
-    public override void Configure(Container container)
-    {
-        Plugins.Add(container.Resolve&lt;TemplatePagesFeature&gt;());
-    }
-}</code></pre>
+{{ 'gfm/mvc-netcore/03.md' | githubMarkdown }}
 
 <p>
     This will then let you access <em>ITemplatePages</em> as a normal dependency in your MVC Controller:
 </p>
 
-<pre class="cs"><code>public class HomeController : Controller
-{
-    ITemplatePages pages;
-    public HomeController(ITemplatePages pages) => this.pages = pages;
-
-    public ActionResult Index() => new PageResult(pages.GetPage("index")).ToMvcResult();
-}</code></pre>
+{{ 'gfm/mvc-netcore/04.md' | githubMarkdown }}
 
 <h4>Using Templates without a ServiceStack AppHost</h4>
 
@@ -108,30 +55,7 @@ public class AppHost : AppHostBase
     its Virtual File System to point to the <em>WebRootPath</em> and you can start returning PageResult's as above:
 </p>
 
-<pre class="cs"><code>public class Startup
-{
-    public void ConfigureServices(IServiceCollection services)
-    {
-        var context = new TemplateContext();
-        services.AddSingleton(context);
-        services.AddSingleton(context.Pages);
-    }
-
-    public void Configure(IApplicationBuilder app)
-    {
-        var context = app.ApplicationServices.GetService&lt;TemplateContext&gt;();
-        context.VirtualFiles = new FileSystemVirtualFiles(env.WebRootPath);
-        context.Init();
-    }
-}
-
-public class HomeController : Controller
-{
-    ITemplatePages pages;
-    public HomeController(ITemplatePages pages) => this.pages = pages;
-
-    public ActionResult Index() => new PageResult(pages.GetPage("index")).ToMvcResult();
-}</code></pre>
+{{ 'gfm/mvc-netcore/05.md' | githubMarkdown }}
 
 <p>
     Checkout the <a href="https://github.com/NetCoreApps/MvcTemplates">NetCoreApps/MvcTemplates</a> repository for a 

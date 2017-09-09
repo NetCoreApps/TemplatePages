@@ -1,0 +1,47 @@
+<div class="gfm"><div class="highlight highlight-source-cs"><pre><span class="pl-k">using</span> <span class="pl-en">System.Linq</span>;
+<span class="pl-k">using</span> <span class="pl-en">System.Collections.Generic</span>;
+<span class="pl-k">using</span> <span class="pl-en">ServiceStack</span>;
+<span class="pl-k">using</span> <span class="pl-en">ServiceStack.Templates</span>;
+
+<span class="pl-k">namespace</span> <span class="pl-en">TemplatePages</span>
+{
+    [Page(<span class="pl-s"><span class="pl-pds">"</span>navLinks<span class="pl-pds">"</span></span>)]
+    <span class="pl-k">public</span> <span class="pl-k">class</span> <span class="pl-en">NavLinksPartial</span> : <span class="pl-en">ServiceStackCodePage</span>
+    {
+        <span class="pl-k">string</span> <span class="pl-en">render</span>(<span class="pl-en">Dictionary</span>&lt;<span class="pl-k">string</span>, <span class="pl-k">object</span>&gt; <span class="pl-smi">links</span>) =&gt; <span class="pl-pds">$@"</span><span class="pl-s"></span>
+<span class="pl-s">        &lt;ul&gt;</span>
+<span class="pl-s">            </span>{links.Map(entry =&gt; <span class="pl-pds">$@"</span><span class="pl-s">&lt;li class='</span>{GetClass(entry.Key)}<span class="pl-s">'&gt;</span>
+<span class="pl-s">                &lt;a href='</span>{entry.Key}<span class="pl-s">'&gt;</span>{entry.Value}<span class="pl-s">&lt;/a&gt;</span>
+<span class="pl-s">            &lt;/li&gt;</span><span class="pl-pds">"</span>).Join(<span class="pl-s"><span class="pl-pds">"</span><span class="pl-pds">"</span></span>)}<span class="pl-s"></span>
+<span class="pl-s">        &lt;/ul&gt;</span><span class="pl-pds">"</span>;
+
+        <span class="pl-k">string</span> <span class="pl-en">GetClass</span>(<span class="pl-k">string</span> <span class="pl-smi">url</span>) =&gt; url == Request.PathInfo ? <span class="pl-s"><span class="pl-pds">"</span>active<span class="pl-pds">"</span></span> : <span class="pl-s"><span class="pl-pds">"</span><span class="pl-pds">"</span></span>; 
+    }
+
+    [Page(<span class="pl-s"><span class="pl-pds">"</span>customerCard<span class="pl-pds">"</span></span>)]
+    <span class="pl-k">public</span> <span class="pl-k">class</span> <span class="pl-en">CustomerCardPartial</span> : <span class="pl-en">ServiceStackCodePage</span>
+    {
+        <span class="pl-k">string</span> <span class="pl-en">render</span>(<span class="pl-k">string</span> <span class="pl-smi">customerId</span>) =&gt; renderCustomer(Db.SingleById&lt;Customer&gt;(<span class="pl-en">customerId</span>));
+
+        <span class="pl-k">string</span> <span class="pl-en">renderCustomer</span>(<span class="pl-en">Customer</span> <span class="pl-smi">customer</span>) =&gt; <span class="pl-pds">$@"</span><span class="pl-s"></span>
+<span class="pl-s">        &lt;table class='table table-bordered'&gt;</span>
+<span class="pl-s">            &lt;caption&gt;</span>{customer.CompanyName}<span class="pl-s">&lt;/caption&gt;</span>
+<span class="pl-s">            &lt;thead class='thead-inverse'&gt;</span>
+<span class="pl-s">                &lt;tr&gt;</span>
+<span class="pl-s">                    &lt;th&gt;Address&lt;/th&gt;</span>
+<span class="pl-s">                    &lt;th&gt;Phone&lt;/th&gt;</span>
+<span class="pl-s">                    &lt;th&gt;Fax&lt;/th&gt;</span>
+<span class="pl-s">                &lt;/tr&gt;</span>
+<span class="pl-s">            &lt;/thead&gt;</span>
+<span class="pl-s">            &lt;tr&gt;</span>
+<span class="pl-s">                &lt;td&gt;</span>
+<span class="pl-s">                    </span>{customer.Address}<span class="pl-s"> </span>
+<span class="pl-s">                    </span>{customer.City}<span class="pl-s">, </span>{customer.PostalCode}<span class="pl-s">, </span>{customer.Country}<span class="pl-s"></span>
+<span class="pl-s">                &lt;/td&gt;</span>
+<span class="pl-s">                &lt;td&gt;</span>{customer.Phone}<span class="pl-s">&lt;/td&gt;</span>
+<span class="pl-s">                &lt;td&gt;</span>{customer.Fax}<span class="pl-s">&lt;/td&gt;</span>
+<span class="pl-s">            &lt;/tr&gt;</span>
+<span class="pl-s">        &lt;/table&gt;</span><span class="pl-pds">"</span>;
+    }
+}</pre></div>
+</div>

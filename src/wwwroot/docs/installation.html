@@ -19,10 +19,7 @@ order: 1
     You're now all set to play with ServiceStack Templates! Start by creating and rendering a dynamic page:
 </p>
 
-<pre><code>var context = new TemplateContext().Init();
-var dynamicPage = context.OneTimePage("The time is now: {{ pass: now | dateFormat('HH:mm:ss') }}");
-var output = new PageResult(dynamicPage).Result;
-</code></pre>
+{{ 'gfm/installation/01.md' | githubMarkdown }}
 
 {{ "live-template" | partial({ template: "The time is now: {{ now | dateFormat('HH:mm:ss') }}" }) }}
 
@@ -30,7 +27,7 @@ var output = new PageResult(dynamicPage).Result;
     Evaluating ad hoc templates can also be condensed down to a single line:
 </p>
 
-<pre><code>var output = context.EvaluateTemplate("The time is now: {{ pass: now | dateFormat('HH:mm:ss') }}");</code></pre>
+{{ 'gfm/installation/02.md' | githubMarkdown }}
 
 <h4>Configure with ServiceStack</h4>
 
@@ -39,10 +36,7 @@ var output = new PageResult(dynamicPage).Result;
     register the <em>TemplatePagesFeature</em> plugin:
 </p>
 
-<pre><code>public void Configure(Container container)
-{
-    Plugins.Add(new TemplatePagesFeature());
-}</code></pre>
+{{ 'gfm/installation/03.md' | githubMarkdown }}
 
 <h2 id="starter-projects">Starter Projects</h2>
 

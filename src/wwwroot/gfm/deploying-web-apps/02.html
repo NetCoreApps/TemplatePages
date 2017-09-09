@@ -1,0 +1,8 @@
+<div class="gfm"><div class="highlight highlight-source-dockerfile"><pre><span class="pl-k">FROM</span> microsoft/dotnet:2.0-sdk
+<span class="pl-k">COPY</span> web /web
+<span class="pl-k">ADD</span> https://raw.githubusercontent.com/NetCoreWebApps/Rockwind.Aws/master/app/web.settings /web/web.settings
+<span class="pl-k">WORKDIR</span> /web
+<span class="pl-k">EXPOSE</span> 5000/tcp
+<span class="pl-k">ENV</span> ASPNETCORE_URLS https://*:5000
+<span class="pl-k">ENTRYPOINT</span> [<span class="pl-s">"dotnet"</span>, <span class="pl-s">"/web/app.dll"</span>]</pre></div>
+</div>

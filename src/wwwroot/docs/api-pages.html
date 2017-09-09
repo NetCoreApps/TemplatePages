@@ -19,9 +19,7 @@ order: 19
     To enable this we need to specify the path where our "API Pages" are located when registering <em>TemplatePagesFeature</em>:
 </p>
 
-<pre class="cs"><code>Plugins.Add(new TemplatePagesFeature {
-    ApiPath = "/api"
-});</code></pre>
+{{ 'gfm/api-pages/01.md' | githubMarkdown }}
 
 <p>
     All pages within the <b>/api</b> folder are then treated as Web APIs where instead of writing their response to the response
@@ -59,7 +57,7 @@ order: 19
     The entire implementation of the customers API is below:
 </p>
 
-<pre class="html"><code>{{ 'examples/api-customers.txt' | includeFile }}</code></pre>
+{{ 'gfm/api-pages/02.md' | githubMarkdown }}
 
 <p>
     These are some of the API's that are made available with the above implementation:
@@ -125,7 +123,7 @@ order: 19
     The Products API is an example of a more complex API where data is sourced from multiple tables:
 </p>
 
-<pre class="cs"><code>{{ 'examples/api-products.txt' | includeFile }}</code></pre>
+{{ 'gfm/api-pages/03.md' | githubMarkdown }}
 
 <p>
     Some API examples using the above implementation:
