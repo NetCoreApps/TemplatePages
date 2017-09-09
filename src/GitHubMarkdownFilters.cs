@@ -33,7 +33,7 @@ namespace TemplatePages
             var cacheKey = nameof(GitHubMarkdownFilters) + ">" + htmlFilePath;
 
             var htmlFile = Context.VirtualFiles.GetFile(htmlFilePath);
-            if (htmlFile != null && htmlFile.LastModified > file.LastModified)
+            if (htmlFile != null && htmlFile.LastModified >= file.LastModified)
             {
                 if (UseMemoryCache)
                 {
