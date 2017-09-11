@@ -46,6 +46,22 @@
     <script src="/assets/js/bootstrap.min.js"></script>
     <script src="/assets/js/default.js"></script>
 
+    <script>
+        var pathinfo = location.pathname + location.hash;
+        if (pathinfo != "/")
+        {
+            var scrollItem = $("#sidebar").find("a[href='" + pathinfo + "']")
+                .parents().filter("div>ul>li")[0];
+        
+            if (scrollItem) {
+                scrollItem.scrollIntoView({
+                    behavior: "smooth",
+                    block: "start"
+                });
+            }
+        }
+    </script>
+            
     {{ scripts | ifExists }}
 
 </body>
