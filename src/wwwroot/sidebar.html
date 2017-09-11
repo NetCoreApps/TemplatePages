@@ -4,18 +4,24 @@
 <ul>
     <li>
         <h5>docs</h5>
+        <ul>
+            {{ docLinks | select: <li class="{ 'active' | if(equals(it.Key, PathInfo)) }"><a href="{ it.Key }">{ it.Value }</a></li> }}
+        </ul>
     </li>
-    {{ docLinks | select: <li class="{ 'active' | if(equals(it.Key, PathInfo)) }"><a href="{ it.Key }">{ it.Value }</a></li> }}
 
     <li>
         <h5>use cases</h5>
+        <ul>
+            {{ useCaseLinks | select: <li class="{ 'active' | if(equals(it.Key, PathInfo)) }"><a href="{ it.Key }">{ it.Value }</a></li> }}
+        </ul>
     </li>
-    {{ useCaseLinks | select: <li class="{ 'active' | if(equals(it.Key, PathInfo)) }"><a href="{ it.Key }">{ it.Value }</a></li> }}
 
     <li>
         <h5>linq examples</h5>
+        <ul>
+            {{ linqLinks | select: <li class="{ 'active' | if(equals(it.Key, PathInfo)) }"><a href="{ it.Key }">{ it.Value }</a></li> }}            
+        </ul>
     </li>
-    {{ linqLinks | select: <li class="{ 'active' | if(equals(it.Key, PathInfo)) }"><a href="{ it.Key }">{ it.Value }</a></li> }}
 </ul>
 
 </div>

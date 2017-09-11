@@ -9,8 +9,19 @@ h1, h2, h3, h4, strong {
     content: " \00B6";
 }
 h1 {
+    font-size: 2.25rem;
     margin: 0 0 20px 0;
 }
+h2 {
+    font-size: 1.8rem;
+}
+h3 {
+    font-size: 1.6rem;
+}
+h4 {
+    font-size: 1.4rem;
+}
+
 .ref {
     color: #0277BD;
     border-bottom: 1px solid rgba(0,0,0,0.15);
@@ -37,7 +48,7 @@ h1 {
 a:hover {
     text-decoration: none;
 }
-li.active a, #content li.active a {
+#content li.active a {
     font-weight: bold;
 }
 #content .doc-links, #content .linq-links, #content .usecase-links {
@@ -53,7 +64,7 @@ li.active a, #content li.active a {
 #body {
     position: relative;
     z-index: 1;
-    padding: 60px 60px 30px;
+    padding: 60px 60px 30px 0;
     overflow-x: hidden;
 }
 #scroll-screen {
@@ -68,7 +79,7 @@ li.active a, #content li.active a {
 #sidebar {
     position: fixed;
     z-index: 10;
-    top: 65px;
+    top: 63px;
     left: 0;
     bottom: 0;
     overflow-x: hidden;
@@ -78,19 +89,25 @@ li.active a, #content li.active a {
 }
 #sidebar .inner {
     width: 270px;
-    padding: 25px 0 0 40px;    
+    padding: 10px 0 0 10px;
 }
 #sidebar ul {
     list-style-type: none;
     margin: 0;
     line-height: 1.5em;
-    padding-left: 1em;
+    padding-left: 0;
 }
 #sidebar li {
-    margin-top: 0.5em;
+    padding: .20em 0 .25em .8em;
+    border-left: .2em solid #fff;
+    margin-top: .1em;
+}
+#sidebar li.active {
+    background: #f8f8f8;
+    border-left: .2em solid #3371e3;   
 }
 #sidebar li h5 {
-    margin: 0.8em 0;
+    margin: 0.6em 0;
     font-size: 18px;
 }
 
@@ -104,6 +121,7 @@ li.active a, #content li.active a {
 #sig {
     position: fixed;
     bottom: 0;
+    left: 300px; /* 270px + scrollbar */
     background: #fff;
     width: 100%;
     text-align: center;
@@ -111,6 +129,9 @@ li.active a, #content li.active a {
     font-size: .85rem;
     line-height: 2rem;
     z-index: 1;
+}
+#sig p {
+    margin: 0 300px 0 0;
 }
 pre {
     background: #f8f8f8;
@@ -204,7 +225,7 @@ caption {
 }
 
 #content img {
-    max-width: 900px !important;
+    max-width: 890px !important;
 }
 
 ::-webkit-scrollbar { width:7px; height:5px }
