@@ -18,6 +18,10 @@ namespace TemplatePages
 
         public bool UseMemoryCache { get; set; } = true;
 
+        public string Mode { get; set; } = "gfm";
+
+        public string RepositoryContext { get; set; }
+
         private static readonly MarkdownSharp.Markdown md = new MarkdownSharp.Markdown();
 
         public IRawString markdown(TemplateScopeContext scope, string markdown)
@@ -78,8 +82,13 @@ namespace TemplatePages
 
                     ms.Position = 0;
                     var bytes = ms.ToArray();
-                    var htmlBytes = await ApiBaseUrl.CombineWith("markdown", "raw")
-                        .PostBytesToUrlAsync(bytes, contentType:MimeTypes.PlainText, requestFilter:x => x.UserAgent = "TemplatePages");
+
+                    var htmlBytes = RepositoryContext == null 
+                        ? await ApiBaseUrl.CombineWith("markdown", "raw")
+                            .PostBytesToUrlAsync(bytes, contentType:MimeTypes.PlainText, requestFilter:x => x.UserAgent = "TemplatePages")
+                        : await ApiBaseUrl.CombineWith("markdown")
+                            .PostBytesToUrlAsync(new Dictionary<string,string> { {"text", bytes.FromUtf8Bytes() }, {"mode", Mode}, {"context", RepositoryContext} }.ToJson().ToUtf8Bytes(), 
+                                contentType:MimeTypes.Json, requestFilter:x => x.UserAgent = "TemplatePages");
 
                     var headerBytes = "<div class=\"gfm\">".ToUtf8Bytes();
                     var footerBytes = "</div>".ToUtf8Bytes();
