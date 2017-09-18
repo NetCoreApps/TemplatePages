@@ -252,3 +252,14 @@ caption {
         max-width: 450px !important;
     }
 }
+@media (max-width: 414px) { /* iPhone 6S+ Portrait */
+    #sidebar {
+        display: none;
+    }
+    #content {
+        margin-left: 0;
+    }
+    #content img {
+        max-width: 400px !important;
+    }
+}
