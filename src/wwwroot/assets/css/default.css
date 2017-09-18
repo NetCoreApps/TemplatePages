@@ -253,6 +253,9 @@ caption {
     }
 }
 @media (max-width: 414px) { /* iPhone 6S+ Portrait */
+    #topnav {
+        position: absolute;
+    }
     #sidebar {
         display: none;
     }
