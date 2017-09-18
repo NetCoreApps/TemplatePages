@@ -262,4 +262,7 @@ caption {
     #content img {
         max-width: 400px !important;
     }
+    #sig {
+        display: none;
+    }
 }
