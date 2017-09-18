@@ -251,8 +251,11 @@ caption {
     #content img {
         max-width: 450px !important;
     }
+    #body {
+        padding-right: 5px; 
+    }
 }
-@media (max-width: 414px) { /* iPhone 6S+ Portrait */
+@media (max-width: 568px) { /* iPhone 5 Landscape */
     #topnav {
         position: absolute;
     }
@@ -267,5 +270,8 @@ caption {
     }
     #sig {
         display: none;
+    }
+    #body {
+        padding-right: 0; 
     }
 }
