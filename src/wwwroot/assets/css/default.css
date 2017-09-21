@@ -227,6 +227,9 @@ caption {
 #content img {
     max-width: 890px !important;
 }
+#sidebar-toggle {
+    display: none;
+}
 
 ::-webkit-scrollbar { width:7px; height:5px }
 ::-webkit-scrollbar-thumb { background-color:#ccc; }
@@ -259,7 +262,7 @@ caption {
     #topnav {
         position: absolute;
     }
-    #sidebar, #scroll-screen, #sig {
+    #sidebar, #scroll-screen, #sig, #lnk-github {
         display: none;
     }
     #content {
@@ -269,5 +272,13 @@ caption {
     }
     #content img {
         max-width: 400px !important;
+    }
+    #sidebar .inner {
+        background: #fff;
+        width: 230px;
+        padding: 10px 0 0 10px;
+    }
+    #sidebar-toggle {
+        display: block;
     }
 }
