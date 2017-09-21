@@ -251,27 +251,23 @@ caption {
     #content img {
         max-width: 450px !important;
     }
-    #body {
-        padding-right: 5px; 
+    #body { 
+        padding-right: 0; 
     }
 }
 @media (max-width: 568px) { /* iPhone 5 Landscape */
     #topnav {
         position: absolute;
     }
-    #sidebar {
+    #sidebar, #scroll-screen, #sig {
         display: none;
     }
     #content {
         margin-left: 0;
+        padding-left: 10px;
+        padding-right: 10px;
     }
     #content img {
         max-width: 400px !important;
-    }
-    #sig {
-        display: none;
-    }
-    #body {
-        padding-right: 0; 
     }
 }
