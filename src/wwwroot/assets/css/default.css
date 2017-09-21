@@ -270,9 +270,6 @@ caption {
         padding-left: 10px;
         padding-right: 10px;
     }
-    #content img {
-        max-width: 400px !important;
-    }
     #sidebar .inner {
         background: #fff;
         width: 230px;
@@ -281,4 +278,10 @@ caption {
     #sidebar-toggle {
         display: block;
     }
+}
+@media (max-width: 414px) {
+    #content img { max-width: 414px !important; }
+}
+@media (max-width: 375px) {
+    #content img { max-width: 375px !important; }
 }
