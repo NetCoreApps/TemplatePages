@@ -1,0 +1,5 @@
+<div class="gfm"><div class="highlight highlight-text-html-basic"><pre>{{ ifHttpPost | use({ host, port, db, password }) | withoutEmptyValues | redisChangeConnection | end }}
+&lt;<span class="pl-ent">script</span> <span class="pl-e">type</span>=<span class="pl-s"><span class="pl-pds">"</span>text/x-template<span class="pl-pds">"</span></span> <span class="pl-e">id</span>=<span class="pl-s"><span class="pl-pds">"</span>connection-template<span class="pl-pds">"</span></span>&gt;
+{{ 'connection-info' | partial({ redis: redisConnection }) }}
+&lt;/<span class="pl-ent">script</span>&gt;</pre></div>
+</div>

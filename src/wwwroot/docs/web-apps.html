@@ -189,10 +189,10 @@ webRoot ~/../bare</code></pre>
     <em>debug true</em> controls the level of internal diagnostics available and whether or not <a href="/docs/hot-reloading">Hot Reloading</a> is enabled.
 </blockquote>
 
-<h3>Redis</h3>
+<h3>Redis HTML</h3>
 <div class="source">
-    <a href="https://github.com/NetCoreWebApps/WebApp/tree/master/src/apps/redis">/redis</a> - 
-    <a href="http://redis.web-app.io">redis.web-app.io</a>
+    <a href="https://github.com/NetCoreWebApps/WebApp/tree/master/src/apps/redis-html">/redis-html</a> - 
+    <a href="http://redis-html.web-app.io">redis-html.web-app.io</a>
 </div>
 
 <p>
@@ -209,7 +209,7 @@ webRoot ~/../bare</code></pre>
     and build system which has become overkill for small projects.
 </p>
 
-<a href="http://redis.web-app.io"><img src="/assets/img/screenshots/redis.png" alt="Redis WebApp Screenshot"></a>
+<a href="http://redis-html.web-app.io"><img src="/assets/img/screenshots/redis-html.png" alt="Redis HTML WebApp Screenshot"></a>
 
 <p>
     We've had a sordid history developing Redis UI's which we're built using the popular JavaScript frameworks that appeared 
@@ -229,10 +229,10 @@ webRoot ~/../bare</code></pre>
 <p>
     The nice thing about generating HTML is that it's the one true constant in Web development that will always be there.
     The entire functionality for the Redis Web App is contained in a single
-    <a href="https://github.com/NetCoreWebApps/Redis/blob/master/app/index.html">/redis/index.html</a> which includes
+    <a href="https://github.com/NetCoreWebApps/RedisHtml/blob/master/app/index.html">/RedisHtml/app/index.html</a> which includes
     all Template and JavaScript Source Code in <b>&lt; 200 lines</b> which also includes all as server logic as it doesn't rely on any 
     back-end Services and just uses the <a href="/docs/redis-filters">Redis Filters</a> to interface with Redis directly.
-    The <a href="https://github.com/NetCoreWebApps/Redis/blob/master/app/index.html">source code</a> also serves as a good 
+    The <a href="https://github.com/NetCoreWebApps/RedisHtml/blob/master/app/index.html">source code</a> also serves as a good 
     demonstration of the declarative coding style that Templates encourages that in addition to being highly-readable requires orders 
     of magnitude less code than our previous Redis JavaScript SPA's with a comparable feature-set.
 </p>
@@ -243,7 +243,7 @@ webRoot ~/../bare</code></pre>
     that would be required to convert the existing JavaScript Apps to a use different JavaScript fx.
 </p>
 
-<h5><a href="https://github.com/NetCoreWebApps/Redis/blob/master/app/web.settings">web.settings</a></h5>
+<h5><a href="https://github.com/NetCoreWebApps/RedisHtml/blob/master/app/web.settings">web.settings</a></h5>
 
 <p>
     The <em>web.settings</em> for Redis is similar to Web App Starter above except it adds a <em>redis.connection</em>
@@ -255,9 +255,127 @@ webRoot ~/../bare</code></pre>
 <pre class="settings"><code>debug true
 name Redis Web App
 port 5000
-contentRoot ~/../redis
-webRoot ~/../redis
+contentRoot ~/../redis-html
+webRoot ~/../redis-html
 redis.connection localhost:6379</code></pre>
+
+<h3>Redis Vue</h3>
+<div class="source">
+    <a href="https://github.com/NetCoreWebApps/WebApp/tree/master/src/apps/redis">/redis</a> - 
+    <a href="http://redis.web-app.io">redis.web-app.io</a>
+</div>
+
+<p>
+    Whilst the above server-generated HTML Redis UI shows how you can easily develop traditional Web Apps using Templates, we've also
+    rewritten the Redis UI as a Single Page App which is the more suitable choice for an App like this as it provides a more
+    optimal and responsive UX by only loading the HTML page once on Startup then utilizes Ajax to download and dynamically update 
+    incremental parts of the App's UI that needs changing. 
+</p>
+
+<p>
+    Instead of using jQuery and server-side HTML this version has been rewritten to use <a href="https://vuejs.org">Vue</a>
+    where the UI has been extracted into isolated Vue components utilizing 
+    <a href="https://vuejs.org/v2/guide/components.html#X-Templates">Vue X-Templates</a> to render the App on the client where 
+    all Redis Vue's functionality is contained within the
+    <a href="https://github.com/NetCoreWebApps/Redis/blob/master/app/index.html">Redis/app/index.html</a> page.     
+</p>
+
+<a href="http://redis.web-app.io"><img src="/assets/img/screenshots/redis.png" alt="Redis Vue WebApp Screenshot"></a>
+
+<h4>Simple Vue App</h4>
+
+<p>
+    Templates also provides a great development experience for Single Page Apps which for the most part gets out of your way letting you 
+    develop the Single Page App as if it were a static <em>.html</em> file, but also benefits from the flexibility of a 
+    dynamic web page when needed. 
+</p>
+<p>
+    The containing <a href="https://github.com/NetCoreWebApps/Redis/blob/master/app/_layout.html">_layout.html</a>
+    page can be separated from the <a href="https://github.com/NetCoreWebApps/Redis/blob/master/app/index.html">index.html</a> page 
+    that contains the App's functionality, where it's able to extract the <em>title</em> of the page and embed it in the 
+    HTML <em>&lt;head/&gt;</em> as well as embed the page's <em>&lt;script /&gt;</em> in its optimal location at the bottom of the 
+    HTML <em>&lt;body/&gt;</em>, after the page's blocking script dependencies:
+</p>
+
+{{ 'gfm/web-apps/07.md' | githubMarkdown }}
+
+<p>
+    Redis Vue avoids the complexity of adopting a npm build system by refrencing Vue libraries as a simple script include:
+</p>
+
+<pre class="html"><code>&lt;script src="../assets/js/vue{{ pass: '.min' | if(!debug) }}.js"&gt;</script></code></pre>
+
+<p>
+    Where it uses the more verbose and developer-friendly 
+    <a href="https://github.com/NetCoreWebApps/Redis/blob/master/app/assets/js/vue.js">vue.js</a>
+    during development whilst using the production optimized 
+    <a href="https://github.com/NetCoreWebApps/Redis/blob/master/app/assets/js/vue.min.js">vue.min.js</a>
+    for deployments. So despite avoiding the complexity tax of an npm-based build system it still gets some of its benefits
+    like conditional deployments and effortless <a href="/docs/hot-reloading">hot reloading</a>.
+</p>
+
+<h4>Server Templates</h4>
+
+<p>
+    Whilst most of <a href="https://github.com/NetCoreWebApps/Redis/blob/master/app/index.html">index.html</a> is a static Vue 
+    app, templates is leveraged to generate the body of the <em>&lt;redis-info/&gt;</em> Component on the initial home page render:
+</p>
+
+{{ 'gfm/web-apps/08.md' | githubMarkdown }}
+
+<p>
+    This technique increases the time to first paint by being able to render the initial Vue page without waiting for an Ajax call response
+    whilst benefiting from improved SEO from server-generated HTML.
+</p>
+
+<h4>Server Handling</h4>
+
+<p>
+    Another area Templates is used is to handle the HTTP POST where it calls the <em>redisChangeConnection</em> filter to change 
+    the current Redis connection before rendering the 
+    <a href="https://github.com/NetCoreWebApps/Redis/blob/master/app/connection-info.html">connection-info.html</a> partial with the 
+    current connection info:
+</p>
+
+{{ 'gfm/web-apps/09.md' | githubMarkdown }}
+
+<h4>Vue Ajax Server APIs</h4>
+
+<p>
+    All other Server functionality is invoked by Vue using Ajax to call one of the Ajax APIs below implemented as 
+    <a href="/docs/api-pages">API Pages</a>:
+</p>
+
+<h5><a href="https://github.com/NetCoreWebApps/Redis/blob/master/app/api/search.html">search.html</a></h5>
+
+<p>
+    Called when searching for Redis keys where the query is forwarded to the <em>redisSearchKeys</em> filter:
+</p>
+
+{{ 'gfm/web-apps/10.md' | githubMarkdown }}
+
+<h5><a href="https://github.com/NetCoreWebApps/Redis/blob/master/app/api/call.html">call.html</a></h5>
+
+<p>
+    Called to execute an arbitrary Redis command on the connected instance, with the response from Redis is returned as a 
+    plain-text HTTP Response:
+</p>
+
+{{ 'gfm/web-apps/11.md' | githubMarkdown }}
+
+<p>
+    The benefits of using API Pages instead of a normal C# Service is being able to retain the productive development workflow
+    of Web Apps where the entire Redis Vue App can be built without any compilation.
+</p>
+
+<h3>Deep linking and full page reloads</h3>
+
+<p>
+    The Redis Vue Single Page App also takes advantage of HTML5's <em>history.pushState</em> API to enable deep-linking and back-button
+    support where most UI state changes is captured on the query string and used to initialize the Vue state on full-page reloads
+    to proivde transparent history navigation and back-button support that functions like a traditional Web App but with the performance 
+    of a Single Page App.
+</p>
 
 <h3>Rockwind</h3>
 <div class="source">

@@ -1,0 +1,6 @@
+<div class="gfm"><div class="highlight highlight-text-html-basic"><pre>{{ limit | default(100) | assignTo: limit }}
+{{ q     | default('')  | assignTo: q }}
+
+{{ q     | append("*") | redisSearchKeys({ limit }) 
+         | return }}</pre></div>
+</div>
