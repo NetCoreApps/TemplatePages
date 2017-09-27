@@ -268,8 +268,8 @@ redis.connection localhost:6379</code></pre>
 <p>
     Whilst the above server-generated HTML Redis UI shows how you can easily develop traditional Web Apps using Templates, we've also
     rewritten the Redis UI as a Single Page App which is the more suitable choice for an App like this as it provides a more
-    optimal and responsive UX by only loading the HTML page once on Startup then utilizes Ajax to download and dynamically update 
-    incremental parts of the App's UI that needs changing. 
+    optimal and responsive UX by only loading the HTML page once on Startup then utilizes Ajax to only download and update 
+    the incremental parts of the App's UI that needs changing.
 </p>
 
 <p>
@@ -364,17 +364,17 @@ redis.connection localhost:6379</code></pre>
 {{ 'gfm/web-apps/11.md' | githubMarkdown }}
 
 <p>
-    The benefits of using API Pages instead of a normal C# Service is being able to retain the productive development workflow
-    of Web Apps where the entire Redis Vue App can be built without any compilation.
+    The benefits of using API Pages instead of a normal C# Service is being able to retain Web App's productive development workflow
+    where the entire Redis Vue App is built without requiring any compilation.
 </p>
 
 <h3>Deep linking and full page reloads</h3>
 
 <p>
     The Redis Vue Single Page App also takes advantage of HTML5's <em>history.pushState</em> API to enable deep-linking and back-button
-    support where most UI state changes is captured on the query string and used to initialize the Vue state on full-page reloads
-    to proivde transparent history navigation and back-button support that functions like a traditional Web App but with the performance 
-    of a Single Page App.
+    support where most UI state changes is captured on the query string and used to initialize the Vue state on page navigation or
+    full-page reloads where it proivdes transparent navigation and back-button support that functions like a traditional Web App but with 
+    the instant performance of a Single Page App.
 </p>
 
 <h3>Rockwind</h3>

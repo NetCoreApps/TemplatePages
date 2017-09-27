@@ -82,12 +82,17 @@ order: 14
     <a href="https://github.com/ServiceStack/ServiceStack.Redis#redis-connection-strings">Redis Connection String</a>.
 </p>
 
-<h3>Redis Examples</h3>
+<h3>Redis App Examples</h3>
 
 <p>
+    The Web Apps below utilize Redis Filters for all their Redis functionality:
+</p>
+
+<h4>Redis Vue</h4>
+<p>
     <a href="http://redis.web-app.io">redis.web-app.io</a> is a generic Redis Database Viewer that provides a human-friendly view
-    of any Redis data Type, including a dedicated UI to create and populate any Redis data type which was built using just
-    ServiceStack Templates and the above Redis Filters:
+    of any Redis data Type, including a dedicated UI to create and populate any Redis data type which just utilizes the above Redis Filters
+    and a single Vue <a href="https://github.com/NetCoreWebApps/Redis/blob/master/app/index.html">index.html</a> App to power the Redis UI:
 </p>
 
 <p>
@@ -95,18 +100,31 @@ order: 14
         style="max-width:850px" alt=".NET Core Redis Viewer"></a>
 </p>
 
+<h4>Redis HTML</h4>
+
 <p>
-    All functionality is maintained in a single <a href="https://github.com/NetCoreWebApps/WebApp/blob/master/src/apps/redis/index.html">index.html</a>
+    <a href="http://redis-html.web-app.io">redis-html.web-app.io</a> is a version of Redis UI built using just Templates and Redis
+    filters where all functionality is maintained in a single <a href="https://github.com/NetCoreWebApps/RedisHtml/blob/master/app/index.html">index.html</a>
     weighing under <b>&lt;200 LOC</b> including HTML and JavaScript. It's a good example of how the declarative style of programming
     that ServiceStack Templates encourages a highly-readable code-base that packs a lot of functionality in a tiny foot print.
 </p>
 
-<h4>Run against your local Redis instance</h4>
+<h5>Server Generated HTML</h5>
 
 <p>
-    You can run the above <a href="https://github.com/NetCoreWebApps/WebApp/tree/master/src/apps/redis">Redis</a> WebApp
-    against your local redis instance by cloning the <a href="https://github.com/NetCoreWebApps/WebApp">NetCoreApps/WebApp</a> GitHub project
-    and in the <a href="https://github.com/NetCoreWebApps/WebApp/tree/master/src/apps">/src/apps</a> folder run:
+    It's not immediatly obvious when running this locally since both Templates and Redis are super fast, but Redis HTML was developed as
+    a traditional Website where all HTML is server-generated and every search box key stroke and click on search results performs 
+    a full-page reload. There's a slight sub-second delay that causes a noticable flicker when hosted on the Internet due to network lag, but 
+    otherwise server-generated Template Websites can enable a highly responsive UI (especially in Intranets) with great SEO and deep-linking
+    and back-button support working as expected without the complexity of adopting a client-side JavaScript SPA framework and build-system.
+</p>
+
+<h3>Run against your local Redis instance</h3>
+
+<p>
+    You can run the above Redis WebApp's against your local redis instance by cloning the 
+    <a href="https://github.com/NetCoreWebApps/WebApp">NetCoreApps/WebApp</a> GitHub project and in the 
+    <a href="https://github.com/NetCoreWebApps/WebApp/tree/master/src/apps">/src/apps</a> folder run:
 </p>
 
 <pre class="sh"><code>dotnet web/app.dll ../redis/web.settings</code></pre>
@@ -126,16 +144,6 @@ order: 14
 </p>
 
 <pre class="sh"><code>dotnet run redis localhost:6379</code></pre>
-
-<h4>Server Generated HTML</h4>
-
-<p>
-    It's not immediatly obvious when running this locally since both Templates and Redis are super fast, but the Redis App was developed as
-    a traditional Website where all HTML is server-generated and every search box key stroke and click on search results performs 
-    a full-page reload. There's a slight sub-second delay that causes a noticable flicker when hosted on the Internet due to network lag, but 
-    otherwise server-generated Template Websites can enable a highly responsive UI (especially in Intranets) with great SEO and deep-linking
-    and back-button support working as expected without the complexity of adopting a client-side JavaScript SPA framework and build-system.
-</p>
 
 <p>
     See the Filters API Reference for the 
