@@ -1,4 +1,4 @@
 Sold out products:
 {{ products 
     | where: it.UnitsInStock = 0 
-    | select: { it.productName | raw } is sold out!\n }}
+    | select: { it.productName } is sold out!\n }}

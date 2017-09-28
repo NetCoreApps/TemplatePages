@@ -1,2 +1,2 @@
 Product Names:
-{{ products | select: { it.ProductName | raw }\n }}
+{{ products | select: { it.ProductName }\n }}
