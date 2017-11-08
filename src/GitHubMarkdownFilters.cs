@@ -22,11 +22,9 @@ namespace TemplatePages
 
         public string RepositoryContext { get; set; }
 
-        private static readonly MarkdownSharp.Markdown md = new MarkdownSharp.Markdown();
-
         public IRawString markdown(TemplateScopeContext scope, string markdown)
-        {
-             var html = md.Transform(markdown);
+        {            
+             var html = MarkdownConfig.Transformer.Transform(markdown);
              return html.ToRawString();
         }
 

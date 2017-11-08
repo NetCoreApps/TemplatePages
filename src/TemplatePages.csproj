@@ -11,16 +11,16 @@
     <PackageReference Include="System.Collections.NonGeneric" Version="4.3.*" />
     <PackageReference Include="System.IO.FileSystem.DriveInfo" Version="4.3.*" />
 
-    <PackageReference Include="ServiceStack.Core" Version="1.0.*" />
-    <PackageReference Include="ServiceStack.Interfaces.Core" Version="1.0.*" />
-    <PackageReference Include="ServiceStack.Text.Core" Version="1.0.*" />
-    <PackageReference Include="ServiceStack.Client.Core" Version="1.0.*" />
-    <PackageReference Include="ServiceStack.Common.Core" Version="1.0.*" />
-    <PackageReference Include="ServiceStack.Redis.Core" Version="1.0.*" /> 
-    <PackageReference Include="ServiceStack.OrmLite.Core" Version="1.0.*" />
-    <PackageReference Include="ServiceStack.OrmLite.Sqlite.Core" Version="1.0.*" />
-    <PackageReference Include="ServiceStack.Server.Core" Version="1.0.*" /> 
-    <PackageReference Include="ServiceStack.Api.OpenApi.Core" Version="1.0.*" /> 
+    <PackageReference Include="ServiceStack" Version="5.0.*" />
+    <PackageReference Include="ServiceStack.Interfaces" Version="5.0.*" />
+    <PackageReference Include="ServiceStack.Text" Version="5.0.*" />
+    <PackageReference Include="ServiceStack.Client" Version="5.0.*" />
+    <PackageReference Include="ServiceStack.Common" Version="5.0.*" />
+    <PackageReference Include="ServiceStack.Redis" Version="5.0.*" /> 
+    <PackageReference Include="ServiceStack.OrmLite" Version="5.0.*" />
+    <PackageReference Include="ServiceStack.OrmLite.Sqlite" Version="5.0.*" />
+    <PackageReference Include="ServiceStack.Server" Version="5.0.*" /> 
+    <PackageReference Include="ServiceStack.Api.OpenApi" Version="5.0.*" /> 
 
     <!-- <Reference Include="..\..\..\ServiceStack\lib\netstandard1.1\ServiceStack.Interfaces.dll" />
 
