@@ -15,7 +15,7 @@ namespace TemplatePages
     public class AppHost : AppHostBase
     {
         public AppHost()
-            : base("Template Pages", typeof(TemplateServices).GetAssembly()) { }
+            : base("Template Pages", typeof(TemplateServices).Assembly) { }
 
         public TemplateContext LinqContext;
 
