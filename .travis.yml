@@ -1,5 +1,4 @@
 language: csharp
-solution: src/TemplatePages.csproj
 os: linux
 dist: trusty
 sudo: required
@@ -8,6 +7,10 @@ mono: none
 env: DOTNETCORE=1
 services:
   - docker
+addons:
+  apt:
+    packages:
+      - docker-ce
 script:
   - chmod +x ./deploy-envs.sh
   - chmod +x ./scripts/build.sh
