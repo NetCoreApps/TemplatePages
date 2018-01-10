@@ -1,14 +1,15 @@
-using Funq;
-using ServiceStack;
-using ServiceStack.IO;
-using ServiceStack.Templates;
+using System;
+using System.IO;
 using System.Collections.Generic;
 using System.Linq;
 using System.Collections;
+using ServiceStack;
+using ServiceStack.IO;
+using ServiceStack.Templates;
 using ServiceStack.Text;
 using ServiceStack.Data;
 using ServiceStack.OrmLite;
-using System;
+using Funq;
 
 namespace TemplatePages
 {
@@ -26,6 +27,10 @@ namespace TemplatePages
             });
 
             Plugins.Add(new ServiceStack.Api.OpenApi.OpenApiFeature());
+
+            var path = MapProjectPath("~/wwwroot/assets/js/customers.json");
+            var json = File.ReadAllText(path);
+            TemplateQueryData.Customers = json.FromJson<List<Customer>>();
 
             container.Register<ICustomers>(c => new Customers(TemplateQueryData.Customers));
             container.Register<IDbConnectionFactory>(c => new OrmLiteConnectionFactory(":memory:", SqliteDialect.Provider));

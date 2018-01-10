@@ -178,16 +178,8 @@ namespace TemplatePages
         private static List<Customer> customers;
         public static List<Customer> Customers 
         {
-            get
-            {
-                if (customers != null)
-                    return customers;
-
-                var path = "~/wwwroot/assets/js/customers.json".MapProjectPath();
-                var json = File.ReadAllText(path);
-                customers = json.FromJson<List<Customer>>();
-                return customers;
-            }
+            get => customers;
+            set => customers = value;
         }
 
         public static Customer GetCustomer(string customerId) => Customers.FirstOrDefault(x => x.CustomerId == customerId);
