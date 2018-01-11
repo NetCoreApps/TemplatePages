@@ -54,29 +54,27 @@ order: 25
 <h2>Getting Started</h2>
 
 <p>
-    The easiest way to get started to either clone the <a href="https://github.com/NetCoreWebApps/WebAppStarter">WebAppStarter</a> GitHub project:
+    The easiest way to get started is to create a new <a href="https://github.com/NetCoreTemplates/templates-webapp">templates-webapp</a> project:
 </p>
 
-<pre class="cs"><code>git clone git@github.com:ServiceStack/WebAppStarter.git</code></pre>
+<pre class="sh">
+<code>    $ npm install -g @servicestack/cli
+
+    $ dotnet-new templates-webapp ProjectName
+</code></pre>
 
 <p>
-    Or download a zip of it from <a href="https://github.com/NetCoreWebApps/WebAppStarter/archive/master.zip">github.com/ServiceStack/WebAppStarter/archive/master.zip</a>.
+    This will create a new project that contains 2 folders, <a href="https://github.com/NetCoreTemplates/templates-webapp/tree/master/app">/app</a> contains all source code and 
+    assets for your Web App and <a href="https://github.com/NetCoreTemplates/templates-webapp/tree/master/web">/web</a> contains a copy of the WebApp 
+    binaries from <a href="https://github.com/NetCoreWebApps/Web">ServiceStack/WebApp</a>. 
 </p>
-
+    
 <p>
-    This contains 2 folders, <a href="https://github.com/NetCoreWebApps/WebAppStarter/tree/master/app">/app</a> contains all source code and 
-    assets for your Web App and <a href="https://github.com/NetCoreWebApps/WebAppStarter/tree/master/web">/web</a> contains a copy of the WebApp 
-    binaries from <a href="https://github.com/NetCoreWebApps/Web">ServiceStack/WebApp</a>. There's also 
-    <a href="https://github.com/NetCoreWebApps/WebAppStarter/blob/master/start-app.bat">start-app.bat</a> and 
-    <a href="https://github.com/NetCoreWebApps/WebAppStarter/blob/master/start-app.sh">start-app.sh</a> scripts for running your app in 
-    Windows, OSX and Linux. Both scripts run the same command:
+    The project can be run from Windows, OSX and Linux. To run in VS Code type <em>Ctrl+Shift+B</em> to run the configured build task, 
+    otherwise you can run from the command-line with:
 </p>
 
 <pre class="sh"><code>dotnet web/app.dll ../app/web.settings</code></pre>
-
-<p>
-    Which can be run instead of the script, it also means <em>cat start-app.bat | sh</em> will also run the app on OSX and Linux.
-</p>
 
 <p>
     Once running you can view your App on <em>http://localhost:5000/</em> which you can keep running whilst developing your app
