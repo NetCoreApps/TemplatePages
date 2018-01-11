@@ -106,6 +106,55 @@ order: 18
     Pages with an <b>_</b> underscore prefix can't be accessed directly making them a good convention for layouts and partials
 </blockquote>
     
+<h4 id="view-pages">View Pages</h4>
+
+<p>
+    View Pages lets you use <em>.html</em> Template Pages to render the HTML for Services Responses. 
+    It works similarly to <a href="http://razor.servicestack.net/#smart-views">Razor ViewPages</a>
+    where it uses first matching View Page with the Response DTO is injected as the `Model` property. 
+    The View Pages can be in any folder within the <em>/Views</em> folder using the format <em>{PageName}.html</em> where <em>PageName</em> 
+    can be either the <b>Request DTO</b> or <b>Response DTO</b> Name, but all page names within the <em>/Views</em> folder need to be unique.    
+</p>
+
+<p>
+    Just like ServiceStack.Razor, you can specify to use different Views or Layouts by returning a custom <em>HttpResult</em>, e.g:
+</p>
+
+{{ 'gfm/view-engine/09.md' | githubMarkdown }}
+
+<p>
+    Or add the <em>[ClientCanSwapTemplates]</em> Request Filter attribute to allow clients to specify which View and Template to use via the query 
+    string, e.g: <em>?View=CustomPage&amp;Template=_custom-layout</em>
+</p>
+<p>
+    Additional examples of dynamically specifying the View and Template are available in 
+    <a href="https://github.com/ServiceStack/ServiceStack/blob/master/tests/ServiceStack.WebHost.Endpoints.Tests/TemplateTests/TemplateViewPagesTests.cs">TemplateViewPagesTests</a>.
+</p>
+
+<h4 id="cascading-layouts">Cascading Layouts</h4>
+
+<p>
+    One difference from Razor is that it uses a cascading <em>_layout.html</em> instead of <em>/Views/Shared/_Layout.cshtml</em>.
+</p>
+
+<p>So if your view page was in:</p>
+
+<div class="gfm">
+<pre>
+    /Views/dir/MyRequest.html
+</pre>
+</div>
+
+<p>It will use the closest `_layout.html` it can find starting from:</p>
+
+<div class="gfm">
+<pre>
+    /Views/dir/_layout.html
+    /Views/_layout.html
+    /_layout.html
+</pre>
+</div>
+
 <h4 id="layout-selection">Layout Selection</h4>
 
 <p>

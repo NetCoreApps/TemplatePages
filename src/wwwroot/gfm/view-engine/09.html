@@ -1,0 +1,10 @@
+<div class="gfm"><div class="highlight highlight-source-cs"><pre><span class="pl-k">public</span> <span class="pl-k">object </span>Any(MyRequest request)
+{
+    ...
+    <span class="pl-k">return</span> <span class="pl-k">new</span> <span class="pl-en">HttpResult</span>(<span class="pl-en">response</span>)
+    {
+        View = <span class="pl-s"><span class="pl-pds">"</span>CustomPage<span class="pl-pds">"</span></span>,
+        Template = <span class="pl-s"><span class="pl-pds">"</span>_custom-layout<span class="pl-pds">"</span></span>,
+    };
+}</pre></div>
+</div>
