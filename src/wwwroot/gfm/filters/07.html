@@ -2,8 +2,8 @@
 {
     ScanTypes = { <span class="pl-k">typeof</span>(<span class="pl-en">MyFilter</span>) }
 };
-<span class="pl-en">context.Container.AddSingleton</span>(() =&gt; <span class="pl-k">new</span> <span class="pl-en">MemoryCacheClient</span>());
-<span class="pl-en">context.Container.Resolve</span>().<span class="pl-en">Set</span>(<span class="pl-s"><span class="pl-pds">"</span>key<span class="pl-pds">"</span></span>, <span class="pl-s"><span class="pl-pds">"</span>foo<span class="pl-pds">"</span></span>);
+<span class="pl-en">context.Container.AddSingleton</span>&lt;<span class="pl-en">ICacheClient</span>&gt;(() =&gt; <span class="pl-k">new</span> <span class="pl-en">MemoryCacheClient</span>());
+<span class="pl-en">context.Container.Resolve</span>&lt;<span class="pl-en">ICacheClient</span>&gt;().<span class="pl-en">Set</span>(<span class="pl-s"><span class="pl-pds">"</span>key<span class="pl-pds">"</span></span>, <span class="pl-s"><span class="pl-pds">"</span>foo<span class="pl-pds">"</span></span>);
 <span class="pl-en">context.Init</span>();
 
 <span class="pl-k">var</span> <span class="pl-en">output </span>= <span class="pl-en">context.EvaluateTemplate</span>("&lt;p&gt;{{ <span class="pl-s"><span class="pl-pds">'</span>key<span class="pl-pds">'</span></span> | fromCache }}&lt;/p&gt;");</pre></div>
