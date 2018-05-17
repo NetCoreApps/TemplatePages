@@ -817,6 +817,35 @@ ValidationFeature { ScanAppHostAssemblies: true }
     You can check the <a href="/metadata/debug">/metadata/debug</a> Template for all Plugins loaded in your AppHost.
 </p>
 
+<h3 id="netcore-extensibility">.NET Extensibility</h3>
+
+<p>
+    Plugins can also implement .NET Core's <em>IStartup</em> to be able to register any required dependencies without any coupling to any Custom AppHost.
+</p>
+
+<p>
+    To simplify configuration you can use the `plugins/*` wildcard in 
+    <a href="https://github.com/NetCoreWebApps/WebApp/blob/master/src/apps/plugins2/web.settings">web.settings</a>
+    at the end of an ordered plugin list to register all remaining Plugins it finds in the apps `/plugins` folder:
+</p>
+
+
+<pre class="settings"><code>features OpenApiFeature, PostmanFeature, CorsFeature, ValidationFeature, plugins/*
+CustomPlugin { ShowProcessLinks: true }
+</code></pre>
+
+<p>
+    Each plugin registered can continue to be furthered configured by specifying its name and a JavaScript object literal as seen above.
+</p>
+
+<p>
+    The <a href="https://github.com/NetCoreWebApps/WebApp/tree/master/src/apps/plugins2">/plugins2</a>  App shows an example of this with the 
+    <a href="https://github.com/NetCoreWebApps/WebApp/blob/master/src/example-plugins/ServerInfo/StartupPlugin.cs">StartupPlugin</a>
+    registering a <em>StartupDep</em> dependency which is used by its <em>StartupServices</em> at runtime:
+</p>
+
+{{ 'gfm/web-apps/12.md' | githubMarkdown }}
+
 <h3>ServiceStack Ecosystem</h3>
 
 <p>

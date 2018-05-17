@@ -1,0 +1,33 @@
+<div class="gfm"><div class="highlight highlight-source-cs"><pre><span class="pl-k">public</span> <span class="pl-k">class</span> <span class="pl-en">StartupDep</span>
+{
+    <span class="pl-k">public</span> <span class="pl-k">string</span> <span class="pl-smi">Name</span> { <span class="pl-k">get</span>; } <span class="pl-k">=</span> <span class="pl-k">nameof</span>(<span class="pl-smi">StartupDep</span>);
+}
+
+<span class="pl-k">public</span> <span class="pl-k">class</span> <span class="pl-en">StartupPlugin</span> : <span class="pl-en">IPlugin</span>, <span class="pl-en">IStartup</span>
+{
+    <span class="pl-k">public</span> <span class="pl-k">void</span> <span class="pl-en">Configure</span>(<span class="pl-en">IApplicationBuilder</span> <span class="pl-smi">app</span>) {}
+
+    <span class="pl-k">public</span> <span class="pl-en">IServiceProvider</span> <span class="pl-en">ConfigureServices</span>(<span class="pl-en">IServiceCollection</span> <span class="pl-smi">services</span>)
+    {
+        <span class="pl-smi">services</span>.<span class="pl-en">AddSingleton</span>(<span class="pl-k">new</span> <span class="pl-en">StartupDep</span>());
+        <span class="pl-k">return</span> <span class="pl-c1">null</span>;
+    }
+
+    <span class="pl-k">public</span> <span class="pl-k">void</span> <span class="pl-en">Register</span>(<span class="pl-en">IAppHost</span> <span class="pl-smi">appHost</span>)
+    {
+        <span class="pl-smi">appHost</span>.<span class="pl-en">GetPlugin</span>&lt;<span class="pl-en">MetadataFeature</span>&gt;()
+            .<span class="pl-en">AddPluginLink</span>(<span class="pl-s"><span class="pl-pds">"</span>/startup-dep<span class="pl-pds">"</span></span>, <span class="pl-s"><span class="pl-pds">"</span>Startup Service<span class="pl-pds">"</span></span>);
+    }       
+}
+
+[<span class="pl-en">Route</span>(<span class="pl-s"><span class="pl-pds">"</span>/startup-dep<span class="pl-pds">"</span></span>)]
+<span class="pl-k">public</span> <span class="pl-k">class</span> <span class="pl-en">GetStartupDep</span> : <span class="pl-en">IReturn</span>&lt;<span class="pl-k">string</span>&gt; {}
+
+<span class="pl-k">public</span> <span class="pl-k">class</span> <span class="pl-en">StartupServices</span> : <span class="pl-en">Service</span>
+{
+    <span class="pl-k">public</span> <span class="pl-en">StartupDep</span> <span class="pl-smi">StartupDep</span> { <span class="pl-k">get</span>; <span class="pl-k">set</span>; }
+
+    [<span class="pl-en">AddHeader</span>(<span class="pl-en">ContentType</span> <span class="pl-k">=</span> <span class="pl-smi">MimeTypes</span>.<span class="pl-smi">PlainText</span>)]
+    <span class="pl-k">public</span> <span class="pl-k">object</span> <span class="pl-en">Any</span>(<span class="pl-en">GetStartupDep</span> <span class="pl-smi">request</span>) <span class="pl-k">=&gt;</span> <span class="pl-smi">StartupDep</span>.<span class="pl-smi">Name</span>;
+}</pre></div>
+</div>
