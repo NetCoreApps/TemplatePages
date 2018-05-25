@@ -76,7 +76,8 @@ Bitwise = {{ 3 & 1 }}, {{ (3 | 1) }}, {{ 3 ^ 1 }}, {{ 3 << 1 }}, {{ 3 >> 1 }}, {
     To achieve the same result you'd need to execute them in their implied grouping explicitly:
 </p>
 
-{{ 'live-template' | partial({ template: "1 - 2 + 3 * 4 / 5 = {{ add(sub(1,2), div(mul(3,4), 5)) }}
+{{ 'live-template' | partial({ template: "1 - 2 + 3 * 4 / 5 = {{ 1 - 2 + 3 * 4 / 5 }}
+1 - 2 + 3 * 4 / 5 = {{ add(sub(1,2), div(mul(3,4), 5)) }}
 ((1 - 2 + 3) * 4) / 5 = {{ 1 | subtract(2) | add(3) | multiply(4) | divide(5) }}" }) }}
 
 <h4 id="math">Math</h4>
