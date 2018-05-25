@@ -54,7 +54,7 @@ Without: {{ '<b>hi</b>' | raw }}" }) }}
 Bitwise = {{ 3 & 1 }}, {{ (3 | 1) }}, {{ 3 ^ 1 }}, {{ 3 << 1 }}, {{ 3 >> 1 }}, {{ ~1 }}" }) }}
 
 <blockquote>
-    Behavior is as you would expect in JavaScript except for Bitwise OR <em>|</em> needs to be in parens to avoid it being treated as a 
+    Behavior is as you would expect in JavaScript except for Bitwise OR <em>|</em> needs to be in <em>(parens)</em> to avoid it being treated as a 
     filter expression separator and no assignment operations are supported, i.e. <em>=, ++, --, |=</em>, etc. The <em>=</em> is treated 
     as an equality operator <em>==</em> so it lets you use SQL-like queries if preferred, e.g. <em>a = 1 and b = 2 or c = 3 </em>.
 </blockquote>
