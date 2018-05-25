@@ -6,7 +6,7 @@
             "type": "coreclr",
             "request": "launch",
             "preLaunchTask": "build",
-            "program": "${workspaceRoot}/src/bin/Debug/<target-framework>/<project-name.dll>",
+            "program": "${workspaceRoot}/src/bin/Debug/netcoreapp2.0/TemplatePages.dll",
             "args": [],
             "cwd": "${workspaceRoot}/src",
             "stopAtEntry": false,

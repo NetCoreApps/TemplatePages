@@ -29,7 +29,7 @@ order: 17
 
 <blockquote>
     An easy way to temporarily disable hot reloading is to prefix the expression with the <em>end</em> filter 
-    <em>{{ pass: end | ifDebug ... }}</em> or if preferred you can just use comments <em>{{&zwnj;* ifDebug ... *&zwnj;}}</em> 
+    <em>{{ pass: end | ifDebug ... }}</em> or if preferred you can just use comments <em>{{ pass: &zwnj;* ifDebug ... *&zwnj;}}</em> 
 </blockquote>
 
 <h4>When to reload</h4>
@@ -51,7 +51,7 @@ order: 17
 
 <p>
     Since it's just scanning the AST instead of evaluating it, it will only be able to find files and partials that were 
-    staticaly referenced, i.e. the typical case of using a string literal for the file name as opposed to a dynamically creating it.
+    statically referenced, i.e. the typical case of using a string literal for the file name as opposed to a dynamically creating it.
 </p>
 
 {{ "doc-links" | partial({ order }) }}

@@ -299,7 +299,7 @@ redis.connection localhost:6379</code></pre>
 {{ 'gfm/web-apps/07.md' | githubMarkdown }}
 
 <p>
-    Redis Vue avoids the complexity of adopting a npm build system by refrencing Vue libraries as a simple script include:
+    Redis Vue avoids the complexity of adopting a npm build system by referencing Vue libraries as a simple script include:
 </p>
 
 <pre class="html"><code>&lt;script src="../assets/js/vue{{ pass: '.min' | if(!debug) }}.js"&gt;</script></code></pre>
@@ -372,7 +372,7 @@ redis.connection localhost:6379</code></pre>
 <p>
     The Redis Vue Single Page App also takes advantage of HTML5's <em>history.pushState</em> API to enable deep-linking and back-button
     support where most UI state changes is captured on the query string and used to initialize the Vue state on page navigation or
-    full-page reloads where it proivdes transparent navigation and back-button support that functions like a traditional Web App but with 
+    full-page reloads where it provides transparent navigation and back-button support that functions like a traditional Web App but with 
     the instant performance of a Single Page App.
 </p>
 
