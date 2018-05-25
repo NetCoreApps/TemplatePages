@@ -1,3 +1,3 @@
 {{ [5, 4, 1, 3, 9, 8, 6, 7, 2, 0] | assignTo: numbers }}
 {{ ['zero','one','two','three','four','five','six','seven','eight','nine'] | assignTo:strings }}
-{{ numbers | select: The digit { strings[it] } is { 'even' | if (isEven(it)) | otherwise('odd') }.\n }}
+{{ numbers | select: The digit { strings[it] } is { isEven(it) ? 'even' : 'odd' }.\n }}

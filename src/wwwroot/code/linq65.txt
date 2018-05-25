@@ -1,2 +1,2 @@
 {{ range(100,50)
-   | select: The number {it} is { 'even' | if(isEven(it)) | otherwise('odd') }.\n }}
+   | select: The number {it} is { isEven(it) ? 'even' : 'odd' }.\n }}
