@@ -51,7 +51,29 @@ Who can also access other arguments in scope <b>{{ layoutArg }}</b>`
     <div class="result">
         <div class="output"></div>
     </div>
-</div> 
+</div>
+
+<h4 id="inline-partials">Inline Partials</h4>
+
+<p>
+    Partials can also be defined in-line with the <em>{{pass: #partial}}</em> block statement:
+</p>
+
+{{ 'live-template' | partial({ rows:13, template: `
+{{#partial order}}
+  Order {{ it.OrderId }}: {{ it.OrderDate | dateFormat }}
+{{/partial}}
+{{#partial customer}}
+Customer {{ it.CustomerId }} {{ it.CompanyName | raw }}
+{{ it.Orders | selectPartial: order }}{{/partial}}
+
+{{ customers 
+    | where: it.Region = 'WA' 
+    | assignTo: waCustomers 
+ }}
+ Customers from Washington and their orders:
+ {{ waCustomers | selectPartial: customer }}` }) }}
+
 
 <h4>Resolving Partials and Pages</h4>
 
