@@ -345,18 +345,18 @@ onlyIfEmpty: {{ a | onlyIfEmpty | show: a is empty }}` }) }}
     Let bindings allow you to create scoped argument bindings from individual string expressions:
 </p>
 
-{{ 'live-template' | partial({ rows: 4, template: `{{ [{name:'Alice',score:50},{name:'Bob',score:40}] | assignTo:scoreRecords }}
+{{ 'live-template' | partial({ rows: 4, template: ′{{ [{name:'Alice',score:50},{name:'Bob',score:40}] | assignTo:scoreRecords }}
 {{ scoreRecords 
    | let({ name:"it['name']", score:"it['score']", personNum:"index + 1" })
-   | select: {personNum}. {name} = {score}\n }}` }) }}
+   | select: {personNum}. {name} = {score}\n }}′ }) }}
 
 <p>
     <em>scopeVars</em> lets you create bindings from a Dictionary, List of KeyValuePair's or List of Dictionaries using the key 
     as the name of the argument binding and the value as its value:
 </p>
 
-{{ 'live-template' | partial({ template: `{{ [{name:'Alice',score:50},{name:'Bob',score:40}] | assignTo:scoreRecords }}
-{{ scoreRecords | scopeVars | select: {index + 1}. {name} = {score}\n }}` }) }}
+{{ 'live-template' | partial({ template: "{{ [{name:'Alice',score:50},{name:'Bob',score:40}] | assignTo:scoreRecords }}
+{{ scoreRecords | scopeVars | select: {index + 1}. {name} = {score}\n }}" }) }}
 
 <h4 id="querying-objects">Querying Objects</h4>
 
