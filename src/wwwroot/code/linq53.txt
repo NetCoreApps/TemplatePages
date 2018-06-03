@@ -5,6 +5,6 @@
    | map: it.CompanyName[0] 
    | assignTo: customerFirstChars }}
 First letters from Product names, but not from Customer names:
-{{ productFirstChars 
-   | except(customerFirstChars) 
-   | select: { it }\n }}
+{{#each except(productFirstChars,customerFirstChars) }}
+  {{it}}
+{{/each}}

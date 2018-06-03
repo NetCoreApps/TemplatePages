@@ -1,5 +1,5 @@
-The sorted list of words:
 {{ ['cherry', 'apple', 'blueberry'] | assignTo: words }}
+The sorted list of words:
 {{ words 
    | orderBy: it 
    | select: { it }\n }}

@@ -1,4 +1,8 @@
-Number strings:
-{{ [5, 4, 1, 3, 9, 8, 6, 7, 2, 0] | assignTo: numbers }}
-{{ ['zero','one','two','three','four','five','six','seven','eight','nine'] | assignTo:strings }}
-{{ numbers | select: { strings[it] }\n }}
+{{ products
+   | where: it.UnitsInStock > 0 && it.UnitPrice > 3.00
+   | assignTo: expensiveInStockProducts 
+}}
+In-stock products that cost more than 3.00:
+{{#each expensiveInStockProducts}}
+  {{ProductName}} is in stock and costs more than 3.00.
+{{/each}}

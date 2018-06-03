@@ -1,2 +1,4 @@
 Product Names:
-{{ products | select: { it.ProductName }\n }}
+{{#each products}}
+  {{ProductName}}
+{{/each}}

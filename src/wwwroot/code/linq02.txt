@@ -1,4 +1,4 @@
 Sold out products:
-{{ products 
-    | where: it.UnitsInStock = 0 
-    | select: { it.productName } is sold out!\n }}
+{{#each products where UnitsInStock = 0}}
+  {{ ProductName }} is sold out!
+{{/each}}

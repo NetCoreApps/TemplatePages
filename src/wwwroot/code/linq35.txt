@@ -1,5 +1,5 @@
-Sorted digits:
 {{ ['zero','one','two','three','four','five','six','seven','eight','nine'] | assignTo:digits }}
+Sorted digits:
 {{ digits 
    | orderBy: it.length
    | thenBy: it

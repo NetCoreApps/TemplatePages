@@ -46,7 +46,7 @@ Who can also access other arguments in scope <b>{{ layoutArg }}</b>`
         </section>
     </div>
     <div class="template">
-        <textarea class="form-control" rows="7">{{ "code/linq04.txt" | includeFile }}</textarea>
+        <textarea class="form-control" rows="7">{{ "code/linq04-partials.txt" | includeFile }}</textarea>
     </div>
     <div class="result">
         <div class="output"></div>
@@ -74,6 +74,10 @@ Customer {{ it.CustomerId }} {{ it.CompanyName | raw }}
  Customers from Washington and their orders:
  {{ waCustomers | selectPartial: customer }}` }) }}
 
+<blockquote>
+    See <a href="/linq/restriction-operators#linq4-where---drilldown">linq 04</a> 
+    for an example of this implemented without partials using <em>{{pass: #each}}</em> blocks.
+</blockquote>
 
 <h4>Resolving Partials and Pages</h4>
 

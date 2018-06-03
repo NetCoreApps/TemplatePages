@@ -3,4 +3,9 @@
    | assignTo: waCustomers 
 }}
 Customers from Washington and their orders:
-{{ waCustomers | selectPartial: customer }}
+{{#each waCustomers}}
+Customer {{ it.CustomerId }} {{ it.CompanyName | raw }}
+{{#each it.Orders}}
+    Order {{ it.OrderId }}: {{ it.OrderDate | dateFormat }}
+{{/each}}
+{{/each}}
