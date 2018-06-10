@@ -41,6 +41,18 @@ htmlClassList: {{ {alt:isOdd(index), active:true} | htmlClassList }}` }) }}
     Or use <em>htmlClassList</em> if you just want the list of classes.
 </p>
 
+<h4 id="htmlattrs">htmlAttrs</h4>
+
+<p>
+    Helper filter to simplify rendering HTML attributes on HTML elements, it accepts a Dictionary of Key/Value Pairs 
+    which will be rendered as HTML attributes. Keys with a boolean value will only render the attribute name if it's true 
+    and htmlAttrs also supports common JS keyword overrides for <em>htmlFor</em> and <em>className</em>, e.g:
+</p>
+{{ 'live-template' | partial({ rows:4, template: `Normal Key/Value Pairs: <b>{{ {'data-index':1,id:'nav',title:'menu'} | htmlAttrs }}</b>
+Boolean Values: <b>{{ {selected:true, active:false} | htmlAttrs }}</b>
+Keyword Names: <b>{{ {for:'txtName', class:'lnk'} | htmlAttrs }}</b>
+Special Cases: <b>{{ {htmlFor:'txtName', className:'lnk'} | htmlAttrs }}</b>` }) }}
+
 <h4 id="htmlerror">htmlError</h4>
 
 <p>
