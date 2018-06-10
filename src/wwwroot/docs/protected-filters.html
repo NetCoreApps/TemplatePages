@@ -98,6 +98,7 @@ order: 10
     Accept JSON responses:
 </p>
 
+{{#raw}}
 <pre class="cs"><code>{{ url | includeUrl({ accept: 'application/json' }) }}</code></pre>
 <pre class="cs"><code>{{ url | includeUrl({ dataType: 'json' }) }}</code></pre>
 
@@ -136,20 +137,21 @@ order: 10
 </p>
 
 
-<pre class="cs">{{ pass: url | includeUrlWithCache }}<code></code></pre>
+<pre class="cs">{{ url | includeUrlWithCache }}<code></code></pre>
 
 <p>
     In which case it will use the <b>1 minute</b> default overridable in <em>Args[DefaultUrlCacheExpiry]</em>    
     or if you want to ensure that no more than 1 url request is made per hour for this url you can specify a custom expiry with:
 </p>
 
-<pre class="cs">{{ pass(`url | includeUrlWithCache({ expiresInSecs: 3600 })`) }}<code></code></pre>
+<pre class="cs">{{ url | includeUrlWithCache({ expiresInSecs: 3600 }) }}<code></code></pre>
 
 <h3 id="virtual-file-system-apis">Virtual File System APIs</h3>
 
 <p>
     The <a href="http://docs.servicestack.net/virtual-file-system">Virtual File System APIs</a> are mapped to the following filters:
 </p>
+{{/raw}}
 
 <table class="table table-striped">
     <thead>

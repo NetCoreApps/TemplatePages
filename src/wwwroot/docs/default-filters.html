@@ -304,7 +304,7 @@ useFormat {{ arg2 | endIfExists | useFormat('value', 'key={0}') | assignTo: arg2
 
 <blockquote>
     You can also use <em>end</em> to discard return values of filters with side-effects, block filters, partials, etc.
-    It also provides an easy way to comment out any expression by prefixing it at the start, e.g: <em>{{ pass: end | unreachable }}</em> 
+    It also provides an easy way to comment out any expression by prefixing it at the start, e.g: <em>{{#raw}}{{ end | unreachable }}{{/raw}}</em> 
 </blockquote>
 
 <p>
@@ -367,7 +367,7 @@ Value of 'c': {{ letters['c'] }}, {{ letters.c }}, {{ letters | get('c') }}
 Property Value: {{ 'A String' | property('Length') }}` }) }}
 
 <p>
-    There's also <em>{{ pass: field('Id') }}</em> to retrieve a public Field.
+    There's also <em>{{#raw}}{{ field('Id') }}{{/raw}}</em> to retrieve a public Field.
 </p>
 
 <h4 id="member-expressions">Member Expressions</h4>
@@ -494,11 +494,13 @@ var escapeLines = '{{ "new" | appendLine | append("line") | escapeNewLines }}';`
 
 <h4 id="miscellaneous">Miscellaneous</h4>
 
-<p>
-    Use <em>pass</em> to emit a Template Expression without evaluating it:
+<p>Use <em>#raw</em> block filter or <em>pass</em> to emit a Template Expression without evaluating it:
 </p>
 
-{{ 'live-template' | partial({ rows: 1, template: `{{ pass: 'shout' | upper }}` }) }}
+{{ 'live-template' | partial({ rows: 4, template: `{{ pass: 'shout' | upper }}
+{{#raw}}
+{{ 'shout' | upper }}
+{{/raw}}` }) }}
 
 <blockquote>
     Useful when you want to emit a client-side Vue filter or show examples of Template Expressions.

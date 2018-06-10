@@ -85,7 +85,8 @@ order: 27
 
 <p>
     Specify an optional 
-    <a href="http://docs.servicestack.net/appsettings">App Settings provider</a> that templates can access with the <em>{{ pass: key | appSetting }}</em>
+    <a href="http://docs.servicestack.net/appsettings">App Settings provider</a> that templates can access with the 
+    <em>{{#raw}}{{ key | appSetting }}{{/raw}}</em>
     default filter.
 </p>
 

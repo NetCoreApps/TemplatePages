@@ -47,19 +47,20 @@ order: 15
     <a href="https://github.com/ServiceStack/ServiceStack/blob/master/src/ServiceStack.Common/Templates/TemplateConfig.cs">currently</a>:
 </p>
 
+{{#raw}}
 <table class="table">
     <tr>
         <th>ifError</th>
         <td>
             Only execute the filter if there's an error: <br>
-            <em>{{ pass: ifError | select: FAIL! { it.Message } }}</em>
+            <em>{{ ifError | select: FAIL! { it.Message } }}</em>
         </td>
     </tr>
     <tr>
         <th>lastError</th>
         <td>
             Returns the last error on the page or <em>null</em> if there was no error, that's passed to the next filter:<br>
-            <em>{{ pass: lastError | ifExists | select: FAIL! { it.Message } }}</em>
+            <em>{{ lastError | ifExists | select: FAIL! { it.Message } }}</em>
         </td>
     </tr>
     <tr>
@@ -78,6 +79,7 @@ order: 15
         <td>Display a detailed Exception</td>
     </tr>
 </table>
+{{/raw}}
 
 <p>
     This behavior provides the optimal UX for developers and end-users as HTML Pages with Exceptions are still rendered well-formed 

@@ -30,7 +30,7 @@ order: 19
     You can return a result in Templates with the <em>return</em> filter:
 </p>
 
-<pre class="cs"><code>{{ pass: response | return }}</code></pre>
+<pre class="cs"><code>{{#raw}}{{ response | return }}{{/raw}}</code></pre>
 
 <p>
     This will immediately terminate evaluation of the page and store the response in the <em>PageResult</em> the Page was
