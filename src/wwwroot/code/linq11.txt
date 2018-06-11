@@ -1,3 +1,4 @@
 Product Info:
-{{ products 
-   | select: { it.ProductName } is in the category { it.Category } and costs { it.UnitPrice | currency } per unit.\n }}
+{{#each products}}
+{{ProductName}} is in the Category {{Category}} and costs {{UnitPrice | currency}} per unit.
+{{/each}}
