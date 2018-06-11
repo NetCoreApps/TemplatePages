@@ -1,4 +1,4 @@
 {{ [ 'cherry', 'apple', 'blueberry'] | assignTo: words }}
 {{ words
-   | sum: it.Length 
+   | sum => it.Length 
    | select: There are a total of {it} characters in these words. }}

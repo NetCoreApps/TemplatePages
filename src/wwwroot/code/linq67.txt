@@ -1,4 +1,4 @@
 {{ ['believe', 'relief', 'receipt', 'field'] | assignTo: words }}
 {{ words 
-   | any: contains(it, 'ei')
+   | any => contains(it, 'ei')
    | select: There is a word that contains in the list that contains 'ei': { it | lower } }}

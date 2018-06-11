@@ -1,5 +1,5 @@
 Category names:
 {{ products 
-   | map: it.Category 
+   | map => it.Category 
    | distinct
    | select: { it }\n }}

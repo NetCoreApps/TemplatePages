@@ -2,6 +2,6 @@
 Bob's score: 
 {{ scoreRecords 
    | toDictionary: it.name
-   | map: it['Bob']
-   | select: { it['name'] } = { it['score'] }
+   | map => it['Bob']
+   | select: { it.name } = { it.score }
 }}

@@ -1,4 +1,6 @@
 Product Info:
-{{#each products}}
-{{ProductName}} is in the Category {{Category}} and costs {{UnitPrice | currency}} per unit.
+{{ products | map => { ProductName:it.ProductName, Category:it.Category, Price: it.UnitPrice }
+   | assignTo: productInfos }}
+{{#each productInfos}}
+{{ProductName}} is in the Category {{Category}} and costs {{Price | currency}} per unit.
 {{/each}}

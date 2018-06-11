@@ -1,6 +1,5 @@
 {{ ['aPPLE', 'BlUeBeRrY', 'cHeRry'] | assignTo: words }}
-{{ words | let({ Uppercase: 'upper(it)', Lowercase: 'lower(it)' })
-   | assignTo: upperLowerWords }}
+{{ words | map => {Uppercase: upper(it), Lowercase: lower(it)} | assignTo: upperLowerWords }}
 {{#each upperLowerWords}}
 {{ `Uppercase: ${Uppercase}, Lowercase: ${Lowercase}` }}
 {{/each}}

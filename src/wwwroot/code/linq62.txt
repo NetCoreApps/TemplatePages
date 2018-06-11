@@ -1,3 +1,2 @@
-{{ products | first: it.ProductId = 789 
-   | assignTo: product789 }}
+{{ products | first => it.ProductId = 789 | assignTo: product789 }}
 Product 789 exists: {{ product789 != null }}

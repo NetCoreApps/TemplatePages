@@ -11,7 +11,7 @@
     <PackageReference Include="System.Collections.NonGeneric" Version="4.3.*" />
     <PackageReference Include="System.IO.FileSystem.DriveInfo" Version="4.3.*" />
 
-    <PackageReference Include="ServiceStack" Version="5.*" />
+    <!-- <PackageReference Include="ServiceStack" Version="5.*" />
     <PackageReference Include="ServiceStack.Interfaces" Version="5.*" />
     <PackageReference Include="ServiceStack.Text" Version="5.*" />
     <PackageReference Include="ServiceStack.Client" Version="5.*" />
@@ -20,9 +20,9 @@
     <PackageReference Include="ServiceStack.OrmLite" Version="5.*" />
     <PackageReference Include="ServiceStack.OrmLite.Sqlite" Version="5.*" />
     <PackageReference Include="ServiceStack.Server" Version="5.*" /> 
-    <PackageReference Include="ServiceStack.Api.OpenApi" Version="5.*" /> 
+    <PackageReference Include="ServiceStack.Api.OpenApi" Version="5.*" />  -->
 
-    <!-- <ProjectReference Include="..\..\..\ServiceStack.Text\src\ServiceStack.Text\ServiceStack.Text.csproj" />
+    <ProjectReference Include="..\..\..\ServiceStack.Text\src\ServiceStack.Text\ServiceStack.Text.csproj" />
     <ProjectReference Include="..\..\..\ServiceStack.Redis\src\ServiceStack.Redis\ServiceStack.Redis.csproj" />
     <ProjectReference Include="..\..\..\ServiceStack.OrmLite\src\ServiceStack.OrmLite\ServiceStack.OrmLite.csproj" />
     <ProjectReference Include="..\..\..\ServiceStack.OrmLite\src\ServiceStack.OrmLite.Sqlite\ServiceStack.OrmLite.Sqlite.csproj" />
@@ -32,7 +32,7 @@
     <ProjectReference Include="..\..\..\ServiceStack\src\ServiceStack.Common\ServiceStack.Common.csproj" />
     <ProjectReference Include="..\..\..\ServiceStack\src\ServiceStack\ServiceStack.csproj" />
     <ProjectReference Include="..\..\..\ServiceStack\src\ServiceStack.Server\ServiceStack.Server.csproj" />
-    <ProjectReference Include="..\..\..\ServiceStack\src\ServiceStack.Api.OpenApi\ServiceStack.Api.OpenApi.csproj" /> -->
+    <ProjectReference Include="..\..\..\ServiceStack\src\ServiceStack.Api.OpenApi\ServiceStack.Api.OpenApi.csproj" />
   </ItemGroup>
 
 </Project>

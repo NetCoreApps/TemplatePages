@@ -1,5 +1,5 @@
 {{ [ 5, 4, 1, 3, 9, 8, 6, 7, 2, 0 ] | assignTo: numbers }} 
 {{ numbers
-   | where: it > 5
+   | where => it > 5
    | elementAt(1) 
    | select: Second number > 5: { it } }}
