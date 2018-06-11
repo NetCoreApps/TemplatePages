@@ -2,4 +2,4 @@ Category names:
 {{ products 
    | map => it.Category 
    | distinct
-   | select: { it }\n }}
+   | join(`\n`) }}

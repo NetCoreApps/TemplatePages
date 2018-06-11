@@ -1,4 +1,3 @@
 {{ [ 'cherry', 'apple', 'blueberry' ] | assignTo: words }}
-{{ words
-   | max => it.Length 
-   | select: The longest word is {it} characters long. }}
+{{ words | max => it.Length | assignTo: longestLength }}
+The longest word is {{longestLength}} characters long.

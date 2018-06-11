@@ -1,4 +1,4 @@
 {{ products 
    | groupBy => it.Category
-   | let({ category: 'it.Key', averagePrice: 'average(it, `it.UnitPrice`)' }) 
-   | select: Category: {category}, AveragePrice: {averagePrice}\n }}
+   | let => { Category: it.Key, AveragePrice: average(it, p => p.UnitPrice) } 
+   | htmlDump }}

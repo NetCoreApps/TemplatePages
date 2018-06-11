@@ -3,4 +3,4 @@ The sorted word list:
 {{ words
    | orderBy => it 
    | toList 
-   | select: { it }\n }}
+   | join(`\n`) }}

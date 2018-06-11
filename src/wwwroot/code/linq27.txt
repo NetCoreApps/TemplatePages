@@ -2,4 +2,4 @@
 All elements starting from first element less than its position:
 {{ numbers 
    | skipWhile => it >= index 
-   | select: { it }\n }}
+   | join(`\n`) }}

@@ -3,4 +3,4 @@ Sorted digits:
 {{ digits 
    | orderBy => it.length
    | thenBy => it
-   | select: { it }\n }}
+   | join(`\n`) }}

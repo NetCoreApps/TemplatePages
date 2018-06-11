@@ -1,4 +1,4 @@
 {{ products 
    | groupBy => it.Category
-   | let({ category: 'it.Key', cheapestPrice: 'min(it, `it.UnitPrice`)' }) 
-   | select: {category}, {cheapestPrice}\n }}
+   | let => { Category: it.Key, CheapestPrice: min(it, p => p.UnitPrice) }
+   | htmlDump }}

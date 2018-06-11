@@ -1,2 +1,3 @@
 {{ [5, 4, 1, 3, 9, 8, 6, 7, 2, 0] | assignTo: numbers }}
-{{ numbers | min | select: The minimum number is {it}. }}
+{{ numbers | min | assignTo: minNum }}
+The minimum number is {{minNum}}.

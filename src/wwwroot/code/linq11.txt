@@ -1,5 +1,5 @@
 Product Info:
-{{ products | map => { ProductName:it.ProductName, Category:it.Category, Price: it.UnitPrice }
+{{ products | map => { it.ProductName, it.Category, Price: it.UnitPrice } 
    | assignTo: productInfos }}
 {{#each productInfos}}
 {{ProductName}} is in the Category {{Category}} and costs {{Price | currency}} per unit.

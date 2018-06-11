@@ -3,4 +3,4 @@ Every other double from highest to lowest:
 {{ doubles 
    | orderByDescending => it
    | step({ by: 2 }) 
-   | select: { it }\n }}
+   | join(`\n`) }}

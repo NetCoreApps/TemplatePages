@@ -1,9 +1,8 @@
-{{ products 
-   | groupBy: it.Category
-   | let({ 
-        g: 'it',
-        MaxPrice: 'max(g, `it.UnitPrice`)', 
-        Category: 'g.Key', 
-        MostExpensiveProducts: 'where(g, `it.UnitPrice = MaxPrice`)' 
-     })
-   | map('{ Category, MostExpensiveProducts }') | htmlDump }}
+{{ products
+   | groupBy => it.Category
+   | let => {
+        g: it,
+        MaxPrice: max(it, p => p.UnitPrice), 
+     }
+   | map => { Category: g.Key, MostExpensiveProducts: where(g, p => p.UnitPrice = MaxPrice) }
+   | htmlDump }}

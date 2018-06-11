@@ -2,4 +2,4 @@
 First numbers not less than their position:
 {{ numbers 
    | takeWhile => it >= index 
-   | select: { it }\n }}
+   | join(`\n`) }}

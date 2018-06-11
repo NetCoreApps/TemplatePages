@@ -2,4 +2,4 @@
 First numbers less than 6:
 {{ numbers 
    | takeWhile => it < 6 
-   | select: { it }\n }}
+   | join(`\n`) }}

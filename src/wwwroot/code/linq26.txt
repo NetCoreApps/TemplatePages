@@ -2,4 +2,4 @@
 All elements starting from first element divisible by 3:
 {{ numbers 
    | skipWhile => it % 3 != 0 
-   | select: { it }\n }}
+   | join(`\n`) }}

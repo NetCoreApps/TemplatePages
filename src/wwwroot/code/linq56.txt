@@ -1,7 +1,7 @@
 {{ [{name:'Alice',score:50},{name:'Bob',score:40},{name:'Cathy',score:45}] | assignTo:scoreRecords }}
 Bob's score: 
 {{ scoreRecords 
-   | toDictionary: it.name
-   | map => it['Bob']
+   | toDictionary => it.name
+   | map => it.Bob
    | select: { it.name } = { it.score }
 }}

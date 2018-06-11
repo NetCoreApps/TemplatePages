@@ -1,9 +1,8 @@
 {{ products 
-   | groupBy: it.Category
-   | let({ 
-        g: 'it',
-        MinPrice: 'min(g, `it.UnitPrice`)', 
-        Category: 'g.Key', 
-        CheapestProducts: 'where(g, `it.UnitPrice = MinPrice`)' 
-     })
-   | map('{ Category, CheapestProducts }') | htmlDump }}
+   | groupBy => it.Category
+   | let => { 
+        g: it,
+        MinPrice: min(it, p => p.UnitPrice), 
+     }
+   | map => { Category: g.Key, CheapestProducts: where(g, p => p.UnitPrice == MinPrice) }
+   | htmlDump }}

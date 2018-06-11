@@ -2,4 +2,4 @@
 {{ words 
    | orderBy => it.length
    | thenBy(it => it, { comparer }) 
-   | select: { it }\n }}
+   | join(`\n`) }}
