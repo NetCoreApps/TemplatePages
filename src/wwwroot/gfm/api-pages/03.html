@@ -1,29 +1,34 @@
-<div class="gfm"><div class="highlight highlight-source-js"><pre>{{ limit <span class="pl-k">|</span> <span class="pl-en">default</span>(<span class="pl-c1">100</span>) <span class="pl-k">|</span> assignTo<span class="pl-k">:</span> limit }}
+<div class="gfm"><div class="highlight highlight-text-html-basic"><pre>{{ limit ?? 100 | assignTo: limit }}
 
-{{ <span class="pl-s"><span class="pl-pds">`</span>select p.Id, </span>
-<span class="pl-s">           ProductName,</span>
-<span class="pl-s">           c.CategoryName Category,</span>
-<span class="pl-s">           s.CompanyName Supplier, </span>
-<span class="pl-s">           QuantityPerUnit, </span>
-<span class="pl-s">           {0} UnitPrice, </span>
-<span class="pl-s">           UnitsInStock, UnitsOnOrder, ReorderLevel   </span>
-<span class="pl-s">      from Product p</span>
-<span class="pl-s">           inner join Category c on p.CategoryId = c.Id</span>
-<span class="pl-s">           inner join Supplier s on p.SupplierId = s.Id</span>
-<span class="pl-s">     where Discontinued = 0<span class="pl-pds">`</span></span>
-                <span class="pl-k">|</span> <span class="pl-en">fmt</span>(<span class="pl-en">sqlCurrency</span>(<span class="pl-s"><span class="pl-pds">"</span>UnitPrice<span class="pl-pds">"</span></span>)) <span class="pl-k">|</span> assignTo<span class="pl-k">:</span> sql }}
+{{ `select p.Id, 
+           ProductName,
+           c.CategoryName Category,
+           s.CompanyName Supplier, 
+           QuantityPerUnit, 
+           ${sqlCurrency("UnitPrice")} UnitPrice, 
+           UnitsInStock, UnitsOnOrder, ReorderLevel   
+      from Product p
+           inner join Category c on p.CategoryId = c.Id
+           inner join Supplier s on p.SupplierId = s.Id
+     where Discontinued = 0`
+  | assignTo: sql }}
 
-{{ PathArgs     <span class="pl-k">|</span> endIfEmpty <span class="pl-k">|</span> <span class="pl-en">useFmt</span>(<span class="pl-s"><span class="pl-pds">'</span>{0} and p.Id = @id<span class="pl-pds">'</span></span>, sql) 
-                <span class="pl-k">|</span> <span class="pl-en">dbSingle</span>({ id<span class="pl-k">:</span> PathArgs[<span class="pl-c1">0</span>] }) 
-                <span class="pl-k">|</span> <span class="pl-k">return</span> }}
+{{#if !isEmpty(PathArgs)}}
+  {{ `${sql} and p.Id = @id` | dbSingle({ id: PathArgs[0] }) 
+     | return }}
+{{/if}}
 
-{{ id           <span class="pl-k">|</span> endIfEmpty <span class="pl-k">|</span> <span class="pl-en">use</span>(<span class="pl-s"><span class="pl-pds">'</span>p.Id = @id<span class="pl-pds">'</span></span>)                 <span class="pl-k">|</span> addTo<span class="pl-k">:</span> filters }}
-{{ category     <span class="pl-k">|</span> endIfEmpty <span class="pl-k">|</span> <span class="pl-en">use</span>(<span class="pl-s"><span class="pl-pds">'</span>c.CategoryName = @category<span class="pl-pds">'</span></span>) <span class="pl-k">|</span> addTo<span class="pl-k">:</span> filters }}
-{{ supplier     <span class="pl-k">|</span> endIfEmpty <span class="pl-k">|</span> <span class="pl-en">use</span>(<span class="pl-s"><span class="pl-pds">'</span>s.CompanyName = @supplier<span class="pl-pds">'</span></span>)  <span class="pl-k">|</span> addTo<span class="pl-k">:</span> filters }}
-{{ nameContains <span class="pl-k">|</span> endIfEmpty <span class="pl-k">|</span> <span class="pl-en">use</span>(<span class="pl-s"><span class="pl-pds">'</span>ProductName LIKE @name<span class="pl-pds">'</span></span>)     <span class="pl-k">|</span> addTo<span class="pl-k">:</span> filters }}
-{{ filters      <span class="pl-k">|</span> endIfEmpty <span class="pl-k">|</span> <span class="pl-en">useFmt</span>(<span class="pl-s"><span class="pl-pds">'</span>{0} and {1}<span class="pl-pds">'</span></span>, sql, <span class="pl-en">join</span>(filters, <span class="pl-s"><span class="pl-pds">'</span> and <span class="pl-pds">'</span></span>))  <span class="pl-k">|</span> assignTo<span class="pl-k">:</span> sql }}
-{{ sql          <span class="pl-k">|</span> <span class="pl-en">appendFmt</span>(<span class="pl-s"><span class="pl-pds">`</span> ORDER BY CompanyName {0}<span class="pl-pds">`</span></span>, <span class="pl-en">sqlLimit</span>(limit))          <span class="pl-k">|</span> assignTo<span class="pl-k">:</span> sql }}
+{{#if id}}           {{ 'p.Id = @id'                 | addTo: filters }} {{/if}}
+{{#if category}}     {{ 'c.CategoryName = @category' | addTo: filters }} {{/if}}
+{{#if supplier}}     {{ 's.CompanyName = @supplier'  | addTo: filters }} {{/if}}
+{{#if nameContains}} {{ 'ProductName LIKE @name'     | addTo: filters }} {{/if}}
 
-{{ sql          <span class="pl-k">|</span> <span class="pl-en">dbSelect</span>({ id, category, supplier, name<span class="pl-k">:</span> <span class="pl-en">fmt</span>(<span class="pl-s"><span class="pl-pds">'</span>%{0}%<span class="pl-pds">'</span></span>,nameContains) }) 
-                <span class="pl-k">|</span> <span class="pl-k">return</span> }}</pre></div>
+{{#if !isEmpty(filters)}}
+  {{ `${sql} and ${join(filters, ' and ')}` | assignTo: sql }}
+{{/if}}
+
+{{ `${sql} ORDER BY CompanyName ${sqlLimit(limit)}` | assignTo: sql }}
+
+{{ sql | dbSelect({ id, category, supplier, name: `%${nameContains}%` }) 
+       | return }}</pre></div>
 </div>

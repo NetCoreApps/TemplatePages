@@ -1,4 +1,3 @@
 <ul>
-    {{ customers | take(20) 
-       | select: <li><a href="/customers/{ it.CustomerId }">{ it.CompanyName }</a></li> }}
+{{#each customers take 20}}<li><a href="/customers/{{CustomerId}}">{{CompanyName}}</a></li>{{/each}} 
 </ul>

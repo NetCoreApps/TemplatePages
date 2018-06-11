@@ -2,13 +2,13 @@
 {
     <span class="pl-k">public</span> <span class="pl-en">HtmlPageFormat</span>()
     {
-        ArgsPrefix = <span class="pl-s"><span class="pl-pds">"</span>&lt;!--<span class="pl-pds">"</span></span>;
-        ArgsSuffix = <span class="pl-s"><span class="pl-pds">"</span>--&gt;<span class="pl-pds">"</span></span>;
-        Extension = <span class="pl-s"><span class="pl-pds">"</span>html<span class="pl-pds">"</span></span>;
-        ContentType = MimeTypes.Html;
-        EncodeValue = HtmlEncodeValue;
-        ResolveLayout = HtmlResolveLayout;
-        OnExpressionException = HtmlExpressionException;
+        <span class="pl-smi">ArgsPrefix</span> <span class="pl-k">=</span> <span class="pl-s"><span class="pl-pds">"</span>&lt;!--<span class="pl-pds">"</span></span>;
+        <span class="pl-smi">ArgsSuffix</span> <span class="pl-k">=</span> <span class="pl-s"><span class="pl-pds">"</span>--&gt;<span class="pl-pds">"</span></span>;
+        <span class="pl-smi">Extension</span> <span class="pl-k">=</span> <span class="pl-s"><span class="pl-pds">"</span>html<span class="pl-pds">"</span></span>;
+        <span class="pl-smi">ContentType</span> <span class="pl-k">=</span> <span class="pl-smi">MimeTypes</span>.<span class="pl-smi">Html</span>;
+        <span class="pl-smi">EncodeValue</span> <span class="pl-k">=</span> <span class="pl-smi">HtmlEncodeValue</span>;
+        <span class="pl-smi">ResolveLayout</span> <span class="pl-k">=</span> <span class="pl-smi">HtmlResolveLayout</span>;
+        <span class="pl-smi">OnExpressionException</span> <span class="pl-k">=</span> <span class="pl-smi">HtmlExpressionException</span>;
     }
     <span class="pl-k">public</span> <span class="pl-k">static</span> <span class="pl-k">string</span> <span class="pl-en">HtmlEncodeValue</span>(<span class="pl-k">object</span> <span class="pl-smi">value</span>) { <span class="pl-c"><span class="pl-c">/*</span>impl<span class="pl-c">*/</span></span> }
     <span class="pl-k">public</span> <span class="pl-en">TemplatePage</span> <span class="pl-en">HtmlResolveLayout</span>(<span class="pl-en">TemplatePage</span> <span class="pl-smi">page</span>) { <span class="pl-c"><span class="pl-c">/*</span>impl<span class="pl-c">*/</span></span> }

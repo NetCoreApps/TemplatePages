@@ -28,8 +28,9 @@ order: 17
 </p>
 
 <blockquote>
-    An easy way to temporarily disable hot reloading is to prefix the expression with the <em>end</em> filter 
-    <em>{{ pass: end | ifDebug ... }}</em> or if preferred you can just use comments <em>{{ pass: &zwnj;* ifDebug ... *&zwnj;}}</em> 
+    An easy way to temporarily disable hot reloading is to surround the expression with the <em>noop</em> block 
+    <em>{{#raw}}{{#noop}}{{#if debug}} ...{{/noop}}{{/raw}}</em> or if preferred you can just use comments 
+    <em>{{#raw}}{{* #if debug ... *}}{{/raw}}</em> 
 </blockquote>
 
 <h4>When to reload</h4>

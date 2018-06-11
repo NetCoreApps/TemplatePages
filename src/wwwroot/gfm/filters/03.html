@@ -1,10 +1,10 @@
 <div class="gfm"><div class="highlight highlight-source-cs"><pre><span class="pl-k">class</span> <span class="pl-en">MyFilter</span> : <span class="pl-en">TemplateFilter</span>
 {
-    <span class="pl-k">public</span> <span class="pl-k">string</span> <span class="pl-en">echo</span>(<span class="pl-k">string</span> <span class="pl-smi">text</span>) =&gt; <span class="pl-pds">$"</span>{text}<span class="pl-s"> </span>{text}<span class="pl-pds">"</span>;
-    <span class="pl-k">public</span> <span class="pl-k">double</span> <span class="pl-en">squared</span>(<span class="pl-k">double</span> <span class="pl-smi">value</span>) =&gt; <span class="pl-k">value</span> * <span class="pl-k">value</span>;
-    <span class="pl-k">public</span> <span class="pl-k">string</span> <span class="pl-en">greetArg</span>(<span class="pl-k">string</span> <span class="pl-smi">key</span>) =&gt; <span class="pl-pds">$"</span><span class="pl-s">Hello </span>{Context.Args[key]}<span class="pl-pds">"</span>;
+    <span class="pl-k">public</span> <span class="pl-k">string</span> <span class="pl-en">echo</span>(<span class="pl-k">string</span> <span class="pl-smi">text</span>) <span class="pl-k">=&gt;</span> <span class="pl-s"><span class="pl-pds">$"</span>{<span class="pl-smi">text</span>} {<span class="pl-smi">text</span>}<span class="pl-pds">"</span></span>;
+    <span class="pl-k">public</span> <span class="pl-k">double</span> <span class="pl-en">squared</span>(<span class="pl-k">double</span> <span class="pl-smi">value</span>) <span class="pl-k">=&gt;</span> <span class="pl-smi">value</span> <span class="pl-k">*</span> <span class="pl-smi">value</span>;
+    <span class="pl-k">public</span> <span class="pl-k">string</span> <span class="pl-en">greetArg</span>(<span class="pl-k">string</span> <span class="pl-smi">key</span>) <span class="pl-k">=&gt;</span> <span class="pl-s"><span class="pl-pds">$"</span>Hello {<span class="pl-smi">Context</span>.<span class="pl-smi">Args</span>[<span class="pl-smi">key</span>]}<span class="pl-pds">"</span></span>;
             
-    <span class="pl-k">public </span><span class="pl-en">ICacheClient</span> <span class="pl-en">Cache</span> { <span class="pl-k">get</span>; <span class="pl-k">set</span>; } //injected dependency
-    <span class="pl-k">public</span> <span class="pl-k">string</span> <span class="pl-en">fromCache</span>(<span class="pl-k">string</span> <span class="pl-smi">key</span>) =&gt; Cache.Get(key);
+    <span class="pl-k">public</span> <span class="pl-en">ICacheClient</span> <span class="pl-smi">Cache</span> { <span class="pl-k">get</span>; <span class="pl-k">set</span>; } <span class="pl-c"><span class="pl-c">//</span>injected dependency</span>
+    <span class="pl-k">public</span> <span class="pl-k">string</span> <span class="pl-en">fromCache</span>(<span class="pl-k">string</span> <span class="pl-smi">key</span>) <span class="pl-k">=&gt;</span> <span class="pl-smi">Cache</span>.<span class="pl-en">Get</span>(<span class="pl-smi">key</span>);
 }</pre></div>
 </div>

@@ -364,11 +364,7 @@ onlyIfEmpty: {{ a | onlyIfEmpty | show: a is empty }}` }) }}
 {{ { a:1, b:2, c:3 } | assignTo: letters }}
 Number at [3]: {{ numbers[3] }}, {{ numbers | get(3) }}
 Value of 'c': {{ letters['c'] }}, {{ letters.c }}, {{ letters | get('c') }}
-Property Value: {{ 'A String' | property('Length') }}` }) }}
-
-<p>
-    There's also <em>{{#raw}}{{ field('Id') }}{{/raw}}</em> to retrieve a public Field.
-</p>
+Property Value: {{ 'A String'.Length }}, {{ 'A String'['Len' + 'gth'] }}` }) }}
 
 <h4 id="member-expressions">Member Expressions</h4>
 
