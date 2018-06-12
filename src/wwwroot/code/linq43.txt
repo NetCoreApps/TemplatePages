@@ -1,5 +1,5 @@
 {{ customers 
-   | let => { 
+   | map => { 
         CompanyName: it.CompanyName, 
         YearGroups: map (
             groupBy(it.Orders, it => it.OrderDate.Year),

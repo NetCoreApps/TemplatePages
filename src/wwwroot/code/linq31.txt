@@ -1,4 +1,4 @@
 {{ ['aPPLE', 'AbAcUs', 'bRaNcH', 'BlUeBeRrY', 'ClOvEr', 'cHeRry'] | assignTo: words }}
 {{ words 
-   | orderBy(it => it, { comparer }) 
+   | orderBy(o => o, { comparer }) 
    | join(`\n`) }}

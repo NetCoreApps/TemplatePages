@@ -1,5 +1,6 @@
 {{ ['blueberry', 'chimpanzee', 'abacus', 'banana', 'apple', 'cheese'] | assignTo: words }}
-{{ words 
-   | groupBy => it[0]
-   | let => { firstLetter: it.Key, words: it }
-   | select: Words that start with the letter '{firstLetter}':\n{ words | join('\n') }\n }}
+{{ words | groupBy => it[0] | map => { firstLetter: it.Key, words: it } | assignTo: groups }}
+{{#each groups}}
+Words that start with the letter '{{firstLetter}}':
+{{ words | join(`\n`) }}
+{{/each}}

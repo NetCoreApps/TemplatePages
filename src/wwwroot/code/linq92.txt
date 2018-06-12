@@ -1,4 +1,4 @@
 {{ [1.7, 2.3, 1.9, 4.1, 2.9] | assignTo: doubles }}
-{{ doubles 
-   | reduce((runningProduct, nextFactor) => runningProduct * nextFactor)
-   | select: Total product of all numbers: { it | format('#.####') }. }}
+{{ doubles | reduce((runningProduct, nextFactor) => runningProduct * nextFactor)
+   | assignTo: product }}
+Total product of all numbers: {{ product }}.

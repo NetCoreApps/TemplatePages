@@ -3,5 +3,5 @@
    | let => { c: it[0], o: it[1] }
    | where => c.Region = 'WA'
    | skip(2)
-   | map => o
+   | map => { c.CustomerId, o.OrderId, o.OrderDate }
    | htmlDump }}

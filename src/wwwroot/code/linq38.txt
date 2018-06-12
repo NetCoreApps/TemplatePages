@@ -1,5 +1,5 @@
 {{ ['aPPLE', 'AbAcUs', 'bRaNcH', 'BlUeBeRrY', 'ClOvEr', 'cHeRry'] | assignTo: words }}
 {{ words 
    | orderBy => it.length
-   | thenByDescending(it => it, { comparer }) 
+   | thenByDescending(w => w, { comparer }) 
    | join(`\n`) }}

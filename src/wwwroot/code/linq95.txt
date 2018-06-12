@@ -5,4 +5,4 @@
     | map => it.ProductName
     | assignTo => productNames }}
 Customer and product names:
-{{ customerNames | concat(productNames) | select: { it | raw }\n }}
+{{ customerNames | concat(productNames) | join(`\n`) }}

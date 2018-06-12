@@ -1,4 +1,4 @@
 {{ products 
    | groupBy => it.Category
-   | let => { category: it.Key, totalUnitsInStock: sum(it, p => p.UnitsInStock) } 
-   | select: {category}, {totalUnitsInStock}\n }}
+   | map => { Category: it.Key, TotalUnitsInStock: sum(it, p => p.UnitsInStock) } 
+   | htmlDump }}
