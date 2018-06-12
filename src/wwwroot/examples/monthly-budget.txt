@@ -28,5 +28,5 @@ Total            <b>{{ totalExpenses | currency }}</b>
 Monthly Savings: <b>{{ totalSavings | currency }}</b>
 
 Projected Cash Position:
-{{ projectedMonths | times | map: incr(index)
+{{ projectedMonths | times | map => index + 1
  | select: { now | addMonths(it) | dateFormat }       <b>{ totalSavings | multiply(it) | add(balance) | currency }</b>\n }}

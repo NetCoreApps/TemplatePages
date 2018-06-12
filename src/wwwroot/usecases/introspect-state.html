@@ -22,26 +22,12 @@ order: 5
         <li class="nav-item">
             <a class="nav-link active" data-toggle="tab" href="#process-template" role="tab">process</a>
         </li>
-        <li class="nav-item">
-            <a class="nav-link" data-toggle="tab" href="#process-info-template" role="tab">process-info</a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link" data-toggle="tab" href="#drive-info-template" role="tab">drive-info</a>
-        </li>
     </ul>
 
     <div class="tab-content">
         <div class="tab-pane active" id="process-template" role="tabpanel">
             <textarea name="Page"
              autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">{{ 'examples/introspect.html' | includeFile }}</textarea>
-        </div>
-        <div class="tab-pane" id="process-info-template" role="tabpanel">
-            <textarea name="ProcessInfo"
-             autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">{{ 'examples/introspect-process.html' | includeFile }}</textarea>
-        </div>
-        <div class="tab-pane" id="drive-info-template" role="tabpanel">
-            <textarea name="DriveInfo"
-             autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">{{ 'examples/introspect-drive.html' | includeFile }}</textarea>
         </div>
     </div>
 </form>
