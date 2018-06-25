@@ -1,17 +1,16 @@
-<div class="gfm"><div class="highlight highlight-source-js"><pre>{{ id <span class="pl-k">|</span> endIfEmpty <span class="pl-k">|</span> <span class="pl-en">useFmt</span>(
-    <span class="pl-s"><span class="pl-pds">`</span>select o.Id, </span>
-<span class="pl-s">            {0} Employee, </span>
+<div class="gfm"><div class="highlight highlight-source-js"><pre>{{#<span class="pl-k">if</span> id}}
+    {{ <span class="pl-s"><span class="pl-pds">`</span>select o.Id, </span>
+<span class="pl-s">            <span class="pl-s1"><span class="pl-pse">${</span><span class="pl-en">sqlConcat</span>([<span class="pl-s"><span class="pl-pds">"</span>e.FirstName<span class="pl-pds">"</span></span>, <span class="pl-s"><span class="pl-pds">"</span>' '<span class="pl-pds">"</span></span>, <span class="pl-s"><span class="pl-pds">"</span>e.LastName<span class="pl-pds">"</span></span>])<span class="pl-pse">}</span></span> Employee, </span>
 <span class="pl-s">            OrderDate, ShipCountry, ShippedDate, </span>
-<span class="pl-s">            {1} Total </span>
-<span class="pl-s">        from {2} o</span>
+<span class="pl-s">            <span class="pl-s1"><span class="pl-pse">${</span><span class="pl-en">sqlCurrency</span>(<span class="pl-s"><span class="pl-pds">"</span>sum((d.Unitprice * d.Quantity) - d.discount)<span class="pl-pds">"</span></span>)<span class="pl-pse">}</span></span> Total </span>
+<span class="pl-s">        from <span class="pl-s1"><span class="pl-pse">${</span><span class="pl-en">sqlQuote</span>(<span class="pl-s"><span class="pl-pds">"</span>Order<span class="pl-pds">"</span></span>)<span class="pl-pse">}</span></span> o</span>
 <span class="pl-s">            inner join</span>
 <span class="pl-s">            OrderDetail d on o.Id = d.OrderId</span>
 <span class="pl-s">            inner join </span>
 <span class="pl-s">            Employee e on o.EmployeeId = e.Id</span>
 <span class="pl-s">        where CustomerId = @id</span>
-<span class="pl-s">        group by o.Id, EmployeeId, FirstName, LastName, OrderDate, ShipCountry, ShippedDate<span class="pl-pds">`</span></span>,
-            <span class="pl-en">sqlConcat</span>([<span class="pl-s"><span class="pl-pds">"</span>e.FirstName<span class="pl-pds">"</span></span>, <span class="pl-s"><span class="pl-pds">"</span>' '<span class="pl-pds">"</span></span>, <span class="pl-s"><span class="pl-pds">"</span>e.LastName<span class="pl-pds">"</span></span>]), 
-            <span class="pl-en">sqlCurrency</span>(<span class="pl-s"><span class="pl-pds">"</span>sum((d.Unitprice * d.Quantity) - d.discount)<span class="pl-pds">"</span></span>), 
-            <span class="pl-en">sqlQuote</span>(<span class="pl-s"><span class="pl-pds">"</span>Order<span class="pl-pds">"</span></span>))
-    <span class="pl-k">|</span> <span class="pl-en">dbSelect</span>({ id }) <span class="pl-k">|</span> assignTo<span class="pl-k">:</span> orders }}</pre></div>
+<span class="pl-s">        group by o.Id, EmployeeId, FirstName, LastName, OrderDate, ShipCountry, ShippedDate<span class="pl-pds">`</span></span>
+        <span class="pl-k">|</span> <span class="pl-en">dbSelect</span>({ id }) 
+        <span class="pl-k">|</span> assignTo<span class="pl-k">:</span> orders }}
+{{<span class="pl-k">/</span><span class="pl-k">if</span>}}</pre></div>
 </div>
