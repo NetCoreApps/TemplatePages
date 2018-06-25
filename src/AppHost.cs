@@ -22,6 +22,8 @@ namespace TemplatePages
 
         public override void Configure(Container container)
         {
+            ServiceStack.Memory.NetCoreMemory.Configure();
+
             SetConfig(new HostConfig { 
                 DebugMode = AppSettings.Get("DebugMode", Env.IsWindows),
             });
