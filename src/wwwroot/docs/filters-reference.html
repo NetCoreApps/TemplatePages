@@ -75,69 +75,62 @@ $("FORM").submit(function(){
     }
 </style>
 
-{{ 8 | assignTo: rows }}
+{{ 6 | assignTo: rows }}
 <div class="tab-content">
     <div class="tab-pane" id="default-filters" role="tabpanel">
 {{ "live-template" | partial({ rows, className, template:`{{ 'TemplateDefaultFilters' | assignTo: filter }}
+{{ filter | filtersAvailable | where => contains(lower(it.Name), lower(nameContains ?? ''))  
+          | assignTo: filters }}
 <table class="table table-striped"><caption>{{ filter | filterLinkToSrc }}</caption>
-{{ filter | filtersAvailable
-    | where => contains(lower(it.Name), lower(nameContains ?? ''))  
-    | assignTo: filters }}
-{{#each filters}}<tr><td>{{FirstParam}</td><td>{{Body}}</td><td>{{Return}}</td></tr>{{/each}}
+{{#each filters}}<tr><td>{{FirstParam}}</td><td>{{Body}}</td><td>{{Return}}</td></tr>{{/each}}
 </table>` }) }}
     </div>
     <div class="tab-pane" id="html-filters" role="tabpanel">
 {{ "live-template" | partial({ rows, className, template:`{{ 'TemplateHtmlFilters' | assignTo: filter }}
+{{ filter | filtersAvailable | where => contains(lower(it.Name), lower(nameContains ?? ''))  
+          | assignTo: filters }}
 <table class="table table-striped"><caption>{{ filter | filterLinkToSrc }}</caption>
-{{ filter | filtersAvailable
-    | where => contains(lower(it.Name), lower(nameContains ?? ''))  
-    | assignTo: filters }}
-{{#each filters}}<tr><td>{{FirstParam}</td><td>{{Body}}</td><td>{{Return}}</td></tr>{{/each}}
+{{#each filters}}<tr><td>{{FirstParam}}</td><td>{{Body}}</td><td>{{Return}}</td></tr>{{/each}}
 </table>` }) }}
     </div>
     <div class="tab-pane" id="protected-filters" role="tabpanel">
 {{ "live-template" | partial({ rows, className, template:`{{ 'TemplateProtectedFilters' | assignTo: filter }}
+{{ filter | filtersAvailable | where => contains(lower(it.Name), lower(nameContains ?? ''))  
+          | assignTo: filters }}
 <table class="table table-striped"><caption>{{ filter | filterLinkToSrc }}</caption>
-{{ filter | filtersAvailable
-    | where => contains(lower(it.Name), lower(nameContains ?? ''))  
-    | assignTo: filters }}
-{{#each filters}}<tr><td>{{FirstParam}</td><td>{{Body}}</td><td>{{Return}}</td></tr>{{/each}}
+{{#each filters}}<tr><td>{{FirstParam}}</td><td>{{Body}}</td><td>{{Return}}</td></tr>{{/each}}
 </table>` }) }}
     </div>
     <div class="tab-pane" id="info-filters" role="tabpanel">
 {{ "live-template" | partial({ rows, className, template:`{{ 'TemplateInfoFilters' | assignTo: filter }}
+{{ filter | filtersAvailable | where => contains(lower(it.Name), lower(nameContains ?? ''))  
+          | assignTo: filters }}
 <table class="table table-striped"><caption>{{ filter | filterLinkToSrc }}</caption>
-{{ filter | filtersAvailable
-    | where => contains(lower(it.Name), lower(nameContains ?? ''))  
-    | assignTo: filters }}
-{{#each filters}}<tr><td>{{FirstParam}</td><td>{{Body}}</td><td>{{Return}}</td></tr>{{/each}}
+{{#each filters}}<tr><td>{{FirstParam}}</td><td>{{Body}}</td><td>{{Return}}</td></tr>{{/each}}
 </table>` }) }}
     </div>
     <div class="tab-pane" id="redis-filters" role="tabpanel">
 {{ "live-template" | partial({ rows, className, template:`{{ 'TemplateRedisFilters' | assignTo: filter }}
+{{ filter | filtersAvailable | where => contains(lower(it.Name), lower(nameContains ?? ''))  
+          | assignTo: filters }}
 <table class="table table-striped"><caption>{{ filter | filterLinkToSrc }}</caption>
-{{ filter | filtersAvailable
-    | where => contains(lower(it.Name), lower(nameContains ?? ''))  
-    | assignTo: filters }}
-{{#each filters}}<tr><td>{{FirstParam}</td><td>{{Body}}</td><td>{{Return}}</td></tr>{{/each}}
+{{#each filters}}<tr><td>{{FirstParam}}</td><td>{{Body}}</td><td>{{Return}}</td></tr>{{/each}}
 </table>` }) }}
     </div>
     <div class="tab-pane" id="db-filters" role="tabpanel">
 {{ "live-template" | partial({ rows, className, template:`{{ 'TemplateDbFiltersAsync' | assignTo: filter }}
+{{ filter | filtersAvailable | where => contains(lower(it.Name), lower(nameContains ?? ''))  
+          | assignTo: filters }}
 <table class="table table-striped"><caption>{{ filter | filterLinkToSrc }}</caption>
-{{ filter | filtersAvailable
-    | where => contains(lower(it.Name), lower(nameContains ?? ''))  
-    | assignTo: filters }}
-{{#each filters}}<tr><td>{{FirstParam}</td><td>{{Body}}</td><td>{{Return}}</td></tr>{{/each}}
+{{#each filters}}<tr><td>{{FirstParam}}</td><td>{{Body}}</td><td>{{Return}}</td></tr>{{/each}}
 </table>` }) }}
     </div>
     <div class="tab-pane" id="ss-filters" role="tabpanel">
 {{ "live-template" | partial({ rows, className, template:`{{ 'TemplateServiceStackFilters' | assignTo: filter }}
+{{ filter | filtersAvailable | where => contains(lower(it.Name), lower(nameContains ?? ''))  
+          | assignTo: filters }}
 <table class="table table-striped"><caption>{{ filter | filterLinkToSrc }}</caption>
-{{ filter | filtersAvailable
-    | where => contains(lower(it.Name), lower(nameContains ?? ''))  
-    | assignTo: filters }}
-{{#each filters}}<tr><td>{{FirstParam}</td><td>{{Body}}</td><td>{{Return}}</td></tr>{{/each}}
+{{#each filters}}<tr><td>{{FirstParam}}</td><td>{{Body}}</td><td>{{Return}}</td></tr>{{/each}}
 </table>` }) }}
     </div>
 </div>
