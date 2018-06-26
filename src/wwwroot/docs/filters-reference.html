@@ -81,7 +81,7 @@ $("FORM").submit(function(){
 {{ "live-template" | partial({ rows, className, template:`{{ 'TemplateDefaultFilters' | assignTo: filter }}
 <table class="table table-striped"><caption>{{ filter | filterLinkToSrc }}</caption>
 {{ filter | filtersAvailable
-    | where => !nameContains || contains(lower(it.Name), lower(nameContains)) 
+    | where => contains(lower(it.Name), lower(nameContains ?? ''))  
     | assignTo: filters }}
 {{#each filters}}<tr><td>{{FirstParam}</td><td>{{Body}}</td><td>{{Return}}</td></tr>{{/each}}
 </table>` }) }}
@@ -90,7 +90,7 @@ $("FORM").submit(function(){
 {{ "live-template" | partial({ rows, className, template:`{{ 'TemplateHtmlFilters' | assignTo: filter }}
 <table class="table table-striped"><caption>{{ filter | filterLinkToSrc }}</caption>
 {{ filter | filtersAvailable
-    | where => !nameContains || contains(lower(it.Name), lower(nameContains)) 
+    | where => contains(lower(it.Name), lower(nameContains ?? ''))  
     | assignTo: filters }}
 {{#each filters}}<tr><td>{{FirstParam}</td><td>{{Body}}</td><td>{{Return}}</td></tr>{{/each}}
 </table>` }) }}
@@ -99,7 +99,7 @@ $("FORM").submit(function(){
 {{ "live-template" | partial({ rows, className, template:`{{ 'TemplateProtectedFilters' | assignTo: filter }}
 <table class="table table-striped"><caption>{{ filter | filterLinkToSrc }}</caption>
 {{ filter | filtersAvailable
-    | where => !nameContains || contains(lower(it.Name), lower(nameContains)) 
+    | where => contains(lower(it.Name), lower(nameContains ?? ''))  
     | assignTo: filters }}
 {{#each filters}}<tr><td>{{FirstParam}</td><td>{{Body}}</td><td>{{Return}}</td></tr>{{/each}}
 </table>` }) }}
@@ -108,7 +108,7 @@ $("FORM").submit(function(){
 {{ "live-template" | partial({ rows, className, template:`{{ 'TemplateInfoFilters' | assignTo: filter }}
 <table class="table table-striped"><caption>{{ filter | filterLinkToSrc }}</caption>
 {{ filter | filtersAvailable
-    | where => !nameContains || contains(lower(it.Name), lower(nameContains)) 
+    | where => contains(lower(it.Name), lower(nameContains ?? ''))  
     | assignTo: filters }}
 {{#each filters}}<tr><td>{{FirstParam}</td><td>{{Body}}</td><td>{{Return}}</td></tr>{{/each}}
 </table>` }) }}
@@ -117,7 +117,7 @@ $("FORM").submit(function(){
 {{ "live-template" | partial({ rows, className, template:`{{ 'TemplateRedisFilters' | assignTo: filter }}
 <table class="table table-striped"><caption>{{ filter | filterLinkToSrc }}</caption>
 {{ filter | filtersAvailable
-    | where => !nameContains || contains(lower(it.Name), lower(nameContains)) 
+    | where => contains(lower(it.Name), lower(nameContains ?? ''))  
     | assignTo: filters }}
 {{#each filters}}<tr><td>{{FirstParam}</td><td>{{Body}}</td><td>{{Return}}</td></tr>{{/each}}
 </table>` }) }}
@@ -126,7 +126,7 @@ $("FORM").submit(function(){
 {{ "live-template" | partial({ rows, className, template:`{{ 'TemplateDbFiltersAsync' | assignTo: filter }}
 <table class="table table-striped"><caption>{{ filter | filterLinkToSrc }}</caption>
 {{ filter | filtersAvailable
-    | where => !nameContains || contains(lower(it.Name), lower(nameContains)) 
+    | where => contains(lower(it.Name), lower(nameContains ?? ''))  
     | assignTo: filters }}
 {{#each filters}}<tr><td>{{FirstParam}</td><td>{{Body}}</td><td>{{Return}}</td></tr>{{/each}}
 </table>` }) }}
@@ -135,7 +135,7 @@ $("FORM").submit(function(){
 {{ "live-template" | partial({ rows, className, template:`{{ 'TemplateServiceStackFilters' | assignTo: filter }}
 <table class="table table-striped"><caption>{{ filter | filterLinkToSrc }}</caption>
 {{ filter | filtersAvailable
-    | where => !nameContains || contains(lower(it.Name), lower(nameContains)) 
+    | where => contains(lower(it.Name), lower(nameContains ?? ''))  
     | assignTo: filters }}
 {{#each filters}}<tr><td>{{FirstParam}</td><td>{{Body}}</td><td>{{Return}}</td></tr>{{/each}}
 </table>` }) }}
