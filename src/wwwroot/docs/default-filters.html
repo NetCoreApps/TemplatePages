@@ -441,7 +441,7 @@ var coords = {{ model | json }};` }) }}
     JavaScript string variable:
 </p>
 
-{{ 'live-template' | partial({ rows: 9, template: `{{ '[
+{{ 'live-template' | partial({ rows: 9, template: ′{{ '[
     {"name":"Mc Donald\'s"}
 ]' | assignTo:json }}
 var obj = {{ json }};
@@ -449,7 +449,7 @@ var str = '{{ json | jsString }}';
 var str = {{ json | jsQuotedString }};
 var escapeSingle = '{{ "single' quote's" | escapeSingleQuotes }}';
 var escapeDouble = "{{ 'double" quote"s' | escapeDoubleQuotes }}"
-var escapeLines = '{{ "new" | appendLine | append("line") | escapeNewLines }}';` }) }}
+var escapeLines = '{{ "new" | appendLine | append("line") | escapeNewLines }}';′ }) }}
 
 <p>
     The <a href="http://docs.servicestack.net/jsv-format">JSV Format</a> is great when you want a human-friendly output 

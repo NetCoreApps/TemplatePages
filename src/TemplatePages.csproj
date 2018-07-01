@@ -21,7 +21,7 @@
     <PackageReference Include="ServiceStack.OrmLite.Sqlite" Version="5.*" />
     <PackageReference Include="ServiceStack.Server" Version="5.*" /> 
     <PackageReference Include="ServiceStack.Api.OpenApi" Version="5.*" /> 
-    <PackageReference Include="ServiceStack.Memory" Version="5.*" /> 
+    <PackageReference Include="System.Memory" Version="4.5.*" /> 
 
     <!-- <ProjectReference Include="..\..\..\ServiceStack.Text\src\ServiceStack.Text\ServiceStack.Text.csproj" />
     <ProjectReference Include="..\..\..\ServiceStack.Redis\src\ServiceStack.Redis\ServiceStack.Redis.csproj" />
