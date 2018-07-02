@@ -87,61 +87,86 @@ order: 3
     Strings can also span multiple lines.
 </blockquote>
 
+<h4>Shorthand arrow expression syntax</h4>
+
+<p>
+    Filters have full support for JavaScript expressions but doesn't support statements or function declarations although it 
+    does support JavaScript's arrow function expressions which can be used in functional filters to enable LINQ-like queries.
+    You can use fat arrows <em>=></em> immediately after filters to define lambda's with an implicit <em>(it => ...)</em> binding, e.g:
+</p>
+
+{{ 'live-template' | partial({ template: "{{ [0,1,2,3,4,5]
+   | where => it >= 3
+   | map => it + 10 | join(`\n`) }}" }) }}
+
+<p>
+    This is a shorthand for declaring lambda expressions with normal arrow expression syntax:
+</p>
+
+{{ 'live-template' | partial({ template: "{{ [0,1,2,3,4,5]
+    | where(it => it >= 3)
+    | map(x => x + 10) | join(`\n`) }}" }) }}
+ 
+<p>
+    Using normal lambda expression syntax lets you rename lambda parameters as seen in the <em>map(x => ...)</em> example.
+</p>
+
 <h4>Special string argument syntax</h4>
 
 <p>
-    As string expressions are a prevalent in Templates, we've given them special wrist-friendly syntax where you
+    As string expressions are a prevalent in Templates, we've also given them special wrist-friendly syntax where you
     can add a colon at the end of the filter name which says to treat the following characters up until the end of the
     line or mustache expression as a string, trim it and convert '{' and '}' chars into mustaches. With this syntax
     you can write:
 </p>
 
-{{ 'live-template' | partial({ template: "{{ [0,1,2,3,4,5]
-   | where: it >= 3
-   | select: { it | incrBy(10) }\n }}" }) }}
+{{ 'live-template' | partial({ template: "{{ [3,4,5] | select: { it | incrBy(10) }\n }}" }) }}
 
 <p>
     and it will be rewritten into its equivalent and more verbose form of:
 </p>
 
-{{ 'live-template' | partial({ template: "{{ [0,1,2,3,4,5]
-   | where(′it >= 3′)
-   | select(′{{ it | incrBy(10) }}\n′) }}" 
+{{ 'live-template' | partial({ template: "{{ [3,4,5] | select(′{{ it | incrBy(10) }}\n′) }}" 
 }) }}
 
-<h4>String Expressions</h4>
+<h4>SQL-like Boolean Expressions</h4>
 
 <p>
-    There's no lambda's in Templates, instead to achieve the same effect a string expression is evaluated with the target
-    item added to the expression scope under the <em>it</em> binding 
-    (<a href="https://kotlinlang.org/docs/reference/lambdas.html#it-implicit-name-of-a-single-parameter">same as Kotlin</a>)
-    as seen above. 
-    Default filters that accept string expressions usually allow the <em>it</em> binding to be overridden with an additional option:
-</p>
-
-{{ 'live-template' | partial({ template: "{{ [0,1,2,3,4,5] | where('num >= 3', { it: 'num' }) | join }}" }) }}
-
-<h4>Boolean Expressions</h4>
-
-<p>
-    To maximize readability and intuitiveness for non-programmers, boolean expressions adopt an SQL-like syntax where
-    instead of using <em>&amp;&amp;</em>, <em>||</em> or <em>==</em> operator syntax to define boolean expressions you'd instead
-    use the more user-friendly <em>and</em>, <em>or</em> and <em>=</em> alternatives, e.g:
+    To maximize readability and intuitiveness for non-programmers, boolean expressions can also adopt an SQL-like syntax where
+    instead of using <em>&amp;&amp;</em>, <em>||</em> or <em>==</em> operator syntax to define boolean expressions you can also
+    use the more human-friendly <em>and</em>, <em>or</em> and <em>=</em> alternatives:
 </p>
 
 {{ 'live-template' | partial({ template: "{{ [0,1,2,3,4,5] 
-    | where: it = 3 and isOdd(it)
-    | join }}" }) }}
+   | where => (it = 2 or it = 3) and isOdd(it)
+   | join }}" }) }}
+
+<h4>Include Raw Content Verbatim</h4>
+
+Use <em>#raw</em> blocks to ignore evaluating expressions and emit content verbatim. This is useful when using a
+client Handlebars-like templating solution like Vue or Angular templates where expressions need to be evaluated 
+with JavaScript in the browser instead of on the Server with Templates:
+
+{{ 'live-template' | partial({ rows: 4, template: "{{#raw}}Hi {{ person.name }}, Welcome to {{ site.name }}!{{/raw}}
+
+{{#raw template}}Assign contents with {{ expressions }} into 'template' argument{{/raw}}
+Captured Argument: {{template}}" 
+ }) }}
 
 <h4>Multi-line Comments</h4>
 
 <p>
-    Everything within multi-line comments <em>{{ pass: &zwnj;*</em> and <em>*&zwnj;}}</em> is ignored and removed from the page.
+    Any text within <em>{{#raw}}{{#noop}} ... {{/noop}}{{/raw}}</em> block statements are ignored and can be used for temporarily removing
+    sections from pages without needing to delete it.
+</p>
+
+<p>
+    Everything within multi-line comments <em>{{#raw}}{{&zwnj;*</em> and <em>*&zwnj;}}{{/raw}}</em> is ignored and removed from the page.
 </p>
 
 <p>
     An alternative way to temporarily disable an expression is to prefix the expression with the <em>end</em> filter to 
-    immediately short-circuit it, e.g: <em>{{ pass: end | now | dateFormat }}</em>
+    immediately short-circuit evaluation, e.g: <em>{{#raw}}{{ end | now | dateFormat }}{{/raw}}</em>
 </p>
 
 <p>

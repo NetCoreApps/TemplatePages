@@ -1,5 +1,5 @@
 {{ customers 
-   | where: it.Region = 'WA' 
+   | where => it.Region = 'WA' 
    | assignTo: waCustomers 
 }}
 Customers from Washington and their orders:
