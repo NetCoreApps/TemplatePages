@@ -75,9 +75,18 @@ Customer {{ it.CustomerId }} {{ it.CompanyName | raw }}
  {{ waCustomers | selectPartial: customer }}` }) }}
 
 <blockquote>
-    See <a href="/linq/restriction-operators#linq4-where---drilldown">linq 04</a> 
-    for an example of this implemented without partials using <em>{{pass: #each}}</em> blocks.
+    The <a href="/linq/restriction-operators#linq4-where---drilldown">linq 04</a> 
+    example below shows how to implement this without partials using <em>{{pass: #each}}</em> statement blocks:
 </blockquote>
+
+{{ 'live-template' | partial({ rows:7, template: `Customers from Washington and their orders:
+{{#each c in customers where c.Region == 'WA'}}
+Customer {{ c.CustomerId }} {{ c.CompanyName | raw }}
+{{#each c.Orders}}
+    Order {{ OrderId }}: {{ OrderDate | dateFormat }}
+{{/each}}
+{{/each}}` }) }}
+
 
 <h4>Resolving Partials and Pages</h4>
 
