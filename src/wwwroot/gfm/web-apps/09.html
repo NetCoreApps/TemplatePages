@@ -1,5 +1,14 @@
-<div class="gfm"><div class="highlight highlight-text-html-basic"><pre>{{ ifHttpPost | use({ host, port, db, password }) | withoutEmptyValues | redisChangeConnection | end }}
-&lt;<span class="pl-ent">script</span> <span class="pl-e">type</span>=<span class="pl-s"><span class="pl-pds">"</span>text/x-template<span class="pl-pds">"</span></span> <span class="pl-e">id</span>=<span class="pl-s"><span class="pl-pds">"</span>connection-template<span class="pl-pds">"</span></span>&gt;
-{{ 'connection-info' | partial({ redis: redisConnection }) }}
+<div class="gfm"><div class="highlight highlight-text-html-basic"><pre>&lt;<span class="pl-ent">script</span> <span class="pl-e">type</span>=<span class="pl-s"><span class="pl-pds">"</span>text/x-template<span class="pl-pds">"</span></span> <span class="pl-e">id</span>=<span class="pl-s"><span class="pl-pds">"</span>connection-template<span class="pl-pds">"</span></span>&gt;
+&lt;<span class="pl-ent">div</span> <span class="pl-e">id</span>=<span class="pl-s"><span class="pl-pds">"</span>connection-info<span class="pl-pds">"</span></span> <span class="pl-e">class</span>=<span class="pl-s"><span class="pl-pds">"</span>container<span class="pl-pds">"</span></span>&gt;
+    {{ continueExecutingFiltersOnError }}
+    {{#if Request.Verb == "POST" }}
+        {{ { host, port, db, password } | withoutEmptyValues | redisChangeConnection | end }}
+        {{#if lastErrorMessage }}
+            &lt;<span class="pl-ent">div</span> <span class="pl-e">class</span>=<span class="pl-s"><span class="pl-pds">"</span>alert alert-danger<span class="pl-pds">"</span></span>&gt;{{lastErrorMessage}}&lt;/<span class="pl-ent">div</span>&gt;
+        {{else}}
+            &lt;<span class="pl-ent">div</span> <span class="pl-e">class</span>=<span class="pl-s"><span class="pl-pds">"</span>alert alert-success<span class="pl-pds">"</span></span>&gt;Connection Changed&lt;/<span class="pl-ent">div</span>&gt;
+        {{/if}}
+    {{/if}}
+&lt;/<span class="pl-ent">div</span>&gt;
 &lt;/<span class="pl-ent">script</span>&gt;</pre></div>
 </div>
