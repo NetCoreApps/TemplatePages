@@ -107,7 +107,7 @@ namespace TemplatePages
 
             var response = new EvalExpressionResponse {
                 Result = expr.Evaluate(scope),
-                Tree = expr.ToJsAst().ToJson().IndentJson()
+                Tree = expr.ToJsAstString(),
             };
             return response;
         }
