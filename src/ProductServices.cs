@@ -1,3 +1,4 @@
+#if false //stay within free-quota limit
 using ServiceStack;
 using ServiceStack.Templates;
 
@@ -19,3 +20,4 @@ namespace TemplatePages
             };
     }
 }
+#endif

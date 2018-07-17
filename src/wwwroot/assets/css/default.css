@@ -158,7 +158,7 @@ div.gfm {
 .live-pages .files h5, .linq-preview .files h5 {
     color: #4283b9;
 }
-.live-pages .output, .linq-preview .output, .live-template .output {
+.live-pages .output, .linq-preview .output, .live-template .output, .expression .output {
     border: 1px solid #eee;
     border-radius: 2px;
     padding: 25px 35px;

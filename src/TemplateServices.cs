@@ -7,6 +7,7 @@ using System;
 using ServiceStack.Web;
 using ServiceStack.OrmLite;
 using ServiceStack.Data;
+using ServiceStack.Text;
 
 namespace TemplatePages
 {
@@ -23,6 +24,19 @@ namespace TemplatePages
     public class EvaluateTemplate
     {
         public string Template { get; set; }
+    }
+
+    [Route("/expression/eval")]
+    public class EvalExpression : IReturn<EvalExpressionResponse>
+    {
+        public string Expression { get; set; }
+    }
+
+    public class EvalExpressionResponse
+    {
+        public object Result { get; set; }
+        public string Tree { get; set; }
+        public ResponseStatus ResponseStatus { get; set; }
     }
 
     [ReturnExceptionsInJson]
@@ -70,6 +84,32 @@ namespace TemplatePages
                 Args = base.Request.GetTemplateRequestParams()
             };
             return await pageResult.RenderToStringAsync(); // render to string so [ReturnExceptionsInJson] can detect Exceptions and return JSON
+        }
+
+        public object Any(EvalExpression request)
+        {
+            if (string.IsNullOrWhiteSpace(request.Expression))
+                return new EvalExpressionResponse();
+
+            var args = new Dictionary<string,object>();
+            foreach (String name in Request.QueryString.AllKeys)
+            {
+                if (name.EqualsIgnoreCase("expression"))
+                    continue;
+
+                var argExpr = Request.QueryString[name];
+                var argValue = JS.eval(argExpr);
+                args[name] = argValue;
+            }
+
+            var scope = JS.CreateScope(args: args);
+            var expr = JS.expression(request.Expression.Trim());
+
+            var response = new EvalExpressionResponse {
+                Result = expr.Evaluate(scope),
+                Tree = expr.ToJsAst().ToJson().IndentJson()
+            };
+            return response;
         }
     }
     
