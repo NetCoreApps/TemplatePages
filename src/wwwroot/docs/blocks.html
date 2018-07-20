@@ -23,26 +23,26 @@ from the rendered page:
 {{ 'gfm/blocks/01.md' | githubMarkdown }}
 
 {{#markdown}}
-The `noop` block is the easiest to implement by creating a class that inherits `TemplateBlock` which all blocks need to
-implement, overriding the `Name` getter with the name of the block and implementing the `WriteAsync()` method which
-for the noop block returns an empty `Task` which as it doesn't write anything to the Output Stream, has the effect of ignoring its contents:
+The `noop` block is also the smallest implementation possible which needs to inherit `TemplateBlock` class, overrides the `Name` getter with 
+the name of the block and implements the `WriteAsync()` method which for the noop block just returns an empty `Task` there by not writing anything 
+to the Output Stream, resulting in its inner contents being ignored:
 {{/markdown}}
 
 {{ 'gfm/blocks/02.md' | githubMarkdown }}
 
 {{#markdown}}
-Block's are executed with 3 parameters:
+All Block's are executed with 3 parameters:
 
  - `TemplateScopeContext` - Contains the current Execution and Rendering context
- - `PageBlockFragment` - The data structure which holds the parsed contents of the Block 
- - `CancellationToken` - The CancellationToken used to cancel the async render operation
+ - `PageBlockFragment` - The data structure which holds the parsed Block contents
+ - `CancellationToken` - The CancellationToken allowing the async render operation to be cancelled
 {{/markdown}}
 
 <h3 id="registering-blocks">Registering Blocks</h3>
 
 {{#markdown}}
 The same flexible registration options for [Registering Filters](/docs/filters#registering-filters) is also available for registering blocks 
-where if `TemplateNoopBlock` was not already built-in it could be registered by adding it to the TemplateContext `TemplateBlocks` collection:
+where if it wasn't already built-in, `TemplateNoopBlock` could be registered by adding it to the `TemplateBlocks` collection:
 {{/markdown}}
 
 {{ 'gfm/blocks/03.md' | githubMarkdown }}
@@ -64,7 +64,7 @@ When the `TemplateContext` is initialized it will go through each Type and creat
 {{ 'gfm/blocks/05.md' | githubMarkdown }}
 
 {{#markdown}}
-Where it will automatically register any Template Blocks or Filters in the specified Assembly.
+Where it will automatically register any Template Blocks or Filters contained in the specified Assembly.
 {{/markdown}}
 
 {{#markdown}}
