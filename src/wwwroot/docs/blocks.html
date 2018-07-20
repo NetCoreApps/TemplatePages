@@ -1,0 +1,170 @@
+<!--
+title: Blocks
+order: 6
+-->
+
+{{#markdown}}
+While filters lets you access methods within filter expressions, blocks lets you define reusable statement blocks that can be invoked with
+a new context there by allowing you to create custom iterators and helpers - encapsulating reusable functionality and reducing boilerplate
+for common functionality.
+
+The syntax for blocks follows the familiar [handlebars block helpers](https://handlebarsjs.com/block_helpers.html) in both syntax and functionality.
+Templates also includes many of handlebars block helpers which are useful in a HTML template language and reduces any porting efforts if
+wanting to reuse existing handlebars templates.
+
+We'll walk through creating a few of the built-in templates to demonstrate how we can create new block filters from scratch.
+
+### noop
+
+We'll start with creating the `noop` block (short for "no operation") which functions like a block comment by removing its inner contents
+from the rendered page:
+{{/markdown}}
+
+{{ 'gfm/blocks/01.md' | githubMarkdown }}
+
+{{#markdown}}
+The `noop` block is the easiest to implement by creating a class that inherits `TemplateBlock` which all blocks need to
+implement, overriding the `Name` getter with the name of the block and implementing the `WriteAsync()` method which
+for the noop block returns an empty `Task` which as it doesn't write anything to the Output Stream, has the effect of ignoring its contents:
+{{/markdown}}
+
+{{ 'gfm/blocks/02.md' | githubMarkdown }}
+
+{{#markdown}}
+Block's are executed with 3 parameters:
+
+ - `TemplateScopeContext` - Contains the current Execution and Rendering context
+ - `PageBlockFragment` - The data structure which holds the parsed contents of the Block 
+ - `CancellationToken` - The CancellationToken used to cancel the async render operation
+{{/markdown}}
+
+<h3 id="registering-blocks">Registering Blocks</h3>
+
+{{#markdown}}
+The same flexible registration options for [Registering Filters](/docs/filters#registering-filters) is also available for registering blocks 
+where if `TemplateNoopBlock` was not already built-in it could be registered by adding it to the TemplateContext `TemplateBlocks` collection:
+{{/markdown}}
+
+{{ 'gfm/blocks/03.md' | githubMarkdown }}
+
+<h5 id="scan-types">Autowired using TemplateContext IOC</h5>
+
+{{#markdown}}
+Autowired instances of blocks and filters can also be created using TemplateContext's configured IOC where they're also injected with any 
+registered IOC dependencies by registering them in the `ScanTypes` collection: 
+{{/markdown}}
+
+{{ 'gfm/blocks/04.md' | githubMarkdown }}
+
+{{#markdown}}
+When the `TemplateContext` is initialized it will go through each Type and create an autowired instance of each Type and register them in the 
+`TemplateBlocks` collection. An alternative to registering individual Types is to register an entire Assembly, e.g:
+{{/markdown}}
+
+{{ 'gfm/blocks/05.md' | githubMarkdown }}
+
+{{#markdown}}
+Where it will automatically register any Template Blocks or Filters in the specified Assembly.
+{{/markdown}}
+
+{{#markdown}}
+### bold
+
+A step up from `noop` is the **bold** Template Block which markup its contents within the `<b/>` tag:
+{{/markdown}}
+
+<pre>
+{{#raw}}{{#bold}}This text will be bold{{/bold}}{{/raw}}
+</pre>
+
+{{#markdown}}
+Where we write to the `OutputStream` on the current `TemplateScopeContext` before and after the Block's inner contents are written out to the 
+`OutputStream` verbatim using the `WriteBodyAsync()` base method:
+{{/markdown}}
+
+{{ 'gfm/blocks/06.md' | githubMarkdown }}
+
+{{#markdown}}
+### with
+
+The `with` Block shows an example of utilizing arguments. To maximize flexibility arguments passed into your block are captured in a free-form
+string (specifically a `ReadOnlyMemory<char>`) which allows creating Blocks varying from simple arguments to complex LINQ-like expressions - a
+feature that some of the built-in Blocks take advantage of. 
+
+The `with` block works similarly to [handlebars with helper](https://handlebarsjs.com/block_helpers.html#with-helper) or JavaScript's 
+[with statement](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/with) where it extracts the properties (or Keys)
+of an object (or result of an Expression) and adds them to the current scope where by alleviating needing for prefixing each property reference, 
+e.g. being able to use `{{Name}}` instead of {{person.Name}} and will only evaluate the block's contents if the argument doesn't evaluate to `null`.
+
+<pre>
+{{#with person}}
+    Hi {{Name}}, your Age is {{Age}}.
+{{/with}}
+</pre>
+
+The implementation below shows the optimal way to implement the `with` block by calling `GetJsExpressionAndEvaluate()` which resolves a cached AST
+token and then evaluates it to return the result of the Argument expression. 
+
+If the argument evaluates to an object it calls the `ToObjectDictionary()` extension method to convert it into a `Dictionary<string,object>` 
+then creates a new scope with each property added as arguments and then evaluate the block's Body contents with the new scope:
+{{/markdown}}
+
+{{ 'gfm/blocks/07.md' | githubMarkdown }}
+
+{{#markdown}}
+To have a better highlight how this works, a non-cached version of `GetJsExpressionAndEvaluate()` involves parsing the Argument string into 
+an AST Token then evaluating it with the current scope:
+{{/markdown}}
+
+{{ 'gfm/blocks/08.md' | githubMarkdown }}
+
+{{#markdown}}
+The `ParseJsExpression()` extension method is able to parse virtually any [JavaScript Expression](/docs/expression-viewer) into an AST tree
+which can then be evaluated by calling its `token.Evaluate(scope)` method.
+
+#### final implementation
+
+The actual [TemplateWithBlock.cs](https://github.com/ServiceStack/ServiceStack/blob/master/src/ServiceStack.Common/Templates/Blocks/TemplateWithBlock.cs)
+used in Templates has extended functionality which instead uses `GetJsExpressionAndEvaluateAsync()` to be able to evaluate both **sync** and **async** 
+results and also evaluates the `block.ElseBlocks` that's available to each block where they're able to evaluate an **else/else if** expression 
+statements for when blocks are called with an empty argument.
+{{/markdown}}
+
+{{ 'gfm/blocks/09.md' | githubMarkdown }}
+
+
+{{#markdown}}
+### if
+
+Since all blocks are able to execute any number of `{{else}}` expressions by calling the `WriteElseAsync()` base method, the implementation for 
+the `{{if}}` block ends up being even simpler where it just needs to evaluate the argument to `bool`, where if it's true it writes the 
+body with `WriteBodyAsync()` otherwise it evaluates any else expressions with `WriteElseAsync()`:
+{{/markdown}}
+
+{{ 'gfm/blocks/10.md' | githubMarkdown }}
+
+{{#markdown}}
+### each
+
+Given everything we know so far implementing [handlebars.js each block](https://handlebarsjs.com/block_helpers.html#iterators) is also fairly
+straightforward to implement which essentially just involves iterating over the collection argument and rewriting the body with a new scope
+containing the element with the conventional `it` binding, it's properties and an `index` argument that the block's template can use to determine the 
+index of each element:
+{{/markdown}}
+
+{{ 'gfm/blocks/11.md' | githubMarkdown }}
+
+{{#markdown}}
+Despite its terse implementation, the above Template Block can be used to iterate over any collection, inc. objects, POCOs strings as well as 
+Value Type collections like ints. 
+
+However the built-in [TemplateEachBlock.cs](https://github.com/ServiceStack/ServiceStack/blob/master/src/ServiceStack.Common/Templates/Blocks/TemplateEachBlock.cs)
+is a lot larger and more feature-rich which also includes support for async results, custom bindings and LINQ-like syntax for maximum expressiveness 
+and expression caching so the complex argument expression is only parsed once.
+{{/markdown}}
+
+{{ 'gfm/blocks/12.md' | githubMarkdown }}
+
+
+{{ "doc-links" | partial({ order }) }}
+

@@ -1,0 +1,8 @@
+<div class="gfm"><div class="highlight highlight-source-cs"><pre><span class="pl-k">public</span> <span class="pl-k">class</span> <span class="pl-en">TemplateNoopBlock</span> : <span class="pl-en">TemplateBlock</span>
+{
+    <span class="pl-k">public</span> <span class="pl-k">override</span> <span class="pl-k">string</span> <span class="pl-smi">Name</span> <span class="pl-k">=&gt;</span> <span class="pl-s"><span class="pl-pds">"</span>noop<span class="pl-pds">"</span></span>;
+
+    <span class="pl-k">public</span> <span class="pl-k">override</span> <span class="pl-en">Task</span> <span class="pl-en">WriteAsync</span>(<span class="pl-en">TemplateScopeContext</span> <span class="pl-smi">scope</span>, <span class="pl-en">PageBlockFragment</span> <span class="pl-smi">block</span>, <span class="pl-en">CancellationToken</span> <span class="pl-smi">ct</span>)
+        <span class="pl-k">=&gt;</span> <span class="pl-smi">Task</span>.<span class="pl-smi">CompletedTask</span>;
+}</pre></div>
+</div>
