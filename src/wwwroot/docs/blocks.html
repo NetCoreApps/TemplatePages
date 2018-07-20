@@ -159,11 +159,74 @@ Despite its terse implementation, the above Template Block can be used to iterat
 Value Type collections like ints. 
 
 However the built-in [TemplateEachBlock.cs](https://github.com/ServiceStack/ServiceStack/blob/master/src/ServiceStack.Common/Templates/Blocks/TemplateEachBlock.cs)
-is a lot larger and more feature-rich which also includes support for async results, custom bindings and LINQ-like syntax for maximum expressiveness 
-and expression caching so the complex argument expression is only parsed once.
+is a lot larger and more feature-rich where it also includes support for async results, custom element bindings and LINQ-like syntax for 
+maximum expressiveness as well as expression caching ensuring the complex argument expression is only parsed once.
 {{/markdown}}
 
 {{ 'gfm/blocks/12.md' | githubMarkdown }}
+
+{{#markdown}}
+For a live preview of some of the advanced usages of the `{{#each}}` block, check out the [LINQ Examples](/linq/restriction-operators).
+
+### raw
+
+The `{{#raw}}` block is similar to [handlebars.js's raw-helper](https://handlebarsjs.com/block_helpers.html#raw-blocks) where it allows capturing
+of the raw template text content instead having its contents evaluated making it ideal when wanting to emit content that could potentially contain
+template expressions like client-side JavaScript or template expressions that you don't want to be evaluated on the server, e.g. when rending 
+Vue, Angular or Ember templates:
+
+<pre>
+{{#raw}}
+&lt;div id="app"&gt;
+    {{ message }}
+&lt;/div&gt;
+{{/raw}}
+</pre>
+
+When called with no arguments it will render its unprocessed raw text contents. When called with a single argument, e.g. `{{#raw varname}}` it will
+instead save the raw text contents to the specified global PageResult variable and lastly when called with the `appendTo` modifier it will append 
+its contents to the existing variable, or initialize it if it doesn't already exist.
+
+This is now the preferred approach used in all [.NET Core and .NET Framework Web Templates](http://docs.servicestack.net/templates-websites) for 
+pages and partials to append any JavaScript script blocks they need, e.g:
+
+<pre>
+{{#raw appendTo scripts}}
+&lt;script&gt;
+    //...
+&lt;/script&gt;
+{{/raw}}
+</pre>
+
+To the bottom of the page by having its captured contents rendered at the [bottom of _layout.html](https://github.com/NetCoreTemplates/templates/blob/8a082a299d59a0b53b9b6e0a07a6fbabf7bf6e2c/MyApp/wwwroot/_layout.html#L49)
+
+```
+{{ scripts | raw }}
+```
+
+The implementation to support each of these usages is contained within 
+[TemplateRawBlock.cs](https://github.com/ServiceStack/ServiceStack/blob/master/src/ServiceStack.Common/Templates/Blocks/TemplateRawBlock.cs)
+below which inspects the `block.Argument` to determine whether it should capture the contents into the specified variable or write its raw 
+string contents directly to the OutputStream:
+{{/markdown}}
+
+{{ 'gfm/blocks/13.md' | githubMarkdown }}
+
+{{#markdown}}
+### capture
+
+The `{{#capture}}` block is similar to the raw block except instead of using its raw text contents, it instead evaluates its contents instead 
+and captures the output. It also supports evaluating the contents with scoped arguments where by each property in the object dictionary is added 
+in the scoped arguments the template is executed with:
+{{/markdown}}
+
+{{ 'gfm/blocks/14.md' | githubMarkdown }}
+
+{{#markdown}}
+With this we can generate some markdown, capture its contents and convert the resulting markdown to html using the  `markdown` Filter transformer:
+{{/markdown}}
+
+{{ 'gfm/blocks/15.md' | githubMarkdown }}
 
 
 {{ "doc-links" | partial({ order }) }}

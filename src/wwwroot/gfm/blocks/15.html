@@ -1,0 +1,9 @@
+<div class="gfm"><div class="highlight highlight-source-js"><pre>{{#capture todoMarkdown { items<span class="pl-k">:</span>[<span class="pl-c1">1</span>,<span class="pl-c1">2</span>,<span class="pl-c1">3</span>] } }}
+## <span class="pl-c1">TODO</span> List
+{{#each items}}
+  <span class="pl-k">-</span> {{it}}
+{{<span class="pl-k">/</span>each}}
+{{<span class="pl-k">/</span>capture}}
+
+{{todoMarkdown <span class="pl-k">|</span> markdown}}</pre></div>
+</div>
