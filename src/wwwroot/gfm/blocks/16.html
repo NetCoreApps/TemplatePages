@@ -1,0 +1,37 @@
+<div class="gfm"><div class="highlight highlight-source-cs"><pre><span class="pl-c"><span class="pl-c">///</span> &lt;<span class="pl-ent"><span class="pl-ent">summary</span></span>&gt;</span>
+<span class="pl-c"><span class="pl-c">///</span> Converts markdown contents to HTML using the configured MarkdownConfig.Transformer.</span>
+<span class="pl-c"><span class="pl-c">///</span> If a variable name is specified the HTML output is captured and saved instead. </span>
+<span class="pl-c"><span class="pl-c">///</span></span>
+<span class="pl-c"><span class="pl-c">///</span> Usages: {{#markdown}} ## The Heading {{/markdown}}</span>
+<span class="pl-c"><span class="pl-c">///</span>         {{#markdown content}} ## The Heading {{/markdown}} HTML: {{content}}</span>
+<span class="pl-c"><span class="pl-c">///</span> &lt;/<span class="pl-ent"><span class="pl-ent">summary</span></span>&gt;</span>
+<span class="pl-k">public</span> <span class="pl-k">class</span> <span class="pl-en">TemplatMarkdownBlock</span> : <span class="pl-en">TemplateBlock</span>
+{
+    <span class="pl-k">public</span> <span class="pl-k">override</span> <span class="pl-k">string</span> <span class="pl-smi">Name</span> <span class="pl-k">=&gt;</span> <span class="pl-s"><span class="pl-pds">"</span>markdown<span class="pl-pds">"</span></span>;
+    
+    <span class="pl-k">public</span> <span class="pl-k">override</span> <span class="pl-k">async</span> <span class="pl-en">Task</span> <span class="pl-en">WriteAsync</span>(
+        <span class="pl-en">TemplateScopeContext</span> <span class="pl-smi">scope</span>, <span class="pl-en">PageBlockFragment</span> <span class="pl-smi">block</span>, <span class="pl-en">CancellationToken</span> <span class="pl-smi">token</span>)
+    {
+        <span class="pl-k">var</span> <span class="pl-smi">strFragment</span> <span class="pl-k">=</span> (<span class="pl-en">PageStringFragment</span>)<span class="pl-smi">block</span>.<span class="pl-smi">Body</span>[<span class="pl-c1">0</span>];
+
+        <span class="pl-k">if</span> (<span class="pl-k">!</span><span class="pl-smi">block</span>.<span class="pl-smi">Argument</span>.<span class="pl-en">IsNullOrWhiteSpace</span>())
+        {
+            <span class="pl-en">Capture</span>(<span class="pl-smi">scope</span>, <span class="pl-smi">block</span>, <span class="pl-smi">strFragment</span>);
+        }
+        <span class="pl-k">else</span>
+        {
+            <span class="pl-k">await</span> <span class="pl-smi">scope</span>.<span class="pl-smi">OutputStream</span>.<span class="pl-en">WriteAsync</span>(<span class="pl-smi">MarkdownConfig</span>.<span class="pl-en">Transform</span>(<span class="pl-smi">strFragment</span>.<span class="pl-smi">ValueString</span>), <span class="pl-smi">token</span>);
+        }
+    }
+
+    <span class="pl-k">private</span> <span class="pl-k">static</span> <span class="pl-k">void</span> <span class="pl-en">Capture</span>(
+        <span class="pl-en">TemplateScopeContext</span> <span class="pl-smi">scope</span>, <span class="pl-en">PageBlockFragment</span> <span class="pl-smi">block</span>, <span class="pl-en">PageStringFragment</span> <span class="pl-smi">strFragment</span>)
+    {
+        <span class="pl-k">var</span> <span class="pl-smi">literal</span> <span class="pl-k">=</span> <span class="pl-smi">block</span>.<span class="pl-smi">Argument</span>.<span class="pl-en">AdvancePastWhitespace</span>();
+
+        <span class="pl-smi">literal</span> <span class="pl-k">=</span> <span class="pl-smi">literal</span>.<span class="pl-en">ParseVarName</span>(<span class="pl-k">out</span> <span class="pl-k">var</span> <span class="pl-smi">name</span>);
+        <span class="pl-k">var</span> <span class="pl-smi">nameString</span> <span class="pl-k">=</span> <span class="pl-smi">name</span>.<span class="pl-en">ToString</span>();
+        <span class="pl-smi">scope</span>.<span class="pl-smi">PageResult</span>.<span class="pl-smi">Args</span>[<span class="pl-smi">nameString</span>] <span class="pl-k">=</span> <span class="pl-smi">MarkdownConfig</span>.<span class="pl-en">Transform</span>(<span class="pl-smi">strFragment</span>.<span class="pl-smi">ValueString</span>).<span class="pl-en">ToRawString</span>();
+    }
+}</pre></div>
+</div>

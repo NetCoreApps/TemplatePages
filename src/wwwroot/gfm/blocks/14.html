@@ -25,7 +25,7 @@
             <span class="pl-k">var</span> <span class="pl-smi">capturedOutput</span> <span class="pl-k">=</span> <span class="pl-smi">ms</span>.<span class="pl-en">ReadToEnd</span>();
 
             <span class="pl-k">if</span> (<span class="pl-smi">appendTo</span> <span class="pl-k">&amp;&amp;</span> <span class="pl-smi">scope</span>.<span class="pl-smi">PageResult</span>.<span class="pl-smi">Args</span>.<span class="pl-en">TryGetValue</span>(<span class="pl-smi">name</span>, <span class="pl-k">out</span> <span class="pl-k">var</span> <span class="pl-smi">oVar</span>)
-                            <span class="pl-k">&amp;&amp;</span> <span class="pl-smi">oVar</span> <span class="pl-k">is</span> <span class="pl-k">string</span> <span class="pl-smi">existingString</span>)
+                         <span class="pl-k">&amp;&amp;</span> <span class="pl-smi">oVar</span> <span class="pl-k">is</span> <span class="pl-k">string</span> <span class="pl-smi">existingString</span>)
             {
                 <span class="pl-smi">scope</span>.<span class="pl-smi">PageResult</span>.<span class="pl-smi">Args</span>[<span class="pl-smi">name</span>] <span class="pl-k">=</span> <span class="pl-smi">existingString</span> <span class="pl-k">+</span> <span class="pl-smi">capturedOutput</span>;
                 <span class="pl-k">return</span>;

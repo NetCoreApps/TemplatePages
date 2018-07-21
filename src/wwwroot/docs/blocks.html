@@ -158,15 +158,21 @@ index of each element:
 Despite its terse implementation, the above Template Block can be used to iterate over any collection, inc. objects, POCOs strings as well as 
 Value Type collections like ints. 
 
+##### Built-in each
+
 However the built-in [TemplateEachBlock.cs](https://github.com/ServiceStack/ServiceStack/blob/master/src/ServiceStack.Common/Templates/Blocks/TemplateEachBlock.cs)
-is a lot larger and more feature-rich where it also includes support for async results, custom element bindings and LINQ-like syntax for 
+is a lot larger to support its richer feature-set where it also includes support for async results, custom element bindings and LINQ-like syntax for 
 maximum expressiveness as well as expression caching ensuring the complex argument expression is only parsed once.
 {{/markdown}}
 
 {{ 'gfm/blocks/12.md' | githubMarkdown }}
 
 {{#markdown}}
-For a live preview of some of the advanced usages of the `{{#each}}` block, check out the [LINQ Examples](/linq/restriction-operators).
+##### Custom bindings
+When using a custom binding like `{{#each c in customers}}` the element is only accessible using the `c` binding which is more efficient 
+when only needing to reference a subset of properties of each element as it avoids adding each of its properties into each elements scope.
+
+For a live preview of some other advanced usages of the `{{#each}}` block, check out the [LINQ Examples](/linq/restriction-operators).
 
 ### raw
 
@@ -228,6 +234,91 @@ With this we can generate some markdown, capture its contents and convert the re
 
 {{ 'gfm/blocks/15.md' | githubMarkdown }}
 
+{{#markdown}}
+### markdown
+
+The `{{#markdown}}` block makes it even easier to embed markdown content directly in web pages which works as you'd expect where content in a 
+`markdown` block is converted into HTML, e.g:
+{{/markdown}}
+
+<pre>{{#raw}}
+{{#markdown}}
+## TODO List
+  - Item 1
+  - Item 2
+  - Item 3
+{{/markdown}}
+{{/raw}}
+</pre>
+
+{{#markdown}}
+Which ends up being the easiest and preferred way to embed Markdown content in hybrid content-rich websites like 
+[Razor Rockstars content pages](https://github.com/NetCoreTemplates/templates-webapp/blob/master/app/rockstars/dead/cobain/index.html), 
+this [blocks.html WebPage itself](https://github.com/NetCoreApps/TemplatePages/blob/master/src/wwwroot/docs/blocks.html) also makes 
+extensive use of markdown.
+
+As `markdown` block only supports 2 usages its implementation is much simpler than the `capture` block above:
+{{/markdown}}
+
+{{ 'gfm/blocks/16.md' | githubMarkdown }}
+
+{{#markdown}}
+### partial
+
+The `{{#partial}}` block lets you create In Memory partials which is useful when working with partial filters like `selectPartial` as
+it lets you declare multiple partials within the same page, instead of requiring multiple individual files. See docs on
+[Inline partials](/docs/partials#inline-partials) for a Live comparison of using in memory partials.
+{{/markdown}}
+
+{{#markdown}}
+### html
+
+The purpose of the html blocks is to pack a suite of generically useful functionality commonly used when generating html. All html blocks
+inherit the same functionality with blocks registered for the most popular HTML elements, currently: 
+
+`ul`, `ol`, `li`, `div`, `p`, `form`, `input`, `select`, `option`, `textarea`, `button`, `table`, `tr`, `td`, `thead`, `tbody`, `tfoot`, 
+`dl`, `dt`, `dd`, `span`, `a`, `img`, `em`, `b`, `i`, `strong`.
+
+Ultimately they reduce boilerplate, e.g. you can generate a menu list with a single block:
+
+<pre>
+{#ul {each:items, id:'menu', class:'nav'} }} 
+    &lt;li&gt;{{it}}&lt;/li&gt; 
+{{/ul}}
+</pre>
+
+A more advanced example showcasing many of its different features is contained in the example below:
+{{/markdown}}
+
+{{ 'gfm/blocks/18.md' | githubMarkdown }}
+
+{{#markdown}}
+This example utilizes many of the features in html blocks, namely:
+
+ - `if` - only render the template if truthy
+ - `each` - render the template for each item in the collection
+ - `where` - filter the collection
+ - `it` - change the name of each element `it` binding 
+ - `class` - special property implementing [Vue's special class bindings](https://vuejs.org/v2/guide/class-and-style.html) where an object literal
+ can be used to emit a list of class names for all truthy properties, an array can be used to display a list of class names or a basic string to 
+ display class names.
+
+All other properties like `id` and `selected` are treated like HTML attributes where if the property is a boolean like `selected` it's only displayed
+if its true otherwise the html attribute's name and value is emitted as normal.
+
+For a better illustration of the examples functionality we'll implement it without using any html blocks:
+{{/markdown}}
+
+{{ 'gfm/blocks/19.md' | githubMarkdown }}
+
+<h3 id="removing-blocks">Removing Blocks</h3>
+
+{{#markdown}}
+Like everything else in Templates, all built-in Blocks can be removed. To make it easy to remove groups of related blocks you can just remove the 
+plugin that registered them using the `RemovePlugins()` API, e.g:
+{{/markdown}}
+
+{{ 'gfm/blocks/20.md' | githubMarkdown }}
 
 {{ "doc-links" | partial({ order }) }}
 

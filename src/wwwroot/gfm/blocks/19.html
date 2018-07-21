@@ -1,0 +1,38 @@
+<div class="gfm"><div class="highlight highlight-text-html-basic"><pre>{{#if hasAccess}}
+    {{ items | where =&gt; it.Age &gt; 27 | assignTo: items }}
+    {{#if !isEmpty(items)}}
+        &lt;<span class="pl-ent">ul</span> {{ [<span class="pl-s"><span class="pl-pds">'</span>nav<span class="pl-pds">'</span></span>, !<span class="pl-e">disclaimerAccepted</span> ? <span class="pl-s"><span class="pl-pds">'</span>blur<span class="pl-pds">'</span></span> : <span class="pl-s"><span class="pl-pds">'</span><span class="pl-pds">'</span></span>] | <span class="pl-e">htmlClass</span> }} <span class="pl-e">id</span>=<span class="pl-s"><span class="pl-pds">"</span>menu-{{id}}<span class="pl-pds">"</span></span>&gt;
+        {{#each items}}
+            &lt;<span class="pl-ent">li</span> {{ {<span class="pl-e">alt:isOdd</span>(<span class="pl-e">index</span>), <span class="pl-e">active:Name</span>=<span class="pl-s">=highlight}</span> | <span class="pl-e">htmlClass</span> }}&gt;{{Name}}&lt;/<span class="pl-ent">li</span>&gt;
+        {{/each}}
+        &lt;/<span class="pl-ent">ul</span>&gt;
+    {{else}}
+        &lt;<span class="pl-ent">div</span>&gt;no items&lt;/<span class="pl-ent">div</span>&gt;
+    {{/if}}
+{{/if}}</pre></div>
+<p>The same functionality using C# Razor with the latest C# language features enabled is implemented with:</p>
+<div class="highlight highlight-source-cs"><pre>@{
+    <span class="pl-k">var</span> <span class="pl-smi">persons</span> <span class="pl-k">=</span> (<span class="pl-smi">items</span> <span class="pl-k">as</span> <span class="pl-en">IEnumerable</span>&lt;<span class="pl-en">Person</span>&gt;)<span class="pl-k">?</span>.<span class="pl-en">Where</span>(<span class="pl-smi">x</span> <span class="pl-k">=&gt;</span> <span class="pl-smi">x</span>.<span class="pl-smi">Age</span> <span class="pl-k">&gt;</span> <span class="pl-c1">27</span>);
+}
+@<span class="pl-k">if</span> (<span class="pl-smi">hasAccess</span>)
+{
+    <span class="pl-k">if</span> (<span class="pl-smi">persons</span><span class="pl-k">?</span>.<span class="pl-en">Any</span>() <span class="pl-k">==</span> <span class="pl-c1">true</span>)
+    {
+        <span class="pl-k">&lt;</span><span class="pl-en">ul</span> <span class="pl-smi">id</span><span class="pl-k">=</span><span class="pl-s"><span class="pl-pds">"</span>menu-@id<span class="pl-pds">"</span></span> <span class="pl-smi">class</span><span class="pl-k">=</span><span class="pl-s"><span class="pl-pds">"</span>nav @(!disclaimerAccepted ? <span class="pl-pds">"</span></span><span class="pl-smi">hide</span><span class="pl-s"><span class="pl-pds">"</span> : <span class="pl-pds">"</span><span class="pl-pds">"</span>)<span class="pl-pds">"</span></span><span class="pl-k">&gt;</span>
+            @{
+                <span class="pl-smi">var</span> <span class="pl-smi">index</span> <span class="pl-k">=</span> <span class="pl-c1">0</span>;
+            }
+            @<span class="pl-en">foreach</span> (<span class="pl-smi">var</span> <span class="pl-smi">person</span> <span class="pl-en">in</span> <span class="pl-smi">persons</span>)
+            {
+                <span class="pl-k">&lt;</span><span class="pl-smi">li</span> <span class="pl-smi">class</span><span class="pl-k">=</span><span class="pl-s"><span class="pl-pds">"</span>@(index++ % 2 == 1 ? <span class="pl-pds">"</span></span><span class="pl-smi">alt</span> <span class="pl-s"><span class="pl-pds">"</span> : <span class="pl-pds">"</span><span class="pl-pds">"</span> )@(person.Name == activeName ? <span class="pl-pds">"</span></span><span class="pl-smi">active</span><span class="pl-s"><span class="pl-pds">"</span> : <span class="pl-pds">"</span><span class="pl-pds">"</span>)<span class="pl-pds">"</span></span><span class="pl-k">&gt;</span>
+                    @<span class="pl-smi">person</span>.<span class="pl-smi">Name</span>
+                <span class="pl-k">&lt;</span><span class="pl-k">/</span><span class="pl-smi">li</span><span class="pl-k">&gt;</span>
+            }
+        <span class="pl-k">&lt;</span><span class="pl-k">/</span><span class="pl-smi">ul</span><span class="pl-k">&gt;</span>
+    }
+    <span class="pl-smi">else</span>
+    {
+        &lt;<span class="pl-smi">div</span>&gt;<span class="pl-smi">no</span> <span class="pl-smi">items</span>&lt;/<span class="pl-smi">div</span>&gt;
+    }
+}</pre></div>
+</div>
