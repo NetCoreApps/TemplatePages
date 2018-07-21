@@ -146,17 +146,17 @@ body with `WriteBodyAsync()` otherwise it evaluates any else expressions with `W
 {{#markdown}}
 ### each
 
-Given everything we know so far implementing [handlebars.js each block](https://handlebarsjs.com/block_helpers.html#iterators) is also fairly
-straightforward to implement which essentially just involves iterating over the collection argument and rewriting the body with a new scope
-containing the element with the conventional `it` binding, it's properties and an `index` argument that the block's template can use to determine the 
+From what we know so far the [handlebars.js each block](https://handlebarsjs.com/block_helpers.html#iterators) is also fairly
+straightforward to implement which just iterates over a collection argument and evaluating the body with a new scope containing the 
+elements properties, a conventional `it` binding for the element and an `index` argument that can be used to determine the 
 index of each element:
 {{/markdown}}
 
 {{ 'gfm/blocks/11.md' | githubMarkdown }}
 
 {{#markdown}}
-Despite its terse implementation, the above Template Block can be used to iterate over any collection, inc. objects, POCOs strings as well as 
-Value Type collections like ints. 
+Despite its terse implementation, the above Template Block can be used to iterate over any expression that evaluates to a collection, 
+inc. objects, POCOs, strings as well as Value Type collections like ints. 
 
 ##### Built-in each
 
@@ -168,11 +168,13 @@ maximum expressiveness as well as expression caching ensuring the complex argume
 {{ 'gfm/blocks/12.md' | githubMarkdown }}
 
 {{#markdown}}
-##### Custom bindings
-When using a custom binding like `{{#each c in customers}}` the element is only accessible using the `c` binding which is more efficient 
-when only needing to reference a subset of properties of each element as it avoids adding each of its properties into each elements scope.
 
-For a live preview of some other advanced usages of the `{{#each}}` block, check out the [LINQ Examples](/linq/restriction-operators).
+##### Custom bindings
+
+When using a custom binding like `{{#each c in customers}}` the element is only accessible with the custom `c` binding which is more efficient 
+when only needing to reference a subset of properties of each element as it avoids adding each of elements properties in its execution scope.
+
+Check out the [LINQ Examples](/linq/restriction-operators) for a live preview showcasing some other advanced usages of the `{{#each}}` block.
 
 ### raw
 

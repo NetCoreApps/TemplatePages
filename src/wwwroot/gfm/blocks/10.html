@@ -13,13 +13,15 @@
     {
         <span class="pl-k">var</span> <span class="pl-smi">result</span> <span class="pl-k">=</span> <span class="pl-k">await</span> <span class="pl-smi">block</span>.<span class="pl-smi">Argument</span>.<span class="pl-en">GetJsExpressionAndEvaluateToBoolAsync</span>(<span class="pl-smi">scope</span>,
             <span class="pl-smi">ifNone</span>: () <span class="pl-k">=&gt;</span> <span class="pl-k">throw</span> <span class="pl-k">new</span> <span class="pl-en">NotSupportedException</span>(<span class="pl-s"><span class="pl-pds">"</span>'if' block does not have a valid expression<span class="pl-pds">"</span></span>));
+
         <span class="pl-k">if</span> (<span class="pl-smi">result</span>)
         {
             <span class="pl-k">await</span> <span class="pl-en">WriteBodyAsync</span>(<span class="pl-smi">scope</span>, <span class="pl-smi">block</span>, <span class="pl-smi">token</span>);
-            <span class="pl-k">return</span>;
         }
-
-        <span class="pl-k">await</span> <span class="pl-en">WriteElseAsync</span>(<span class="pl-smi">scope</span>, <span class="pl-smi">block</span>.<span class="pl-smi">ElseBlocks</span>, <span class="pl-smi">token</span>);
+        <span class="pl-k">else</span>
+        {
+            <span class="pl-k">await</span> <span class="pl-en">WriteElseAsync</span>(<span class="pl-smi">scope</span>, <span class="pl-smi">block</span>.<span class="pl-smi">ElseBlocks</span>, <span class="pl-smi">token</span>);
+        }
     }
 }</pre></div>
 </div>
