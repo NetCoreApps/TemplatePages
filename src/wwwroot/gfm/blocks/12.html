@@ -7,7 +7,7 @@
 <span class="pl-c"><span class="pl-c">///</span>         {{#each numbers}} {{it}} {{else}} no numbers {{/each}}</span>
 <span class="pl-c"><span class="pl-c">///</span>         {{#each numbers}} {{it}} {{else if letters != null}} has letters {{else}} no numbers {{/each}}</span>
 <span class="pl-c"><span class="pl-c">///</span>         {{#each n in numbers where n &gt; 5}} {{it}} {{else}} no numbers &gt; 5 {{/each}}</span>
-<span class="pl-c"><span class="pl-c">///</span>         {{#each n in numbers where n &gt; 5 order by n skip 1 take 2}} {{it}} {{else}}no numbers &gt; 5{{/each}}</span>
+<span class="pl-c"><span class="pl-c">///</span>         {{#each n in numbers where n &gt; 5 orderby n skip 1 take 2}} {{it}} {{else}}no numbers &gt; 5{{/each}}</span>
 <span class="pl-c"><span class="pl-c">///</span> &lt;/<span class="pl-ent"><span class="pl-ent">summary</span></span>&gt;</span>
 <span class="pl-k">public</span> <span class="pl-k">class</span> <span class="pl-en">TemplateEachBlock</span> : <span class="pl-en">TemplateBlock</span> { ... }</pre></div>
 </div>

@@ -4,15 +4,14 @@ order: 6
 -->
 
 {{#markdown}}
-While filters lets you access methods within filter expressions, blocks lets you define reusable statement blocks that can be invoked with
-a new context there by allowing you to create custom iterators and helpers - encapsulating reusable functionality and reducing boilerplate
-for common functionality.
+Blocks lets you define reusable statements that can be invoked with a new context allowing the creation custom iterators and helpers - 
+making it easy to encapsulate reusable functionality and reduce boilerplate for common functionality.
 
 The syntax for blocks follows the familiar [handlebars block helpers](https://handlebarsjs.com/block_helpers.html) in both syntax and functionality.
-Templates also includes many of handlebars block helpers which are useful in a HTML template language and reduces any porting efforts if
-wanting to reuse existing handlebars templates.
+Templates also includes most of handlebars.js block helpers which are useful in a HTML template language whilst minimizing any porting efforts if 
+needing to reuse existing JavaScript handlebars templates.
 
-We'll walk through creating a few of the built-in templates to demonstrate how we can create new block filters from scratch.
+We'll walk through creating a few of the built-in Template blocks to demonstrate how to create them from scratch.
 
 ### noop
 
@@ -35,7 +34,7 @@ All Block's are executed with 3 parameters:
 
  - `TemplateScopeContext` - Contains the current Execution and Rendering context
  - `PageBlockFragment` - The data structure which holds the parsed Block contents
- - `CancellationToken` - The CancellationToken allowing the async render operation to be cancelled
+ - `CancellationToken` - CancellationToken allowing the async render operation to be cancelled
 {{/markdown}}
 
 <h3 id="registering-blocks">Registering Blocks</h3>
@@ -64,7 +63,7 @@ When the `TemplateContext` is initialized it will go through each Type and creat
 {{ 'gfm/blocks/05.md' | githubMarkdown }}
 
 {{#markdown}}
-Where it will automatically register any Template Blocks or Filters contained in the specified Assembly.
+Where it will automatically register any Template Blocks or Filters contained in the specified `MyBlock` Assembly.
 {{/markdown}}
 
 {{#markdown}}
@@ -94,7 +93,7 @@ feature that some of the built-in Blocks take advantage of.
 The `with` block works similarly to [handlebars with helper](https://handlebarsjs.com/block_helpers.html#with-helper) or JavaScript's 
 [with statement](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/with) where it extracts the properties (or Keys)
 of an object (or result of an Expression) and adds them to the current scope where by alleviating needing for prefixing each property reference, 
-e.g. being able to use `{{Name}}` instead of {{person.Name}} and will only evaluate the block's contents if the argument doesn't evaluate to `null`.
+e.g. being able to use `{{Name}}` instead of `{{person.Name}}`:
 
 <pre>
 {{#with person}}
@@ -102,17 +101,19 @@ e.g. being able to use `{{Name}}` instead of {{person.Name}} and will only evalu
 {{/with}}
 </pre>
 
-The implementation below shows the optimal way to implement the `with` block by calling `GetJsExpressionAndEvaluate()` which resolves a cached AST
-token and then evaluates it to return the result of the Argument expression. 
+It also only evaluates the block's contents if the specified argument doesn't evaluate to `null`. 
+
+The implementation below shows the optimal way to implement `with` by calling `GetJsExpressionAndEvaluate()` to resolve a cached 
+AST token that's then evaluated to return the result of the Argument expression. 
 
 If the argument evaluates to an object it calls the `ToObjectDictionary()` extension method to convert it into a `Dictionary<string,object>` 
-then creates a new scope with each property added as arguments and then evaluate the block's Body contents with the new scope:
+then creates a new scope with each property added as arguments and then evaluates the block's Body contents with the new scope:
 {{/markdown}}
 
 {{ 'gfm/blocks/07.md' | githubMarkdown }}
 
 {{#markdown}}
-To have a better highlight how this works, a non-cached version of `GetJsExpressionAndEvaluate()` involves parsing the Argument string into 
+To better highlight how this works, a non-cached version of `GetJsExpressionAndEvaluate()` involves parsing the Argument string into 
 an AST Token then evaluating it with the current scope:
 {{/markdown}}
 
@@ -126,19 +127,19 @@ which can then be evaluated by calling its `token.Evaluate(scope)` method.
 
 The actual [TemplateWithBlock.cs](https://github.com/ServiceStack/ServiceStack/blob/master/src/ServiceStack.Common/Templates/Blocks/TemplateWithBlock.cs)
 used in Templates has extended functionality which instead uses `GetJsExpressionAndEvaluateAsync()` to be able to evaluate both **sync** and **async** 
-results and also evaluates the `block.ElseBlocks` that's available to each block where they're able to evaluate an **else/else if** expression 
-statements for when blocks are called with an empty argument.
+results and also evaluates any `block.ElseBlocks` statements which is functionality available to all blocks where they're able to evaluate any
+included **else/else if** statements for blocks that are called with an empty argument:
 {{/markdown}}
 
 {{ 'gfm/blocks/09.md' | githubMarkdown }}
 
-
 {{#markdown}}
 ### if
 
-Since all blocks are able to execute any number of `{{else}}` expressions by calling the `WriteElseAsync()` base method, the implementation for 
-the `{{if}}` block ends up being even simpler where it just needs to evaluate the argument to `bool`, where if it's true it writes the 
-body with `WriteBodyAsync()` otherwise it evaluates any else expressions with `WriteElseAsync()`:
+Since all blocks are able to execute any number of `{{else}}` statements by calling `base.WriteElseAsync()`, the implementation for 
+the `{{if}}` block ends up being even simpler which just needs to evaluate the argument to `bool`. 
+
+If **true** it writes the body with `WriteBodyAsync()` otherwise it evaluates any `else` statements with `WriteElseAsync()`:
 {{/markdown}}
 
 {{ 'gfm/blocks/10.md' | githubMarkdown }}
@@ -146,9 +147,9 @@ body with `WriteBodyAsync()` otherwise it evaluates any else expressions with `W
 {{#markdown}}
 ### each
 
-From what we know so far the [handlebars.js each block](https://handlebarsjs.com/block_helpers.html#iterators) is also fairly
-straightforward to implement which just iterates over a collection argument and evaluating the body with a new scope containing the 
-elements properties, a conventional `it` binding for the element and an `index` argument that can be used to determine the 
+From what we've seen up till now, the [handlebars.js each block](https://handlebarsjs.com/block_helpers.html#iterators) is also
+straightforward to implement which just iterates over a collection argument that evaluates its body with a new scope containing the 
+elements **properties**, a conventional `it` binding for the element and an `index` argument that can be used to determine the 
 index of each element:
 {{/markdown}}
 
@@ -161,25 +162,45 @@ inc. objects, POCOs, strings as well as Value Type collections like ints.
 ##### Built-in each
 
 However the built-in [TemplateEachBlock.cs](https://github.com/ServiceStack/ServiceStack/blob/master/src/ServiceStack.Common/Templates/Blocks/TemplateEachBlock.cs)
-is a lot larger to support its richer feature-set where it also includes support for async results, custom element bindings and LINQ-like syntax for 
-maximum expressiveness as well as expression caching ensuring the complex argument expression is only parsed once.
+ends up being much larger to support its richer feature-set where it also includes support for async results, custom element bindings and LINQ-like syntax for 
+maximum expressiveness whilst utilizing expression caching ensuring any complex argument expressions are only parsed once.
 {{/markdown}}
 
 {{ 'gfm/blocks/12.md' | githubMarkdown }}
 
 {{#markdown}}
+By using `ParseJsExpression()` to parse expressions after each "LINQ modifier", `each` supports evaluating complex JavaScript expressions in each 
+of its LINQ querying features, e.g:
+{{/markdown}}
+
+<div class="linq-preview {{ output }}">
+    <div class="template">
+        <textarea autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" class="form-control" rows="6"
+>{{#raw}}{{#each c in customers 
+        where c.City == 'London' and c.Country == 'UK' orderby c.CompanyName descending 
+        skip 2 - 1 take 1 + 2  
+}} 
+  {{index + 1}}. {{c.CustomerId}} from <b>{{c.CompanyName}}</b> - {{c.City}}, {{c.Country}}.
+{{/each}}{{/raw}}</textarea>
+    </div>
+    <div class="result">
+        <div class="output"></div>
+    </div>
+</div> 
+
+{{#markdown}}
 
 ##### Custom bindings
 
-When using a custom binding like `{{#each c in customers}}` the element is only accessible with the custom `c` binding which is more efficient 
-when only needing to reference a subset of properties of each element as it avoids adding each of elements properties in its execution scope.
+When using a custom binding like `{{#each c in customers}}` above, the element is only accessible with the custom `c` binding which is more efficient 
+when only needing to reference a subset of the element's properties as it avoids adding each of the elements properties in the items execution scope.
 
-Check out the [LINQ Examples](/linq/restriction-operators) for a live preview showcasing some other advanced usages of the `{{#each}}` block.
+Check out [LINQ Examples](/linq/restriction-operators) for more live previews showcasing advanced usages of the `{{#each}}` block.
 
 ### raw
 
 The `{{#raw}}` block is similar to [handlebars.js's raw-helper](https://handlebarsjs.com/block_helpers.html#raw-blocks) where it allows capturing
-of the raw template text content instead having its contents evaluated making it ideal when wanting to emit content that could potentially contain
+of the raw template text content instead their content being evaluated making it ideal when wanting to emit content that could potentially contain
 template expressions like client-side JavaScript or template expressions that you don't want to be evaluated on the server, e.g. when rending 
 Vue, Angular or Ember templates:
 
@@ -192,11 +213,11 @@ Vue, Angular or Ember templates:
 </pre>
 
 When called with no arguments it will render its unprocessed raw text contents. When called with a single argument, e.g. `{{#raw varname}}` it will
-instead save the raw text contents to the specified global PageResult variable and lastly when called with the `appendTo` modifier it will append 
-its contents to the existing variable, or initialize it if it doesn't already exist.
+instead save the raw text contents to the specified global `PageResult` variable and lastly when called with the `appendTo` modifier it will append 
+its contents to the existing variable, or initialize it if it doesn't exist.
 
 This is now the preferred approach used in all [.NET Core and .NET Framework Web Templates](http://docs.servicestack.net/templates-websites) for 
-pages and partials to append any JavaScript script blocks they need, e.g:
+pages and partials to append any custom JavaScript script blocks they need on the page, e.g:
 
 <pre>
 {{#raw appendTo scripts}}
@@ -206,11 +227,17 @@ pages and partials to append any JavaScript script blocks they need, e.g:
 {{/raw}}
 </pre>
 
-To the bottom of the page by having its captured contents rendered at the [bottom of _layout.html](https://github.com/NetCoreTemplates/templates/blob/8a082a299d59a0b53b9b6e0a07a6fbabf7bf6e2c/MyApp/wwwroot/_layout.html#L49)
+Where any captured custom scripts be rendered at the 
+[bottom of _layout.html](https://github.com/NetCoreTemplates/templates/blob/8a082a299d59a0b53b9b6e0a07a6fbabf7bf6e2c/MyApp/wwwroot/_layout.html#L49) with:
 
-```
-{{ scripts | raw }}
-```
+<pre>
+    &lt;script src="/assets/js/default.js"&gt;&lt;/script&gt;
+
+    {{ scripts | raw }}
+
+&lt;/body&gt;
+&lt;/html&gt;
+</pre>
 
 The implementation to support each of these usages is contained within 
 [TemplateRawBlock.cs](https://github.com/ServiceStack/ServiceStack/blob/master/src/ServiceStack.Common/Templates/Blocks/TemplateRawBlock.cs)
@@ -223,9 +250,9 @@ string contents directly to the OutputStream:
 {{#markdown}}
 ### capture
 
-The `{{#capture}}` block is similar to the raw block except instead of using its raw text contents, it instead evaluates its contents instead 
-and captures the output. It also supports evaluating the contents with scoped arguments where by each property in the object dictionary is added 
-in the scoped arguments the template is executed with:
+The `{{#capture}}` block is similar to the raw block except instead of using its raw text contents, it instead evaluates its contents and captures 
+the output. It also supports evaluating the contents with scoped arguments where by each property in the object dictionary is added in the 
+scoped arguments that the template is executed with:
 {{/markdown}}
 
 {{ 'gfm/blocks/14.md' | githubMarkdown }}

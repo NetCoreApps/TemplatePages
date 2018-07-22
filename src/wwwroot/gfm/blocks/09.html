@@ -22,8 +22,8 @@
         }
     }
 }</pre></div>
-<p>This lets the <code>with</code> block evaluate async results like the <a href="/docs/db-filters">async Database filters</a> as well custom else expressions
-to be able to render different results based on different conditions, e.g:</p>
+<p>This enables the <code>with</code> block to also evaluate async responses like the async results returned in <a href="/docs/db-filters">async Database filters</a>,
+it's also able to evaluate custom else statements to be able to render different results based on different conditions, e.g:</p>
 <div class="highlight highlight-source-js"><pre>{{#<span class="pl-k">with</span> <span class="pl-en">dbSingle</span>(<span class="pl-s"><span class="pl-pds">"</span>select * from Person where id = @id<span class="pl-pds">"</span></span>, { id }) }}
     Hi {{Name}}, your Age is {{Age}}.
 {{<span class="pl-k">else</span> <span class="pl-k">if</span> id <span class="pl-k">==</span> <span class="pl-c1">0</span>}}

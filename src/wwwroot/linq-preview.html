@@ -1,7 +1,7 @@
-<div class="linq-preview {{ output | ifExists }}">
+<div class="linq-preview {{ output }}">
     <div class="template">
         <textarea autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" class="form-control" 
-            rows="{{ rows | otherwise('6') }}">{{ "code/" | append(example) | append(".txt") | includeFile }}</textarea>
+            rows="{{ rows ?? 6 }}">{{ `code/${example}.txt` | includeFile }}</textarea>
     </div>
     <div class="result">
         <div class="output"></div>
