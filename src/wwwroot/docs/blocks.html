@@ -32,8 +32,8 @@ to the Output Stream, resulting in its inner contents being ignored:
 {{#markdown}}
 All Block's are executed with 3 parameters:
 
- - `TemplateScopeContext` - Contains the current Execution and Rendering context
- - `PageBlockFragment` - The data structure which holds the parsed Block contents
+ - `TemplateScopeContext` - The current Execution and Rendering context
+ - `PageBlockFragment` - The parsed Block contents
  - `CancellationToken` - CancellationToken allowing the async render operation to be cancelled
 {{/markdown}}
 
@@ -180,11 +180,11 @@ of its LINQ querying features, e.g:
 <div class="linq-preview {{ output }}">
     <div class="template">
         <textarea autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" class="form-control" rows="6"
->{{#raw}}{{#each c in customers 
-        where c.City == 'London' and c.Country == 'UK' orderby c.CompanyName descending 
-        skip 2 - 1 take 1 + 2  
-}} 
-  {{index + 1}}. {{c.CustomerId}} from <b>{{c.CompanyName}}</b> - {{c.City}}, {{c.Country}}.
+>{{#raw}}{{#each c in customers
+    where c.City == 'London' and c.Country == 'UK' orderby c.CompanyName descending
+    skip 3 - (2 - 1)
+    take 1 + 2 }}
+{{index + 1}}. {{c.CustomerId}} from <b>{{c.CompanyName}}</b> - {{c.City}}, {{c.Country}}.
 {{/each}}{{/raw}}</textarea>
     </div>
     <div class="result">
