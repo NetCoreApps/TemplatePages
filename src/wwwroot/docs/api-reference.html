@@ -3,7 +3,36 @@ title: API Reference
 order: 26
 -->
 
-<h3 class="ref">TemplateContext</h3>
+<h3 class="plugins">Plugins</h3>
+
+{{#markdown}}
+Plugins are a nice way to extend templates with customized functionality which can encapsulate any number of blocks, filters, 
+preferred configuration and dependencies by implementing the `ITemplatePlugin` interface. 
+
+The [MarkdownTemplatePlugin](https://github.com/ServiceStack/ServiceStack/blob/master/src/ServiceStack/MarkdownTemplatePlugin.cs)
+is a good example of this which registers a markdown 
+[Page format](/docs/page-formats), [Filter](/docs/filters), [Filter Transformer](/docs/transformers) and 
+[markdown Block](/docs/blocks#markdown):
+{{/markdown}}
+
+{{ 'gfm/api-reference/03.md' | githubMarkdown }}
+
+{{#markdown}}
+#### Removing Plugins
+
+When needed any default plugins can be removed with the `RemovePlugins()` API:
+{{/markdown}}
+
+{{ 'gfm/blocks/20.md' | githubMarkdown }}
+
+{{#markdown}}
+#### Advanced plugin registration
+
+For greater control over the registration and execution of plugins, they can implement `ITemplatePluginBefore` to have custom logic
+executed before plugins are registered or implement `ITemplatePluginAfter` for executing any logic after.
+{{/markdown}}
+
+<h3 id="templatecontext">TemplateContext</h3>
 
 <p>
     The <em>TemplateContext</em> is the sandbox where all templates are executed within that can be customized with the 

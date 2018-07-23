@@ -1,0 +1,24 @@
+<div class="gfm"><div class="highlight highlight-source-cs"><pre><span class="pl-k">public</span> <span class="pl-k">class</span> <span class="pl-en">MarkdownTemplatePlugin</span> : <span class="pl-en">ITemplatePlugin</span>
+{
+    <span class="pl-k">public</span> <span class="pl-k">bool</span> <span class="pl-smi">RegisterPageFormat</span> { <span class="pl-k">get</span>; <span class="pl-k">set</span>; } <span class="pl-k">=</span> <span class="pl-c1">true</span>;
+
+    <span class="pl-k">public</span> <span class="pl-k">void</span> <span class="pl-en">Register</span>(<span class="pl-en">TemplateContext</span> <span class="pl-smi">context</span>)
+    {
+        <span class="pl-k">if</span> (<span class="pl-smi">RegisterPageFormat</span>)
+            <span class="pl-smi">context</span>.<span class="pl-smi">PageFormats</span>.<span class="pl-en">Add</span>(<span class="pl-k">new</span> <span class="pl-en">MarkdownPageFormat</span>());
+        
+        <span class="pl-smi">context</span>.<span class="pl-smi">FilterTransformers</span>[<span class="pl-s"><span class="pl-pds">"</span>markdown<span class="pl-pds">"</span></span>] <span class="pl-k">=</span> <span class="pl-smi">MarkdownPageFormat</span>.<span class="pl-smi">TransformToHtml</span>;
+        
+        <span class="pl-smi">context</span>.<span class="pl-smi">TemplateFilters</span>.<span class="pl-en">Add</span>(<span class="pl-k">new</span> <span class="pl-en">MarkdownTemplateFilter</span>());
+
+        <span class="pl-smi">TemplateConfig</span>.<span class="pl-smi">DontEvaluateBlocksNamed</span>.<span class="pl-en">Add</span>(<span class="pl-s"><span class="pl-pds">"</span>markdown<span class="pl-pds">"</span></span>);
+        
+        <span class="pl-smi">context</span>.<span class="pl-smi">TemplateBlocks</span>.<span class="pl-en">Add</span>(<span class="pl-k">new</span> <span class="pl-en">TemplateMarkdownBlock</span>());
+    }
+}</pre></div>
+<p>The <code>MarkdownTemplatePlugin</code> is pre-registered when using the <a href="/docs/view-engine">ServiceStack Templates View Engine</a>, for
+all other contexts it can be registered and customized with:</p>
+<div class="highlight highlight-source-cs"><pre><span class="pl-k">var</span> <span class="pl-smi">context</span> <span class="pl-k">=</span> <span class="pl-k">new</span> <span class="pl-en">TemplateContext</span> {
+    <span class="pl-smi">Plugins</span> <span class="pl-k">=</span> { <span class="pl-k">new</span> <span class="pl-en">MarkdownTemplatePlugin</span> { <span class="pl-smi">RegisterPageFormat</span> <span class="pl-k">=</span> <span class="pl-c1">false</span> } }
+}.<span class="pl-en">Init</span>();</pre></div>
+</div>
