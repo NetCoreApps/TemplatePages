@@ -63,7 +63,7 @@ When the `TemplateContext` is initialized it will go through each Type and creat
 {{ 'gfm/blocks/05.md' | githubMarkdown }}
 
 {{#markdown}}
-Where it will automatically register any Template Blocks or Filters contained in the specified `MyBlock` Assembly.
+Where it automatically registers any Blocks or Filters contained in the Assembly where the `MyBlock` Type is defined.
 {{/markdown}}
 
 {{#markdown}}
@@ -77,8 +77,8 @@ A step up from `noop` is the **bold** Template Block which markup its contents w
 </pre>
 
 {{#markdown}}
-Where we write to the `OutputStream` on the current `TemplateScopeContext` before and after the Block's inner contents are written out to the 
-`OutputStream` verbatim using the `WriteBodyAsync()` base method:
+Which calls the `base.WriteBodyAsync()` method to evaluate and write the Block's contents to the `OutputStream` using the current 
+`TemplateScopeContext`:
 {{/markdown}}
 
 {{ 'gfm/blocks/06.md' | githubMarkdown }}
@@ -88,11 +88,11 @@ Where we write to the `OutputStream` on the current `TemplateScopeContext` befor
 
 The `with` Block shows an example of utilizing arguments. To maximize flexibility arguments passed into your block are captured in a free-form
 string (specifically a `ReadOnlyMemory<char>`) which allows creating Blocks varying from simple arguments to complex LINQ-like expressions - a
-feature that some of the built-in Blocks take advantage of. 
+feature some built-in Blocks take advantage of. 
 
 The `with` block works similarly to [handlebars with helper](https://handlebarsjs.com/block_helpers.html#with-helper) or JavaScript's 
 [with statement](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/with) where it extracts the properties (or Keys)
-of an object (or result of an Expression) and adds them to the current scope where by alleviating needing for prefixing each property reference, 
+of an object and adds them to the current scope where by alleviating the need to prefix each property reference, 
 e.g. being able to use `{{Name}}` instead of `{{person.Name}}`:
 
 <pre>
@@ -101,7 +101,7 @@ e.g. being able to use `{{Name}}` instead of `{{person.Name}}`:
 {{/with}}
 </pre>
 
-It also only evaluates the block's contents if the specified argument doesn't evaluate to `null`. 
+Also the `with` Block's contents are only evaluated if the argument expression doesn't evaluate to `null`. 
 
 The implementation below shows the optimal way to implement `with` by calling `GetJsExpressionAndEvaluate()` to resolve a cached 
 AST token that's then evaluated to return the result of the Argument expression. 
@@ -123,12 +123,16 @@ an AST Token then evaluating it with the current scope:
 The `ParseJsExpression()` extension method is able to parse virtually any [JavaScript Expression](/docs/expression-viewer) into an AST tree
 which can then be evaluated by calling its `token.Evaluate(scope)` method.
 
-#### final implementation
+##### Final implementation
 
 The actual [TemplateWithBlock.cs](https://github.com/ServiceStack/ServiceStack/blob/master/src/ServiceStack.Common/Templates/Blocks/TemplateWithBlock.cs)
-used in Templates has extended functionality which instead uses `GetJsExpressionAndEvaluateAsync()` to be able to evaluate both **sync** and **async** 
-results and also evaluates any `block.ElseBlocks` statements which is functionality available to all blocks where they're able to evaluate any
-included **else/else if** statements for blocks that are called with an empty argument:
+used in Templates includes extended functionality which uses `GetJsExpressionAndEvaluateAsync()` to be able to evaluate both **sync** and **async** 
+results. 
+
+##### else if/else statements
+
+It also evaluates any `block.ElseBlocks` statements which is **functionality available to all blocks** which are able to evaluate any alternative 
+**else/else if** statements when the main template isn't rendered, e.g. in this case when the `with` block is called with a `null` argument:
 {{/markdown}}
 
 {{ 'gfm/blocks/09.md' | githubMarkdown }}
