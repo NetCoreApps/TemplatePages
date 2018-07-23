@@ -10,7 +10,7 @@
         &lt;<span class="pl-ent">div</span>&gt;no items&lt;/<span class="pl-ent">div</span>&gt;
     {{/if}}
 {{/if}}</pre></div>
-<p>The same functionality using C# Razor with the latest C# language features enabled is implemented with:</p>
+<p>The same functionality using C# Razor with the latest C# language features enabled can be implemented with:</p>
 <div class="highlight highlight-source-cs"><pre>@{
     <span class="pl-k">var</span> <span class="pl-smi">persons</span> <span class="pl-k">=</span> (<span class="pl-smi">items</span> <span class="pl-k">as</span> <span class="pl-en">IEnumerable</span>&lt;<span class="pl-en">Person</span>&gt;)<span class="pl-k">?</span>.<span class="pl-en">Where</span>(<span class="pl-smi">x</span> <span class="pl-k">=&gt;</span> <span class="pl-smi">x</span>.<span class="pl-smi">Age</span> <span class="pl-k">&gt;</span> <span class="pl-c1">27</span>);
 }

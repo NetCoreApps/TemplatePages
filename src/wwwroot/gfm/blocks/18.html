@@ -1,8 +1,6 @@
 <div class="gfm"><div class="highlight highlight-source-js"><pre>{{#ul {if<span class="pl-k">:</span>hasAccess, each<span class="pl-k">:</span>items, where<span class="pl-k">:</span><span class="pl-s"><span class="pl-pds">'</span>Age &gt; 27<span class="pl-pds">'</span></span>, 
         class<span class="pl-k">:</span>[<span class="pl-s"><span class="pl-pds">'</span>nav<span class="pl-pds">'</span></span>, <span class="pl-k">!</span>disclaimerAccepted <span class="pl-k">?</span> <span class="pl-s"><span class="pl-pds">'</span>blur<span class="pl-pds">'</span></span> <span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span><span class="pl-pds">'</span></span>], id<span class="pl-k">:</span><span class="pl-s"><span class="pl-pds">`</span>menu-<span class="pl-s1"><span class="pl-pse">${</span>id<span class="pl-pse">}</span></span><span class="pl-pds">`</span></span>, selected<span class="pl-k">:</span><span class="pl-c1">true</span>} }}
-    {{#li {class<span class="pl-k">:</span> {alt<span class="pl-k">:</span><span class="pl-en">isOdd</span>(index), active<span class="pl-k">:</span>Name<span class="pl-k">==</span>highlight} }}
-        {{Name}}
-    {{<span class="pl-k">/</span>li}}
+    {{#li {class<span class="pl-k">:</span> {alt<span class="pl-k">:</span><span class="pl-en">isOdd</span>(index), active<span class="pl-k">:</span>Name<span class="pl-k">==</span>highlight} }} {{Name}} {{<span class="pl-k">/</span>li}}
 {{<span class="pl-k">else</span>}}
     <span class="pl-k">&lt;</span>div<span class="pl-k">&gt;</span>no items<span class="pl-k">&lt;</span><span class="pl-k">/</span>div<span class="pl-k">&gt;</span>
 {{<span class="pl-k">/</span>ul}}</pre></div>

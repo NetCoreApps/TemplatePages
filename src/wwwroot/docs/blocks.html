@@ -166,8 +166,8 @@ inc. objects, POCOs, strings as well as Value Type collections like ints.
 ##### Built-in each
 
 However the built-in [TemplateEachBlock.cs](https://github.com/ServiceStack/ServiceStack/blob/master/src/ServiceStack.Common/Templates/Blocks/TemplateEachBlock.cs)
-ends up being much larger to support its richer feature-set where it also includes support for async results, custom element bindings and LINQ-like syntax for 
-maximum expressiveness whilst utilizing expression caching ensuring any complex argument expressions are only parsed once.
+has a larger implementation to support its richer feature-set where it also includes support for async results, custom element bindings and LINQ-like syntax for 
+maximum expressiveness whilst utilizing expression caching to ensure any complex argument expressions are only parsed once.
 {{/markdown}}
 
 {{ 'gfm/blocks/12.md' | githubMarkdown }}
@@ -203,9 +203,9 @@ Check out [LINQ Examples](/linq/restriction-operators) for more live previews sh
 
 ### raw
 
-The `{{#raw}}` block is similar to [handlebars.js's raw-helper](https://handlebarsjs.com/block_helpers.html#raw-blocks) where it allows capturing
-of the raw template text content instead their content being evaluated making it ideal when wanting to emit content that could potentially contain
-template expressions like client-side JavaScript or template expressions that you don't want to be evaluated on the server, e.g. when rending 
+The `{{#raw}}` block is similar to [handlebars.js's raw-helper](https://handlebarsjs.com/block_helpers.html#raw-blocks) which captures
+the template's raw text content instead of having its content evaluated, making it ideal for emitting content that could contain
+template expressions like client-side JavaScript or template expressions that shouldn't be evaluated on the server such as
 Vue, Angular or Ember templates:
 
 <pre>
@@ -231,7 +231,7 @@ pages and partials to append any custom JavaScript script blocks they need on th
 {{/raw}}
 </pre>
 
-Where any captured custom scripts be rendered at the 
+Where any captured custom scripts are rendered at the 
 [bottom of _layout.html](https://github.com/NetCoreTemplates/templates/blob/8a082a299d59a0b53b9b6e0a07a6fbabf7bf6e2c/MyApp/wwwroot/_layout.html#L49) with:
 
 <pre>
@@ -262,7 +262,7 @@ scoped arguments that the template is executed with:
 {{ 'gfm/blocks/14.md' | githubMarkdown }}
 
 {{#markdown}}
-With this we can generate some markdown, capture its contents and convert the resulting markdown to html using the  `markdown` Filter transformer:
+With this we can dynamically generate some markdown, capture its contents and convert the resulting markdown to html using the  `markdown` Filter transformer:
 {{/markdown}}
 
 {{ 'gfm/blocks/15.md' | githubMarkdown }}
@@ -285,10 +285,10 @@ The `{{#markdown}}` block makes it even easier to embed markdown content directl
 </pre>
 
 {{#markdown}}
-Which ends up being the easiest and preferred way to embed Markdown content in hybrid content-rich websites like 
+Which is now the easiest and preferred way to embed Markdown content in content-rich hybrid web pages like 
 [Razor Rockstars content pages](https://github.com/NetCoreTemplates/templates-webapp/blob/master/app/rockstars/dead/cobain/index.html), 
-this [blocks.html WebPage itself](https://github.com/NetCoreApps/TemplatePages/blob/master/src/wwwroot/docs/blocks.html) also makes 
-extensive use of markdown.
+or even this [blocks.html WebPage itself](https://github.com/NetCoreApps/TemplatePages/blob/master/src/wwwroot/docs/blocks.html) which 
+makes extensive use of markdown.
 
 As `markdown` block only supports 2 usages its implementation is much simpler than the `capture` block above:
 {{/markdown}}
@@ -332,14 +332,14 @@ This example utilizes many of the features in html blocks, namely:
  - `each` - render the template for each item in the collection
  - `where` - filter the collection
  - `it` - change the name of each element `it` binding 
- - `class` - special property implementing [Vue's special class bindings](https://vuejs.org/v2/guide/class-and-style.html) where an object literal
- can be used to emit a list of class names for all truthy properties, an array can be used to display a list of class names or a basic string to 
- display class names.
+ - `class` - special property implementing [Vue's special class bindings](https://vuejs.org/v2/guide/class-and-style.html) where an **object literal**
+ can be used to emit a list of class names for all **truthy** properties, an **array** can be used to display a list of class names or you can instead use 
+ a **string** of class names.
 
 All other properties like `id` and `selected` are treated like HTML attributes where if the property is a boolean like `selected` it's only displayed
-if its true otherwise the html attribute's name and value is emitted as normal.
+if its true otherwise all other html attribute's names and values are emitted as normal.
 
-For a better illustration of the examples functionality we'll implement it without using any html blocks:
+For a better illustration we can implement the same functionality above without using any html blocks:
 {{/markdown}}
 
 {{ 'gfm/blocks/19.md' | githubMarkdown }}
