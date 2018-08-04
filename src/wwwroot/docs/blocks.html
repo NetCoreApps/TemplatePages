@@ -34,7 +34,7 @@ All Block's are executed with 3 parameters:
 
  - `TemplateScopeContext` - The current Execution and Rendering context
  - `PageBlockFragment` - The parsed Block contents
- - `CancellationToken` - CancellationToken allowing the async render operation to be cancelled
+ - `CancellationToken` - Allows the async render operation to be cancelled
 {{/markdown}}
 
 <h3 id="registering-blocks">Registering Blocks</h3>
@@ -92,7 +92,7 @@ feature some built-in Blocks take advantage of.
 
 The `with` block works similarly to [handlebars with helper](https://handlebarsjs.com/block_helpers.html#with-helper) or JavaScript's 
 [with statement](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/with) where it extracts the properties (or Keys)
-of an object and adds them to the current scope where by alleviating the need to prefix each property reference, 
+of an object and adds them to the current scope which avoids needing a prefix each property reference, 
 e.g. being able to use `{{Name}}` instead of `{{person.Name}}`:
 
 <pre>
@@ -101,7 +101,7 @@ e.g. being able to use `{{Name}}` instead of `{{person.Name}}`:
 {{/with}}
 </pre>
 
-Also the `with` Block's contents are only evaluated if the argument expression doesn't evaluate to `null`. 
+Also the `with` Block's contents are only evaluated if the argument expression is `null`. 
 
 The implementation below shows the optimal way to implement `with` by calling `GetJsExpressionAndEvaluate()` to resolve a cached 
 AST token that's then evaluated to return the result of the Argument expression. 
