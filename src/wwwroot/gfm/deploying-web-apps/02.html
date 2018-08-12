@@ -1,4 +1,4 @@
-<div class="gfm"><div class="highlight highlight-source-dockerfile"><pre><span class="pl-k">FROM</span> microsoft/dotnet:2.0-sdk
+<div class="gfm"><div class="highlight highlight-source-dockerfile"><pre><span class="pl-k">FROM</span> microsoft/dotnet:2.1-aspnetcore-runtime
 <span class="pl-k">COPY</span> web /web
 <span class="pl-k">ADD</span> https://raw.githubusercontent.com/NetCoreWebApps/Rockwind.Aws/master/app/web.settings /web/web.settings
 <span class="pl-k">WORKDIR</span> /web
