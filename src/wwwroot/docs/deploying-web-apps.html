@@ -55,7 +55,7 @@ sudo usermod -aG sudo deploy</code></pre>
     You'll need to create a separate config file for each app in <em>/etc/supervisor/conf.d/</em>. 
     We can use the same template below for all 
     <a href="https://github.com/NetCoreWebApps/WebApp/tree/master/src/apps">/apps</a> by replacing <em>bare</em>
-    with the name of the App:
+    with the name of the App and change <em>ASPNETCORE_URLS</em> with the port you want each App hosted on:
 </p>
 
 <h5>/etc/supervisor/conf.d/web.bare.conf</h5>
@@ -67,16 +67,20 @@ autostart=true
 autorestart=true
 stderr_logfile=/var/log/web-bare.err.log
 stdout_logfile=/var/log/web-bare.out.log
-environment=ASPNETCORE_ENVIRONMENT=Production
+environment=ASPNETCORE_ENVIRONMENT=Production,ASPNETCORE_URLS="http://*:5001/"
 user=deploy
 stopsignal=INT</code></pre>
+
+<blockquote>
+    When changing your supervisor .conf files you'll need to run <em>sudo supervisorctl update</em> to pick up any changes.
+</blockquote>
 
 <h4>Setup nginx</h4>
 
 <p>
     You'll also need to create a separate config for each website on nginx in <em>/etc/nginx/sites-available/</em>. 
     You can use the same template for each website but you'll need to change the <em>server_name</em> with the domain name
-    you want to use for the App and use a different port number for each App:
+    you want to use for the App and use the different port number for each App:
 </p>
 
 <h5>/etc/nginx/sites-available/bare.web-app.io</h5>
