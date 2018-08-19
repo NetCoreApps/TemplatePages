@@ -180,7 +180,6 @@ title: About Us
 
 <pre class="settings"><code>debug true
 name Bare Web App
-port 5000
 contentRoot ~/../bare
 webRoot ~/../bare</code></pre>
 
@@ -253,7 +252,6 @@ webRoot ~/../bare</code></pre>
 
 <pre class="settings"><code>debug true
 name Redis Web App
-port 5000
 contentRoot ~/../redis-html
 webRoot ~/../redis-html
 redis.connection localhost:6379</code></pre>
@@ -503,7 +501,6 @@ redis.connection localhost:6379</code></pre>
 
 <pre class="settings"><code>debug true
 name Rockwind SQLite Web App
-port 5000
 contentRoot ~/..
 webRoot ~/../rockwind
 db sqlite
@@ -525,7 +522,6 @@ db.connection ~/northwind.sqlite</code></pre>
 
 <pre class="settings"><code>debug true
 name Rockwind SQL Server Web App
-port 5000
 contentRoot ~/../rockwind
 webRoot ~/../rockwind
 db sqlserver
@@ -547,7 +543,6 @@ db.connection Server=localhost;Database=northwind;User Id=test;Password=test;</c
 
 <pre class="settings"><code>debug true
 name Rockwind MySql Web App
-port 5000
 contentRoot ~/../rockwind
 webRoot ~/../rockwind
 db mysql
@@ -568,7 +563,6 @@ db.connection Server=localhost;Database=northwind;UID=root;Password=test</code><
 debug false
 name Azure Blob SQL Server Web App
 bind *
-port 5000
 db sqlserver
 db.connection $AZURE_SQL_CONNECTION_STRING
 files azure
@@ -673,7 +667,6 @@ defaultFileCacheExpirySecs     60</code></pre>
 debug false
 name AWS S3 PostgreSQL Web App
 bind *
-port 5000
 db postgres
 db.connection $AWS_RDS_POSTGRES
 files s3
@@ -716,7 +709,6 @@ defaultFileCacheExpirySecs     60</code></pre>
 debug false
 name Azure Blob SQL Server Web App
 bind *
-port 5000
 db sqlserver
 db.connection $AZURE_SQL_CONNECTION_STRING
 files azure
@@ -768,7 +760,6 @@ defaultFileCacheExpirySecs     60</code></pre>
 
 <pre class="settings"><code>debug true
 name Web App Plugins
-port 5000
 contentRoot ~/../plugins
 webRoot ~/../plugins
 features CustomPlugin, OpenApiFeature, PostmanFeature, CorsFeature, ValidationFeature
@@ -912,7 +903,6 @@ CustomPlugin { ShowProcessLinks: true }
 
 <pre class="cs"><code>debug true
 name Chat Web App
-port 5000
 contentRoot ~/../chat
 webRoot ~/../chat
 
