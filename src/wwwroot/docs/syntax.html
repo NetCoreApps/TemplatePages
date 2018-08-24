@@ -87,6 +87,18 @@ order: 3
     Strings can also span multiple lines.
 </blockquote>
 
+<h4>Template Literals</h4>
+
+Backticks strings implement <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Template_literals">JavaScript's Template literals</a>
+which can be be used to embed expressions:
+
+{{ 'live-template' | partial({ rows:4, template: "{{ `Time is ${now}, expr= ${true ? pow(1+2,3) : ''}` }}
+Quoted String    {{ now.TimeOfDay | timeFormat('h\:mm\:ss') }}
+Template Literal {{ now.TimeOfDay | timeFormat(`h\\:mm\\:ss`) }}" }) }}
+
+The example above also shows the difference in escaping where Template literals evaluate escaped characters whilst normal strings 
+leave <em>\</em> backspaces unescaped.
+
 <h4>Shorthand arrow expression syntax</h4>
 
 <p>
