@@ -1,7 +1,7 @@
 <div class="gfm"><div class="highlight highlight-text-html-basic"><pre>&lt;<span class="pl-ent">html</span>&gt;
 &lt;<span class="pl-ent">head</span>&gt;
 &lt;<span class="pl-ent">title</span>&gt;{{ title ?? 'Redis Vue WebApp' }}&lt;/<span class="pl-ent">title</span>&gt;
-{{#if debug}}&lt;<span class="pl-ent">script</span>&gt;<span class="pl-s1">{{ <span class="pl-s"><span class="pl-pds">'</span>/js/hot-loader.js<span class="pl-pds">'</span></span> <span class="pl-k">|</span> includeFile }}</span><span class="pl-s1">&lt;</span>/<span class="pl-ent">script</span>&gt;{{/if}}
+&lt;<span class="pl-ent">i</span> <span class="pl-e">hidden</span>&gt;{{ '/js/hot-loader.js' | ifDebugIncludeScript }}&lt;/<span class="pl-ent">i</span>&gt;
 
 ...
 &lt;<span class="pl-ent">link</span> <span class="pl-e">rel</span>=<span class="pl-s"><span class="pl-pds">"</span>stylesheet<span class="pl-pds">"</span></span> <span class="pl-e">href</span>=<span class="pl-s"><span class="pl-pds">"</span>../assets/css/bootstrap.css<span class="pl-pds">"</span></span>&gt;

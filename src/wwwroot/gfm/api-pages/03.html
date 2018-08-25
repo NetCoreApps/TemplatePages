@@ -1,34 +1,34 @@
-<div class="gfm"><div class="highlight highlight-text-html-basic"><pre>{{ limit ?? 100 | assignTo: limit }}
+<div class="gfm"><div class="highlight highlight-text-html-handlebars"><pre><span class="pl-c1">{{</span> <span class="pl-v">limit</span> ?? <span class="pl-e"><span class="pl-v">100</span></span> | <span class="pl-e"><span class="pl-v">assignTo</span></span>: <span class="pl-e"><span class="pl-v">limit</span></span> <span class="pl-c1">}}</span>
 
-{{ `select p.Id, 
-           ProductName,
-           c.CategoryName Category,
-           s.CompanyName Supplier, 
-           QuantityPerUnit, 
-           ${sqlCurrency("UnitPrice")} UnitPrice, 
-           UnitsInStock, UnitsOnOrder, ReorderLevel   
-      from Product p
-           inner join Category c on p.CategoryId = c.Id
-           inner join Supplier s on p.SupplierId = s.Id
-     where Discontinued = 0`
-  | assignTo: sql }}
+<span class="pl-c1">{{</span> `<span class="pl-e"><span class="pl-v">select</span></span> <span class="pl-e"><span class="pl-v">p.Id</span></span>, 
+           <span class="pl-e"><span class="pl-v">ProductName</span></span>,
+           <span class="pl-e"><span class="pl-v">c.CategoryName</span></span> <span class="pl-e"><span class="pl-v">Category</span></span>,
+           <span class="pl-e"><span class="pl-v">s.CompanyName</span></span> <span class="pl-e"><span class="pl-v">Supplier</span></span>, 
+           <span class="pl-e"><span class="pl-v">QuantityPerUnit</span></span>, 
+           ${<span class="pl-e"><span class="pl-v">sqlCurrency</span></span>(<span class="pl-s"><span class="pl-pds">"</span>UnitPrice<span class="pl-pds">"</span></span>)} <span class="pl-e"><span class="pl-v">UnitPrice</span></span>, 
+           <span class="pl-e"><span class="pl-v">UnitsInStock</span></span>, <span class="pl-e"><span class="pl-v">UnitsOnOrder</span></span>, <span class="pl-e"><span class="pl-v">ReorderLevel</span></span>   
+      <span class="pl-e"><span class="pl-v">from</span></span> <span class="pl-e"><span class="pl-v">Product</span></span> <span class="pl-e"><span class="pl-v">p</span></span>
+           <span class="pl-e"><span class="pl-v">inner</span></span> <span class="pl-e"><span class="pl-v">join</span></span> <span class="pl-e"><span class="pl-v">Category</span></span> <span class="pl-e"><span class="pl-v">c</span></span> <span class="pl-e"><span class="pl-v">on</span></span> <span class="pl-e"><span class="pl-v">p.CategoryId</span></span> = <span class="pl-e"><span class="pl-v">c.Id</span></span>
+           <span class="pl-e"><span class="pl-v">inner</span></span> <span class="pl-e"><span class="pl-v">join</span></span> <span class="pl-e"><span class="pl-v">Supplier</span></span> <span class="pl-e"><span class="pl-v">s</span></span> <span class="pl-e"><span class="pl-v">on</span></span> <span class="pl-e"><span class="pl-v">p.SupplierId</span></span> = <span class="pl-e"><span class="pl-v">s.Id</span></span>
+     <span class="pl-e"><span class="pl-v">where</span></span> <span class="pl-e"><span class="pl-v">Discontinued</span></span> = <span class="pl-e"><span class="pl-v">0</span></span>`
+  | <span class="pl-e"><span class="pl-v">assignTo</span></span>: <span class="pl-e"><span class="pl-v">sql</span></span> <span class="pl-c1">}}</span>
 
-{{#if !isEmpty(PathArgs)}}
-  {{ `${sql} and p.Id = @id` | dbSingle({ id: PathArgs[0] }) 
-     | return }}
-{{/if}}
+<span class="pl-c1">{{</span><span class="pl-c1">#if</span> !<span class="pl-e"><span class="pl-v">isEmpty</span></span>(<span class="pl-e"><span class="pl-v">PathArgs</span></span>)<span class="pl-c1">}}</span>
+  <span class="pl-c1">{{</span> `${<span class="pl-e"><span class="pl-v">sql</span></span>} <span class="pl-e"><span class="pl-v">and</span></span> <span class="pl-e"><span class="pl-v">p.Id</span></span> = @<span class="pl-e"><span class="pl-v">id</span></span>` | <span class="pl-e"><span class="pl-v">dbSingle</span></span>({ <span class="pl-e"><span class="pl-v">id</span></span>: <span class="pl-e"><span class="pl-v">PathArgs</span></span>[<span class="pl-e"><span class="pl-v">0</span></span>] }) 
+     | <span class="pl-e"><span class="pl-v">return</span></span> <span class="pl-c1">}}</span>
+<span class="pl-c1">{{</span><span class="pl-c1">/if</span><span class="pl-c1">}}</span>
 
-{{#if id}}           {{ 'p.Id = @id'                 | addTo: filters }} {{/if}}
-{{#if category}}     {{ 'c.CategoryName = @category' | addTo: filters }} {{/if}}
-{{#if supplier}}     {{ 's.CompanyName = @supplier'  | addTo: filters }} {{/if}}
-{{#if nameContains}} {{ 'ProductName LIKE @name'     | addTo: filters }} {{/if}}
+<span class="pl-c1">{{</span><span class="pl-c1">#if</span> <span class="pl-v">id</span><span class="pl-c1">}}</span>           <span class="pl-c1">{{</span> <span class="pl-s"><span class="pl-pds">'</span>p.Id = @id<span class="pl-pds">'</span></span>                 | <span class="pl-e"><span class="pl-v">addTo</span></span>: <span class="pl-e"><span class="pl-v">filters</span></span> <span class="pl-c1">}}</span> <span class="pl-c1">{{</span><span class="pl-c1">/if</span><span class="pl-c1">}}</span>
+<span class="pl-c1">{{</span><span class="pl-c1">#if</span> <span class="pl-v">category</span><span class="pl-c1">}}</span>     <span class="pl-c1">{{</span> <span class="pl-s"><span class="pl-pds">'</span>c.CategoryName = @category<span class="pl-pds">'</span></span> | <span class="pl-e"><span class="pl-v">addTo</span></span>: <span class="pl-e"><span class="pl-v">filters</span></span> <span class="pl-c1">}}</span> <span class="pl-c1">{{</span><span class="pl-c1">/if</span><span class="pl-c1">}}</span>
+<span class="pl-c1">{{</span><span class="pl-c1">#if</span> <span class="pl-v">supplier</span><span class="pl-c1">}}</span>     <span class="pl-c1">{{</span> <span class="pl-s"><span class="pl-pds">'</span>s.CompanyName = @supplier<span class="pl-pds">'</span></span>  | <span class="pl-e"><span class="pl-v">addTo</span></span>: <span class="pl-e"><span class="pl-v">filters</span></span> <span class="pl-c1">}}</span> <span class="pl-c1">{{</span><span class="pl-c1">/if</span><span class="pl-c1">}}</span>
+<span class="pl-c1">{{</span><span class="pl-c1">#if</span> <span class="pl-v">nameContains</span><span class="pl-c1">}}</span> <span class="pl-c1">{{</span> <span class="pl-s"><span class="pl-pds">'</span>ProductName LIKE @name<span class="pl-pds">'</span></span>     | <span class="pl-e"><span class="pl-v">addTo</span></span>: <span class="pl-e"><span class="pl-v">filters</span></span> <span class="pl-c1">}}</span> <span class="pl-c1">{{</span><span class="pl-c1">/if</span><span class="pl-c1">}}</span>
 
-{{#if !isEmpty(filters)}}
-  {{ `${sql} and ${join(filters, ' and ')}` | assignTo: sql }}
-{{/if}}
+<span class="pl-c1">{{</span><span class="pl-c1">#if</span> !<span class="pl-e"><span class="pl-v">isEmpty</span></span>(<span class="pl-e"><span class="pl-v">filters</span></span>)<span class="pl-c1">}}</span>
+  <span class="pl-c1">{{</span> `${<span class="pl-e"><span class="pl-v">sql</span></span>} <span class="pl-e"><span class="pl-v">and</span></span> ${<span class="pl-e"><span class="pl-v">join</span></span>(<span class="pl-e"><span class="pl-v">filters</span></span>, <span class="pl-s"><span class="pl-pds">'</span> and <span class="pl-pds">'</span></span>)}` | <span class="pl-e"><span class="pl-v">assignTo</span></span>: <span class="pl-e"><span class="pl-v">sql</span></span> <span class="pl-c1">}}</span>
+<span class="pl-c1">{{</span><span class="pl-c1">/if</span><span class="pl-c1">}}</span>
 
-{{ `${sql} ORDER BY CompanyName ${sqlLimit(limit)}` | assignTo: sql }}
+<span class="pl-c1">{{</span> `${<span class="pl-e"><span class="pl-v">sql</span></span>} <span class="pl-e"><span class="pl-v">ORDER</span></span> <span class="pl-e"><span class="pl-v">BY</span></span> <span class="pl-e"><span class="pl-v">CompanyName</span></span> ${<span class="pl-e"><span class="pl-v">sqlLimit</span></span>(<span class="pl-e"><span class="pl-v">limit</span></span>)}` | <span class="pl-e"><span class="pl-v">assignTo</span></span>: <span class="pl-e"><span class="pl-v">sql</span></span> <span class="pl-c1">}}</span>
 
-{{ sql | dbSelect({ id, category, supplier, name: `%${nameContains}%` }) 
-       | return }}</pre></div>
+<span class="pl-c1">{{</span> <span class="pl-v">sql</span> | <span class="pl-e"><span class="pl-v">dbSelect</span></span>({ <span class="pl-e"><span class="pl-v">id</span></span>, <span class="pl-e"><span class="pl-v">category</span></span>, <span class="pl-e"><span class="pl-v">supplier</span></span>, <span class="pl-e"><span class="pl-v">name</span></span>: `%${<span class="pl-e"><span class="pl-v">nameContains</span></span>}%` }) 
+       | <span class="pl-e"><span class="pl-v">return</span></span> <span class="pl-c1">}}</span></pre></div>
 </div>

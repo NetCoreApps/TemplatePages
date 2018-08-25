@@ -1,15 +1,15 @@
-<div class="gfm"><div class="highlight highlight-text-html-basic"><pre>{{#if hasAccess}}
-    {{ items | where =&gt; it.Age &gt; 27 | assignTo: items }}
-    {{#if !isEmpty(items)}}
-        &lt;<span class="pl-ent">ul</span> {{ [<span class="pl-s"><span class="pl-pds">'</span>nav<span class="pl-pds">'</span></span>, !<span class="pl-e">disclaimerAccepted</span> ? <span class="pl-s"><span class="pl-pds">'</span>blur<span class="pl-pds">'</span></span> : <span class="pl-s"><span class="pl-pds">'</span><span class="pl-pds">'</span></span>] | <span class="pl-e">htmlClass</span> }} <span class="pl-e">id</span>=<span class="pl-s"><span class="pl-pds">"</span>menu-{{id}}<span class="pl-pds">"</span></span>&gt;
-        {{#each items}}
-            &lt;<span class="pl-ent">li</span> {{ {<span class="pl-e">alt:isOdd</span>(<span class="pl-e">index</span>), <span class="pl-e">active:Name</span>=<span class="pl-s">=highlight}</span> | <span class="pl-e">htmlClass</span> }}&gt;{{Name}}&lt;/<span class="pl-ent">li</span>&gt;
-        {{/each}}
+<div class="gfm"><div class="highlight highlight-text-html-handlebars"><pre><span class="pl-c1">{{</span><span class="pl-c1">#if</span> <span class="pl-v">hasAccess</span><span class="pl-c1">}}</span>
+    <span class="pl-c1">{{</span> <span class="pl-v">items</span> | <span class="pl-e"><span class="pl-v">where</span></span> =&gt; <span class="pl-e"><span class="pl-v">it.Age</span></span> &gt; <span class="pl-e"><span class="pl-v">27</span></span> | <span class="pl-e"><span class="pl-v">assignTo</span></span>: <span class="pl-e"><span class="pl-v">items</span></span> <span class="pl-c1">}}</span>
+    <span class="pl-c1">{{</span><span class="pl-c1">#if</span> !<span class="pl-e"><span class="pl-v">isEmpty</span></span>(<span class="pl-e"><span class="pl-v">items</span></span>)<span class="pl-c1">}}</span>
+        &lt;<span class="pl-ent">ul</span> <span class="pl-c1">{{</span> [<span class="pl-s"><span class="pl-pds">'</span>nav<span class="pl-pds">'</span></span>, !<span class="pl-e"><span class="pl-v">disclaimerAccepted</span></span> ? <span class="pl-s"><span class="pl-pds">'</span>blur<span class="pl-pds">'</span></span> : <span class="pl-s"><span class="pl-pds">'</span><span class="pl-pds">'</span></span>] | <span class="pl-e"><span class="pl-v">htmlClass</span></span> <span class="pl-c1">}}</span> <span class="pl-e">id</span>=<span class="pl-s"><span class="pl-pds">"</span>menu-<span class="pl-c1">{{</span><span class="pl-v">id</span><span class="pl-c1">}}</span><span class="pl-pds">"</span></span>&gt;
+        <span class="pl-c1">{{</span><span class="pl-c1">#each</span> <span class="pl-v">items</span><span class="pl-c1">}}</span>
+            &lt;<span class="pl-ent">li</span> <span class="pl-c1">{{</span> {<span class="pl-e"><span class="pl-v">alt</span></span>:<span class="pl-e"><span class="pl-v">isOdd</span></span>(<span class="pl-e"><span class="pl-v">index</span></span>), <span class="pl-e"><span class="pl-v">active</span></span>:<span class="pl-e"><span class="pl-v">Name</span>=</span>=<span class="pl-e"><span class="pl-v">highlight</span></span>} | <span class="pl-e"><span class="pl-v">htmlClass</span></span> <span class="pl-c1">}}</span>&gt;<span class="pl-c1">{{</span><span class="pl-v">Name</span><span class="pl-c1">}}</span>&lt;/<span class="pl-ent">li</span>&gt;
+        <span class="pl-c1">{{</span><span class="pl-c1">/each</span><span class="pl-c1">}}</span>
         &lt;/<span class="pl-ent">ul</span>&gt;
-    {{else}}
+    <span class="pl-c1">{{</span><span class="pl-c1">else</span><span class="pl-c1">}}</span>
         &lt;<span class="pl-ent">div</span>&gt;no items&lt;/<span class="pl-ent">div</span>&gt;
-    {{/if}}
-{{/if}}</pre></div>
+    <span class="pl-c1">{{</span><span class="pl-c1">/if</span><span class="pl-c1">}}</span>
+<span class="pl-c1">{{</span><span class="pl-c1">/if</span><span class="pl-c1">}}</span></pre></div>
 <p>The same functionality using C# Razor with the latest C# language features enabled can be implemented with:</p>
 <div class="highlight highlight-source-cs"><pre>@{
     <span class="pl-k">var</span> <span class="pl-smi">persons</span> <span class="pl-k">=</span> (<span class="pl-smi">items</span> <span class="pl-k">as</span> <span class="pl-en">IEnumerable</span>&lt;<span class="pl-en">Person</span>&gt;)<span class="pl-k">?</span>.<span class="pl-en">Where</span>(<span class="pl-smi">x</span> <span class="pl-k">=&gt;</span> <span class="pl-smi">x</span>.<span class="pl-smi">Age</span> <span class="pl-k">&gt;</span> <span class="pl-c1">27</span>);

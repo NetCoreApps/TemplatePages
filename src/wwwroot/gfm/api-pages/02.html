@@ -1,22 +1,22 @@
-<div class="gfm"><div class="highlight highlight-text-html-basic"><pre>{{ limit ?? 100 | assignTo: limit }}
+<div class="gfm"><div class="highlight highlight-text-html-handlebars"><pre><span class="pl-c1">{{</span> <span class="pl-v">limit</span> ?? <span class="pl-e"><span class="pl-v">100</span></span> | <span class="pl-e"><span class="pl-v">assignTo</span></span>: <span class="pl-e"><span class="pl-v">limit</span></span> <span class="pl-c1">}}</span>
 
-{{ 'select Id, CompanyName, ContactName, ContactTitle, City, Country from Customer' | assignTo: sql }}
+<span class="pl-c1">{{</span> <span class="pl-s"><span class="pl-pds">'</span>select Id, CompanyName, ContactName, ContactTitle, City, Country from Customer<span class="pl-pds">'</span></span> | <span class="pl-e"><span class="pl-v">assignTo</span></span>: <span class="pl-e"><span class="pl-v">sql</span></span> <span class="pl-c1">}}</span>
 
-{{#if !isEmpty(PathArgs)}}
-   {{ `${sql} where Id = @id` | dbSingle({ id: PathArgs[0] }) 
-      | return }}
-{{/if}}
+<span class="pl-c1">{{</span><span class="pl-c1">#if</span> !<span class="pl-e"><span class="pl-v">isEmpty</span></span>(<span class="pl-e"><span class="pl-v">PathArgs</span></span>)<span class="pl-c1">}}</span>
+   <span class="pl-c1">{{</span> `${<span class="pl-e"><span class="pl-v">sql</span></span>} <span class="pl-e"><span class="pl-v">where</span></span> <span class="pl-e"><span class="pl-v">Id</span></span> = @<span class="pl-e"><span class="pl-v">id</span></span>` | <span class="pl-e"><span class="pl-v">dbSingle</span></span>({ <span class="pl-e"><span class="pl-v">id</span></span>: <span class="pl-e"><span class="pl-v">PathArgs</span></span>[<span class="pl-e"><span class="pl-v">0</span></span>] }) 
+      | <span class="pl-e"><span class="pl-v">return</span></span> <span class="pl-c1">}}</span>
+<span class="pl-c1">{{</span><span class="pl-c1">/if</span><span class="pl-c1">}}</span>
 
-{{#if id}}      {{ 'Id = @id'           | addTo: filters }} {{/if}}
-{{#if city}}    {{ 'City = @city'       | addTo: filters }} {{/if}}
-{{#if country}} {{ 'Country = @country' | addTo: filters }} {{/if}}
+<span class="pl-c1">{{</span><span class="pl-c1">#if</span> <span class="pl-v">id</span><span class="pl-c1">}}</span>      <span class="pl-c1">{{</span> <span class="pl-s"><span class="pl-pds">'</span>Id = @id<span class="pl-pds">'</span></span>           | <span class="pl-e"><span class="pl-v">addTo</span></span>: <span class="pl-e"><span class="pl-v">filters</span></span> <span class="pl-c1">}}</span> <span class="pl-c1">{{</span><span class="pl-c1">/if</span><span class="pl-c1">}}</span>
+<span class="pl-c1">{{</span><span class="pl-c1">#if</span> <span class="pl-v">city</span><span class="pl-c1">}}</span>    <span class="pl-c1">{{</span> <span class="pl-s"><span class="pl-pds">'</span>City = @city<span class="pl-pds">'</span></span>       | <span class="pl-e"><span class="pl-v">addTo</span></span>: <span class="pl-e"><span class="pl-v">filters</span></span> <span class="pl-c1">}}</span> <span class="pl-c1">{{</span><span class="pl-c1">/if</span><span class="pl-c1">}}</span>
+<span class="pl-c1">{{</span><span class="pl-c1">#if</span> <span class="pl-v">country</span><span class="pl-c1">}}</span> <span class="pl-c1">{{</span> <span class="pl-s"><span class="pl-pds">'</span>Country = @country<span class="pl-pds">'</span></span> | <span class="pl-e"><span class="pl-v">addTo</span></span>: <span class="pl-e"><span class="pl-v">filters</span></span> <span class="pl-c1">}}</span> <span class="pl-c1">{{</span><span class="pl-c1">/if</span><span class="pl-c1">}}</span>
 
-{{#if !isEmpty(filters)}}
-  {{ `${sql} WHERE ${join(filters, ' AND ')}` | assignTo: sql }}
-{{/if}}
+<span class="pl-c1">{{</span><span class="pl-c1">#if</span> !<span class="pl-e"><span class="pl-v">isEmpty</span></span>(<span class="pl-e"><span class="pl-v">filters</span></span>)<span class="pl-c1">}}</span>
+  <span class="pl-c1">{{</span> `${<span class="pl-e"><span class="pl-v">sql</span></span>} <span class="pl-e"><span class="pl-v">WHERE</span></span> ${<span class="pl-e"><span class="pl-v">join</span></span>(<span class="pl-e"><span class="pl-v">filters</span></span>, <span class="pl-s"><span class="pl-pds">'</span> AND <span class="pl-pds">'</span></span>)}` | <span class="pl-e"><span class="pl-v">assignTo</span></span>: <span class="pl-e"><span class="pl-v">sql</span></span> <span class="pl-c1">}}</span>
+<span class="pl-c1">{{</span><span class="pl-c1">/if</span><span class="pl-c1">}}</span>
 
-{{ `${sql} ORDER BY CompanyName ${sqlLimit(limit)}` | assignTo: sql }}
+<span class="pl-c1">{{</span> `${<span class="pl-e"><span class="pl-v">sql</span></span>} <span class="pl-e"><span class="pl-v">ORDER</span></span> <span class="pl-e"><span class="pl-v">BY</span></span> <span class="pl-e"><span class="pl-v">CompanyName</span></span> ${<span class="pl-e"><span class="pl-v">sqlLimit</span></span>(<span class="pl-e"><span class="pl-v">limit</span></span>)}` | <span class="pl-e"><span class="pl-v">assignTo</span></span>: <span class="pl-e"><span class="pl-v">sql</span></span> <span class="pl-c1">}}</span>
 
-{{ sql | dbSelect({ id, city, country }) 
-       | return }}</pre></div>
+<span class="pl-c1">{{</span> <span class="pl-v">sql</span> | <span class="pl-e"><span class="pl-v">dbSelect</span></span>({ <span class="pl-e"><span class="pl-v">id</span></span>, <span class="pl-e"><span class="pl-v">city</span></span>, <span class="pl-e"><span class="pl-v">country</span></span> }) 
+       | <span class="pl-e"><span class="pl-v">return</span></span> <span class="pl-c1">}}</span></pre></div>
 </div>
