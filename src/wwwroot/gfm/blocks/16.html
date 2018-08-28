@@ -34,4 +34,22 @@
         <span class="pl-smi">scope</span>.<span class="pl-smi">PageResult</span>.<span class="pl-smi">Args</span>[<span class="pl-smi">nameString</span>] <span class="pl-k">=</span> <span class="pl-smi">MarkdownConfig</span>.<span class="pl-en">Transform</span>(<span class="pl-smi">strFragment</span>.<span class="pl-smi">ValueString</span>).<span class="pl-en">ToRawString</span>();
     }
 }</pre></div>
+<h3>
+<a id="user-content-use-alternative-markdown-implementation" class="anchor" href="#use-alternative-markdown-implementation" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Use Alternative Markdown Implementation</h3>
+<p>By default ServiceStack uses an interned implementation of <code>MarkdownDeep</code> for rendering markdown but you can get ServiceStack to use an alternate
+Markdown implementation by overriding <code>MarkdownConfig.Transformer</code>.</p>
+<p>E.g. to use the richer <a href="https://github.com/lunet-io/markdig">Markdig</a> implementation, install the <a href="https://www.nuget.org/packages/Markdig/" rel="nofollow">Markdig</a>
+NuGet package:</p>
+<pre><code>PM&gt; Install-Package Markdig
+</code></pre>
+<p>Then assign a custom <code>IMarkdownTransformer</code>:</p>
+<div class="highlight highlight-source-cs"><pre><span class="pl-k">public</span> <span class="pl-k">class</span> <span class="pl-en">MarkdigTransformer</span> : <span class="pl-en">IMarkdownTransformer</span>
+{
+    <span class="pl-k">private</span> Markdig.<span class="pl-en">MarkdownPipeline</span> <span class="pl-smi">Pipeline</span> { <span class="pl-k">get</span>; } <span class="pl-k">=</span> 
+        <span class="pl-smi">Markdig</span>.<span class="pl-smi">MarkdownExtensions</span>.<span class="pl-en">UseAdvancedExtensions</span>(<span class="pl-k">new</span> <span class="pl-k">Markdig</span>.<span class="pl-en">MarkdownPipelineBuilder</span>()).<span class="pl-en">Build</span>();
+
+    <span class="pl-k">public</span> <span class="pl-k">string</span> <span class="pl-en">Transform</span>(<span class="pl-k">string</span> <span class="pl-smi">markdown</span>) <span class="pl-k">=&gt;</span> <span class="pl-smi">Markdig</span>.<span class="pl-smi">Markdown</span>.<span class="pl-en">ToHtml</span>(<span class="pl-smi">markdown</span>, <span class="pl-smi">Pipeline</span>);
+}
+
+<span class="pl-smi">MarkdownConfig</span>.<span class="pl-smi">Transformer</span> <span class="pl-k">=</span> <span class="pl-k">new</span> <span class="pl-en">MarkdigTransformer</span>();</pre></div>
 </div>
