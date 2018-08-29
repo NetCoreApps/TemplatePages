@@ -30,7 +30,7 @@ order: 24
 <p>
     All complexity with C#, .NET, namespaces, references, .dlls, strong naming, packages, MVC, Razor, build tools, IDE environments, etc 
     has been eliminated leaving all Web Developers needing to do is run a cross-platform 
-    <a href="https://github.com/NetCoreWebApps/Web">web/app.dll</a> .NET Core 2.0 executable and configure a simple 
+    <a href="https://github.com/NetCoreWebApps/Web">web/app.dll</a> .NET Core 2.1 executable and configure a simple 
     <a href="https://github.com/NetCoreWebApps/WebApp/blob/master/src/apps/bare/web.settings">web.settings</a>    
     text file to specify which website folder to use, which ServiceStack features to enable, which db or redis providers to connect to, etc.
     Not needing to build also greatly simplifies deployments where multiple websites can be deployed with a 
@@ -54,23 +54,78 @@ order: 24
 <h2>Getting Started</h2>
 
 <p>
-    The easiest way to get started is to create a new <a href="https://github.com/NetCoreTemplates/rockwind-webapp">rockwind-webapp</a> project:
+    The easiest way to get started is to from one of the project templates below. All project templates can be installed using the
+    <a href="http://docs.servicestack.net/dotnet-new">dotnet-new</a> tool, which if not already can be installed with:
 </p>
 
-<pre class="sh">
-<code>    $ npm install -g @servicestack/cli
+<pre class="sh"><code>$ npm install -g @servicestack/cli</code></pre>
 
-    $ dotnet-new rockwind-webapp ProjectName
-</code></pre>
+<h4 id="bare-webapp">Bare WebApp</h4>
 
 <p>
-    This will create a new project that contains 2 folders, <a href="https://github.com/NetCoreTemplates/rockwind-webapp/tree/master/app">/app</a> contains all source code and 
-    assets for your Web App and <a href="https://github.com/NetCoreTemplates/rockwind-webapp/tree/master/web">/web</a> contains a copy of the WebApp 
-    binaries from <a href="https://github.com/NetCoreWebApps/Web">ServiceStack/WebApp</a>. 
+    To start with a simple and mininal website, create a new <a href="https://github.com/NetCoreTemplates/bare-webapp">bare-webapp</a> project template:
+</p>
+
+<a href="https://github.com/NetCoreTemplates/bare-webapp"><img src="https://raw.githubusercontent.com/ServiceStack/Assets/master/csharp-templates/bare-webapp.png" alt=""></a>
+
+<pre class="sh"><code>$ dotnet-new bare-webapp ProjectName</code></pre>
+
+<p>
+    This creates a multi-page Bootstrap Website with Menu navigation that's ideal for content-heavy Websites.
+</p>
+
+<h3 id="parcel-webapp">Parcel WebApp</a></h3>
+
+<p>
+    For more sophisticated JavaScript Web Apps we recommended starting with the 
+    <a href="https://github.com/NetCoreTemplates/parcel-webapp">parcel-webapp</a> project template:
+</p>
+
+<a href="https://github.com/NetCoreTemplates/parcel-webapp"><img src="https://raw.githubusercontent.com/ServiceStack/Assets/master/csharp-templates/parcel-webapp.png" alt=""></a>
+
+<pre class="sh"><code>$ dotnet-new parcel-webapp ProjectName</code></pre>
+
+<p>
+    This provides a simple and powerful starting template for developing modern JavaScript .NET Core Web Apps utilizing the 
+    zero-configuration <a href="https://parceljs.org">Parcel</a> bundler to enable a rapid development workflow with access to 
+    best-of-class web technologies like TypeScript that's managed by pre-configured
+    <a href="https://github.com/NetCoreTemplates/parcel-webapp#client">npm scripts</a> to handle its entire dev workflow.
+</p>
+
+<p>
+    If needed, it includes an optional <a href="https://github.com/NetCoreTemplates/parcel-webapp#server">server</a>
+    component containing any C# extensions needed that's automatically built and deployed to the app's <em>/plugins</em> folder when started. 
+    This enables an extensibile .NET Core Web App with an integrated Parcel bundler to enable building sophisticated JavaScript
+    Apps out-of-the-box within a live development environment.
+</p>
+
+<h3 id="rockwind-webapp">Rockwind WebApp</h3>
+
+<a href="https://github.com/NetCoreTemplates/rockwind-webapp"><img src="https://raw.githubusercontent.com/ServiceStack/Assets/master/csharp-templates/rockwind-webapp.png" alt=""></a>
+
+<p>
+    To start with a working example of a data-driven and content heavy WebApp, create a new 
+    <a href="https://github.com/NetCoreTemplates/rockwind-webapp">rockwind-webapp</a> project:
+</p>
+
+<pre class="sh"><code>$ dotnet-new rockwind-webapp ProjectName</code></pre>
+
+<p>
+    This creates a "Kitchen Sink Project" that showcases a number of different features in a single App, including a Rockstars Content-heavy
+    Website with a mix of content maintained in both HTML and Markdown that makes use of multiple layouts, dynamic Data-driven Web Pages
+    to browse the Northwind Database, <a href="/docs/api-pages">API Pages</a>, Paged Based Routing, Order Report and SQL Studio use-case examples.
+</p>
+
+<h3 id="about-webapp-templates">About WebApp Project Templates</h3>
+
+<p>
+    All WebApps contains at least 2 folders, <a href="https://github.com/NetCoreTemplates/rockwind-webapp/tree/master/app">/app</a> containing 
+    all source code and assets for your Web App and <a href="https://github.com/NetCoreTemplates/rockwind-webapp/tree/master/web">/web</a> 
+    containing a copy of the WebApp binaries from <a href="https://github.com/NetCoreWebApps/Web">ServiceStack/WebApp</a>. 
 </p>
     
 <p>
-    The project can be run from Windows, OSX and Linux. To run in VS Code type <em>Ctrl+Shift+B</em> to run the configured build task, 
+    All projects can be run from Windows, OSX and Linux. On VS Code you can type <em>Ctrl+Shift+B</em> to run the configured <em>build</em> task, 
     otherwise you can run from the command-line with:
 </p>
 
@@ -80,6 +135,8 @@ order: 24
     Once running you can view your App on <em>http://localhost:5000/</em> which you can keep running whilst developing your app
     which will reload the page you're currently viewing on each file save using the built-in <a href="/docs/hot-reloading">Hot Reloading</a>.
 </p>
+
+<h4>Running multiple WebApps in a single Project</h4>
 
 <p>
     <em>/app</em> is an example of a single Web App, you can have multiple Web Apps in different folders and run any of them with:         
@@ -99,44 +156,18 @@ order: 24
     <li><a href="https://github.com/NetCoreWebApps/Rockwind.Azure">Rockwind.Azure</a></li>
 </ul>
 
-<h2>Example Web Apps</h2>
-
-<p>
-    We've developed a number of Web Apps to illustrate the various features available and to showcase the different kind of Web Apps
-    that can easily be developed. The source code for each app is available either individually from 
-    <a href="https://github.com/NetCoreWebApps">github.com/NetCoreWebApps</a> or all combined in the same repo at
-    <a href="https://github.com/NetCoreWebApps/WebApp/tree/master/src/apps">NetCoreWebApps/WebApp/apps</a>. 
-    Each app runs the same unmodified <a href="https://github.com/NetCoreWebApps/Web">Web App Binary</a> that's also used in the 
-    WebAppStarter project above. 
-</p>
-
-<h4>Running Web Apps locally</h4>
-
-<p>
-    Each of these apps can be run locally by cloning <a href="https://github.com/NetCoreWebApps/WebApp">NetCoreWebApps/WebApp</a>
-    and running the start.bat scripts in the <a href="https://github.com/NetCoreWebApps/WebApp/tree/master/src/apps">/apps</a> folder.
-    If you want to use your local RDBMS you can use
-    <a href="https://github.com/NetCoreWebApps/WebApp/tree/master/src/support/northwind-data">/support/northwind-data</a> to quickly
-    populate it with the Northwind database and 
-    <a href="https://github.com/NetCoreWebApps/WebApp/tree/master/src/support/copy-files">/support/copy-files</a> to populate your own
-    S3 Bucket or Azure Blob Container with the 
-    <a href="https://github.com/NetCoreWebApps/WebApp/tree/master/src/apps/rockwind-vfs">/rockwind-vfs</a> Web App's files. 
-    As each app runs on <em>http://localhost:5000</em> you'll need to do a hard refresh with <em>Ctrl+Shift+F5</em> after
-    launching each App to tell the browser to ignore the cached .css and .js from the previous App.
-</p>
-
-<h3>Web App Starter</h3>
+<h3 id="about-bare-webapp">About Bare WebApp</h3>
 <div class="source">
-    <a href="https://github.com/NetCoreWebApps/WebAppStarter">/WebAppStarter</a> - 
-    <a href="http://bare.web-app.io">bare.web-app.io</a>
+    <a href="http://bare-webapp.web-templates.io">bare-webapp.web-templates.io</a> -
+    <a href="https://github.com/NetCoreTemplates/bare-webapp">NetCoreTemplates/bare-webapp</a>
 </div>
 
 <p>
-    The Getting Started project contains a copy of the <a href="http://bare.web-app.io">bare.web-app.io</a> project below 
+    The Getting Started project contains a copy of the <a href="http://bare-webapp.web-templates.io">bare-webapp.web-templates.io</a> project below 
     which is representative of a typical Company splash Website:
 </p>
 
-<a href="http://bare.web-app.io"><img src="/assets/img/screenshots/bare.png" alt="Bare WebApp screenshot"></a>
+<a href="http://bare-webapp.web-templates.io"><img src="/assets/img/screenshots/bare.png" alt="Bare WebApp screenshot"></a>
 
 <p>
     The benefits over using a static website is improved maintenance
@@ -187,16 +218,47 @@ webRoot ~/../bare</code></pre>
     <em>debug true</em> controls the level of internal diagnostics available and whether or not <a href="/docs/hot-reloading">Hot Reloading</a> is enabled.
 </blockquote>
 
+<h3 id="about-parcel-webapp">About Parcel WebApp</h3>
+<div class="source">
+    <a href="http://parcel-webapp.web-templates.io">parcel-webapp.web-templates.io</a> -
+    <a href="https://github.com/NetCoreTemplates/parcel-webapp">NetCoreTemplates/parcel-webapp</a>
+</div>
+
+
+<h2>Example Web Apps</h2>
+
+<p>
+    In addition to the templates there's a number of Web Apps to illustrate the various features available and to showcase the different 
+    kind of Web Apps that can easily be developed. The source code for each app is available either individually from 
+    <a href="https://github.com/NetCoreWebApps">github.com/NetCoreWebApps</a> or all combined in the same repo at
+    <a href="https://github.com/NetCoreWebApps/WebApp/tree/master/src/apps">NetCoreWebApps/WebApp/apps</a>. 
+    Each app runs the same unmodified <a href="https://github.com/NetCoreWebApps/Web">Web App Binary</a> that's also used in the 
+    WebAppStarter project above. 
+</p>
+
+<h4>Running Web Apps locally</h4>
+
+<p>
+    Each of the Example Apps can be run locally by clicking the <em>download.zip</em> link to download the project from GitHub.
+    Extract the .zip contents and open the folder in <a href="https://code.visualstudio.com/">VS Code</a> then type <em>Ctrl+Shift+B</em>
+    and run the <em>build</em> task. For any other text editor you can run the App with:
+</p>
+
+<pre class="sh"><code>dotnet web/app.dll ../app/web.settings</code></pre>
+
+{{ 'gfm/web-apps/13.md' | githubMarkdown }}
+
 <h3>Redis HTML</h3>
 <div class="source">
-    <a href="https://github.com/NetCoreWebApps/WebApp/tree/master/src/apps/redis-html">/redis-html</a> - 
-    <a href="http://redis-html.web-app.io">redis-html.web-app.io</a>
+    <a href="http://redis-html.web-app.io">redis-html.web-app.io</a> -
+    <a href="https://github.com/NetCoreWebApps/RedisHtml">NetCoreWebApps/RedisHtml</a> - 
+    <a href="https://github.com/NetCoreWebApps/RedisHtml/archive/master.zip">download.zip</a>
 </div>
 
 <p>
     For the Redis Browser Web App, we wanted to implement an App that was an ideal candidate for a Single Page App but constrain ourselves
     to do all HTML rendering on the server and have each interaction request a full-page reload to see how a traditional server-generated
-    Web App feels like with the performance of .NET Core 2.0 and Templates. We're pleasantly surprised with the result as when 
+    Web App feels like with the performance of .NET Core 2.1 and Templates. We're pleasantly surprised with the result as when 
     the App is run locally the responsiveness is effectively indistinguishable from an Ajax App. When hosted on the Internet 
     there is a sub-second delay which causes a noticeable flicker but it still retains a pleasant UX that's faster than most websites.
 </p>
@@ -486,7 +548,7 @@ redis.connection localhost:6379</code></pre>
 <h4>Multi platform configurations</h4>
 
 <p>
-    In addition to being a .NET Core 2.0 App that runs flawlessly cross-platform on Windows, Linux and OSX, Web Apps can also support 
+    In addition to being a .NET Core 2.1 App that runs flawlessly cross-platform on Windows, Linux and OSX, Web Apps can also support 
     multiple RDBMS's and <a href="http://docs.servicestack.net/virtual-file-system">Virtual File Systems</a> using just configuration.
 </p>
 
@@ -679,7 +741,7 @@ defaultFileCacheExpirySecs     60</code></pre>
 
 <p>
     With all files being sourced from S3 and the App configured to use AWS RDS PostgreSQL, the AWS settings is an example of 
-    a <b>Pure Cloud App</b> where the entire App is hosted on managed cloud services that's decoupled from the .NET Core 2.0 binary 
+    a <b>Pure Cloud App</b> where the entire App is hosted on managed cloud services that's decoupled from the .NET Core 2.1 binary 
     that runs it that for the most part won't require redeploying the Web App binary unless making configuration changes or 
     upgrading the <em>web/app.dll</em> as any App changes can just be uploaded straight to S3 which changes reflected within the
     <em>checkForModifiedPagesAfterSecs</em> setting, which tells the Web App how long to wait before checking for file changes
@@ -742,7 +804,7 @@ defaultFileCacheExpirySecs     60</code></pre>
     <a href="http://docs.servicestack.net/validation">Validators</a>, etc.
     contained within <b>.dll's</b> or <b>.exe's</b> dropped in a Web App's 
     <a href="https://github.com/NetCoreWebApps/WebApp/tree/master/src/apps/plugins/plugins">/plugins</a> folder which are auto-registered 
-    on startup. The source code for all plugins used in this App were built from the .NET Core 2.0 projects in the
+    on startup. The source code for all plugins used in this App were built from the .NET Core 2.1 projects in the
     <a href="https://github.com/NetCoreWebApps/WebApp/tree/master/src/example-plugins">/example-plugins</a> folder. The 
     <a href="http://plugins.web-app.io">plugins.web-app.io</a> Web App below walks through examples of using Custom Filters, 
     Services and Validators:
@@ -864,7 +926,7 @@ CustomPlugin { ShowProcessLinks: true }
 <h4>Develop back-end using .NET IDE's</h4>
 
 <p>
-    For <a href="http://chat.web-app.io">chat.web-app.io</a> we've taken a copy of the existing .NET Core 2.0 
+    For <a href="http://chat.web-app.io">chat.web-app.io</a> we've taken a copy of the existing .NET Core 2.1 
     <a href="https://github.com/NetCoreApps/Chat">Chat App</a> and moved its C# code to
     <a href="https://github.com/NetCoreWebApps/WebApp/tree/master/src/example-plugins/Chat">/example-plugins/Chat</a>
     and its files to <a href="https://github.com/NetCoreWebApps/Chat/tree/master/app">/apps/chat</a> 
