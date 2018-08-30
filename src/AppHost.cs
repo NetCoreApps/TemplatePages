@@ -66,7 +66,7 @@ namespace TemplatePages
                     ["products"] = TemplateQueryData.Products
                 },
                 RenderExpressionExceptions = true,
-                EnableDebugTemplateToAll = true,
+                MetadataDebugAdminRole = RoleNames.AllowAnon,
                 ExcludeFiltersNamed = { "dbExec" }
             });
 

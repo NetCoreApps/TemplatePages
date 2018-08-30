@@ -1,0 +1,121 @@
+<div class="gfm"><p>The combination of features in the new Templates makes easy work of typically tedious tasks, e.g. if you were tasked to create a report
+that contained all information about a <a href="http://rockwind-sqlite.web-app.io/northwind/order?id=10643" rel="nofollow">Northwind Order</a> displayed on a
+single page, you can create a new page at:</p>
+<ul>
+<li><a href="https://github.com/NetCoreWebApps/WebApp/blob/master/src/apps/rockwind/northwind/order-report/_id.html">/northwind/order-report/_id.html</a></li>
+</ul>
+<p>packed with all Queries you need to run and execute them with a <a href="http://templates.servicestack.net/docs/db-filters" rel="nofollow">DB Filter</a> and display them
+with a <a href="http://templates.servicestack.net/docs/html-filters" rel="nofollow">HTML Filter</a>:</p>
+<div class="highlight highlight-text-html-handlebars"><pre><span class="pl-c"><span class="pl-c">&lt;!--</span></span>
+<span class="pl-c">title: Order Report</span>
+<span class="pl-c"><span class="pl-c">--&gt;</span></span>
+
+<span class="pl-c1">{{</span> `<span class="pl-e"><span class="pl-v">SELECT</span></span> <span class="pl-e"><span class="pl-v">o.Id</span></span>, <span class="pl-e"><span class="pl-v">OrderDate</span></span>, <span class="pl-e"><span class="pl-v">CustomerId</span></span>, <span class="pl-e"><span class="pl-v">Freight</span></span>, <span class="pl-e"><span class="pl-v">e.Id</span></span> <span class="pl-e"><span class="pl-v">as</span></span> <span class="pl-e"><span class="pl-v">EmployeeId</span></span>, <span class="pl-e"><span class="pl-v">s.CompanyName</span></span> <span class="pl-e"><span class="pl-v">as</span></span> <span class="pl-e"><span class="pl-v">ShipVia</span></span>, 
+           <span class="pl-e"><span class="pl-v">ShipAddress</span></span>, <span class="pl-e"><span class="pl-v">ShipCity</span></span>, <span class="pl-e"><span class="pl-v">ShipPostalCode</span></span>, <span class="pl-e"><span class="pl-v">ShipCountry</span></span>
+      <span class="pl-e"><span class="pl-v">FROM</span></span> ${<span class="pl-e"><span class="pl-v">sqlQuote</span></span>(<span class="pl-s"><span class="pl-pds">"</span>Order<span class="pl-pds">"</span></span>)} <span class="pl-e"><span class="pl-v">o</span></span>
+           <span class="pl-e"><span class="pl-v">INNER</span></span> <span class="pl-e"><span class="pl-v">JOIN</span></span>
+           <span class="pl-e"><span class="pl-v">Employee</span></span> <span class="pl-e"><span class="pl-v">e</span></span> <span class="pl-e"><span class="pl-v">ON</span></span> <span class="pl-e"><span class="pl-v">o.EmployeeId</span></span> = <span class="pl-e"><span class="pl-v">e.Id</span></span>
+           <span class="pl-e"><span class="pl-v">INNER</span></span> <span class="pl-e"><span class="pl-v">JOIN</span></span>
+           <span class="pl-e"><span class="pl-v">Shipper</span></span> <span class="pl-e"><span class="pl-v">s</span></span> <span class="pl-e"><span class="pl-v">ON</span></span> <span class="pl-e"><span class="pl-v">o.ShipVia</span></span> = <span class="pl-e"><span class="pl-v">s.Id</span></span>
+     <span class="pl-e"><span class="pl-v">WHERE</span></span> <span class="pl-e"><span class="pl-v">o.Id</span></span> = @<span class="pl-e"><span class="pl-v">id</span></span>` 
+  | <span class="pl-e"><span class="pl-v">dbSingle</span></span>({ <span class="pl-e"><span class="pl-v">id</span></span> }) | <span class="pl-e"><span class="pl-v">assignTo</span></span>: <span class="pl-e"><span class="pl-v">order</span></span> <span class="pl-c1">}}</span>
+
+<span class="pl-c1">{{</span><span class="pl-c1">#with</span> <span class="pl-v">order</span><span class="pl-c1">}}</span>
+  <span class="pl-c1">{{</span> <span class="pl-s"><span class="pl-pds">"</span>table table-striped<span class="pl-pds">"</span></span> | <span class="pl-e"><span class="pl-v">assignTo</span></span>: <span class="pl-e"><span class="pl-v">className</span></span> <span class="pl-c1">}}</span>
+<span class="pl-s1">  &lt;<span class="pl-ent">style</span>&gt;<span class="pl-ent">table</span> {<span class="pl-c1"><span class="pl-c1">border</span></span>: <span class="pl-c1">5<span class="pl-k">px</span></span> <span class="pl-c1">solid</span> <span class="pl-c1">transparent</span>} <span class="pl-ent">th</span> {<span class="pl-c1"><span class="pl-c1">white-space</span></span>: <span class="pl-c1">nowrap</span>}&lt;/<span class="pl-ent">style</span>&gt;</span>
+  
+  &lt;<span class="pl-ent">div</span> <span class="pl-e"><span class="pl-e">style</span>=</span><span class="pl-s"><span class="pl-pds">"</span>display:flex<span class="pl-pds">"</span></span>&gt;
+      <span class="pl-c1">{{</span> <span class="pl-v">order</span> | <span class="pl-e"><span class="pl-v">htmlDump</span></span>({ <span class="pl-e"><span class="pl-v">caption</span></span>: <span class="pl-s"><span class="pl-pds">'</span>Order Details<span class="pl-pds">'</span></span>, <span class="pl-e"><span class="pl-v">className</span></span> }) <span class="pl-c1">}}</span>
+      <span class="pl-c1">{{</span> `<span class="pl-e"><span class="pl-v">SELECT</span></span> * <span class="pl-e"><span class="pl-v">FROM</span></span> <span class="pl-e"><span class="pl-v">Customer</span></span> <span class="pl-e"><span class="pl-v">WHERE</span></span> <span class="pl-e"><span class="pl-v">Id</span></span> = @<span class="pl-e"><span class="pl-v">CustomerId</span></span>` 
+         | <span class="pl-e"><span class="pl-v">dbSingle</span></span>({ <span class="pl-e"><span class="pl-v">CustomerId</span></span> }) | <span class="pl-e"><span class="pl-v">htmlDump</span></span>({ <span class="pl-e"><span class="pl-v">caption</span></span>: `<span class="pl-e"><span class="pl-v">Customer</span></span> <span class="pl-e"><span class="pl-v">Details</span></span>`, <span class="pl-e"><span class="pl-v">className</span></span> }) <span class="pl-c1">}}</span>
+      <span class="pl-c1">{{</span> `<span class="pl-e"><span class="pl-v">SELECT</span></span> <span class="pl-e"><span class="pl-v">Id</span></span>,<span class="pl-e"><span class="pl-v">LastName</span></span>,<span class="pl-e"><span class="pl-v">FirstName</span></span>,<span class="pl-e"><span class="pl-v">Title</span></span>,<span class="pl-e"><span class="pl-v">City</span></span>,<span class="pl-e"><span class="pl-v">Country</span></span>,<span class="pl-e"><span class="pl-v">Extension</span></span> <span class="pl-e"><span class="pl-v">FROM</span></span> <span class="pl-e"><span class="pl-v">Employee</span></span> <span class="pl-e"><span class="pl-v">WHERE</span></span> <span class="pl-e"><span class="pl-v">Id</span></span> = @<span class="pl-e"><span class="pl-v">EmployeeId</span></span>` 
+         | <span class="pl-e"><span class="pl-v">dbSingle</span></span>({ <span class="pl-e"><span class="pl-v">EmployeeId</span></span> }) | <span class="pl-e"><span class="pl-v">htmlDump</span></span>({ <span class="pl-e"><span class="pl-v">caption</span></span>: `<span class="pl-e"><span class="pl-v">Employee</span></span> <span class="pl-e"><span class="pl-v">Details</span></span>`, <span class="pl-e"><span class="pl-v">className</span></span> }) <span class="pl-c1">}}</span>
+  &lt;/<span class="pl-ent">div</span>&gt;
+
+  <span class="pl-c1">{{</span> `<span class="pl-e"><span class="pl-v">SELECT</span></span> <span class="pl-e"><span class="pl-v">p.ProductName</span></span>, ${<span class="pl-e"><span class="pl-v">sqlCurrency</span></span>(<span class="pl-s"><span class="pl-pds">"</span>od.UnitPrice<span class="pl-pds">"</span></span>)} <span class="pl-e"><span class="pl-v">UnitPrice</span></span>, <span class="pl-e"><span class="pl-v">Quantity</span></span>, <span class="pl-e"><span class="pl-v">Discount</span></span>
+        <span class="pl-e"><span class="pl-v">FROM</span></span> <span class="pl-e"><span class="pl-v">OrderDetail</span></span> <span class="pl-e"><span class="pl-v">od</span></span>
+             <span class="pl-e"><span class="pl-v">INNER</span></span> <span class="pl-e"><span class="pl-v">JOIN</span></span>
+             <span class="pl-e"><span class="pl-v">Product</span></span> <span class="pl-e"><span class="pl-v">p</span></span> <span class="pl-e"><span class="pl-v">ON</span></span> <span class="pl-e"><span class="pl-v">od.ProductId</span></span> = <span class="pl-e"><span class="pl-v">p.Id</span></span>
+       <span class="pl-e"><span class="pl-v">WHERE</span></span> <span class="pl-e"><span class="pl-v">OrderId</span></span> = @<span class="pl-e"><span class="pl-v">id</span></span>`
+      | <span class="pl-e"><span class="pl-v">dbSelect</span></span>({ <span class="pl-e"><span class="pl-v">id</span></span> }) 
+      | <span class="pl-e"><span class="pl-v">htmlDump</span></span>({ <span class="pl-e"><span class="pl-v">caption</span></span>: <span class="pl-s"><span class="pl-pds">"</span>Line Items<span class="pl-pds">"</span></span>, <span class="pl-e"><span class="pl-v">className</span></span> }) <span class="pl-c1">}}</span>
+<span class="pl-c1">{{</span><span class="pl-c1">else</span><span class="pl-c1">}}</span>
+  <span class="pl-c1">{{</span> `<span class="pl-e"><span class="pl-v">There</span></span> <span class="pl-e"><span class="pl-v">is</span></span> <span class="pl-e"><span class="pl-v">no</span></span> <span class="pl-e"><span class="pl-v">Order</span></span> <span class="pl-e"><span class="pl-v">with</span></span> <span class="pl-e"><span class="pl-v">id</span></span>: ${<span class="pl-e"><span class="pl-v">id</span></span>}` <span class="pl-c1">}}</span>
+<span class="pl-c1">{{</span><span class="pl-c1">/with</span><span class="pl-c1">}}</span></pre></div>
+<p>This will let you view the complete details of any order at the following URL:</p>
+<ul>
+<li><a href="http://rockwind-sqlite.web-app.io/northwind/order-report/10643" rel="nofollow">/northwind/order-report/10643</a></li>
+</ul>
+<p><a href="http://rockwind-sqlite.web-app.io/northwind/order-report/10643" rel="nofollow"><img src="https://raw.githubusercontent.com/ServiceStack/Assets/master/img/livedemos/rockwind/order-report.png" alt="" style="max-width:100%;"></a></p>
+<h3>
+<a id="user-content-sql-studio-example" class="anchor" href="#sql-studio-example" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>SQL Studio Example</h3>
+<p>To take the ad hoc SQL Query example even further, it also becomes trivial to implement a SQL Viewer to run ad hoc queries on your App's configured database.</p>
+<p><a href="http://rockwind-sqlite.web-app.io/northwind/sql/" rel="nofollow"><img src="https://raw.githubusercontent.com/ServiceStack/Assets/master/img/livedemos/rockwind/sql-viewer.png" alt="" style="max-width:100%;"></a></p>
+<p>The <a href="http://rockwind-sqlite.web-app.io/northwind/sql/" rel="nofollow">Northwind SQL Viewer</a> above was developed using the 2 Template Pages below:</p>
+<h4>
+<a id="user-content-northwindsqlindexhtml" class="anchor" href="#northwindsqlindexhtml" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a><a href="https://github.com/NetCoreWebApps/WebApp/blob/master/src/apps/rockwind/northwind/sql/index.html">/northwind/sql/index.html</a>
+</h4>
+<p>A Template Page to render the UI, shortcut links to quickly see the last 10 rows of each table, a <code>&lt;textarea/&gt;</code> to capture the SQL Query which
+is sent to an API on every keystroke where the results are displayed instantly:</p>
+<div class="highlight highlight-text-html-basic"><pre>&lt;<span class="pl-ent">h2</span>&gt;Northwind SQL Viewer&lt;/<span class="pl-ent">h2</span>&gt;
+
+&lt;<span class="pl-ent">textarea</span> <span class="pl-e">name</span>=<span class="pl-s"><span class="pl-pds">"</span>sql<span class="pl-pds">"</span></span>&gt;select * from "Customer" order by Id desc limit 10&lt;/<span class="pl-ent">textarea</span>&gt;
+&lt;<span class="pl-ent">ul</span> <span class="pl-e">class</span>=<span class="pl-s"><span class="pl-pds">"</span>tables<span class="pl-pds">"</span></span>&gt;
+  &lt;<span class="pl-ent">li</span>&gt;Category&lt;/<span class="pl-ent">li</span>&gt;
+  &lt;<span class="pl-ent">li</span>&gt;Customer&lt;/<span class="pl-ent">li</span>&gt;
+  &lt;<span class="pl-ent">li</span>&gt;Employee&lt;/<span class="pl-ent">li</span>&gt;
+  &lt;<span class="pl-ent">li</span>&gt;Order&lt;/<span class="pl-ent">li</span>&gt;
+  &lt;<span class="pl-ent">li</span>&gt;Product&lt;/<span class="pl-ent">li</span>&gt;
+  &lt;<span class="pl-ent">li</span>&gt;Supplier&lt;/<span class="pl-ent">li</span>&gt;
+&lt;/<span class="pl-ent">ul</span>&gt;
+
+&lt;<span class="pl-ent">div</span> <span class="pl-e">class</span>=<span class="pl-s"><span class="pl-pds">"</span>preview<span class="pl-pds">"</span></span>&gt;&lt;/<span class="pl-ent">div</span>&gt;
+&lt;<span class="pl-ent">style</span>&gt;<span class="pl-s1"><span class="pl-c"><span class="pl-c">/*</span>...<span class="pl-c">*/</span></span></span><span class="pl-s1">&lt;</span>/<span class="pl-ent">style</span>&gt;
+
+&lt;<span class="pl-ent">script</span>&gt;<span class="pl-s1"></span>
+<span class="pl-s1"><span class="pl-k">let</span> textarea <span class="pl-k">=</span> <span class="pl-c1">document</span>.<span class="pl-c1">querySelector</span>(<span class="pl-s"><span class="pl-pds">"</span>textarea<span class="pl-pds">"</span></span>);</span>
+<span class="pl-s1"><span class="pl-k">let</span> listItems <span class="pl-k">=</span> <span class="pl-c1">document</span>.<span class="pl-c1">querySelectorAll</span>(<span class="pl-s"><span class="pl-pds">'</span>.tables li<span class="pl-pds">'</span></span>);</span>
+<span class="pl-s1"><span class="pl-k">for</span> (<span class="pl-k">let</span> i<span class="pl-k">=</span><span class="pl-c1">0</span>; i<span class="pl-k">&lt;</span><span class="pl-smi">listItems</span>.<span class="pl-c1">length</span>; i<span class="pl-k">++</span>) {</span>
+<span class="pl-s1">  listItems[i].<span class="pl-c1">addEventListener</span>(<span class="pl-s"><span class="pl-pds">'</span>click<span class="pl-pds">'</span></span>, <span class="pl-k">function</span>(<span class="pl-smi">e</span>){</span>
+<span class="pl-s1">    <span class="pl-k">var</span> table <span class="pl-k">=</span> <span class="pl-smi">e</span>.<span class="pl-c1">target</span>.<span class="pl-smi">innerHTML</span>;</span>
+<span class="pl-s1">    <span class="pl-smi">textarea</span>.<span class="pl-c1">value</span> <span class="pl-k">=</span> <span class="pl-s"><span class="pl-pds">'</span>select * from "<span class="pl-pds">'</span></span> <span class="pl-k">+</span> table <span class="pl-k">+</span> <span class="pl-s"><span class="pl-pds">'</span>" order by Id desc limit 10<span class="pl-pds">'</span></span>;</span>
+<span class="pl-s1">    <span class="pl-smi">textarea</span>.<span class="pl-c1">dispatchEvent</span>(<span class="pl-k">new</span> <span class="pl-en">Event</span>(<span class="pl-s"><span class="pl-pds">"</span>input<span class="pl-pds">"</span></span>, { bubbles<span class="pl-k">:</span> <span class="pl-c1">true</span>, cancelable<span class="pl-k">:</span> <span class="pl-c1">true</span> }));</span>
+<span class="pl-s1">  });</span>
+<span class="pl-s1">}</span>
+<span class="pl-s1"><span class="pl-c"><span class="pl-c">//</span> Enable Live Preview of SQL</span></span>
+<span class="pl-s1"><span class="pl-smi">textarea</span>.<span class="pl-c1">addEventListener</span>(<span class="pl-s"><span class="pl-pds">"</span>input<span class="pl-pds">"</span></span>, livepreview, <span class="pl-c1">false</span>);</span>
+<span class="pl-s1"><span class="pl-en">livepreview</span>({ target<span class="pl-k">:</span> textarea });</span>
+<span class="pl-s1"><span class="pl-k">function</span> <span class="pl-en">livepreview</span>(<span class="pl-smi">e</span>) {</span>
+<span class="pl-s1">  <span class="pl-k">let</span> el <span class="pl-k">=</span> <span class="pl-smi">e</span>.<span class="pl-c1">target</span>;</span>
+<span class="pl-s1">  <span class="pl-k">let</span> sel <span class="pl-k">=</span> <span class="pl-s"><span class="pl-pds">'</span>.preview<span class="pl-pds">'</span></span>;</span>
+<span class="pl-s1">  <span class="pl-k">if</span> (<span class="pl-smi">el</span>.<span class="pl-c1">value</span>.<span class="pl-en">trim</span>() <span class="pl-k">==</span> <span class="pl-s"><span class="pl-pds">"</span><span class="pl-pds">"</span></span>) {</span>
+<span class="pl-s1">    <span class="pl-c1">document</span>.<span class="pl-c1">querySelector</span>(sel).<span class="pl-smi">innerHTML</span> <span class="pl-k">=</span> <span class="pl-s"><span class="pl-pds">"</span><span class="pl-pds">"</span></span>;</span>
+<span class="pl-s1">    <span class="pl-k">return</span>;</span>
+<span class="pl-s1">  }</span>
+<span class="pl-s1">  <span class="pl-k">let</span> formData <span class="pl-k">=</span> <span class="pl-k">new</span> <span class="pl-en">FormData</span>();</span>
+<span class="pl-s1">  <span class="pl-smi">formData</span>.<span class="pl-c1">append</span>(<span class="pl-s"><span class="pl-pds">"</span>sql<span class="pl-pds">"</span></span>, <span class="pl-smi">el</span>.<span class="pl-c1">value</span>);</span>
+<span class="pl-s1">  <span class="pl-en">fetch</span>(<span class="pl-s"><span class="pl-pds">"</span>api<span class="pl-pds">"</span></span>, {</span>
+<span class="pl-s1">    method<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">"</span>post<span class="pl-pds">"</span></span>,</span>
+<span class="pl-s1">    body<span class="pl-k">:</span> formData</span>
+<span class="pl-s1">  }).<span class="pl-c1">then</span>(<span class="pl-k">function</span>(<span class="pl-smi">r</span>) { <span class="pl-k">return</span> <span class="pl-smi">r</span>.<span class="pl-c1">text</span>(); })</span>
+<span class="pl-s1">    .<span class="pl-c1">then</span>(<span class="pl-k">function</span>(<span class="pl-smi">r</span>) { <span class="pl-c1">document</span>.<span class="pl-c1">querySelector</span>(sel).<span class="pl-smi">innerHTML</span> <span class="pl-k">=</span> r; });</span>
+<span class="pl-s1">}</span>
+<span class="pl-s1"></span><span class="pl-s1">&lt;</span>/<span class="pl-ent">script</span>&gt;</pre></div>
+<h4>
+<a id="user-content-northwindsqlapihtml" class="anchor" href="#northwindsqlapihtml" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a><a href="https://github.com/NetCoreWebApps/WebApp/blob/master/src/apps/rockwind/northwind/sql/api.html">/northwind/sql/api.html</a>
+</h4>
+<p>All that's left is to implement the API which just needs to check to ensure the SQL does not contain any destructive operations using the
+<code>isUnsafeSql</code> DB filter, if it doesn't execute the SQL with the <code>dbSelect</code> DB Filter, generate a HTML Table with <code>htmlDump</code> and return
+the partial HTML fragment with <code>return</code>:</p>
+<div class="highlight highlight-text-html-handlebars"><pre><span class="pl-c1">{{</span><span class="pl-c1">#if</span> <span class="pl-v">isUnsafeSql</span>(<span class="pl-e"><span class="pl-v">sql</span></span>) <span class="pl-c1">}}</span> 
+    <span class="pl-c1">{{</span> `&lt;<span class="pl-e"><span class="pl-v">div</span></span> <span class="pl-e"><span class="pl-v">class</span>=</span><span class="pl-s"><span class="pl-pds">"</span>alert alert-danger<span class="pl-pds">"</span></span>&gt;<span class="pl-e"><span class="pl-v">Potentially</span></span> <span class="pl-e"><span class="pl-v">unsafe</span></span> <span class="pl-e"><span class="pl-v">SQL</span></span> <span class="pl-e"><span class="pl-v">detected</span></span>&lt;<span class="pl-e"><span class="pl-v">/div</span></span>&gt;` | <span class="pl-e"><span class="pl-v">return</span></span> <span class="pl-c1">}}</span>
+<span class="pl-c1">{{</span><span class="pl-c1">/if</span><span class="pl-c1">}}</span>
+
+<span class="pl-c1">{{</span> <span class="pl-v">sql</span> | <span class="pl-e"><span class="pl-v">dbSelect</span></span> | <span class="pl-e"><span class="pl-v">htmlDump</span></span> | <span class="pl-e"><span class="pl-v">return</span></span> <span class="pl-c1">}}</span></pre></div>
+<h3>
+<a id="user-content-live-development-workflow" class="anchor" href="#live-development-workflow" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Live Development Workflow</h3>
+<p>Thanks to the live development workflow of Template Pages, this is the quickest way we've previously been able to implement any of this functionality.
+Where all development can happen at runtime with no compilation or builds, yielding a highly productive iterative workflow to implement common functionality
+like viewing ad hoc SQL Queries in Excel or even just to rapidly prototype APIs so they can be consumed immediately by Client Applications before
+formalizing them into Typed ServiceStack Services where they can take advantage of its rich typed metadata and ecosystem.</p>
+</div>

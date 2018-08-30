@@ -349,6 +349,51 @@ order: 18
     Complete <b>.html</b> pages starting with <em>&lt;!DOCTYPE HTML&gt;</em> or <em>&lt;html</em> have their layouts ignored by default.
 </blockquote>
 
+<h3 id="templates-admin-service">Templates Admin Service</h3>
+
+<p>
+    The new Templates Admin Service lets you run admin actions against a running instance which by default is only accessible to <b>Admin</b> 
+    users and can be called with:
+</p>
+
+<pre><code>/templates/admin</code></pre>
+
+<p>
+    Which will display the available actions which are currently only:
+</p>
+
+<ul>
+    <li><em>invalidateAllCaches</em> - Invalidate all caches and force pages to check if they've been modified on next request</li>
+    <li><em>RunInitPage</em> - Runs the Init page again</li>
+</ul>
+
+<h4>Zero downtime deployments</h4>
+
+<p>
+    These actions are useful after an xcopy/rsync deployment to enable zero downtime deployments by getting a running instance to invalidate all 
+    internal caches and force existing pages to check if it has been modified, the next time their called. 
+</p>
+
+<p>
+    Actions can be invoked in the format with:
+</p>
+
+<pre><code>/templates/admin/{Actions}</code></pre>
+
+<p>
+    Which can be used to call 1 or more actions:
+</p>
+
+<pre><code>/templates/admin/invalidateAllCaches
+/templates/admin/invalidateAllCaches,RunInitPage</code></pre>
+
+<p>
+    By default it's only available to be called by **Admin** Users (or <a href="https://docs.servicestack.net/debugging#authsecret">AuthSecret</a>) 
+    but can be changed with:
+</p>
+
+{{ 'gfm/view-engine/11.md' | githubMarkdown }}
+
 <h3>ServiceStack Filters</h3>
 
 <p>
