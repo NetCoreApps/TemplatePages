@@ -4,38 +4,55 @@ order: 19
 -->
 
 <p>
-    When not being used as a templating language to render text to a stream, ServiceStack Templates can be used as a 
-    high-level wrist-friendly dynamic language that provides a glue to your App's .NET APIs that lets you easily 
-    compose C# methods and evaluate binding expressions.
-</p>
-
-<p>
-    We can also take advantage of its real-time feedback and optimal development experience to also rapidly develop 
-    high-performance Web APIs which like Web Pages can be developed whilst the Web App is running without any pre-compilation
+    In addition to being productive high-level .NET scripting language for generating dynamic HTML pages, Template Pages can also 
+    be used to rapidly develop Web APIs which can take advantage of the new support for 
+    <a href="/docs/view-engine#dynamic-page-routes">Dynamic Page Based Routes</a>
+    to rapidly develop data-driven JSON APIs and make them available under ideal pretty URLs whilst utilizing the same Live Development workflow 
+    that doesn't need to define any C# Types or execute any builds - as all development can happen in real-time whilst the App is running,
     enabling the fastest way to develop Web APIs in .NET.    
 </p>
 
+<h2 id="dynamic-api-pages">Dynamic API Pages</h2>
+
 <p>
-    To enable this we need to specify the path where our "API Pages" are located when registering <em>TemplatePagesFeature</em>:
+    The only difference between a Template Page that <b>generates HTML</b> or a Template Page that <b>returns an API Response</b> is that API pages 
+    return a value using the <em>return</em> filter. 
+</p>
+
+<p>
+    For comparison, to create a <b>Hello World</b> C# ServiceStack Service you would typically create a Request DTO, Response DTO and a Service implementation:
+</p>
+
+{{ 'gfm/api-pages/04.md' | githubMarkdown }}
+
+<h3 id="dedicated-api-pages">Dedicated API Pages</h3>
+
+<p>
+    Dedicated API pages lets you specify a path where your "API Pages" are located when registering <em>TemplatePagesFeature</em>:
 </p>
 
 {{ 'gfm/api-pages/01.md' | githubMarkdown }}
 
 <p>
-    All pages within the <b>/api</b> folder are then treated as Web APIs where instead of writing their response to the response
-    stream, their return value is serialized in the requested Content-Type. 
+    All pages within the <b>/api</b> folder are also treated like "API Pages" for creating Web APIs where instead of writing their response to the 
+    Output Stream, their return value is serialized in the requested Content-Type using the <em>return</em> filter:
 </p>
+
+<pre class="cs"><code>{{#raw}}{{ response | return }}
+{{ response | return({ ... }) }}
+{{ httpResult({ ... }) | return }}
+{{/raw}}</code></pre>
 
 <p>
-    You can return a result in Templates with the <em>return</em> filter:
+    The route for the dedicated API page starts the same as the filename and one advantage over Dynamic API Pages above is that a single Page
+    can handle multiple requests with different routes, e.g:
 </p>
 
-<pre class="cs"><code>{{#raw}}{{ response | return }}{{/raw}}</code></pre>
-
-<p>
-    This will immediately terminate evaluation of the page and store the response in the <em>PageResult</em> the Page was
-    rendered using. The return value is then used as the response for the Web API.
-</p>
+<pre>
+/api/customers                // PathArgs = []
+/api/customers/1              // PathArgs = ['1']
+/api/customers/by-name/Name   // PathArgs = ['by-name','Name']
+</pre>
 
 <h3>API Page Examples</h3>
 

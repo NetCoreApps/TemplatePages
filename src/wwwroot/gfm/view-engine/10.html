@@ -1,0 +1,35 @@
+<div class="gfm"><div class="highlight highlight-text-html-handlebars"><pre><span class="pl-c1">{{</span>  `<span class="pl-e"><span class="pl-v">CREATE</span></span> <span class="pl-e"><span class="pl-v">TABLE</span></span> <span class="pl-e"><span class="pl-v">IF</span></span> <span class="pl-e"><span class="pl-v">NOT</span></span> <span class="pl-e"><span class="pl-v">EXISTS</span></span> <span class="pl-s"><span class="pl-pds">"</span>UserInfo<span class="pl-pds">"</span></span> 
+    (
+        <span class="pl-s"><span class="pl-pds">"</span>UserName<span class="pl-pds">"</span></span> <span class="pl-e"><span class="pl-v">VARCHAR</span></span>(<span class="pl-e"><span class="pl-v">8000</span></span>) <span class="pl-e"><span class="pl-v">PRIMARY</span></span> <span class="pl-e"><span class="pl-v">KEY</span></span>, 
+        <span class="pl-s"><span class="pl-pds">"</span>DisplayName<span class="pl-pds">"</span></span> <span class="pl-e"><span class="pl-v">VARCHAR</span></span>(<span class="pl-e"><span class="pl-v">8000</span></span>) <span class="pl-e"><span class="pl-v">NULL</span></span>, 
+        <span class="pl-s"><span class="pl-pds">"</span>AvatarUrl<span class="pl-pds">"</span></span> <span class="pl-e"><span class="pl-v">VARCHAR</span></span>(<span class="pl-e"><span class="pl-v">8000</span></span>) <span class="pl-e"><span class="pl-v">NULL</span></span>, 
+        <span class="pl-s"><span class="pl-pds">"</span>AvatarUrlLarge<span class="pl-pds">"</span></span> <span class="pl-e"><span class="pl-v">VARCHAR</span></span>(<span class="pl-e"><span class="pl-v">8000</span></span>) <span class="pl-e"><span class="pl-v">NULL</span></span>, 
+        <span class="pl-s"><span class="pl-pds">"</span>Created<span class="pl-pds">"</span></span> <span class="pl-e"><span class="pl-v">VARCHAR</span></span>(<span class="pl-e"><span class="pl-v">8000</span></span>) <span class="pl-e"><span class="pl-v">NOT</span></span> <span class="pl-e"><span class="pl-v">NULL</span></span>,
+        <span class="pl-s"><span class="pl-pds">"</span>Modified<span class="pl-pds">"</span></span> <span class="pl-e"><span class="pl-v">VARCHAR</span></span>(<span class="pl-e"><span class="pl-v">8000</span></span>) <span class="pl-e"><span class="pl-v">NOT</span></span> <span class="pl-e"><span class="pl-v">NULL</span></span>
+    );`    
+    | <span class="pl-e"><span class="pl-v">dbExec</span></span>
+<span class="pl-c1">}}</span>
+
+<span class="pl-c1">{{</span> <span class="pl-v">dbScalar</span>(`<span class="pl-e"><span class="pl-v">SELECT</span></span> <span class="pl-e"><span class="pl-v">COUNT</span></span>(*) <span class="pl-e"><span class="pl-v">FROM</span></span> <span class="pl-e"><span class="pl-v">Post</span></span>`) | <span class="pl-e"><span class="pl-v">assignTo</span></span>: <span class="pl-e"><span class="pl-v">postsCount</span></span> <span class="pl-c1">}}</span>
+
+<span class="pl-c1">{{</span><span class="pl-c1">#if</span> <span class="pl-v">postsCount</span> == <span class="pl-e"><span class="pl-v">0</span></span> <span class="pl-c1">}}</span>
+
+    ========================================
+    Seed with initial UserInfo and Post data
+    ========================================
+
+    ...
+
+<span class="pl-c1">{{</span><span class="pl-c1">/if</span>}
+
+{{ htmlError <span class="pl-c1">}}</span></pre></div>
+<p>The output of the <code>_init</code> page is captured in the <code>initout</code> argument which can be later inspected as a normal template argument as seen in
+<a href="https://github.com/NetCoreWebApps/Blog/blob/master/app/log.html">log.html</a>:</p>
+<div class="highlight highlight-text-html-basic"><pre>&lt;<span class="pl-ent">div</span>&gt;
+    Output from init.html:
+
+    &lt;<span class="pl-ent">pre</span>&gt;{{initout | raw}}&lt;/<span class="pl-ent">pre</span>&gt;
+&lt;/<span class="pl-ent">div</span>&gt;</pre></div>
+<p>If there was an Exception with any of the SQL Statements it will be displayed in the <code>{{ htmlError }}</code> filter which can be
+later viewed in the <a href="http://blog.web-app.io/log" rel="nofollow">/log</a> page above.</p>
+</div>

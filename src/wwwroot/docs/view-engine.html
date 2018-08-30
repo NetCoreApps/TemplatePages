@@ -85,14 +85,14 @@ order: 18
   </li>
 </ul>
 
-<h4>Calling Pages Directly</h4>
-
 <p>
     Once registered, <em>TemplatePagesFeature</em> gives all your <b>.html</b> pages Template super powers where sections can be 
     compartmentalized and any duplicated content can now be extracted into reusable partials, metadata can be added to the top of 
     each page and its page navigation dynamically generated, contents of files and urls can be embedded directly and otherwise 
     static pages can come alive with access to <a href="/docs/default-filters">Default Filters</a>.
 </p>
+
+<h3 id="page-based-routing">Page Based Routing</h3>
 
 <p>
     Any <em>.html</em> page available from your AppHost's configured <a href="http://docs.servicestack.net/virtual-file-system">Virtual File Sources</a>
@@ -102,9 +102,126 @@ order: 18
     <a href="https://github.com/NetCoreApps/TemplatePages/blob/master/src/wwwroot/docs/view-engine.html">/src/wwwroot/docs/view-engine.html</a>.
 </p>
 
+<h4 id="pretty-urls-by-default">Pretty URLs by default</h4>
+
+<p>
+    Essentially Template Pages embraces conventional page-based routing which enables <b>pretty urls</b> inferred from the pages file and directory names
+    where each page can be requested with or without its <b>.html</b> extension:
+</p>
+
+<table class="table">
+  <thead>
+    <tr>
+      <th>path</th>
+      <th>page</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><a href="http://blog.web-app.io/db">/db</a></td>
+      <td>&nbsp;</td>
+    </tr>
+    <tr>
+      <td><a href="http://blog.web-app.io/db.html">/db.html</a></td>
+      <td><a href="https://github.com/NetCoreWebApps/Blog/blob/master/app/db.html">/db.html</a></td>
+    </tr>
+    <tr>
+      <td><a href="http://blog.web-app.io/posts/new">/posts/new</a></td>
+      <td>&nbsp;</td>
+    </tr>
+    <tr>
+      <td><a href="http://blog.web-app.io/posts/new.html">/posts/new.html</a></td>
+      <td><a href="https://github.com/NetCoreWebApps/Blog/blob/master/app/posts/new.html">/posts/new.html</a></td>
+    </tr>
+  </tbody>
+</table>
+
+<p>
+    The default route <em>/</em> maps to the <em>index.html</em> in the directory if it exists, e.g:
+</p>
+
+<table class="table">
+  <thead>
+    <tr>
+      <th>path</th>
+      <th>page</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><a href="http://blog.web-app.io/">/</a></td>
+      <td><a href="https://github.com/NetCoreWebApps/Blog/blob/master/app/index.html">/index.html</a></td>
+    </tr>
+    <tr>
+      <td><a href="http://blog.web-app.io/index.html">/index.html</a></td>
+      <td><a href="https://github.com/NetCoreWebApps/Blog/blob/master/app/index.html">/index.html</a></td>
+    </tr>
+  </tbody>
+</table>
+
+<h3 id="dynamic-page-routes">Dynamic Page Routes</h3>
+
+<p>
+    In addition to these static conventions, Template Pages now supports Nuxt-like 
+    <a href="https://nuxtjs.org/guide/routing#dynamic-routes">Dynamic Routes</a>
+    where any <b>file</b> or <b>directory</b> names prefixed with an <b>_underscore</b> enables a wildcard path which assigns the matching path component 
+    to the arguments name:
+</p>
+
+<table class="table">
+  <thead>
+    <tr>
+      <th>path</th>
+      <th>page</th>
+      <th>arguments</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><a href="http://blog.web-app.io/">/ServiceStack</a></td>
+      <td><a href="https://github.com/NetCoreWebApps/Blog/blob/master/app/_user/index.html">/_user/index.html</a></td>
+      <td>user=ServiceStack</td>
+    </tr>
+    <tr>
+      <td><a href="http://blog.web-app.io/posts/markdown-example">/posts/markdown-example</a></td>
+      <td><a href="https://github.com/NetCoreWebApps/Blog/blob/master/app/posts/_slug/index.html">/posts/_slug/index.html</a></td>
+      <td>slug=markdown-example</td>
+    </tr>
+    <tr>
+      <td><a href="http://blog.web-app.io/posts/markdown-example/edit">/posts/markdown-example/edit</a></td>
+      <td><a href="https://github.com/NetCoreWebApps/Blog/blob/master/app/posts/_slug/edit.html">/posts/_slug/edit.html</a></td>
+      <td>slug=markdown-example</td>
+    </tr>
+  </tbody>
+</table>
+
+<h4>Layout and partial recommended naming conventions</h4>
+
+<p>
+    The <b>_underscore</b> prefix for declaring wildcard pages is also what is used to declare "hidden" pages, to distinguish them from hidden 
+    partials and layouts, the recommendation is for them to include <em>layout</em> and <em>partial</em> their name, e,g:
+</p>
+
+<ul>
+    <li>_layout.html</li>
+    <li>_alt-layout.html</li>
+    <li>_menu-partial.html</li>
+</ul>
+
 <blockquote>
-    Pages with an <b>_</b> underscore prefix can't be accessed directly making them a good convention for layouts and partials
+    Pages with <em>layout</em> or <em>partial</em> in their name remain hidden and are ignored in wildcard path resolution.    
 </blockquote>
+
+<p>
+    If following the recommended <em>_{name}-partial.html</em> naming convention, you'll be able to reference them using just their name:
+</p>
+
+{{#raw}}
+<pre>
+{{ 'menu' | partial }}          // Equivalent to:
+{{ '_menu-partial' | partial }}
+</pre>
+{{/raw}}
     
 <h4 id="view-pages">View Pages</h4>
 
@@ -141,7 +258,7 @@ order: 18
 
 <div class="gfm">
 <pre>
-    /Views/dir/MyRequest.html
+/Views/dir/MyRequest.html
 </pre>
 </div>
 
@@ -149,9 +266,9 @@ order: 18
 
 <div class="gfm">
 <pre>
-    /Views/dir/_layout.html
-    /Views/_layout.html
-    /_layout.html
+/Views/dir/_layout.html
+/Views/_layout.html
+/_layout.html
 </pre>
 </div>
 
@@ -179,28 +296,6 @@ order: 18
 
 {{ 'gfm/view-engine/04.md' | githubMarkdown }}
 
-<h4>Pretty URLs by default</h4>
-
-<p>
-    HTML pages can also take advantage of <b>Pretty URLs</b> by default which no longer need file extensions, so you can request
-    this page using either:
-</p>
-
-<ul>
-    <li><a href="/docs/view-engine">/docs/view-engine</a></li>
-    <li><a href="/docs/view-engine.html">/docs/view-engine.html</a></li>
-</ul>
-
-<p>
-    In addition an <em>index.html</em> page can be called with or without its name, e.g:
-</p>
-
-<ul>
-    <li><a href="/linq/">/linq/</a></li>
-    <li><a href="/linq/index">/linq/index</a></li>
-    <li><a href="/linq/index.html">/linq/index.html</a></li>
-</ul>
-
 <h4>Request Variables</h4>
 
 <p>
@@ -223,12 +318,20 @@ order: 18
 
 {{ 'gfm/view-engine/05.md' | githubMarkdown }}
 
-<h4>Forbidden Pages</h4>
+<h3 id="init-pages">Init Pages</h3>
 
 <p>
-    Pages that are prefixed with an underscore, e.g. <em>_layout.html</em> cannot be called directly. As you'd normally 
-    never want layouts and partials to accessed directly it's a good idea to name them with an <b>_</b> prefix.
+    Just as how <em>Global.asax.cs</em> can be used to run Startup initialization logic in ASP.NET Web Applications and 
+    <em>Startup.cs</em> in .NET Core Apps, you can now add a <em>/_init.html</em> page for Templates logic that's only executed once on Startup. 
 </p>
+
+<p>
+    This is used in the Blog Web App's <a href="https://github.com/NetCoreWebApps/Blog/blob/master/app/_init.html">_init.html</a>
+    where it will create a new <em>blog.sqlite</em> database if it doesn't exist seeded with the 
+    <em>UserInfo</em> and <em>Posts</em> Tables and initial data, e.g:
+</p>
+
+{{ 'gfm/view-engine/10.md' | githubMarkdown }}
 
 <h4>Ignoring Pages</h4>
 
