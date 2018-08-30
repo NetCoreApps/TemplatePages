@@ -9,6 +9,7 @@ using ServiceStack.Templates;
 using ServiceStack.Text;
 using ServiceStack.Data;
 using ServiceStack.OrmLite;
+using ServiceStack.Configuration;
 using Funq;
 
 namespace TemplatePages
