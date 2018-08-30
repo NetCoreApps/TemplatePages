@@ -1,0 +1,97 @@
+<div class="gfm"><p><a href="http://blog.web-app.io" rel="nofollow"><img src="https://raw.githubusercontent.com/NetCoreApps/TemplatePages/master/src/wwwroot/assets/img/screenshots/blog.png" alt="" style="max-width:100%;"></a></p>
+<blockquote>
+<p>Live Demo: <a href="http://blog.web-app.io" rel="nofollow">blog.web-app.io</a></p>
+</blockquote>
+<p>To maximize approachability the <a href="https://github.com/NetCoreWebApps/Blog/tree/master/app">/Blog</a> Web App has no C# source code, plugins and uses
+no JavaScript or CSS frameworks yielding an enjoyable development experiences as all the usual complexities of developing a C# Server and modern
+JS App has been dispensed and you can just focus on the App you want to create, using a plain-text editor on the left, a live updating browser on
+the right and nothing else to interrupt your flow.</p>
+<p>Any infrastructure dependencies have also been avoided by using SQLite by default which is
+<a href="/docs/view-engine#init-pages">automatically created an populated on first run</a> if no database exists, or if preferred can be
+<a href="/docs/web-apps#multi-platform-configurations">changed to use any other popular RDBMS</a> using just config.</p>
+<h3>
+<a id="user-content-multi-user-blogging-platform" class="anchor" href="#multi-user-blogging-platform" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Multi User Blogging Platform</h3>
+<p>Any number of users can Sign In via Twitter and publish content under their Twitter Username where only they'll be able to modify their own Content.
+Setting up Twitter is as easy as it can be which just requires modifying the
+<a href="#customizable-auth-providers">Twitter Auth Config in web.settings</a> with the URL where the blog
+is hosted and the OAuth Keys for the Twitter OAuth App created at <a href="https://apps.twitter.com" rel="nofollow">apps.twitter.com</a>.</p>
+<h3>
+<a id="user-content-rich-content" class="anchor" href="#rich-content" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Rich Content</h3>
+<p>Whilst most blogging platforms just edit static text, each Post content has access to full Templates language features so they can be used to create
+<a href="http://blog.web-app.io/posts/live-document-example" rel="nofollow">Live Documents</a> or
+<a href="http://blog.web-app.io/posts/markdown-example" rel="nofollow">Render Markdown</a> which is itself just
+<a href="/docs/blocks#markdown">one of the available blocks</a> where it will render to HTML any content between the <code>markdown</code> blocks:</p>
+<div class="highlight highlight-text-html-handlebars"><pre>{#markdown}}
+## Markdown Content
+{​{/markdown}}</pre></div>
+<p>By default the <a href="https://github.com/lunet-io/markdig">Markdig</a> implementation is used to render Markdown but can also be configured to use an
+<a href="http://blog.web-app.io/posts/web-app-customizations#customizable-markdown-providers" rel="nofollow">alternate Markdown provider</a>.</p>
+<h3>
+<a id="user-content-rich-markdown-editor" class="anchor" href="#rich-markdown-editor" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Rich Markdown Editor</h3>
+<p>To make it easy to recall Markdown features, each Content is equipped with a Rich Text editor containing the most popular formatting controls
+along with common short-cuts for each feature, discoverable by hovering over each button:</p>
+<p><a href="https://raw.githubusercontent.com/ServiceStack/Assets/master/img/livedemos/blog/editor.png" target="_blank" rel="nofollow"><img src="https://raw.githubusercontent.com/ServiceStack/Assets/master/img/livedemos/blog/editor.png" alt="" style="max-width:100%;"></a></p>
+<p>The Editor also adopts popular behavior in IDEs where <code>Tab</code> and <code>SHIFT+Tab</code> can be used to indent blocks of text and lines can be commented with
+<code>Ctrl+/</code> or blocks with <code>CTRL+SHIFT+/</code>.</p>
+<p>Another nice productivity win is being able to <code>CTRL+CLICK</code> on any Content you created to navigate to its Edit page.</p>
+<h3>
+<a id="user-content-auto-saved-drafts" class="anchor" href="#auto-saved-drafts" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Auto saved drafts</h3>
+<p>The content in each Text <code>input</code> and <code>textarea</code> is saved to <code>localStorage</code> on each key-press so you can freely reload pages and navigate
+around the site where all unpublished content will be preserved upon return.</p>
+<p>When you want to revert back to the original published content you can clear the text boxes and reload the page which will load content from
+the database instead of <code>localStorage</code>.</p>
+<h3>
+<a id="user-content-server-validation" class="anchor" href="#server-validation" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Server Validation</h3>
+<p>The <a href="https://github.com/NetCoreWebApps/Blog/blob/master/app/posts/new.html">new.html</a> and <a href="https://github.com/NetCoreWebApps/Blog/blob/master/app/posts/_slug/edit.html">edit.html</a> pages shows examples of performing server validation with ServiceStack Templates:</p>
+<div class="highlight highlight-text-html-handlebars"><pre><span class="pl-c1">{{</span> <span class="pl-v">assignErrorAndContinueExecuting</span>: <span class="pl-e"><span class="pl-v">ex</span></span> <span class="pl-c1">}}</span>
+
+<span class="pl-c1">{{</span> <span class="pl-s"><span class="pl-pds">'</span>Title must be between 5 and 200 characters<span class="pl-pds">'</span></span>      
+   | <span class="pl-e"><span class="pl-v">onlyIf</span></span>(<span class="pl-e"><span class="pl-v">length</span></span>(<span class="pl-e"><span class="pl-v">postTitle</span></span>) &lt; <span class="pl-e"><span class="pl-v">5</span></span> || <span class="pl-e"><span class="pl-v">length</span></span>(<span class="pl-e"><span class="pl-v">postTitle</span></span>) &gt; <span class="pl-e"><span class="pl-v">200</span></span>) | <span class="pl-e"><span class="pl-v">assignTo</span></span>: <span class="pl-e"><span class="pl-v">titleError</span></span> <span class="pl-c1">}}</span>
+<span class="pl-c1">{{</span> <span class="pl-s"><span class="pl-pds">'</span>Content must be between 25 and 64000 characters<span class="pl-pds">'</span></span> 
+   | <span class="pl-e"><span class="pl-v">onlyIf</span></span>(<span class="pl-e"><span class="pl-v">length</span></span>(<span class="pl-e"><span class="pl-v">content</span></span>) &lt; <span class="pl-e"><span class="pl-v">25</span></span>  || <span class="pl-e"><span class="pl-v">length</span></span>(<span class="pl-e"><span class="pl-v">content</span></span>) &gt; <span class="pl-e"><span class="pl-v">64000</span></span>) | <span class="pl-e"><span class="pl-v">assignTo</span></span>: <span class="pl-e"><span class="pl-v">contentError</span></span> <span class="pl-c1">}}</span>
+<span class="pl-c1">{{</span> <span class="pl-s"><span class="pl-pds">'</span>Potentially malicious characters detected<span class="pl-pds">'</span></span>       
+   | <span class="pl-e"><span class="pl-v">ifNotExists</span></span>(<span class="pl-e"><span class="pl-v">contentError</span></span>) | <span class="pl-e"><span class="pl-v">onlyIf</span></span>(<span class="pl-e"><span class="pl-v">containsXss</span></span>(<span class="pl-e"><span class="pl-v">content</span></span>)) | <span class="pl-e"><span class="pl-v">assignTo</span></span>: <span class="pl-e"><span class="pl-v">contentError</span></span> <span class="pl-c1">}}</span></pre></div>
+<p><a href="https://raw.githubusercontent.com/ServiceStack/Assets/master/img/livedemos/blog/server-validation.png" target="_blank" rel="nofollow"><img src="https://raw.githubusercontent.com/ServiceStack/Assets/master/img/livedemos/blog/server-validation.png" alt="" style="max-width:100%;"></a></p>
+<p>For more info see the docs on <a href="/docs/error-handling">Error Handling</a>.</p>
+<h3>
+<a id="user-content-live-previews" class="anchor" href="#live-previews" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Live Previews</h3>
+<p>Creating and Posting content benefit from Live Previews where its rendered output can be visualized in real-time before it's published.</p>
+<p>Any textarea can easily be enhanced to enable Live Preview by including the <code>data-livepreview</code> attribute with the element where the output
+should be rendered in, e.g:</p>
+<div class="highlight highlight-text-html-basic"><pre>&lt;<span class="pl-ent">textarea</span> <span class="pl-e">data-livepreview</span>=<span class="pl-s"><span class="pl-pds">"</span>.preview<span class="pl-pds">"</span></span>&gt;&lt;/<span class="pl-ent">textarea</span>&gt;
+&lt;<span class="pl-ent">div</span> <span class="pl-e">class</span>=<span class="pl-s"><span class="pl-pds">"</span>preview<span class="pl-pds">"</span></span>&gt;&lt;/<span class="pl-ent">div</span>&gt;</pre></div>
+<p>The implementation of which is surprisingly simple where the JavaScript snippet in
+<a href="https://github.com/NetCoreWebApps/Blog/blob/master/app/default.js">default.js</a> below is used to send its content on each change:</p>
+<div class="highlight highlight-source-js"><pre><span class="pl-c"><span class="pl-c">//</span> Enable Live Preview of new Content</span>
+textAreas <span class="pl-k">=</span> <span class="pl-c1">document</span>.<span class="pl-c1">querySelectorAll</span>(<span class="pl-s"><span class="pl-pds">"</span>textarea[data-livepreview]<span class="pl-pds">"</span></span>);
+<span class="pl-k">for</span> (<span class="pl-k">let</span> i <span class="pl-k">=</span> <span class="pl-c1">0</span>; i <span class="pl-k">&lt;</span> <span class="pl-smi">textAreas</span>.<span class="pl-c1">length</span>; i<span class="pl-k">++</span>) {
+  textAreas[i].<span class="pl-c1">addEventListener</span>(<span class="pl-s"><span class="pl-pds">"</span>input<span class="pl-pds">"</span></span>, livepreview, <span class="pl-c1">false</span>);
+  <span class="pl-en">livepreview</span>({ target<span class="pl-k">:</span> textAreas[i] });
+}
+
+<span class="pl-k">function</span> <span class="pl-en">livepreview</span>(<span class="pl-smi">e</span>) {
+  <span class="pl-k">let</span> el <span class="pl-k">=</span> <span class="pl-smi">e</span>.<span class="pl-c1">target</span>;
+  <span class="pl-k">let</span> sel <span class="pl-k">=</span> <span class="pl-smi">el</span>.<span class="pl-c1">getAttribute</span>(<span class="pl-s"><span class="pl-pds">"</span>data-livepreview<span class="pl-pds">"</span></span>);
+
+  <span class="pl-k">if</span> (<span class="pl-smi">el</span>.<span class="pl-c1">value</span>.<span class="pl-en">trim</span>() <span class="pl-k">==</span> <span class="pl-s"><span class="pl-pds">"</span><span class="pl-pds">"</span></span>) {
+    <span class="pl-c1">document</span>.<span class="pl-c1">querySelector</span>(sel).<span class="pl-smi">innerHTML</span> <span class="pl-k">=</span> <span class="pl-s"><span class="pl-pds">"</span>&lt;div&gt;Live Preview&lt;/div&gt;<span class="pl-pds">"</span></span>;
+    <span class="pl-k">return</span>;
+  }
+
+  <span class="pl-k">let</span> formData <span class="pl-k">=</span> <span class="pl-k">new</span> <span class="pl-en">FormData</span>();
+  <span class="pl-smi">formData</span>.<span class="pl-c1">append</span>(<span class="pl-s"><span class="pl-pds">"</span>content<span class="pl-pds">"</span></span>, <span class="pl-smi">el</span>.<span class="pl-c1">value</span>);
+
+  <span class="pl-en">fetch</span>(<span class="pl-s"><span class="pl-pds">"</span>/preview<span class="pl-pds">"</span></span>, {
+    method<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">"</span>post<span class="pl-pds">"</span></span>,
+    body<span class="pl-k">:</span> formData
+  }).<span class="pl-c1">then</span>(<span class="pl-k">function</span>(<span class="pl-smi">r</span>) { <span class="pl-k">return</span> <span class="pl-smi">r</span>.<span class="pl-c1">text</span>(); })
+    .<span class="pl-c1">then</span>(<span class="pl-k">function</span>(<span class="pl-smi">r</span>) { <span class="pl-c1">document</span>.<span class="pl-c1">querySelector</span>(sel).<span class="pl-smi">innerHTML</span> <span class="pl-k">=</span> r; });
+}</pre></div>
+<p>To the <a href="https://github.com/NetCoreWebApps/Blog/blob/master/app/preview.html">/preview.html</a> API Page which just renders and captures any
+Template Content its sent and returns the output:</p>
+<div class="highlight highlight-text-html-handlebars"><pre><span class="pl-c1">{{</span> <span class="pl-v">content</span>  | <span class="pl-e"><span class="pl-v">evalTemplate</span></span>({<span class="pl-e"><span class="pl-v">use</span></span>:{<span class="pl-e"><span class="pl-v">plugins</span></span>:<span class="pl-s"><span class="pl-pds">'</span>MarkdownTemplatePlugin<span class="pl-pds">'</span></span><span class="pl-c1">}}</span>) | assignTo:response }}
+<span class="pl-c1">{{</span> <span class="pl-v">response</span> | <span class="pl-e"><span class="pl-v">return</span></span>({ <span class="pl-e"><span class="pl-v">contentType</span></span>:<span class="pl-s"><span class="pl-pds">'</span>text/plain<span class="pl-pds">'</span></span> }) <span class="pl-c1">}}</span></pre></div>
+<p>By default the <code>evalTemplate</code> filter renders Templates in a new <code>TemplateContext</code> which can be customized to utilize any additional
+<code>plugins</code>, <code>filters</code> and <code>blocks</code> available in the configured <a href="/docs/view-engine">TemplatePagesFeature</a>,
+or for full access you can use <code>{use:{context:true}}</code> to evaluate any Template content under the same context that <code>evalTemplate</code> is run on.</p>
+</div>
