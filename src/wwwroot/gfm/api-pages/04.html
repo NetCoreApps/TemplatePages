@@ -9,7 +9,7 @@
 }
 <span class="pl-k">public</span> <span class="pl-k">class</span> <span class="pl-en">HelloService</span> : <span class="pl-en">Service</span>
 {
-    <span class="pl-k">public</span> <span class="pl-k">object</span> <span class="pl-en">Any</span>(<span class="pl-en">Hello</span> <span class="pl-smi">request</span>) <span class="pl-k">=&gt;</span> <span class="pl-s"><span class="pl-pds">$"</span>Hello, {<span class="pl-smi">request</span>.<span class="pl-smi">Name</span>}!<span class="pl-pds">"</span></span>;
+    <span class="pl-k">public</span> <span class="pl-k">object</span> <span class="pl-en">Any</span>(<span class="pl-en">Hello</span> <span class="pl-smi">request</span>) <span class="pl-k">=&gt;</span> <span class="pl-k">new</span> <span class="pl-en">HelloResponse</span> { <span class="pl-smi">Result</span> <span class="pl-k">=</span> <span class="pl-s"><span class="pl-pds">$"</span>Hello, {<span class="pl-smi">request</span>.<span class="pl-smi">Name</span>}!<span class="pl-pds">"</span></span> };
 }</pre></div>
 <h3>
 <a id="user-content-hello-api-page" class="anchor" href="#hello-api-page" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>/hello API Page</h3>
