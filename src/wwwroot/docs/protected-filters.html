@@ -82,8 +82,8 @@ order: 11
         page: 'page', 
         files: 
         { 
-            'page.html' : `{{ "https://raw.githubusercontent.com/NetCoreApps/TemplatePages/master/src/" | assignTo: src }}
-{{ src | append("wwwroot/code/linq01.txt") | includeUrl }}`
+            'page.html' : '{{ "https://raw.githubusercontent.com/NetCoreApps/TemplatePages/master/src" | assignTo: src }}
+{{ `${src}/wwwroot/code/linq01.txt` | includeUrl }}'
         } 
     }) 
 }}
