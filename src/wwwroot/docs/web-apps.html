@@ -152,8 +152,8 @@ order: 24
 </p>
 
 <ul>
-    <li><a href="https://github.com/NetCoreWebApps/Rockwind.Aws">Rockwind.Aws</a></li>
-    <li><a href="https://github.com/NetCoreWebApps/Rockwind.Azure">Rockwind.Azure</a></li>
+    <li><a href="https://github.com/NetCoreWebApps/rockwind-aws">rockwind-aws</a></li>
+    <li><a href="https://github.com/NetCoreWebApps/rockwind-azure">rockwind-azure</a></li>
 </ul>
 
 <h3 id="about-bare-webapp">About Bare WebApp</h3>
@@ -250,8 +250,8 @@ webRoot ~/../bare</code></pre>
 <h3>Redis HTML</h3>
 <div class="source">
     <a href="http://redis-html.web-app.io">redis-html.web-app.io</a> -
-    <a href="https://github.com/NetCoreWebApps/RedisHtml">NetCoreWebApps/RedisHtml</a> - 
-    <a href="https://github.com/NetCoreWebApps/RedisHtml/archive/master.zip">download.zip</a>
+    <a href="https://github.com/NetCoreWebApps/redis-html">NetCoreWebApps/redis-html</a> - 
+    <a href="https://github.com/NetCoreWebApps/redis-html/archive/master.zip">download.zip</a>
 </div>
 
 <p>
@@ -288,10 +288,10 @@ webRoot ~/../bare</code></pre>
 <p>
     The nice thing about generating HTML is that it's the one true constant in Web development that will always be there.
     The entire functionality for the Redis Web App is contained in a single
-    <a href="https://github.com/NetCoreWebApps/RedisHtml/blob/master/app/index.html">/RedisHtml/app/index.html</a> which includes
+    <a href="https://github.com/NetCoreWebApps/redis-html/blob/master/app/index.html">/redis-html/app/index.html</a> which includes
     all Template and JavaScript Source Code in <b>&lt; 200 lines</b> which also includes all as server logic as it doesn't rely on any 
     back-end Services and just uses the <a href="/docs/redis-filters">Redis Filters</a> to interface with Redis directly.
-    The <a href="https://github.com/NetCoreWebApps/RedisHtml/blob/master/app/index.html">source code</a> also serves as a good 
+    The <a href="https://github.com/NetCoreWebApps/redis-html/blob/master/app/index.html">source code</a> also serves as a good 
     demonstration of the declarative coding style that Templates encourages that in addition to being highly-readable requires orders 
     of magnitude less code than our previous Redis JavaScript SPA's with a comparable feature-set.
 </p>
@@ -302,7 +302,7 @@ webRoot ~/../bare</code></pre>
     that would be required to convert the existing JavaScript Apps to a use different JavaScript fx.
 </p>
 
-<h5><a href="https://github.com/NetCoreWebApps/RedisHtml/blob/master/app/web.settings">web.settings</a></h5>
+<h5><a href="https://github.com/NetCoreWebApps/redis-html/blob/master/app/web.settings">web.settings</a></h5>
 
 <p>
     The <em>web.settings</em> for Redis is similar to Web App Starter above except it adds a <em>redis.connection</em>
@@ -718,7 +718,7 @@ defaultFileCacheExpirySecs     60</code></pre>
 
 <h4 id="pure-cloud-apps">Pure Cloud Apps</h4>
 
-<h5><a href="https://github.com/NetCoreWebApps/Rockwind.Aws/blob/master/app/web.settings">Rockwind.Aws/web.settings</a></h5>
+<h5><a href="https://github.com/NetCoreWebApps/rockwind-aws/blob/master/app/web.settings">rockwind-aws/web.settings</a></h5>
 
 <p>
     The AWS settings shows an example of this where every external resource 
@@ -749,18 +749,18 @@ defaultFileCacheExpirySecs     60</code></pre>
     whilst <em>defaultFileCacheExpirySecs</em> specifies how long to cache files like <em>content.md</em> for.
 </p>
 
-<h5><a href="https://github.com/NetCoreWebApps/Rockwind.Aws/blob/master/Dockerfile">DockerFile</a></h5>
+<h5><a href="https://github.com/NetCoreWebApps/rockwind-aws/blob/master/Dockerfile">DockerFile</a></h5>
 
 <p>
     Deployments are also greatly simplified as all that's needed is to deploy the WebApp binary and web.settings of your Cloud App,
     e.g. here's the DockerFile for <a href="http://rockwind-aws.web-app.io">rockwind-aws.web-app.io</a> - deployed to AWS ECS 
-    using the deployment scripts in <a href="https://github.com/NetCoreWebApps/Rockwind.Aws">Rockwind.Aws</a> and following our 
+    using the deployment scripts in <a href="https://github.com/NetCoreWebApps/rockwind-aws">rockwind-aws</a> and following our 
     <a href="http://docs.servicestack.net/deploy-netcore-docker-aws-ecs">.NET Core Docker Deployment Guideline</a>:
 </p>
 
 {{ 'gfm/web-apps/03.md' | githubMarkdown }}
 
-<h5><a href="https://github.com/NetCoreWebApps/Rockwind.Azure/blob/master/app/web.settings">Rockwind.Azure/web.settings</a></h5>
+<h5><a href="https://github.com/NetCoreWebApps/rockwind-azure/blob/master/app/web.settings">rockwind-azure/web.settings</a></h5>
 
 <p>
     We can also create Azure Cloud Apps in the same we've done for AWS above, which runs the same 

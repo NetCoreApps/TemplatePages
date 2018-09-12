@@ -174,15 +174,15 @@ stopsignal=INT</code></pre>
 </p>
 
 <p>
-    The easiest way to set this up is to clone the <a href="https://github.com/NetCoreWebApps/Rockwind.Aws">Rockwind.Aws</a>
+    The easiest way to set this up is to clone the <a href="https://github.com/NetCoreWebApps/rockwind-aws">Rockwind.Aws</a>
     Web App which is preconfigured with a working scripts using Travis CI to package the Web App in a Docker container 
     and deploy it to AWS ECS.
-    In your local copy replace the <a href="https://github.com/NetCoreWebApps/Rockwind.Aws/tree/master/app">/app</a> folder with your
+    In your local copy replace the <a href="https://github.com/NetCoreWebApps/rockwind-aws/tree/master/app">/app</a> folder with your
     App files then you'll then change the url in the <em>Dockerfile</em> to point to a plain-text copy of your App's 
     <em>web.settings</em>, e.g:
 </p>
 
-<h5><a href="https://github.com/NetCoreWebApps/Rockwind.Aws/blob/master/Dockerfile">Dockerfile</a></h5>
+<h5><a href="https://github.com/NetCoreWebApps/rockwind-aws/blob/master/Dockerfile">Dockerfile</a></h5>
 
 {{ 'gfm/deploying-web-apps/02.md' | githubMarkdown }}
 
@@ -190,7 +190,7 @@ stopsignal=INT</code></pre>
     The only other file that needs to change is <em>deploy-envs.sh</em> to configure it to use your App's deployment settings:
 </p>
 
-<h5><a href="https://github.com/NetCoreWebApps/Rockwind.Aws/blob/master/deploy-envs.sh">deploy-envs.sh</a></h5>
+<h5><a href="https://github.com/NetCoreWebApps/rockwind-aws/blob/master/deploy-envs.sh">deploy-envs.sh</a></h5>
 
 {{ 'gfm/deploying-web-apps/03.md' | githubMarkdown }}
 
