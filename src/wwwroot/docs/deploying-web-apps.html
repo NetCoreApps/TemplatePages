@@ -4,7 +4,7 @@ order: 25
 -->
 
 <p>
-    As all <a href="/docs/web-apps">Web Apps</a> use the same pre-compiled <a href="https://github.com/NetCoreWebApps/Web">/web</a> binary, 
+    As all <a href="/docs/web-apps">Web Apps</a> use the same pre-compiled <a href="https://github.com/ServiceStack/Web">/web</a> binary, 
     deployment is greatly simplified as it only needs to be concerned with deploying static files and starting <em>web/app.dll</em> 
     with the App's <em>web.settings</em>. 
 </p>
@@ -54,7 +54,7 @@ sudo usermod -aG sudo deploy</code></pre>
 <p>
     You'll need to create a separate config file for each app in <em>/etc/supervisor/conf.d/</em>. 
     We can use the same template below for all 
-    <a href="https://github.com/NetCoreWebApps/WebApp/tree/master/src/apps">/apps</a> by replacing <em>bare</em>
+    <a href="https://github.com/ServiceStack/dotnet-app/tree/master/src/apps">/apps</a> by replacing <em>bare</em>
     with the name of the App and change <em>ASPNETCORE_URLS</em> with the port you want each App hosted on:
 </p>
 

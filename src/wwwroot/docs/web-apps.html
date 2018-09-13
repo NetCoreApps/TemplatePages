@@ -4,7 +4,7 @@ order: 24
 -->
 
 <p>
-    <a href="https://github.com/NetCoreWebApps/WebApp">Web Apps</a> are a new approach to dramatically simplify .NET Wep App development 
+    <a href="https://github.com/ServiceStack/dotnet-app">Web Apps</a> are a new approach to dramatically simplify .NET Wep App development 
     and provide the most productive development experience possible whilst maximizing reuse and component sharing. 
     They also open up a number of new use-cases for maintaining clean isolation between front-end and back-end development with
     front-end developers not needing any knowledge of C#/.NET to be able to develop UIs for high-performance .NET Web Apps. 
@@ -30,13 +30,13 @@ order: 24
 <p>
     All complexity with C#, .NET, namespaces, references, .dlls, strong naming, packages, MVC, Razor, build tools, IDE environments, etc 
     has been eliminated leaving all Web Developers needing to do is run a cross-platform 
-    <a href="https://github.com/NetCoreWebApps/Web">web/app.dll</a> .NET Core 2.1 executable and configure a simple 
-    <a href="https://github.com/NetCoreWebApps/WebApp/blob/master/src/apps/bare/web.settings">web.settings</a>    
+    <a href="https://github.com/ServiceStack/Web">web/app.dll</a> .NET Core 2.1 executable and configure a simple 
+    <a href="https://github.com/ServiceStack/dotnet-app/blob/master/src/apps/bare/web.settings">web.settings</a>    
     text file to specify which website folder to use, which ServiceStack features to enable, which db or redis providers to connect to, etc.
     Not needing to build also greatly simplifies deployments where multiple websites can be deployed with a 
-    <a href="https://github.com/NetCoreWebApps/WebApp/blob/master/src/WebApp/run.deploy.apps.sh">single rsync</a> or xcopy command or 
+    <a href="https://github.com/ServiceStack/dotnet-app/blob/master/src/WebApp/run.deploy.apps.sh">single rsync</a> or xcopy command or 
     if deploying your App in a Docker Container, you just need to 
-    <a href="https://github.com/NetCoreWebApps/WebApp/blob/master/Dockerfile">copy your website files</a>, or just the <em>web.settings</em>    
+    <a href="https://github.com/ServiceStack/dotnet-app/blob/master/Dockerfile">copy your website files</a>, or just the <em>web.settings</em>    
     if you're using an S3 or Azure Virtual File System.
 </p>
 
@@ -121,7 +121,7 @@ order: 24
 <p>
     All WebApps contains at least 2 folders, <a href="https://github.com/NetCoreTemplates/rockwind-webapp/tree/master/app">/app</a> containing 
     all source code and assets for your Web App and <a href="https://github.com/NetCoreTemplates/rockwind-webapp/tree/master/web">/web</a> 
-    containing a copy of the WebApp binaries from <a href="https://github.com/NetCoreWebApps/Web">ServiceStack/WebApp</a>. 
+    containing a copy of the WebApp binaries from <a href="https://github.com/ServiceStack/Web">ServiceStack/WebApp</a>. 
 </p>
     
 <p>
@@ -204,8 +204,8 @@ title: About Us
     Below is the <em>web.settings</em> for a Basic App, with <b>contentRoot</b> being the only setting required as the
     rest can be inferred but including the other relevant settings is both more descriptive to other developers as well
     making it easier to 
-    <a href="https://github.com/NetCoreWebApps/WebApp/blob/master/src/WebApp/run.deploy.apps.sh">use tools like sed</a> or 
-    <a href="https://github.com/NetCoreWebApps/WebApp/blob/master/src/WebApp/run.bare.ps1">powershell to replace them</a>    
+    <a href="https://github.com/ServiceStack/dotnet-app/blob/master/src/WebApp/run.deploy.apps.sh">use tools like sed</a> or 
+    <a href="https://github.com/ServiceStack/dotnet-app/blob/master/src/WebApp/run.bare.ps1">powershell to replace them</a>    
     during deployment.
 </p>
 
@@ -232,8 +232,8 @@ webRoot ~/../bare</code></pre>
     In addition to the templates there's a number of Web Apps to illustrate the various features available and to showcase the different 
     kind of Web Apps that can easily be developed. The source code for each app is available either individually from 
     <a href="https://github.com/NetCoreWebApps">github.com/NetCoreWebApps</a> or all combined in the same repo at
-    <a href="https://github.com/NetCoreWebApps/WebApp/tree/master/src/apps">NetCoreWebApps/WebApp/apps</a>. 
-    Each app runs the same unmodified <a href="https://github.com/NetCoreWebApps/Web">Web App Binary</a> that's also used in the 
+    <a href="https://github.com/ServiceStack/dotnet-app/tree/master/src/apps">NetCoreWebApps/WebApp/apps</a>. 
+    Each app runs the same unmodified <a href="https://github.com/ServiceStack/Web">Web App Binary</a> that's also used in the 
     Bare project above. 
 </p>
 
@@ -553,11 +553,11 @@ redis.connection localhost:6379</code></pre>
     multiple RDBMS's and <a href="http://docs.servicestack.net/virtual-file-system">Virtual File Systems</a> using just configuration.
 </p>
 
-<h5><a href="https://github.com/NetCoreWebApps/WebApp/blob/master/src/apps/rockwind/web.sqlite.settings">web.sqlite.settings</a></h5>
+<h5><a href="https://github.com/ServiceStack/dotnet-app/blob/master/src/apps/rockwind/web.sqlite.settings">web.sqlite.settings</a></h5>
 
 <p>
     SQLite uses a file system database letting you bundle your database with your App. So we can share the 
-    <a href="https://github.com/NetCoreWebApps/WebApp/tree/master/src/apps">northwind.sqlite</a> database across multiple Apps, 
+    <a href="https://github.com/ServiceStack/dotnet-app/tree/master/src/apps">northwind.sqlite</a> database across multiple Apps, 
     the <em>contentRoot</em> is set to the <em>/apps</em> directory which can only be accessed by your App, whilst
     the <em>webRoot</em> is configured to use the Web Apps folder that hosts all the publicly accessible files of your App.
 </p>
@@ -575,7 +575,7 @@ db.connection ~/northwind.sqlite</code></pre>
 
 <pre class="sh"><code>dotnet web/app.dll ../rockwind/web.sqlite.settings</code></pre>
 
-<h5><a href="https://github.com/NetCoreWebApps/WebApp/blob/master/src/apps/rockwind/web.sqlserver.settings">web.sqlserver.settings</a></h5>
+<h5><a href="https://github.com/ServiceStack/dotnet-app/blob/master/src/apps/rockwind/web.sqlserver.settings">web.sqlserver.settings</a></h5>
 
 <p>
     To switch to use the Northwind database in SQL Server we just need to update the configuration to point to a SQL Server database 
@@ -591,14 +591,14 @@ db sqlserver
 db.connection Server=localhost;Database=northwind;User Id=test;Password=test;</code></pre>
 
 <p>
-    The <a href="https://github.com/NetCoreWebApps/WebApp/tree/master/src/support/northwind-data">/support/northwind-data</a>
+    The <a href="https://github.com/ServiceStack/dotnet-app/tree/master/src/support/northwind-data">/support/northwind-data</a>
     project lets you quickly try out Rockwind against your local RDBMS by populating it with a copy of the Northwind database
     using the same <em>sqlserver</em> identifier and connection string from the App, e.g:
 </p>
 
 <pre class="sh"><code>dotnet run sqlserver "Server=localhost;Database=northwind;User Id=test;Password=test;"</code></pre>
 
-<h5><a href="https://github.com/NetCoreWebApps/WebApp/blob/master/src/apps/rockwind/web.mysql.settings">web.mysql.settings</a></h5>
+<h5><a href="https://github.com/ServiceStack/dotnet-app/blob/master/src/apps/rockwind/web.mysql.settings">web.mysql.settings</a></h5>
 
 <p>
     You can run against a MySql database in the same way as SQL Server above but using a MySql db connection string:
@@ -611,14 +611,14 @@ webRoot ~/../rockwind
 db mysql
 db.connection Server=localhost;Database=northwind;UID=root;Password=test</code></pre>
 
-<h5><a href="https://github.com/NetCoreWebApps/WebApp/blob/master/src/apps/rockwind/web.azure.settings">web.azure.settings</a></h5>
+<h5><a href="https://github.com/ServiceStack/dotnet-app/blob/master/src/apps/rockwind/web.azure.settings">web.azure.settings</a></h5>
 
 <p>
     The example Azure configuration is also configured to use a different Virtual File System where instead of sourcing 
     Web App files from the filesystem they're sourced from an 
     <a href="https://docs.microsoft.com/en-us/azure/storage/blobs/storage-dotnet-how-to-use-blobs">Azure Blob Container</a>.
     In this case we're not using any files from the App so we don't need to set a <em>contentRoot</em> or <em>webRoot</em> path.
-    This also means that for deployment we're just deploying the <a href="https://github.com/NetCoreWebApps/Web">WebApp</a>
+    This also means that for deployment we're just deploying the <a href="https://github.com/ServiceStack/Web">WebApp</a>
     binary with just this <em>web.settings</em> since both the Web App files and database are sourced remotely.
 </p>
 
@@ -636,9 +636,9 @@ checkForModifiedPagesAfterSecs 60
 defaultFileCacheExpirySecs     60</code></pre>
 
 <p>
-    The <a href="https://github.com/NetCoreWebApps/WebApp/tree/master/src/support/copy-files">/support/copy-files</a>
+    The <a href="https://github.com/ServiceStack/dotnet-app/tree/master/src/support/copy-files">/support/copy-files</a>
     project lets you run Rockwind against your own Azure Blob Container by populating it with a copy of the 
-    <a href="https://github.com/NetCoreWebApps/WebApp/tree/master/src/apps/rockwind">/rockwind</a> App's files using 
+    <a href="https://github.com/ServiceStack/dotnet-app/tree/master/src/apps/rockwind">/rockwind</a> App's files using 
     the same configuration above:
 </p>
 
@@ -671,11 +671,11 @@ defaultFileCacheExpirySecs     60</code></pre>
 <h3>Rockwind VFS</h3>
 <div class="source">
     <a href="http://rockwind-aws.web-app.io">rockwind-aws.web-app.io</a> -
-    <a href="https://github.com/NetCoreWebApps/WebApp/tree/master/src/apps/rockwind-vfs">/apps/rockwind-vfs</a>
+    <a href="https://github.com/ServiceStack/dotnet-app/tree/master/src/apps/rockwind-vfs">/apps/rockwind-vfs</a>
 </div>
 
 <p>
-    <a href="https://github.com/NetCoreWebApps/WebApp/tree/master/src/apps/rockwind-vfs">/rockwind-vfs</a> is a clone of
+    <a href="https://github.com/ServiceStack/dotnet-app/tree/master/src/apps/rockwind-vfs">/rockwind-vfs</a> is a clone of
     the Rockwind Web App with 3 differences: It uses the <em>resolveAsset</em> filter for each <em>.js</em>, <em>.css</em> and 
     <em>image</em> web asset so that it's able to generate external URLs directly to the S3 Bucket, Azure Blob Container or CDN 
     hosting a copy of your files to both reduce the load on your Web App and maximize the responsiveness to the end user.    
@@ -683,7 +683,7 @@ defaultFileCacheExpirySecs     60</code></pre>
 
 <p>
     To maximize responsiveness when using remote storage, all 
-    <a href="https://github.com/NetCoreWebApps/WebApp/blob/master/src/apps/rockwind-vfs/rockstars/alive/grohl/index.html">embedded files utilize caching</a>:
+    <a href="https://github.com/ServiceStack/dotnet-app/blob/master/src/apps/rockwind-vfs/rockstars/alive/grohl/index.html">embedded files utilize caching</a>:
 </p>
 
 <pre class="tpl"><code>{{ pass: "content.md" | includeFileWithCache | markdown }}</code></pre>
@@ -764,7 +764,7 @@ defaultFileCacheExpirySecs     60</code></pre>
 
 <p>
     We can also create Azure Cloud Apps in the same we've done for AWS above, which runs the same 
-    <a href="https://github.com/NetCoreWebApps/WebApp/tree/master/src/apps/rockwind-vfs">/rockwind-vfs</a>
+    <a href="https://github.com/ServiceStack/dotnet-app/tree/master/src/apps/rockwind-vfs">/rockwind-vfs</a>
     Web App but using an Azure hosted SQL Server database and its files hosted on Azure Blob Storage:
 </p>
 
@@ -805,9 +805,9 @@ defaultFileCacheExpirySecs     60</code></pre>
     <a href="http://templates.servicestack.net/docs/code-pages">Template Code Pages</a>,
     <a href="http://docs.servicestack.net/validation">Validators</a>, etc.
     contained within <b>.dll's</b> or <b>.exe's</b> dropped in a Web App's 
-    <a href="https://github.com/NetCoreWebApps/WebApp/tree/master/src/apps/plugins/plugins">/plugins</a> folder which are auto-registered 
+    <a href="https://github.com/ServiceStack/dotnet-app/tree/master/src/apps/plugins/plugins">/plugins</a> folder which are auto-registered 
     on startup. The source code for all plugins used in this App were built from the .NET Core 2.1 projects in the
-    <a href="https://github.com/NetCoreWebApps/WebApp/tree/master/src/example-plugins">/example-plugins</a> folder. The 
+    <a href="https://github.com/ServiceStack/dotnet-app/tree/master/src/example-plugins">/example-plugins</a> folder. The 
     <a href="http://plugins.web-app.io">plugins.web-app.io</a> Web App below walks through examples of using Custom Filters, 
     Services and Validators:
 </p>
@@ -842,7 +842,7 @@ ValidationFeature { ScanAppHostAssemblies: true }
 <h4>Custom Plugin</h4>
 
 <p>
-    In this case it tells our <a href="https://github.com/NetCoreWebApps/WebApp/blob/master/src/example-plugins/ServerInfo/CustomPlugin.cs">CustomPlugin</a>
+    In this case it tells our <a href="https://github.com/ServiceStack/dotnet-app/blob/master/src/example-plugins/ServerInfo/CustomPlugin.cs">CustomPlugin</a>
     from <b>/plugins/ServerInfo.dll</b> to also show Process Links in its
     <a href="http://plugins.web-app.io/metadata">/metadata</a> Page:
 </p>
@@ -860,7 +860,7 @@ ValidationFeature { ScanAppHostAssemblies: true }
 <p>
     It also tells the <em>ValidationFeature</em> to scan all Service Assemblies for Validators and to automatically register them
     which is how ServiceStack was able to find the
-    <a href="https://github.com/NetCoreWebApps/WebApp/blob/master/src/example-plugins/ServerInfo/ContactServices.cs">ContactValidator</a>
+    <a href="https://github.com/ServiceStack/dotnet-app/blob/master/src/example-plugins/ServerInfo/ContactServices.cs">ContactValidator</a>
     used to validate the <em>StoreContact</em> request.
 </p>
 
@@ -880,7 +880,7 @@ ValidationFeature { ScanAppHostAssemblies: true }
 
 <p>
     To simplify configuration you can use the `plugins/*` wildcard in 
-    <a href="https://github.com/NetCoreWebApps/WebApp/blob/master/src/apps/plugins2/web.settings">web.settings</a>
+    <a href="https://github.com/ServiceStack/dotnet-app/blob/master/src/apps/plugins2/web.settings">web.settings</a>
     at the end of an ordered plugin list to register all remaining Plugins it finds in the apps `/plugins` folder:
 </p>
 
@@ -894,8 +894,8 @@ CustomPlugin { ShowProcessLinks: true }
 </p>
 
 <p>
-    The <a href="https://github.com/NetCoreWebApps/WebApp/tree/master/src/apps/plugins2">/plugins2</a>  App shows an example of this with the 
-    <a href="https://github.com/NetCoreWebApps/WebApp/blob/master/src/example-plugins/ServerInfo/StartupPlugin.cs">StartupPlugin</a>
+    The <a href="https://github.com/ServiceStack/dotnet-app/tree/master/src/apps/plugins2">/plugins2</a>  App shows an example of this with the 
+    <a href="https://github.com/ServiceStack/dotnet-app/blob/master/src/example-plugins/ServerInfo/StartupPlugin.cs">StartupPlugin</a>
     registering a <em>StartupDep</em> dependency which is used by its <em>StartupServices</em> at runtime:
 </p>
 
@@ -931,10 +931,10 @@ CustomPlugin { ShowProcessLinks: true }
 <p>
     For <a href="http://chat.web-app.io">chat.web-app.io</a> we've taken a copy of the existing .NET Core 2.1 
     <a href="https://github.com/NetCoreApps/Chat">Chat App</a> and moved its C# code to
-    <a href="https://github.com/NetCoreWebApps/WebApp/tree/master/src/example-plugins/Chat">/example-plugins/Chat</a>
+    <a href="https://github.com/ServiceStack/dotnet-app/tree/master/src/example-plugins/Chat">/example-plugins/Chat</a>
     and its files to <a href="https://github.com/NetCoreWebApps/Chat/tree/master/app">/apps/chat</a> 
     where it can be developed like any other Web App except it utilizes the Chat AppHost and implementation in the 
-    <a href="https://github.com/NetCoreWebApps/WebApp/blob/master/src/example-plugins/Chat/Program.cs">SelfHost Chat App</a>.
+    <a href="https://github.com/ServiceStack/dotnet-app/blob/master/src/example-plugins/Chat/Program.cs">SelfHost Chat App</a>.
 </p>
 
 <p>
