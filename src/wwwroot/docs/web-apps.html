@@ -31,12 +31,12 @@ order: 24
     All complexity with C#, .NET, namespaces, references, .dlls, strong naming, packages, MVC, Razor, build tools, IDE environments, etc 
     has been eliminated leaving all Web Developers needing to do is run a cross-platform 
     <a href="https://github.com/ServiceStack/Web">web/app.dll</a> .NET Core 2.1 executable and configure a simple 
-    <a href="https://github.com/ServiceStack/dotnet-app/blob/master/src/apps/bare/web.settings">web.settings</a>    
+    <a href="https://github.com/ServiceStack/dotnet-app/blob/master/src/apps/bare/app.settings">app.settings</a>    
     text file to specify which website folder to use, which ServiceStack features to enable, which db or redis providers to connect to, etc.
     Not needing to build also greatly simplifies deployments where multiple websites can be deployed with a 
     <a href="https://github.com/ServiceStack/dotnet-app/blob/master/src/WebApp/run.deploy.apps.sh">single rsync</a> or xcopy command or 
     if deploying your App in a Docker Container, you just need to 
-    <a href="https://github.com/ServiceStack/dotnet-app/blob/master/Dockerfile">copy your website files</a>, or just the <em>web.settings</em>    
+    <a href="https://github.com/ServiceStack/dotnet-app/blob/master/Dockerfile">copy your website files</a>, or just the <em>app.settings</em>    
     if you're using an S3 or Azure Virtual File System.
 </p>
 
@@ -47,7 +47,7 @@ order: 24
     the <em>web/app.dll</em> running whilst you add the template <em>.html</em> files needed to build your App and thanks
     to the built-in <a href="/docs/hot-reloading">Hot Reloading</a> support, pages will refresh automatically as you save.
     You'll just need to do a full page refresh when modifying external .css/.js files to bypass the browser cache and
-    you'll need to restart <em>web/app.dll</em> to pick up any changes to your <em>web.settings</em> or added any 
+    you'll need to restart <em>web/app.dll</em> to pick up any changes to your <em>app.settings</em> or added any 
     .dlls to your <em>/plugins</em> folder.
 </p>
 
@@ -129,7 +129,7 @@ order: 24
     otherwise you can run from the command-line with:
 </p>
 
-<pre class="sh"><code>dotnet web/app.dll ../app/web.settings</code></pre>
+<pre class="sh"><code>dotnet web/app.dll ../app/app.settings</code></pre>
 
 <p>
     Once running you can view your App on <em>http://localhost:5000/</em> which you can keep running whilst developing your app
@@ -142,7 +142,7 @@ order: 24
     <em>/app</em> is an example of a single Web App, you can have multiple Web Apps in different folders and run any of them with:         
 </p>
 
-<pre class="sh"><code>dotnet web/app.dll ../&lt;app name&gt;/web.settings</code></pre>
+<pre class="sh"><code>dotnet web/app.dll ../&lt;app name&gt;/app.settings</code></pre>
 
 <h4>Cloud Apps Starter Projects</h4>
 
@@ -198,10 +198,10 @@ title: About Us
     with GUI HTML designers.
 </p>
 
-<h5><a href="https://github.com/NetCoreWebApps/Bare/blob/master/app/web.settings">web.settings</a></h5>
+<h5><a href="https://github.com/NetCoreWebApps/Bare/blob/master/app/app.settings">app.settings</a></h5>
 
 <p>
-    Below is the <em>web.settings</em> for a Basic App, with <b>contentRoot</b> being the only setting required as the
+    Below is the <em>app.settings</em> for a Basic App, with <b>contentRoot</b> being the only setting required as the
     rest can be inferred but including the other relevant settings is both more descriptive to other developers as well
     making it easier to 
     <a href="https://github.com/ServiceStack/dotnet-app/blob/master/src/WebApp/run.deploy.apps.sh">use tools like sed</a> or 
@@ -245,7 +245,7 @@ webRoot ~/../bare</code></pre>
     and run the <em>build</em> task. For any other text editor you can run the App with:
 </p>
 
-<pre class="sh"><code>dotnet web/app.dll ../app/web.settings</code></pre>
+<pre class="sh"><code>dotnet web/app.dll ../app/app.settings</code></pre>
 
 <h3>Redis HTML</h3>
 <div class="source">
@@ -302,10 +302,10 @@ webRoot ~/../bare</code></pre>
     that would be required to convert the existing JavaScript Apps to a use different JavaScript fx.
 </p>
 
-<h5><a href="https://github.com/NetCoreWebApps/redis-html/blob/master/app/web.settings">web.settings</a></h5>
+<h5><a href="https://github.com/NetCoreWebApps/redis-html/blob/master/app/app.settings">app.settings</a></h5>
 
 <p>
-    The <em>web.settings</em> for Redis is similar to Web App Starter above except it adds a <em>redis.connection</em>
+    The <em>app.settings</em> for Redis is similar to Web App Starter above except it adds a <em>redis.connection</em>
     to configure a <a href="https://github.com/ServiceStack/ServiceStack.Redis#redismanagerpool">RedisManagerPool</a> at the
     <a href="https://github.com/ServiceStack/ServiceStack.Redis#redis-connection-strings">connection string</a> provided
     as well as <a href="/docs/redis-filters">Redis Filters</a> to give Templates access to the Redis instance.
@@ -619,7 +619,7 @@ db.connection Server=localhost;Database=northwind;UID=root;Password=test</code><
     <a href="https://docs.microsoft.com/en-us/azure/storage/blobs/storage-dotnet-how-to-use-blobs">Azure Blob Container</a>.
     In this case we're not using any files from the App so we don't need to set a <em>contentRoot</em> or <em>webRoot</em> path.
     This also means that for deployment we're just deploying the <a href="https://github.com/ServiceStack/Web">WebApp</a>
-    binary with just this <em>web.settings</em> since both the Web App files and database are sourced remotely.
+    binary with just this <em>app.settings</em> since both the Web App files and database are sourced remotely.
 </p>
 
 <pre class="settings"><code># Note: values prefixed with '$' are resolved from Environment Variables
@@ -711,14 +711,14 @@ defaultFileCacheExpirySecs     60</code></pre>
 <p>
     ServiceStack asynchronously writes each file to the Response Stream with the last <em>Last-Modified</em> HTTP Header to 
     enable browser caching so it's still a workable solution but for optimal performance you can specify an <em>args.assetsBase</em>
-    in your web.settings to populate the assetsBase <em>TemplateContext</em> Argument the <em>resolveAsset</em> filter uses to generate
+    in your app.settings to populate the assetsBase <em>TemplateContext</em> Argument the <em>resolveAsset</em> filter uses to generate
     an external URL reference to the file on the remote storage service, reducing the load and improving the performance of your App, 
     especially if it's configured to use a CDN. 
 </p>
 
 <h4 id="pure-cloud-apps">Pure Cloud Apps</h4>
 
-<h5><a href="https://github.com/NetCoreWebApps/rockwind-aws/blob/master/app/web.settings">rockwind-aws/web.settings</a></h5>
+<h5><a href="https://github.com/NetCoreWebApps/rockwind-aws/blob/master/app/app.settings">rockwind-aws/app.settings</a></h5>
 
 <p>
     The AWS settings shows an example of this where every external resource 
@@ -752,7 +752,7 @@ defaultFileCacheExpirySecs     60</code></pre>
 <h5><a href="https://github.com/NetCoreWebApps/rockwind-aws/blob/master/Dockerfile">DockerFile</a></h5>
 
 <p>
-    Deployments are also greatly simplified as all that's needed is to deploy the WebApp binary and web.settings of your Cloud App,
+    Deployments are also greatly simplified as all that's needed is to deploy the WebApp binary and app.settings of your Cloud App,
     e.g. here's the DockerFile for <a href="http://rockwind-aws.web-app.io">rockwind-aws.web-app.io</a> - deployed to AWS ECS 
     using the deployment scripts in <a href="https://github.com/NetCoreWebApps/rockwind-aws">rockwind-aws</a> and following our 
     <a href="http://docs.servicestack.net/deploy-netcore-docker-aws-ecs">.NET Core Docker Deployment Guideline</a>:
@@ -760,7 +760,7 @@ defaultFileCacheExpirySecs     60</code></pre>
 
 {{ 'gfm/web-apps/03.md' | githubMarkdown }}
 
-<h5><a href="https://github.com/NetCoreWebApps/rockwind-azure/blob/master/app/web.settings">rockwind-azure/web.settings</a></h5>
+<h5><a href="https://github.com/NetCoreWebApps/rockwind-azure/blob/master/app/app.settings">rockwind-azure/app.settings</a></h5>
 
 <p>
     We can also create Azure Cloud Apps in the same we've done for AWS above, which runs the same 
@@ -819,7 +819,7 @@ defaultFileCacheExpirySecs     60</code></pre>
 <p>
     <a href="http://docs.servicestack.net/plugins">ServiceStack Plugins</a> can be added to your App by 
     listing it's Type Name in the <em>features</em> config entry in 
-    <a href="https://github.com/NetCoreWebApps/Plugins/tree/master/app/web.settings">web.settings</a>:
+    <a href="https://github.com/NetCoreWebApps/Plugins/tree/master/app/app.settings">app.settings</a>:
 </p>
 
 <pre class="settings"><code>debug true
@@ -880,7 +880,7 @@ ValidationFeature { ScanAppHostAssemblies: true }
 
 <p>
     To simplify configuration you can use the `plugins/*` wildcard in 
-    <a href="https://github.com/ServiceStack/dotnet-app/blob/master/src/apps/plugins2/web.settings">web.settings</a>
+    <a href="https://github.com/ServiceStack/dotnet-app/blob/master/src/apps/plugins2/app.settings">app.settings</a>
     at the end of an ordered plugin list to register all remaining Plugins it finds in the apps `/plugins` folder:
 </p>
 
@@ -961,7 +961,7 @@ CustomPlugin { ShowProcessLinks: true }
 
 <p>
     To account for these 2 modes we use <em>AddIfNotExists</em> to only register the <em>TemplatePagesFeature</em> plugin 
-    when running as a stand-alone App and add an additional constructor so it reuses the existing <em>web.settings</em> as its 
+    when running as a stand-alone App and add an additional constructor so it reuses the existing <em>app.settings</em> as its 
     <a href="http://docs.servicestack.net/appsettings">IAppSettings</a> provider for is custom App configuration like OAuth App keys 
     required for enabling Sign-In's via with Twitter, Facebook and GitHub when running on <em>http://localhost:5000</em>:        
 </p>
@@ -1001,7 +1001,7 @@ oauth.github.ClientSecret 42c8db8d0ca72a0ef202e0c197d1377670c990f4
 <h3 id="customizable-auth-providers">Customizable Auth Providers</h3>
 
 <p>
-    Authentication can now be configured using plain text config in your <em>web.settings</em> where initially you need register the <em>AuthFeature</em> 
+    Authentication can now be configured using plain text config in your <em>app.settings</em> where initially you need register the <em>AuthFeature</em> 
     <a href="http://templates.servicestack.net/docs/web-apps#registering-servicestack-plugins">plugin as normal</a> by specifying it in the 
     <em>features</em> list:
 </p>
@@ -1015,7 +1015,7 @@ oauth.github.ClientSecret 42c8db8d0ca72a0ef202e0c197d1377670c990f4
 <pre><code>AuthFeature.AuthProviders TwitterAuthProvider, GithubAuthProvider</code></pre>
 
 <p>
-    Each Auth Provider checks the Web Apps <em>web.settings</em> for its Auth Provider specific configuration it needs, e.g. to configure both 
+    Each Auth Provider checks the Web Apps <em>app.settings</em> for its Auth Provider specific configuration it needs, e.g. to configure both 
     Twitter and GitHub Auth Providers you would populate it with your 
     <a href="http://docs.servicestack.net/authentication-and-authorization#oauth-configuration">OAuth Apps details</a>:
 </p>
@@ -1042,7 +1042,7 @@ oauth.github.Scopes {GitHub Auth Scopes}</code></pre>
 <h3 id="Rich Template Config Arguments">Rich Template Config Arguments</h3>
 
 <p>
-    Any <em>web.settings</em> configs that are prefixed with <em>args.</em> are made available to Template Pages and any arguments starting with 
+    Any <em>app.settings</em> configs that are prefixed with <em>args.</em> are made available to Template Pages and any arguments starting with 
     a <em>{</em> or <em>[</em> are automatically converted into a JS object:
 </p>
 

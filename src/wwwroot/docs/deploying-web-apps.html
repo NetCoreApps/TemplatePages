@@ -6,7 +6,7 @@ order: 25
 <p>
     As all <a href="/docs/web-apps">Web Apps</a> use the same pre-compiled <a href="https://github.com/ServiceStack/Web">/web</a> binary, 
     deployment is greatly simplified as it only needs to be concerned with deploying static files and starting <em>web/app.dll</em> 
-    with the App's <em>web.settings</em>. 
+    with the App's <em>app.settings</em>. 
 </p>
 
 <h3>Deploying multiple Web Apps to Ubuntu</h3>
@@ -132,7 +132,7 @@ stopsignal=INT</code></pre>
 <h4>Create the deployment script</h4>
 
 <p>
-    We use <em>sed</em> in our deployment script to generate the release web.settings from each App's local <em>web.settings</em>    
+    We use <em>sed</em> in our deployment script to generate the release app.settings from each App's local <em>app.settings</em>    
     that we save in the <em>/web</em> folder that gets deployed with our apps. The main configuration to change is to set 
     <em>debug false</em> and to select a different port number which matches the port number used in its nginx configuration. 
     We can then use <em>rsync</em> to efficiently copy all <em>/app</em> and <em>/web</em> folders to our remote server and use 
@@ -179,7 +179,7 @@ stopsignal=INT</code></pre>
     and deploy it to AWS ECS.
     In your local copy replace the <a href="https://github.com/NetCoreWebApps/rockwind-aws/tree/master/app">/app</a> folder with your
     App files then you'll then change the url in the <em>Dockerfile</em> to point to a plain-text copy of your App's 
-    <em>web.settings</em>, e.g:
+    <em>app.settings</em>, e.g:
 </p>
 
 <h5><a href="https://github.com/NetCoreWebApps/rockwind-aws/blob/master/Dockerfile">Dockerfile</a></h5>

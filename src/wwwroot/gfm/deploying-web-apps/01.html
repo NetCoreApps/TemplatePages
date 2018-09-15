@@ -1,9 +1,9 @@
-<div class="gfm"><div class="highlight highlight-source-shell"><pre>cat ../apps/bare/web.settings <span class="pl-k">|</span> sed <span class="pl-s"><span class="pl-pds">"</span>/debug/s/ .*/ false/<span class="pl-pds">"</span></span> <span class="pl-k">&gt;</span> ../apps/web/web.bare.settings
-cat ../apps/blog/web.settings <span class="pl-k">|</span> sed <span class="pl-s"><span class="pl-pds">"</span>/debug/s/ .*/ false/<span class="pl-pds">"</span></span> <span class="pl-k">&gt;</span> ../apps/web/web.blog.settings
-cat ../apps/redis/web.settings <span class="pl-k">|</span> sed <span class="pl-s"><span class="pl-pds">"</span>/debug/s/ .*/ false/<span class="pl-pds">"</span></span> <span class="pl-k">&gt;</span> ../apps/web/web.redis.settings
+<div class="gfm"><div class="highlight highlight-source-shell"><pre>cat ../apps/bare/app.settings <span class="pl-k">|</span> sed <span class="pl-s"><span class="pl-pds">"</span>/debug/s/ .*/ false/<span class="pl-pds">"</span></span> <span class="pl-k">&gt;</span> ../apps/web/web.bare.settings
+cat ../apps/blog/app.settings <span class="pl-k">|</span> sed <span class="pl-s"><span class="pl-pds">"</span>/debug/s/ .*/ false/<span class="pl-pds">"</span></span> <span class="pl-k">&gt;</span> ../apps/web/web.blog.settings
+cat ../apps/redis/app.settings <span class="pl-k">|</span> sed <span class="pl-s"><span class="pl-pds">"</span>/debug/s/ .*/ false/<span class="pl-pds">"</span></span> <span class="pl-k">&gt;</span> ../apps/web/web.redis.settings
 cat ../apps/rockwind/web.sqlite.settings <span class="pl-k">|</span> sed <span class="pl-s"><span class="pl-pds">"</span>/debug/s/ .*/ false/<span class="pl-pds">"</span></span> <span class="pl-k">&gt;</span> ../apps/web/web.rockwind-sqlite.settings
 cat ../apps/rockwind-vfs/web.sqlite.settings <span class="pl-k">|</span> sed <span class="pl-s"><span class="pl-pds">"</span>/debug/s/ .*/ false/<span class="pl-pds">"</span></span> <span class="pl-k">&gt;</span> ../apps/web/web.rockwind-vfs-sqlite.settings
-cat ../apps/plugins/web.settings <span class="pl-k">|</span> sed <span class="pl-s"><span class="pl-pds">"</span>/debug/s/ .*/ false/<span class="pl-pds">"</span></span> <span class="pl-k">&gt;</span> ../apps/web/web.plugins.settings
+cat ../apps/plugins/app.settings <span class="pl-k">|</span> sed <span class="pl-s"><span class="pl-pds">"</span>/debug/s/ .*/ false/<span class="pl-pds">"</span></span> <span class="pl-k">&gt;</span> ../apps/web/web.plugins.settings
 cat ../apps/chat/web.release.settings <span class="pl-k">&gt;</span> ../apps/web/web.chat.settings
 
 rsync -avz -e <span class="pl-s"><span class="pl-pds">'</span>ssh<span class="pl-pds">'</span></span> ../apps deploy@web-app.io:/home/deploy

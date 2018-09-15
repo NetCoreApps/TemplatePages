@@ -3,7 +3,7 @@
     <span class="pl-k">public</span> <span class="pl-k">void</span> <span class="pl-en">Configure</span>(<span class="pl-en">IApplicationBuilder</span> <span class="pl-smi">app</span>, <span class="pl-en">IHostingEnvironment</span> <span class="pl-smi">env</span>, <span class="pl-en">ILoggerFactory</span> <span class="pl-smi">loggerFactory</span>)
     {
         loggerFactory.AddConsole();
-        <span class="pl-k">var</span> <span class="pl-en">appSettings </span>= <span class="pl-k">new</span> <span class="pl-en">TextFileSettings</span>(<span class="pl-s"><span class="pl-pds">"</span>~/../../apps/chat/web.settings<span class="pl-pds">"</span></span>.MapProjectPath());
+        <span class="pl-k">var</span> <span class="pl-en">appSettings </span>= <span class="pl-k">new</span> <span class="pl-en">TextFileSettings</span>(<span class="pl-s"><span class="pl-pds">"</span>~/../../apps/chat/app.settings<span class="pl-pds">"</span></span>.MapProjectPath());
         app.UseServiceStack(<span class="pl-k">new</span> <span class="pl-en">AppHost</span>(<span class="pl-en">appSettings</span>));
     }
 }
