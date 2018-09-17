@@ -93,8 +93,8 @@ Backticks strings implement <a href="https://developer.mozilla.org/en-US/docs/We
 which can be be used to embed expressions:
 
 {{ 'live-template' | partial({ rows:4, template: "{{ `Time is ${now}, expr= ${true ? pow(1+2,3) : ''}` }}
-Quoted String    {{ now.TimeOfDay | timeFormat('h\:mm\:ss') }}
-Template Literal {{ now.TimeOfDay | timeFormat(`h\\:mm\\:ss`) }}" }) }}
+Prime Quotes     {{ now.TimeOfDay | timeFormat(′h\\:mm\\:ss′) }}
+Template Literal {{ now.TimeOfDay | timeFormat(`h\\\\:mm\\\\:ss`) }}" }) }}
 
 The example above also shows the difference in escaping where Template literals evaluate escaped characters whilst normal strings 
 leave <em>\</em> backspaces unescaped.
@@ -107,17 +107,17 @@ leave <em>\</em> backspaces unescaped.
     You can use fat arrows <em>=></em> immediately after filters to define lambda's with an implicit <em>(it => ...)</em> binding, e.g:
 </p>
 
-{{ 'live-template' | partial({ template: "{{ [0,1,2,3,4,5]
+{{ 'live-template' | partial({ template: ′{{ [0,1,2,3,4,5]
    | where => it >= 3
-   | map => it + 10 | join(`\n`) }}" }) }}
+   | map => it + 10 | join(`\n`) }}′ }) }}
 
 <p>
     This is a shorthand for declaring lambda expressions with normal arrow expression syntax:
 </p>
 
-{{ 'live-template' | partial({ template: "{{ [0,1,2,3,4,5]
+{{ 'live-template' | partial({ template: ′{{ [0,1,2,3,4,5]
     | where(it => it >= 3)
-    | map(x => x + 10) | join(`\n`) }}" }) }}
+    | map(x => x + 10) | join(`\n`) }}′ }) }}
  
 <p>
     Using normal lambda expression syntax lets you rename lambda parameters as seen in the <em>map(x => ...)</em> example.
@@ -132,13 +132,13 @@ leave <em>\</em> backspaces unescaped.
     you can write:
 </p>
 
-{{ 'live-template' | partial({ template: "{{ [3,4,5] | select: { it | incrBy(10) }\n }}" }) }}
+{{ 'live-template' | partial({ template: "{{ [3,4,5] | select: { it | incrBy(10) }\\n }}" }) }}
 
 <p>
     and it will be rewritten into its equivalent and more verbose form of:
 </p>
 
-{{ 'live-template' | partial({ template: "{{ [3,4,5] | select(′{{ it | incrBy(10) }}\n′) }}" 
+{{ 'live-template' | partial({ template: "{{ [3,4,5] | select(′{{ it | incrBy(10) }}\\n′) }}" 
 }) }}
 
 <h4>SQL-like Boolean Expressions</h4>
