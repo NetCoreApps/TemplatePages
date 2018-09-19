@@ -553,7 +553,7 @@ redis.connection localhost:6379</code></pre>
     multiple RDBMS's and <a href="http://docs.servicestack.net/virtual-file-system">Virtual File Systems</a> using just configuration.
 </p>
 
-<h5><a href="https://github.com/ServiceStack/dotnet-app/blob/master/src/apps/rockwind/app.sqlite.settings">app.sqlite.settings</a></h5>
+<h4 id="app-sqlite-settings">app.sqlite.settings</h4>
 
 <p>
     SQLite uses a file system database letting you bundle your database with your App. So we can share the 
@@ -575,7 +575,7 @@ db.connection ~/northwind.sqlite</code></pre>
 
 <pre class="sh"><code>dotnet web/app.dll ../rockwind/app.sqlite.settings</code></pre>
 
-<h5><a href="https://github.com/ServiceStack/dotnet-app/blob/master/src/apps/rockwind/app.sqlserver.settings">app.sqlserver.settings</a></h5>
+<h5 id="app-sqlserver-settings">app.sqlserver.settings</h5>
 
 <p>
     To switch to use the Northwind database in SQL Server we just need to update the configuration to point to a SQL Server database 
@@ -587,7 +587,7 @@ db.connection ~/northwind.sqlite</code></pre>
 name Rockwind SQL Server Web App
 port 5000
 db sqlserver
-db.connection Server=localhost;Database=northwind;User Id=test;Password=test;MultipleActiveResultSets=True;</code></pre>
+db.connection Server=localhost;Database=northwind;User Id=test;Password=test;</code></pre>
 
 <p>
     The <a href="https://github.com/ServiceStack/dotnet-app/tree/master/src/support/northwind-data">/support/northwind-data</a>
@@ -597,7 +597,7 @@ db.connection Server=localhost;Database=northwind;User Id=test;Password=test;Mul
 
 <pre class="sh"><code>dotnet run sqlserver "Server=localhost;Database=northwind;User Id=test;Password=test;"</code></pre>
 
-<h5><a href="https://github.com/ServiceStack/dotnet-app/blob/master/src/apps/rockwind/app.mysql.settings">app.mysql.settings</a></h5>
+<h4 id="app-mysql-settings">app.mysql.settings</h4>
 
 <p>
     You can run against a MySql database in the same way as SQL Server above but using a MySql db connection string:
@@ -609,10 +609,11 @@ port 5000
 db mysql
 db.connection Server=localhost;Database=northwind;UID=root;Password=test;SslMode=none</code></pre>
 
-<h5><a href="https://github.com/ServiceStack/dotnet-app/blob/master/src/apps/rockwind/app.azure.settings">app.azure.settings</a></h5>
+<h4 id="app-azure-settings">app.azure.settings</h4>
 
 <p>
-    The example Azure configuration is also configured to use a different Virtual File System where instead of sourcing 
+    The example <a href="https://github.com/ServiceStack/dotnet-app/blob/master/src/apps/rockwind/app.azure.settings">app.azure.settings</a>
+    Azure configuration is also configured to use a different Virtual File System where instead of sourcing 
     Web App files from the filesystem they're sourced from an 
     <a href="https://docs.microsoft.com/en-us/azure/storage/blobs/storage-dotnet-how-to-use-blobs">Azure Blob Container</a>.
     In this case we're not using any files from the App so we don't need to set a <em>contentRoot</em> or <em>webRoot</em> path.
