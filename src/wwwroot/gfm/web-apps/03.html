@@ -1,8 +1,13 @@
-<div class="gfm"><div class="highlight highlight-source-dockerfile"><pre><span class="pl-k">FROM</span> microsoft/dotnet:2.1-aspnetcore-runtime
-<span class="pl-k">COPY</span> web /web
-<span class="pl-k">ADD</span> https://raw.githubusercontent.com/NetCoreWebApps/Rockwind.Aws/master/app/app.settings /web/app.settings
-<span class="pl-k">WORKDIR</span> /web
-<span class="pl-k">EXPOSE</span> 5000/tcp
-<span class="pl-k">ENV</span> ASPNETCORE_URLS https://*:5000
-<span class="pl-k">ENTRYPOINT</span> [<span class="pl-s">"dotnet"</span>, <span class="pl-s">"/web/app.dll"</span>]</pre></div>
+<div class="gfm"><div class="highlight highlight-source-dockerfile"><pre><span class="pl-k">FROM</span> microsoft/dotnet:2.1-sdk AS build-env
+<span class="pl-k">COPY</span> app /app
+<span class="pl-k">WORKDIR</span> /app
+<span class="pl-k">RUN</span> dotnet tool install -g web
+
+<span class="pl-c"><span class="pl-c">#</span> Build runtime image</span>
+<span class="pl-k">FROM</span> microsoft/dotnet:2.1-aspnetcore-runtime
+<span class="pl-k">WORKDIR</span> /app
+<span class="pl-k">COPY</span> --from=build-env /app app
+<span class="pl-k">COPY</span> --from=build-env /root/.dotnet/tools tools
+<span class="pl-k">ENV</span> ASPNETCORE_URLS http://*:5000
+<span class="pl-k">ENTRYPOINT</span> [<span class="pl-s">"/app/tools/web"</span>, <span class="pl-s">"app/app.settings"</span>]</pre></div>
 </div>
