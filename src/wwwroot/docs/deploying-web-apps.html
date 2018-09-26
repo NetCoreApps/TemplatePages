@@ -9,7 +9,7 @@ order: 25
     with the App's <em>app.settings</em>. 
 </p>
 
-<h3>Deploying multiple Web Apps to Ubuntu</h3>
+<h2>Deploying Web Apps to Ubuntu</h2>
 
 <p>
     A common way for reliably hosting .NET Core Apps on Ubuntu is to use <a href="http://supervisord.org/index.html">supervisor</a> 
@@ -19,176 +19,160 @@ order: 25
     <a href="https://github.com/ServiceStack/redis-windows#option-1-install-redis-on-ubuntu-on-windows">Installing Windows Subsystem for Linux (WSL)</a>.
 </p>
 
-<h4>Setup the deploy User Account</h4>
 
-<p>
-    We'll start by creating a dedicated user account for hosting and running your .NET Core Apps to mitigate potential abuse. 
-    SSH into your Ubuntu server and create the <em>deploy</em> user account with a <em>/home/deploy</em> home directory and add 
-    them to the <em>sudo</em> group:
-</p>
+{{#markdown}}
+### Setup the deploy User Account
 
-<pre class="sh"><code>sudo useradd -m deploy
-sudo usermod -aG sudo deploy</code></pre>
+Using a Unix command-line or [Windows Subsystem for Linux (WSL)](https://github.com/ServiceStack/redis-windows#option-1-install-redis-on-ubuntu-on-windows) 
+ssh into your remote server:
 
-<p>
-    For seamless deployments use <em>visudo</em> to allow <em>deploy</em> to run <em>supervisorctl</em> without
-    prompting for a password:
-</p>
+    $ ssh deploy@web-apps.io
 
-<pre class="txt"><code># Allow members of group sudo to execute any command
-%sudo   ALL=(ALL:ALL) ALL
-%deploy ALL=(ALL:ALL) NOPASSWD: /usr/bin/supervisorctl</code></pre>
+We'll start by creating a dedicated user account for hosting and running your .NET Core Apps to mitigate potential abuse. 
+SSH into your Ubuntu server and create the `deploy` user account with a `/home/deploy` home directory and add 
+them to the `sudo` group:
 
-<blockquote>
-    In vi type <em>i</em> to start editing a file and <em>ESC</em> to quit edit mode and <em>:wq</em> to save your changes before exiting.
-</blockquote>
+    sudo useradd -m deploy
+    sudo usermod -aG sudo deploy
 
-<h4>Setup supervisor</h4>
+For seamless deployments use `visudo` to allow `deploy` to run `supervisorctl` without
+prompting for a password:
 
-<p>
-    Install supervisor using apt-get:
-</p>
+    # Allow members of group sudo to execute any command
+    %sudo   ALL=(ALL:ALL) ALL
+    %deploy ALL=NOPASSWD: /usr/bin/supervisorctl, /home/deploy/.dotnet/tools/web
 
-<pre class="sh"><code>sudo apt-get install supervisor</code></pre>
+> In vi type `i` to start editing a file and `ESC` to quit edit mode and `:wq` to save your changes before exiting.
 
-<p>
-    You'll need to create a separate config file for each app in <em>/etc/supervisor/conf.d/</em>. 
-    We can use the same template below for all 
-    <a href="https://github.com/ServiceStack/dotnet-app/tree/master/src/apps">/apps</a> by replacing <em>bare</em>
-    with the name of the App and change <em>ASPNETCORE_URLS</em> with the port you want each App hosted on:
-</p>
+For simplifying the one-time setup, it's easier to sign-in as super user:
 
-<h5>/etc/supervisor/conf.d/web.bare.conf</h5>
+    $ sudo su -
 
-<pre class="txt"><code>[program:web-bare]
-command=/usr/bin/dotnet /home/deploy/apps/web/app.dll web.bare.settings
-directory=/home/deploy/apps/web
-autostart=true
-autorestart=true
-stderr_logfile=/var/log/web-bare.err.log
-stdout_logfile=/var/log/web-bare.out.log
-environment=ASPNETCORE_ENVIRONMENT=Production,ASPNETCORE_URLS="http://*:5001/"
-user=deploy
-stopsignal=INT</code></pre>
+#### Install the dotnet `web` tool:
 
-<blockquote>
-    When changing your supervisor .conf files you'll need to run <em>sudo supervisorctl update</em> to pick up any changes.
-</blockquote>
+    $ dotnet tool install -g web
 
-<h4>Setup nginx</h4>
+Change into the directory where want to install the app:
 
-<p>
-    You'll also need to create a separate config for each website on nginx in <em>/etc/nginx/sites-available/</em>. 
-    You can use the same template for each website but you'll need to change the <em>server_name</em> with the domain name
-    you want to use for the App and use the different port number for each App:
-</p>
+    $ cd /home/deploy/apps
 
-<h5>/etc/nginx/sites-available/bare.web-app.io</h5>
+Install your app from your GitHub project:
 
-<pre class="txt"><code>server {
-    listen       80;
-    server_name bare.web-app.io;
+    $ web install spirals --source mythz
 
-    location / {
-        proxy_pass http://localhost:5001;
-        proxy_http_version 1.1;
-        proxy_set_header Upgrade $http_upgrade;
-        proxy_set_header Connection keep-alive;
-        proxy_cache_bypass $http_upgrade;
-        proxy_set_header Host $host;
-        proxy_set_header X-Real-IP $remote_addr;
-        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-        proxy_set_header X-Forwarded-Proto $scheme;
-        proxy_buffering off;
-        proxy_ignore_client_abort off;
-        proxy_intercept_errors on;
+Optional, but you can test that your app runs without issues with:
 
-        client_max_body_size 500m;
-    }
-}</code></pre>
+    $ cd spirals && web
 
-<p>
-    You'll then need to create symlink for each website to tell nginx you want each website to be enabled:
-</p>
+#### Setup nginx
 
-<pre class="sh"><code>ln -s /etc/nginx/sites-available/bare.web-app.io /etc/nginx/sites-enabled/bare.web-app.io</code></pre>
+To setup the nginx reverse proxy for this website change into:
 
-<p>
-    After this we can tell nginx to reload its configuration, as there's nothing listening to <em>http://localhost:5001</em>
-    yet nginx will return a 502 Bad Gateway response, but will start working as soon as our deployed .NET Core Apps are up and running.
-</p>
+    $ cd /etc/nginx/sites-available/
 
-<pre class="sh"><code>/etc/init.d/nginx reload</code></pre>
+Then create an nginx website configuration template with:
 
-<h5>Setting up SSH keys</h5>
+    web init nginx
 
-<p>
-    We can now exit our remote Linux server and return to our local machine and prepare our deployment script. 
-    Before doing this we recommend 
-    <a href="https://www.digitalocean.com/community/tutorials/how-to-set-up-ssh-keys--2">setting up SSH and copying your SSH public key to your remote server</a>
-    which is both more secure and more convenient than using a password.
-</p>
+Rename it to the domain name you want to host it under:
 
-<h4>Create the deployment script</h4>
+    $ mv my-app.web-app.io spirals.web-app.io
 
-<p>
-    We use <em>sed</em> in our deployment script to generate the release app.settings from each App's local <em>app.settings</em>    
-    that we save in the <em>/web</em> folder that gets deployed with our apps. The main configuration to change is to set 
-    <em>debug false</em> and to select a different port number which matches the port number used in its nginx configuration. 
-    We can then use <em>rsync</em> to efficiently copy all <em>/app</em> and <em>/web</em> folders to our remote server and use 
-    ssh to run a remote command instructing <em>supervisorctl</em> to restart all its Services:
-</p>
+Edit the file and replace it to use your App settings:
 
-<h5>deploy.apps.sh</h5>
+    $ vi spirals.web-app.io
 
-{{ 'gfm/deploying-web-apps/01.md' | githubMarkdown }}
+Specifically you want to change the **domain name** and **port** you want to host it on which you can do quickly with the search/replace commands:
 
-<h4>Run the deployment script</h4>
+    :%s/my-app.web-app.io/spirals.web-app.io/g
+    :%s/5000/5009/g 
 
-<p>
-    To run the deployment script we need to make it executable before running it:
-</p>
+Then type `:wq` to quit vi. To enable the site in nginx we need to create a symbolic link in `/sites-enabled`:
 
-<pre class="sh"><code>chmod +x deploy.apps.sh
-./deploy.apps.sh</code></pre>
+    $ ln -s /etc/nginx/sites-available/spirals.web-app.io /etc/nginx/sites-enabled/spirals.web-app.io
 
-<p>
-    If all went well you'll be able to view each app using the domain name they've been configured with in nginx.     
-    Now whenever you need to redeploy again you'll only need to re-run <em>./deploy.apps.sh</em> which will only copy the files that
-    have changed before restarting all services. 
-</p>
+Then reload `nginx` to pick up changes:
 
-<p>
-    You can also choose to restart only the app that was changed by specifying its <em>program</em> name in 
-    <em>/etc/supervisor/conf.d/web.*.conf</em>, e.g:
-</p>
+    $ /etc/init.d/nginx reload
 
-<pre class="sh"><code>ssh deploy@web-app.io "sudo supervisorctl restart web-bare"</code></pre>
+#### Setup supervisor
 
-<h3>Using Travis CI to deploy using Docker to AWS ECS</h3>
+Now that we have our website configured with nginx we need to setup supervisor to start and monitor the .NET Core process by changing into:
 
-<p>
-    A popular combination for deploying .NET Core Apps is to use the online <a href="https://travis-ci.org">Travis CI</a> 
-    Continuous Integration Service to package your App in a Docker Container and deploy it to AWS ECS which takes care of
-    the management and deployment of Docker instances over a configured cluster of EC2 compute instances.
-</p>
+    $ cd /etc/supervisor/conf.d
 
-<p>
-    The easiest way to set this up is to clone the <a href="https://github.com/NetCoreWebApps/rockwind-aws">Rockwind.Aws</a>
-    Web App which is preconfigured with a working scripts using Travis CI to package the Web App in a Docker container 
-    and deploy it to AWS ECS.
-    In your local copy replace the <a href="https://github.com/NetCoreWebApps/rockwind-aws/tree/master/app">/app</a> folder with your
-    App files then you'll then change the url in the <em>Dockerfile</em> to point to a plain-text copy of your App's 
-    <em>app.settings</em>, e.g:
-</p>
+Then generate a supervisor configuration template with:
 
-<h5><a href="https://github.com/NetCoreWebApps/rockwind-aws/blob/master/Dockerfile">Dockerfile</a></h5>
+    $ web init supervisor
+
+Rename it to your Web App's folder name:
+
+    $ mv app.my-app.conf app.spirals.conf
+
+Then use vi to customize the configuration for your App: 
+
+    $ vi app.spirals.conf
+
+If your apps are located in `/home/deploy/apps/` then you can just run the Search/Replace rules:
+
+    :%s/my-app/spirals/g
+    :%s/5000/5009/g
+
+Which will change it to:
+
+    [program:app-spirals]
+    command=/home/deploy/.dotnet/tools/web --release
+    directory=/home/deploy/apps/spirals
+    autostart=true
+    autorestart=true
+    stderr_logfile=/var/log/app-spirals.err.log
+    stdout_logfile=/var/log/app-spirals.out.log
+    environment=ASPNETCORE_ENVIRONMENT=Production,ASPNETCORE_URLS="http://*:5009/"
+    user=deploy
+    stopsignal=INT
+
+> The `--release` flag overrides **debug** in `app.settings` so it's always run in release mode.
+
+After reviewing the changes, tell supervisor to register and start the supervisor process with:
+
+    $ supervisorctl update
+
+Where your website will now be up and running at: [spirals.web-app.io](http://spirals.web-app.io).
+
+### Deploying Updates
+
+After the one-time setup above, updating Web Apps are more easily done with:
+
+    $ cd /home/deploy/apps
+    $ sudo /home/deploy/.dotnet/tools/web install spirals --source mythz
+    $ sudo supervisorctl restart app-spirals
+
+Which can also be deployed from the Windows Command Prompt using a remote SSH command by combining the above commands in a `deploy-spirals.sh` text file:
+
+    ssh -t deploy@web-app.io "cd /home/deploy/apps && sudo /home/deploy/.dotnet/tools/web install spirals --source mythz && sudo supervisorctl restart app-spirals"
+
+Where App updates can then be performed with a single WSL bash command from the Windows Command Prompt:
+
+    $ bash deploy-spirals.sh
+
+### Using Travis CI to deploy using Docker to AWS ECS
+
+A popular combination for deploying .NET Core Apps is to use the online [Travis CI](https://travis-ci.org)
+Continuous Integration Service to package your App in a Docker Container and deploy it to AWS ECS which takes care of
+the management and deployment of Docker instances over a configured cluster of EC2 compute instances.
+
+The easiest way to set this up is to clone the [rockwind-aws](https://github.com/NetCoreWebApps/rockwind-aws)
+Web App which is preconfigured with a working scripts using Travis CI to package the Web App in a Docker container 
+and deploy it to AWS ECS. In your local copy replace the 
+[/app](https://github.com/NetCoreWebApps/rockwind-aws/tree/master/app) folder with your App files, e.g:
+
+#### [Dockerfile](https://github.com/NetCoreWebApps/rockwind-aws/blob/master/Dockerfile)
+
+{{/markdown}}
 
 {{ 'gfm/deploying-web-apps/02.md' | githubMarkdown }}
 
-<p>
-    The only other file that needs to change is <em>deploy-envs.sh</em> to configure it to use your App's deployment settings:
-</p>
+The only other file that needs to change is <em>deploy-envs.sh</em> to configure it to use your App's deployment settings:
 
 <h5><a href="https://github.com/NetCoreWebApps/rockwind-aws/blob/master/deploy-envs.sh">deploy-envs.sh</a></h5>
 
@@ -206,5 +190,11 @@ stopsignal=INT</code></pre>
     to store your <em>AWS_ACCOUNT_ID</em>, <em>AWS_ACCESS_KEY</em> and <em>AWS_SECRET_KEY</em> as well as any sensitive info and 
     connection strings your App uses.
 </p>
+
+<h2>Let us know what you create!</h2>
+
+We hope you're excited about these new features as we are and can't wait to see what you build with them - please 
+<a href="https://gist.github.com/gistlyn/f555677c98fb235dccadcf6d87b9d098#gistcomment-2704297">share them with us</a>
+so we can include it in the App Gallery and make it easy for everyone else to discover and use.
 
 {{ "doc-links" | partial({ order }) }}
