@@ -55,7 +55,100 @@ order: 24
 <h2>Getting Started</h2>
 
 <p>
-    The easiest way to get started is to from one of the project templates below. All project templates can be installed using the
+    All Web Apps can be run either as .NET Core Web Apps by installing the <em>web</em> dotnet tool:
+</p>
+
+<pre class="sh"><code>$ dotnet tool install -g web</code></pre>
+
+Then you can run <em>web list</em> to see which apps are available to install:
+
+<pre class="sh"><code>$ web list</code></pre>
+
+<p>
+    By default this will list all <a href="https://github.com/NetCoreWebApps">NetCoreWebApps</a> available, ordered by popularity: 
+</p>
+
+<pre class="sh"><code>1. redis           Redis Admin Viewer developed as Vue Client Single Page App
+2. bare            Bootstrap + jQuery multi-page Website with dynamic Menu Navigation + API pages
+3. chat            Highly extensible App with custom AppHost leveraging OAuth + SSE for real-time Chat
+4. plugins         Extend WebApps with Plugins, Filters, ServiceStack Services and other C# extensions
+5. blog            Minimal multi-user Twitter OAuth blogging platform that creates living powerful pages
+6. rockwind-aws    Rockwind Cloud Web App on AWS
+7. rockwind-azure  Rockwind Cloud Web App on Azure
+8. redis-html      Redis Admin Viewer developed as server-generated HTML Website
+9. spirals         Explore and generate different Spirals with SVG
+10. rockwind        Web App combining multi-layout Rockstars website + data-driven Northwind Browser
+
+Usage: web install &lt;name&gt;</code></pre>
+
+<p>
+    Where any of the apps can be installed by specifying the <b>name</b>, e.g. 
+    <a href="https://github.com/NetCoreWebApps/spirals">spirals</a> can be installed with:
+</p>
+
+<pre class="sh"><code>$ web install spirals</code></pre>
+
+<p>
+    Then to run any app, change into its installed directory and run <em>web</em> without any arguments:
+</p>
+
+<pre class="sh"><code>$ cd spirals && web</code></pre>
+
+<p>
+    Each Web App can also be run as a 
+    <a href="http://docs.servicestack.net/netcore-windows-desktop">.NET Core Windows Desktop App</a>
+    by installing the <em>app</em> dotnet tool:
+</p>
+
+<pre class="sh"><code>$ dotnet tool install -g app</code></pre>
+
+<p>
+    Then running the Web App with <em>app</em> instead of <em>web</em>.
+</p>
+
+<pre class="sh"><code>$ app</code></pre>
+
+<h3>Spirals</h3>
+<div class="source">
+    <em>web install spirals</em> -
+    <a href="http://spirals.web-app.io">spirals.web-app.io</a> -
+    <a href="https://github.com/mythz/spirals">mythz/spirals</a>
+</div>
+
+<p>
+    Spirals is a good example showing how easy it is to create .NET Core Desktop Web Apps utilizing HTML5's familiar and simple development 
+    model to leverage advanced Web Technologies like SVG in a fun, interactive and live development experience.
+</p>
+
+<a name="videos"></a>
+<p class="videos">
+    <style>
+        .youtube-viewer:hover {
+            opacity: 0.8;
+            cursor: pointer;
+        }
+    </style>
+    <div class="youtube-viewer" data-video="https://www.youtube.com/embed/Cf-vstYXrmY">
+        <img style="position:absolute; width:100px; margin:310px 0 0 390px" src="https://servicestack.net/img/youtube-play.png"/>
+        <img width="880" src="/assets/img/screenshots/spirals.png">
+    </div>
+    <script>
+        document.querySelector('.youtube-viewer').addEventListener('click', function () {
+            var video = '<iframe width="880" height="495" src="' + $(this).attr('data-video') + '?autoplay=1" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>';
+            this.innerHTML = video;
+        });
+    </script>
+</p>
+
+<p>
+    See the <a href="https://github.com/mythz/spirals#the-making-of-spirals">Making of Spirals</a> for a walk through on how to create
+    the Spirals Web App from scratch.
+</p>
+
+<h3 id="project-templates">WebApp Project Templates</h3>
+
+<p>
+    A more complete starting option is to start from one of the project templates below. All project templates can be installed using the
     <a href="http://docs.servicestack.net/dotnet-new">dotnet-new</a> tool, which if not already can be installed with:
 </p>
 
@@ -99,51 +192,6 @@ order: 24
     This enables an extensibile .NET Core Web App with an integrated Parcel bundler to enable building sophisticated JavaScript
     Apps out-of-the-box within a live development environment.
 </p>
-
-<h3 id="rockwind-webapp">Rockwind WebApp</h3>
-
-<a href="https://github.com/NetCoreTemplates/rockwind-webapp"><img src="https://raw.githubusercontent.com/ServiceStack/Assets/master/csharp-templates/rockwind-webapp.png" alt=""></a>
-
-<p>
-    To start with a working example of a data-driven and content heavy WebApp, create a new 
-    <a href="https://github.com/NetCoreTemplates/rockwind-webapp">rockwind-webapp</a> project:
-</p>
-
-<pre class="sh"><code>$ dotnet-new rockwind-webapp ProjectName</code></pre>
-
-<p>
-    This creates a "Kitchen Sink Project" that showcases a number of different features in a single App, including a Rockstars Content-heavy
-    Website with a mix of content maintained in both HTML and Markdown that makes use of multiple layouts, dynamic Data-driven Web Pages
-    to browse the Northwind Database, <a href="/docs/api-pages">API Pages</a>, Paged Based Routing, Order Report and SQL Studio use-case examples.
-</p>
-
-<h3 id="about-webapp-templates">About WebApp Project Templates</h3>
-
-<p>
-    All WebApps contains at least 2 folders, <a href="https://github.com/NetCoreTemplates/rockwind-webapp/tree/master/app">/app</a> containing 
-    all source code and assets for your Web App and <a href="https://github.com/NetCoreTemplates/rockwind-webapp/tree/master/web">/web</a> 
-    containing a copy of the WebApp binaries from <a href="https://github.com/ServiceStack/Web">ServiceStack/WebApp</a>. 
-</p>
-    
-<p>
-    All projects can be run from Windows, OSX and Linux. On VS Code you can type <em>Ctrl+Shift+B</em> to run the configured <em>build</em> task, 
-    otherwise you can run from the command-line with:
-</p>
-
-<pre class="sh"><code>dotnet web/app.dll ../app/app.settings</code></pre>
-
-<p>
-    Once running you can view your App on <em>http://localhost:5000/</em> which you can keep running whilst developing your app
-    which will reload the page you're currently viewing on each file save using the built-in <a href="/docs/hot-reloading">Hot Reloading</a>.
-</p>
-
-<h4>Running multiple WebApps in a single Project</h4>
-
-<p>
-    <em>/app</em> is an example of a single Web App, you can have multiple Web Apps in different folders and run any of them with:         
-</p>
-
-<pre class="sh"><code>dotnet web/app.dll ../&lt;app name&gt;/app.settings</code></pre>
 
 <h4>Cloud Apps Starter Projects</h4>
 
@@ -233,99 +281,6 @@ webRoot ~/../bare</code></pre>
     In addition to the templates there's a number of Web Apps to illustrate the various features available and to showcase the different 
     kind of Web Apps that can easily be developed. The source code for each app is available either individually from 
     <a href="https://github.com/NetCoreWebApps">github.com/NetCoreWebApps</a>. 
-</p>
-
-<h4>Installing and Running Web Apps</h4>
-
-<p>
-    All Web Apps can be run either as .NET Core Web Apps by installing the <em>web</em> dotnet tool:
-</p>
-
-<pre class="sh"><code>$ dotnet tool install -g web</code></pre>
-
-Then you can run <em>web list</em> to see which apps are available to install:
-
-<pre class="sh"><code>$ web list</code></pre>
-
-<p>
-    By default this will list all <a href="https://github.com/NetCoreWebApps">NetCoreWebApps</a> available, ordered by popularity: 
-</p>
-
-<pre class="sh"><code>1. redis           Redis Admin Viewer developed as Vue Client Single Page App
-2. bare            Bootstrap + jQuery multi-page Website with dynamic Menu Navigation + API pages
-3. chat            Highly extensible App with custom AppHost leveraging OAuth + SSE for real-time Chat
-4. plugins         Extend WebApps with Plugins, Filters, ServiceStack Services and other C# extensions
-5. blog            Minimal multi-user Twitter OAuth blogging platform that creates living powerful pages
-6. rockwind-aws    Rockwind Cloud Web App on AWS
-7. rockwind-azure  Rockwind Cloud Web App on Azure
-8. redis-html      Redis Admin Viewer developed as server-generated HTML Website
-9. spirals         Explore and generate different Spirals with SVG
-10. rockwind        Web App combining multi-layout Rockstars website + data-driven Northwind Browser
-
-Usage: web install &lt;name&gt;</code></pre>
-
-<p>
-    Where any of the apps can be installed by specifying the <b>name</b>, e.g. 
-    <a href="https://github.com/NetCoreWebApps/spirals">spirals</a> can be installed with:
-</p>
-
-<pre class="sh"><code>$ web install spirals</code></pre>
-
-<p>
-    Then to run any app, change into its installed directory and run <em>web</em> without any arguments:
-</p>
-
-<pre class="sh"><code>$ cd spirals && web</code></pre>
-
-<p>
-    Each Web App can also be run as a 
-    <a href="http://docs.servicestack.net/netcore-windows-desktop">.NET Core Windows Desktop App</a>
-    by installing the <em>app</em> dotnet tool:
-</p>
-
-<pre class="sh"><code>$ dotnet tool install -g app</code></pre>
-
-<p>
-    Then running the Web App with <em>app</em> instead of <em>web</em>.
-</p>
-
-<pre class="sh"><code>$ app</code></pre>
-
-<h3>Spirals</h3>
-<div class="source">
-    <em>web install spirals</em> -
-    <a href="http://spirals.web-app.io">spirals.web-app.io</a> -
-    <a href="https://github.com/mythz/spirals">mythz/spirals</a>
-</div>
-
-<p>
-    Spirals is a good example showing how easy it is to create .NET Core Desktop Web Apps utilizing HTML5's familiar and simple development 
-    model to leverage advanced Web Technologies like SVG in a fun, interactive and live development experience.
-</p>
-
-<a name="videos"></a>
-<p class="videos">
-    <style>
-        .youtube-viewer:hover {
-            opacity: 0.8;
-            cursor: pointer;
-        }
-    </style>
-    <div class="youtube-viewer" data-video="https://www.youtube.com/embed/Cf-vstYXrmY">
-        <img style="position:absolute; width:100px; margin:310px 0 0 390px" src="https://servicestack.net/img/youtube-play.png"/>
-        <img width="880" src="/assets/img/screenshots/spirals.png">
-    </div>
-    <script>
-        document.querySelector('.youtube-viewer').addEventListener('click', function () {
-            var video = '<iframe width="880" height="495" src="' + $(this).attr('data-video') + '?autoplay=1" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>';
-            this.innerHTML = video;
-        });
-    </script>
-</p>
-
-<p>
-    See the <a href="https://github.com/mythz/spirals#the-making-of-spirals">Making of Spirals</a> for a walk through on how to create
-    the Spirals Web App from scratch.
 </p>
 
 <h3>Redis HTML</h3>

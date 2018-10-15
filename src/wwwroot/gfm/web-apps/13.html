@@ -1,5 +1,4 @@
-<div class="gfm">
-<p>The Parcel WebApp template is maintained in the following directory structure:</p>
+<div class="gfm"><p>The Parcel WebApp template is maintained in the following directory structure:</p>
 <ul>
 <li>
 <code>/app</code> - Your Web App's published source code and any plugins</li>
@@ -71,16 +70,16 @@ which will automatically reload your web page as it detects any file changes mad
 <div class="highlight highlight-source-ts"><pre><span class="pl-k">import</span> { <span class="pl-smi">client</span> } <span class="pl-k">from</span> <span class="pl-s"><span class="pl-pds">"</span>./shared<span class="pl-pds">"</span></span>;
 <span class="pl-k">import</span> { <span class="pl-smi">Hello</span>, <span class="pl-smi">HelloResponse</span> } <span class="pl-k">from</span> <span class="pl-s"><span class="pl-pds">"</span>./dtos<span class="pl-pds">"</span></span>;
 
-<span class="pl-k">const</span> result <span class="pl-k">=</span> <span class="pl-c1">document</span>.<span class="pl-c1">querySelector</span>(<span class="pl-s"><span class="pl-pds">"</span>#result<span class="pl-pds">"</span></span>)<span class="pl-k">!</span>;
+<span class="pl-k"><span class="pl-k">const</span></span> result <span class="pl-k">=</span> <span class="pl-c1">document</span>.<span class="pl-c1">querySelector</span>(<span class="pl-s"><span class="pl-pds">"</span>#result<span class="pl-pds">"</span></span>)<span class="pl-k">!</span>;
 
 <span class="pl-c1">document</span>.<span class="pl-c1">querySelector</span>(<span class="pl-s"><span class="pl-pds">"</span>#Name<span class="pl-pds">"</span></span>)<span class="pl-k">!</span>.<span class="pl-c1">addEventListener</span>(<span class="pl-s"><span class="pl-pds">"</span>input<span class="pl-pds">"</span></span>, <span class="pl-k">async</span> <span class="pl-v">e</span> <span class="pl-k">=&gt;</span> {
-  <span class="pl-k">const</span> value <span class="pl-k">=</span> (<span class="pl-smi">e</span>.<span class="pl-c1">target</span> <span class="pl-k">as</span> <span class="pl-en">HTMLInputElement</span>).<span class="pl-c1">value</span>;
+  <span class="pl-k"><span class="pl-k">const</span></span> value <span class="pl-k">=</span> (<span class="pl-smi">e</span>.<span class="pl-c1">target</span> <span class="pl-k">as</span> <span class="pl-en">HTMLInputElement</span>).<span class="pl-c1">value</span>;
   <span class="pl-k">if</span> (<span class="pl-smi">value</span> <span class="pl-k">!=</span> <span class="pl-s"><span class="pl-pds">"</span><span class="pl-pds">"</span></span>) {
-    <span class="pl-k">const</span> request <span class="pl-k">=</span> <span class="pl-k">new</span> <span class="pl-en">Hello</span>();
+    <span class="pl-k"><span class="pl-k">const</span></span> request <span class="pl-k">=</span> <span class="pl-k">new</span> <span class="pl-en">Hello</span>();
     <span class="pl-smi">request</span>.<span class="pl-c1">name</span> <span class="pl-k">=</span> <span class="pl-smi">value</span>;
-    <span class="pl-k">const</span> response <span class="pl-k">=</span> <span class="pl-k">await</span> <span class="pl-smi">client</span>.<span class="pl-c1">get</span>(<span class="pl-smi">request</span>);
+    <span class="pl-k"><span class="pl-k">const</span></span> response <span class="pl-k">=</span> <span class="pl-k">await</span> <span class="pl-smi">client</span>.<span class="pl-c1">get</span>(<span class="pl-smi">request</span>);
     <span class="pl-c"><span class="pl-c">//</span> const response = await client.get&lt;HelloResponse&gt;(`/hello/${request.name}`); //call /hello/_name.html</span>
-<span class="pl-c"></span>    <span class="pl-smi">result</span>.<span class="pl-smi">innerHTML</span> <span class="pl-k">=</span> <span class="pl-smi">response</span>.<span class="pl-smi">result</span>;
+    <span class="pl-smi">result</span>.<span class="pl-smi">innerHTML</span> <span class="pl-k">=</span> <span class="pl-smi">response</span>.<span class="pl-smi">result</span>;
   } <span class="pl-k">else</span> {
     <span class="pl-smi">result</span>.<span class="pl-smi">innerHTML</span> <span class="pl-k">=</span> <span class="pl-s"><span class="pl-pds">"</span><span class="pl-pds">"</span></span>;
   }
