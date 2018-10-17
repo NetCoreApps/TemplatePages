@@ -109,10 +109,10 @@ Powers of 2      = {{ 10 | times | select: { it + 1 | pow(2) }, }}` }) }}
     Use format filters to customize how values are formatted:
 </p>
 
-{{ 'live-template' | partial({ rows: 4, template: "USD {{ 12.34 | currency }} GBP {{ 12.34 | currency('en-GB') }} EUR {{ 12.34 | currency('FR') }}
+{{ 'live-template' | partial({ rows: 4, template: ′USD {{ 12.34 | currency }} GBP {{ 12.34 | currency('en-GB') }} EUR {{ 12.34 | currency('FR') }}
 Number: {{ 123.456 | format('0.##') }} Currency: {{ 123.456 | format('C') }}
 Date: {{ now | dateFormat('dddd, MMMM d, yyyy') }} default: {{ now | dateFormat }}
-Time: {{ now.TimeOfDay | timeFormat('h\:mm') }} default: {{ now.TimeOfDay | timeFormat }}" }) }}
+Time: {{ now.TimeOfDay | timeFormat('h\\:mm') }} default: {{ now.TimeOfDay | timeFormat }}′ }) }}
 
 <p>
     When no format provided, the default TemplateConstant's formats are used:
