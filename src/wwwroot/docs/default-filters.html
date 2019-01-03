@@ -476,7 +476,7 @@ var escapeLines = '{{ "new" | appendLine | append("line") | escapeNewLines }}';â
     E.g. you can evaluate dynamic Template Syntax which makes use of the <em>MarkdownTemplatePlugin</em> plugin with:
 </p>
 
-<code>{{#raw}}{{ content  | evalTemplate({use:{plugins:'MarkdownTemplatePlugin'}}) }}{{/raw}}</code>
+<code>{{#raw}}{{ content | evalTemplate({use:{plugins:'MarkdownTemplatePlugin'}}) | raw }}{{/raw}}</code>
 
 <p>
     This filter is used by the <a href="/docs/api-pages#user-content-preview-api-page">/preview.html API Page</a> to 
