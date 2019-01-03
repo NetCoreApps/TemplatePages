@@ -463,6 +463,26 @@ var escapeLines = '{{ "new" | appendLine | append("line") | escapeNewLines }}';â
 {{ 'live-template' | partial({ template: `{{ [{Name:'Alice',Score:50},{Name:'Bob',Score:40}] | assignTo:scoreRecords }}
 {{ scoreRecords | csv }}` }) }}
 
+<h4 id="evalTemplate">Eval</h4>
+
+<p>
+    By default the <em>evalTemplate</em> filter renders Templates in a new <em>TemplateContext</em> which can be customized 
+    to utilize any additional <em>plugins</em>, <em>filters</em> and <em>blocks</em> available in the configured 
+    <a href="/docs/view-engine">TemplatePagesFeature</a>, or for full access you can use <em>{use:{context:true}}</em> 
+    to evaluate any Template content under the same context that <em>evalTemplate</em> is run on.
+</p>
+
+<p>
+    E.g. you can evaluate dynamic Template Syntax which makes use of the <em>MarkdownTemplatePlugin</em> plugin with:
+</p>
+
+<code>{{#raw}}{{ content  | evalTemplate({use:{plugins:'MarkdownTemplatePlugin'}}) }}{{/raw}}</code>
+
+<p>
+    This filter is used by the <a href="/docs/api-pages#user-content-preview-api-page">/preview.html API Page</a> to 
+    create an API that enables live previews.
+</p>
+
 <h4 id="iterating">Iterating</h4>
 
 <p>
