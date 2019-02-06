@@ -81,7 +81,7 @@ namespace TemplatePages
             context.Init();
             var pageResult = new PageResult(context.OneTimePage(request.Template)) 
             {
-                Args = base.Request.GetTemplateRequestParams()
+                Args = base.Request.GetTemplateRequestParams(importRequestParams:true)
             };
             return await pageResult.RenderToStringAsync(); // render to string so [ReturnExceptionsInJson] can detect Exceptions and return JSON
         }

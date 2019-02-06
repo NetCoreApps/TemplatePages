@@ -11,7 +11,7 @@ order: 27
             <div class="input-group">
                 <label for="nameContains" style="line-height:2rem;margin:0 10px 0 0">Search for available filters:</label>
                 <input type="text" id="nameContains" name="nameContains" class="form-control" placeholder="Filter Name Contains" 
-                       value="{{ nameContains | ifExists }}"
+                       value="{{ nameContains }}"
                        autofocus onfocus="var hold=this.value; this.value=''; this.value=hold"
                        autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">
                 <span class="input-group-btn"><button class="btn btn-primary" type="submit">Go!</button></span>
