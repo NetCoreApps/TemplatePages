@@ -379,10 +379,10 @@ Property Value: {{ 'A String'.Length }}, {{ 'A String'['Len' + 'gth'] }}` }) }}
     Use <em>map</em> when you want to transform each item into a different value:
 </p>
 
-{{ 'live-template' | partial({ rows: 5, template: "{{ ['zero','one','two','three','four','five','six','seven','eight','nine'] | assignTo:digits }}
+{{ 'live-template' | partial({ rows: 4, template: "{{ ['zero','one','two','three','four','five','six','seven','eight','nine'] | assignTo:digits }}
 {{ range(3) 
    | map => it + 5
-   | map => digits[it] | join(`\n`) }}" }) }}
+   | map => digits[it] | join(`\\n`) }}" }) }}
 
 <p>
     It's also useful for transforming raw data sources into more manageable ones:
@@ -392,7 +392,7 @@ Property Value: {{ 'A String'.Length }}, {{ 'A String'['Len' + 'gth'] }}` }) }}
 {{ coords 
    | map => { x: it[0], y: it[1] }
    | scopeVars
-   | select: {index + 1}. ({x}, {y})\n }}" }) }}
+   | select: {index + 1}. ({x}, {y})\\n }}" }) }}
 
 <p>
     Whilst these filters let you perform some other popular conversions:
