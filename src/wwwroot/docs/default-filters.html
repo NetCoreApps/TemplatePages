@@ -159,11 +159,13 @@ Time: {{ now.TimeOfDay | timeFormat('h\\:mm') }} default: {{ now.TimeOfDay | tim
 
 <h4 id="url-handling">URL handling</h4>
 
-{{ 'live-template' | partial({ rows: 6, template: "{{ 'http://example.org' | assignTo: baseUrl }}
+{{ 'live-template' | partial({ rows: 8, template: "{{ 'http://example.org' | assignTo: baseUrl }}
 {{ baseUrl | addPath('path') }}
 {{ baseUrl | addPaths(['path1', 'path2', 'path3']) }}
 {{ baseUrl | addQueryString({ a: 1, b: 2 }) }}
+{{ baseUrl | addQueryString({ a: 1, b: 2 }) | setQueryString({ a: 3 }) }}
 {{ baseUrl | addHashParams({ c: 3, d: 4 }) }}
+{{ baseUrl | addHashParams({ c: 3, d: 4 }) | setHashParams({ c: 5 }) }}
 {{ baseUrl | addPath('path') | addQueryString({ a: 1 }) | addHashParams({ b: 2 }) }}" }) }}
 
 <h4 id="generation">Repeating, Ranges and Generation</h4>
