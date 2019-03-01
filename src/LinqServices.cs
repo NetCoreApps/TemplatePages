@@ -8,6 +8,7 @@ using ServiceStack.Templates;
 using ServiceStack.IO;
 using ServiceStack.DataAnnotations;
 using System.Threading.Tasks;
+using ServiceStack.Script;
 
 namespace TemplatePages
 {

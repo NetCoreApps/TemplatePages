@@ -7,6 +7,7 @@ using System;
 using ServiceStack.Web;
 using ServiceStack.OrmLite;
 using ServiceStack.Data;
+using ServiceStack.Script;
 using ServiceStack.Text;
 
 namespace TemplatePages

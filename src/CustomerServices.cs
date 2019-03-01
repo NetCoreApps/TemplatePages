@@ -1,4 +1,5 @@
 using ServiceStack;
+using ServiceStack.Script;
 using ServiceStack.Templates;
 
 namespace TemplatePages

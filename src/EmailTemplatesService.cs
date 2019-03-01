@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using ServiceStack;
 using ServiceStack.Templates;
 using ServiceStack.IO;
+using ServiceStack.Script;
 
 namespace TemplatePages
 {

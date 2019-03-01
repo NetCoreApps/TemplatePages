@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using System.Collections.Generic;
 using ServiceStack;
 using ServiceStack.IO;
+using ServiceStack.Script;
 using ServiceStack.Text;
 using ServiceStack.Templates;
 

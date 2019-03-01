@@ -5,6 +5,7 @@ using System.Diagnostics;
 using System.Collections.Generic;
 using ServiceStack;
 using ServiceStack.IO;
+using ServiceStack.Script;
 using ServiceStack.Templates;
 
 namespace TemplatePages
