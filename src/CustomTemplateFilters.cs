@@ -9,6 +9,7 @@ using System;
 using ServiceStack.Redis;
 using ServiceStack.OrmLite;
 using System.Reflection;
+using ServiceStack.Script;
 
 namespace TemplatePages
 {
@@ -133,7 +134,7 @@ namespace TemplatePages
 
         public IRawString filterLinkToSrc(string name)
         {
-            const string prefix = "https://github.com/ServiceStack/ServiceStack/blob/master/src/ServiceStack.Common/Templates/Filters/";
+            const string prefix = "https://github.com/ServiceStack/ServiceStack/tree/pre-rebrand/src/ServiceStack.Common/Templates/Filters/";
 
             var type = GetFilterType(name);
             var url = type == typeof(TemplateDefaultFilters)
@@ -141,13 +142,13 @@ namespace TemplatePages
                 : type == typeof(TemplateHtmlFilters) || type == typeof(TemplateProtectedFilters)
                     ? $"{prefix}{type.Name}.cs"
                     : type == typeof(TemplateInfoFilters)
-                    ? "https://github.com/ServiceStack/ServiceStack/blob/master/src/ServiceStack/TemplateInfoFilters.cs"
+                    ? "https://github.com/ServiceStack/ServiceStack/blob/pre-rebrand/src/ServiceStack/TemplateInfoFilters.cs"
                     : type == typeof(TemplateRedisFilters)
-                    ? "https://github.com/ServiceStack/ServiceStack.Redis/blob/master/src/ServiceStack.Redis/TemplateRedisFilters.cs"
+                    ? "https://github.com/ServiceStack/ServiceStack.Redis/blob/17358b19d5d311f0d6dbf6f3f7e5cfc44d8e6a54/src/ServiceStack.Redis/TemplateRedisFilters.cs"
                     : type == typeof(TemplateDbFilters) || type == typeof(TemplateDbFiltersAsync)
-                    ? $"https://github.com/ServiceStack/ServiceStack.OrmLite/tree/master/src/ServiceStack.OrmLite/{type.Name}.cs"
+                    ? $"https://github.com/ServiceStack/ServiceStack.OrmLite/blob/8b9c78c8bbe01e33ab468beb4e3a9fb8cc57117b/src/ServiceStack.OrmLite/{type.Name}.cs"
                     : type == typeof(TemplateServiceStackFilters)
-                    ? "https://github.com/ServiceStack/ServiceStack/blob/master/src/ServiceStack/TemplateServiceStackFilters.cs"
+                    ? "https://github.com/ServiceStack/ServiceStack/blob/pre-rebrand/src/ServiceStack/TemplateServiceStackFilters.cs"
                     : prefix;
 
             return new RawString($"<a href='{url}'>{type.Name}.cs</a>");
