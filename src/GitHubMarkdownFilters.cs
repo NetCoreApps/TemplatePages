@@ -99,7 +99,7 @@ namespace TemplatePages
 
                     if (Context.VirtualFiles is IVirtualFiles vfs)
                     {
-                        vfs.WriteFile(htmlFilePath, wrappedBytes);
+                        vfs.GetFileSystemVirtualFiles().WriteFile(htmlFilePath, wrappedBytes);
                     }
 
                     if (UseMemoryCache)
