@@ -17,7 +17,7 @@
 <p>Usage: /hello/{name}</p>
 </blockquote>
 <p>An API which returns the same wire response as above can be implemented in API Pages by creating a page at
-<a href="https://github.com/NetCoreWebApps/Blog/blob/master/app/hello/_name/index.html">/hello/_name/index.html</a>
+<a href="https://github.com/NetCoreWebApps/Blog/blob/master/hello/_name/index.html">/hello/_name/index.html</a>
 that includes the 1-liner:</p>
 <div class="highlight highlight-text-html-handlebars"><pre><span class="pl-c1">{{</span> { <span class="pl-e"><span class="pl-v">result</span></span>: `<span class="pl-e"><span class="pl-v">Hello</span></span>, ${<span class="pl-e"><span class="pl-v">name</span></span>}!` } | <span class="pl-e"><span class="pl-v">return</span></span> <span class="pl-c1">}}</span></pre></div>
 <p>Which supports the same content negotiation as a ServiceStack Service where calling it in a browser will generate a
@@ -41,7 +41,7 @@ Templates and Dynamic API Pages to implement all of its functionality.</p>
 <blockquote>
 <p>Usage: /preview?content={templates}</p>
 </blockquote>
-<p>The <a href="https://github.com/NetCoreWebApps/Blog/blob/master/app/preview.html">/preview.html</a> API page uses this to force a plain-text response with:</p>
+<p>The <a href="https://github.com/NetCoreWebApps/Blog/blob/master/preview.html">/preview.html</a> API page uses this to force a plain-text response with:</p>
 <div class="highlight highlight-text-html-handlebars"><pre><span class="pl-c1">{{</span> <span class="pl-v">content</span>  | <span class="pl-e"><span class="pl-v">evalTemplate</span></span>({<span class="pl-e"><span class="pl-v">use</span></span>:{<span class="pl-e"><span class="pl-v">plugins</span></span>:<span class="pl-s"><span class="pl-pds">'</span>MarkdownTemplatePlugin<span class="pl-pds">'</span></span><span class="pl-c1">}}</span>) | assignTo:response }}
 <span class="pl-c1">{{</span> <span class="pl-v">response</span> | <span class="pl-e"><span class="pl-v">return</span></span>({ <span class="pl-e"><span class="pl-v">contentType</span></span>:<span class="pl-s"><span class="pl-pds">'</span>text/plain<span class="pl-pds">'</span></span> }) <span class="pl-c1">}}</span></pre></div>
 <p>The preview API above is what provides the new <a href="http://blog.web-app.io/" rel="nofollow">Blog Web App's</a> Live Preview feature where it will render any

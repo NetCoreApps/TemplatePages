@@ -220,9 +220,9 @@ Usage: web install &lt;name&gt;</code></pre>
 
 <p>
     The benefits over using a static website is improved maintenance
-    as you can extract and use its common <a href="https://github.com/NetCoreWebApps/Bare/blob/master/app/_layout.html">_layout.html</a>
+    as you can extract and use its common <a href="https://github.com/NetCoreWebApps/Bare/blob/master/_layout.html">_layout.html</a>
     instead of having it duplicated in each page. 
-    The <a href="https://github.com/NetCoreWebApps/Bare/blob/master/app/menu.html">menu.html</a> partial also makes menu items
+    The <a href="https://github.com/NetCoreWebApps/Bare/blob/master/menu.html">menu.html</a> partial also makes menu items
     easier to maintain by just adding an entry in the JavaScript object literal. The dynamic menu also takes care of highlighting the active menu item.
 </p>
 
@@ -247,7 +247,7 @@ title: About Us
     with GUI HTML designers.
 </p>
 
-<h5><a href="https://github.com/NetCoreWebApps/Bare/blob/master/app/app.settings">app.settings</a></h5>
+<h5><a href="https://github.com/NetCoreWebApps/Bare/blob/master/app.settings">app.settings</a></h5>
 
 <p>
     Below is the <em>app.settings</em> for a Basic App, with <b>contentRoot</b> being the only setting required as the
@@ -324,10 +324,10 @@ webRoot ~/../bare</code></pre>
 <p>
     The nice thing about generating HTML is that it's the one true constant in Web development that will always be there.
     The entire functionality for the Redis Web App is contained in a single
-    <a href="https://github.com/NetCoreWebApps/redis-html/blob/master/app/index.html">/redis-html/app/index.html</a> which includes
+    <a href="https://github.com/NetCoreWebApps/redis-html/blob/master/index.html">/redis-html/app/index.html</a> which includes
     all Template and JavaScript Source Code in <b>&lt; 200 lines</b> which also includes all as server logic as it doesn't rely on any 
     back-end Services and just uses the <a href="/docs/redis-filters">Redis Filters</a> to interface with Redis directly.
-    The <a href="https://github.com/NetCoreWebApps/redis-html/blob/master/app/index.html">source code</a> also serves as a good 
+    The <a href="https://github.com/NetCoreWebApps/redis-html/blob/master/index.html">source code</a> also serves as a good 
     demonstration of the declarative coding style that Templates encourages that in addition to being highly-readable requires orders 
     of magnitude less code than our previous Redis JavaScript SPA's with a comparable feature-set.
 </p>
@@ -338,7 +338,7 @@ webRoot ~/../bare</code></pre>
     that would be required to convert the existing JavaScript Apps to a use different JavaScript fx.
 </p>
 
-<h5><a href="https://github.com/NetCoreWebApps/redis-html/blob/master/app/app.settings">app.settings</a></h5>
+<h5><a href="https://github.com/NetCoreWebApps/redis-html/blob/master/app.settings">app.settings</a></h5>
 
 <p>
     The <em>app.settings</em> for Redis is similar to Web App Starter above except it adds a <em>redis.connection</em>
@@ -372,7 +372,7 @@ redis.connection localhost:6379</code></pre>
     where the UI has been extracted into isolated Vue components utilizing 
     <a href="https://vuejs.org/v2/guide/components.html#X-Templates">Vue X-Templates</a> to render the App on the client where 
     all Redis Vue's functionality is contained within the
-    <a href="https://github.com/NetCoreWebApps/Redis/blob/master/app/index.html">Redis/app/index.html</a> page.     
+    <a href="https://github.com/NetCoreWebApps/Redis/blob/master/index.html">Redis/app/index.html</a> page.     
 </p>
 
 <a href="http://redis.web-app.io"><img src="/assets/img/screenshots/redis.png" alt="Redis Vue WebApp Screenshot"></a>
@@ -385,8 +385,8 @@ redis.connection localhost:6379</code></pre>
     dynamic web page when needed. 
 </p>
 <p>
-    The containing <a href="https://github.com/NetCoreWebApps/Redis/blob/master/app/_layout.html">_layout.html</a>
-    page can be separated from the <a href="https://github.com/NetCoreWebApps/Redis/blob/master/app/index.html">index.html</a> page 
+    The containing <a href="https://github.com/NetCoreWebApps/Redis/blob/master/_layout.html">_layout.html</a>
+    page can be separated from the <a href="https://github.com/NetCoreWebApps/Redis/blob/master/index.html">index.html</a> page 
     that contains the App's functionality, where it's able to extract the <em>title</em> of the page and embed it in the 
     HTML <em>&lt;head/&gt;</em> as well as embed the page's <em>&lt;script /&gt;</em> in its optimal location at the bottom of the 
     HTML <em>&lt;body/&gt;</em>, after the page's blocking script dependencies:
@@ -402,9 +402,9 @@ redis.connection localhost:6379</code></pre>
 
 <p>
     Where it uses the more verbose and developer-friendly 
-    <a href="https://github.com/NetCoreWebApps/Redis/blob/master/app/assets/js/vue.js">vue.js</a>
+    <a href="https://github.com/NetCoreWebApps/Redis/blob/master/assets/js/vue.js">vue.js</a>
     during development whilst using the production optimized 
-    <a href="https://github.com/NetCoreWebApps/Redis/blob/master/app/assets/js/vue.min.js">vue.min.js</a>
+    <a href="https://github.com/NetCoreWebApps/Redis/blob/master/assets/js/vue.min.js">vue.min.js</a>
     for deployments. So despite avoiding the complexity tax of an npm-based build system it still gets some of its benefits
     like conditional deployments and effortless <a href="/docs/hot-reloading">hot reloading</a>.
 </p>
@@ -412,7 +412,7 @@ redis.connection localhost:6379</code></pre>
 <h4>Server Templates</h4>
 
 <p>
-    Whilst most of <a href="https://github.com/NetCoreWebApps/Redis/blob/master/app/index.html">index.html</a> is a static Vue 
+    Whilst most of <a href="https://github.com/NetCoreWebApps/Redis/blob/master/index.html">index.html</a> is a static Vue 
     app, templates is leveraged to generate the body of the <em>&lt;redis-info/&gt;</em> Component on the initial home page render:
 </p>
 
@@ -428,7 +428,7 @@ redis.connection localhost:6379</code></pre>
 <p>
     Another area Templates is used is to handle the HTTP POST where it calls the <em>redisChangeConnection</em> filter to change 
     the current Redis connection before rendering the 
-    <a href="https://github.com/NetCoreWebApps/Redis/blob/master/app/connection-info.html">connection-info.html</a> partial with the 
+    <a href="https://github.com/NetCoreWebApps/Redis/blob/master/connection-info.html">connection-info.html</a> partial with the 
     current connection info:
 </p>
 
@@ -441,7 +441,7 @@ redis.connection localhost:6379</code></pre>
     <a href="/docs/api-pages">API Pages</a>:
 </p>
 
-<h5><a href="https://github.com/NetCoreWebApps/Redis/blob/master/app/api/search.html">search.html</a></h5>
+<h5><a href="https://github.com/NetCoreWebApps/Redis/blob/master/api/search.html">search.html</a></h5>
 
 <p>
     Called when searching for Redis keys where the query is forwarded to the <em>redisSearchKeys</em> filter:
@@ -449,7 +449,7 @@ redis.connection localhost:6379</code></pre>
 
 {{ 'gfm/web-apps/10.md' | githubMarkdown }}
 
-<h5><a href="https://github.com/NetCoreWebApps/Redis/blob/master/app/api/call.html">call.html</a></h5>
+<h5><a href="https://github.com/NetCoreWebApps/Redis/blob/master/api/call.html">call.html</a></h5>
 
 <p>
     Called to execute an arbitrary Redis command on the connected instance, with the response from Redis is returned as a 
@@ -489,13 +489,13 @@ redis.connection localhost:6379</code></pre>
 <h4>Rockstars</h4>
 
 <p>
-    <a href="https://github.com/NetCoreWebApps/Rockwind/tree/master/app/rockstars">/rockstars</a> is an 
+    <a href="https://github.com/NetCoreWebApps/Rockwind/tree/master/rockstars">/rockstars</a> is an 
     example of a Content Website that itself maintains multiple sub sections with their own layouts -
-    <a href="https://github.com/NetCoreWebApps/Rockwind/tree/master/app/rockstars/alive">/rockstars/alive</a> 
+    <a href="https://github.com/NetCoreWebApps/Rockwind/tree/master/rockstars/alive">/rockstars/alive</a> 
     for living Rockstars and 
-    <a href="https://github.com/NetCoreWebApps/Rockwind/tree/master/app/rockstars/dead">/rockstars/dead</a>
+    <a href="https://github.com/NetCoreWebApps/Rockwind/tree/master/rockstars/dead">/rockstars/dead</a>
     for the ones that have died. Each Rockstar maintains their own encapsulated
-    <a href="https://github.com/NetCoreWebApps/Rockwind/tree/master/app/rockstars/alive/grohl">mix of HTML, markdown content and splash image</a>
+    <a href="https://github.com/NetCoreWebApps/Rockwind/tree/master/rockstars/alive/grohl">mix of HTML, markdown content and splash image</a>
     that intuitively uses the closest <em>_layout.html</em>, <em>content.md</em> and <em>splash.jpg</em> from the page they're
     referenced from. This approach makes it easy to move entire sub sections over by just moving a folder and it will automatically
     use the relevant layout and partials of its parent.
@@ -506,13 +506,13 @@ redis.connection localhost:6379</code></pre>
 <h4>Northwind</h4>
 
 <p>
-    <a href="https://github.com/NetCoreWebApps/Rockwind/tree/master/app/northwind">/northwind</a> is an example of 
+    <a href="https://github.com/NetCoreWebApps/Rockwind/tree/master/northwind">/northwind</a> is an example of 
     a dynamic UI for a database containing a 
     <a href="http://rockwind-sqlite.web-app.io/northwind/customers?country=Germany">form to filter results</a>, multi-nested 
     <a href="http://rockwind-sqlite.web-app.io/northwind/customer?id=ALFKI">detail pages</a> and 
     <a href="http://rockwind-sqlite.web-app.io/northwind/order?id=10643">deep-linking</a> for quickly navigating between 
     referenced data. Templates is also a great solution for rapidly developing Web APIs where the 
-    <a href="https://github.com/NetCoreWebApps/Rockwind/blob/master/app/api/customers.html">/api/customers.html</a>
+    <a href="https://github.com/NetCoreWebApps/Rockwind/blob/master/api/customers.html">/api/customers.html</a>
     API Page below:
 </p>
 
@@ -688,7 +688,7 @@ defaultFileCacheExpirySecs     60</code></pre>
     multiple databases by using the 
     <a href="/docs/filters-reference?nameContains=sql&amp;tab=db-filters"><em>sql*</em> DB Filters</a> to avoid using RDBMS-specific
     SQL syntax. The 
-    <a href="https://github.com/NetCoreWebApps/Rockwind/blob/master/app/northwind/customer.html">/northwind/customer.html</a>
+    <a href="https://github.com/NetCoreWebApps/Rockwind/blob/master/northwind/customer.html">/northwind/customer.html</a>
     contains a good example containing a number of things to watch out for:
 </p>
 
@@ -755,7 +755,7 @@ defaultFileCacheExpirySecs     60</code></pre>
 
 <h4 id="pure-cloud-apps">Pure Cloud Apps</h4>
 
-<h5><a href="https://github.com/NetCoreWebApps/rockwind-aws/blob/master/app/app.settings">rockwind-aws/app.settings</a></h5>
+<h5><a href="https://github.com/NetCoreWebApps/rockwind-aws/blob/master/app.settings">rockwind-aws/app.settings</a></h5>
 
 <p>
     The AWS settings shows an example of this where every external resource 
@@ -796,7 +796,7 @@ defaultFileCacheExpirySecs     60</code></pre>
 
 {{ 'gfm/web-apps/03.md' | githubMarkdown }}
 
-<h5><a href="https://github.com/NetCoreWebApps/rockwind-azure/blob/master/app/app.settings">rockwind-azure/app.settings</a></h5>
+<h5><a href="https://github.com/NetCoreWebApps/rockwind-azure/blob/master/app.settings">rockwind-azure/app.settings</a></h5>
 
 <p>
     We can also create Azure Cloud Apps in the same we've done for AWS above, which runs the same 
@@ -855,7 +855,7 @@ defaultFileCacheExpirySecs     60</code></pre>
 <p>
     <a href="http://docs.servicestack.net/plugins">ServiceStack Plugins</a> can be added to your App by 
     listing it's Type Name in the <em>features</em> config entry in 
-    <a href="https://github.com/NetCoreWebApps/Plugins/tree/master/app/app.settings">app.settings</a>:
+    <a href="https://github.com/NetCoreWebApps/Plugins/tree/master/app.settings">app.settings</a>:
 </p>
 
 <pre class="settings"><code>debug true
@@ -977,8 +977,8 @@ CustomPlugin { ShowProcessLinks: true }
     Customizations from the original 
     <a href="https://github.com/NetCoreApps/Chat/blob/master/src/Chat/Startup.cs">.NET Core Chat implementation</a> 
     includes removing MVC and Razor dependencies and configuration, extracting its 
-    <a href="https://github.com/NetCoreWebApps/Chat/tree/master/app/_layout.html">_layout.html</a> and 
-    converting <a href="https://github.com/NetCoreWebApps/Chat/tree/master/app/index.html">index.html</a>
+    <a href="https://github.com/NetCoreWebApps/Chat/tree/master/_layout.html">_layout.html</a> and 
+    converting <a href="https://github.com/NetCoreWebApps/Chat/tree/master/index.html">index.html</a>
     to use Templates from its original 
     <a href="https://github.com/NetCoreApps/Chat/blob/master/src/Chat/wwwroot/default.cshtml">default.cshtml</a>.
     It's also been enhanced with the ability to evaluate Templates from the Chat window, as seen in the screenshot above.
@@ -1021,7 +1021,7 @@ oauth.github.ClientSecret 42c8db8d0ca72a0ef202e0c197d1377670c990f4
 
 <p>
     After the back-end has been implemented we can build and copy the compiled <b>Chat.dll</b> into the Chat's 
-    <a href="https://github.com/NetCoreWebApps/Chat/tree/master/app/plugins">/plugins</a> folder where 
+    <a href="https://github.com/NetCoreWebApps/Chat/tree/master/plugins">/plugins</a> folder where 
     we can take advantage of the improved development experience for rapidly developing its UI.
 </p>
 
